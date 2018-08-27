@@ -6,6 +6,7 @@
 
 #include "Player.h"
 #include "../AssetMgmt/Audio.h"
+#include "../AssetMgmt/TextMgmt.h"
 #include "../MiscGFX/Dreamfilter.h"
 #include "../Map/Decals.h"
 #include "../GameMain.h"
@@ -154,7 +155,7 @@ Player::Player() {
 
 Player::~Player() {
     //TODO: delete/drop worn items, delete inventory
-    DeleteInventory(this->inventory);
+    delete inventory;
 
     for (int i = 0; i < OVERLAY_COUNT; i++) {
         bbFreeEntity(this->overlays[i]);
@@ -190,11 +191,12 @@ float mouse_x_speed_1;
 float mouse_y_speed_1;
 
 // Functions.
-void UpdatePlayer() {
+void Player::update() {
+    // TODO: Remove.
     if (bbKeyHit(49)) {
-        mainPlayer->noclip=!mainPlayer->noclip;
+        noclip = !noclip;
     }
-    mainPlayer->godMode = true;
+    godMode = true;
 
     float Sprint = 1.f;
     float Speed = 0.018f;
@@ -207,31 +209,31 @@ void UpdatePlayer() {
     //	Kill(mainPlayer)
     //EndIf
 
-    mainPlayer->stamina = Min(mainPlayer->stamina + 0.15f * timing->tickDuration, 100.f);
+    stamina = Min(stamina + 0.15f * timing->tickDuration, 100.f);
 
-    if (mainPlayer->staminaEffectTimer > 0) {
-        mainPlayer->staminaEffect = mainPlayer->staminaEffect - (timing->tickDuration/70);
+    if (staminaEffectTimer > 0) {
+        staminaEffect = staminaEffect - (timing->tickDuration/70);
     } else {
-        mainPlayer->staminaEffect = 1.f;
+        staminaEffect = 1.f;
     }
 
-    if (mainPlayer->currRoom!=nullptr) {
-        if (!mainPlayer->currRoom->roomTemplate->name.equals("pocketdimension")) {
+    if (currRoom!=nullptr) {
+        if (!currRoom->roomTemplate->name.equals("pocketdimension")) {
             if (bbKeyDown(keyBinds->sprint)) {
                 //out of breath
-                if (mainPlayer->stamina < 5) {
-                    if (!bbChannelPlaying(mainPlayer->breathChn)) {
-                        mainPlayer->breathChn = bbPlaySound(mainPlayer->breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][0]);
+                if (stamina < 5) {
+                    if (!bbChannelPlaying(breathChn)) {
+                        breathChn = bbPlaySound(breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][0]);
                     }
                     //panting
-                } else if ((mainPlayer->stamina < 50)) {
-                    if (mainPlayer->breathChn == 0) {
-                        mainPlayer->breathChn = bbPlaySound(mainPlayer->breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][bbRand(1, 3)]);
-                        bbChannelVolume(mainPlayer->breathChn, Min((70.f-mainPlayer->stamina)/70.f,1.f)*userOptions->sndVolume);
+                } else if ((stamina < 50)) {
+                    if (breathChn == 0) {
+                        breathChn = bbPlaySound(breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][bbRand(1, 3)]);
+                        bbChannelVolume(breathChn, Min((70.f-stamina)/70.f,1.f)*userOptions->sndVolume);
                     } else {
-                        if (!bbChannelPlaying(mainPlayer->breathChn)) {
-                            mainPlayer->breathChn = bbPlaySound(mainPlayer->breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][bbRand(1, 3)]);
-                            bbChannelVolume(mainPlayer->breathChn, Min((70.f-mainPlayer->stamina)/70.f,1.f)*userOptions->sndVolume);
+                        if (!bbChannelPlaying(breathChn)) {
+                            breathChn = bbPlaySound(breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][bbRand(1, 3)]);
+                            bbChannelVolume(breathChn, Min((70.f-stamina)/70.f,1.f)*userOptions->sndVolume);
                         }
                     }
                 }
@@ -239,58 +241,49 @@ void UpdatePlayer() {
         }
     }
 
-    // TODO: Move
-    for (int i = 0; i < mainPlayer->inventory->size; i++) {
-        if (mainPlayer->inventory->items[i]!=nullptr) {
-            if (mainPlayer->inventory->items[i]->itemTemplate->name.equals("finevest")) {
-                mainPlayer->stamina = Min(mainPlayer->stamina,60.f);
-            }
-        }
-    }
-
     //If (IsZombie) Then Crouch = False
 
-    if (abs(mainPlayer->crouchState-mainPlayer->crouching)<0.001f) {
-        mainPlayer->crouchState = mainPlayer->crouching;
+    if (abs(crouchState-crouching)<0.001f) {
+        crouchState = crouching;
     } else {
-        mainPlayer->crouchState = CurveValue(mainPlayer->crouching, mainPlayer->crouchState, 10.f);
+        crouchState = CurveValue(crouching, crouchState, 10.f);
     }
 
-    if (!mainPlayer->noclip) {
-        if (((bbKeyDown(keyBinds->down) ^ bbKeyDown(keyBinds->up)) | (bbKeyDown(keyBinds->right) ^ bbKeyDown(keyBinds->left)) && (!mainPlayer->disableControls)) || mainPlayer->forceMove>0) {
+    if (!noclip) {
+        if (((bbKeyDown(keyBinds->down) ^ bbKeyDown(keyBinds->up)) | (bbKeyDown(keyBinds->right) ^ bbKeyDown(keyBinds->left)) && (!disableControls)) || forceMove>0) {
 
             // And (Not IsZombie)) Then
-            if (mainPlayer->crouching == 0 && (bbKeyDown(keyBinds->sprint)) && mainPlayer->stamina > 0.f) {
+            if (crouching == 0 && (bbKeyDown(keyBinds->sprint)) && stamina > 0.f) {
                 Sprint = 2.5f;
-                mainPlayer->stamina = mainPlayer->stamina - timing->tickDuration * 0.5f * (1.f/mainPlayer->staminaEffect);
-                if (mainPlayer->stamina <= 0) {
-                    mainPlayer->stamina = -20.f;
+                stamina = stamina - timing->tickDuration * 0.5f * (1.f/staminaEffect);
+                if (stamina <= 0) {
+                    stamina = -20.f;
                 }
             }
 
-            if (mainPlayer->currRoom->roomTemplate->name.equals("pocketdimension")) {
-                if (bbEntityY(mainPlayer->collider)<2000*RoomScale || bbEntityY(mainPlayer->collider)>2608*RoomScale) {
-                    mainPlayer->stamina = 0;
+            if (currRoom->roomTemplate->name.equals("pocketdimension")) {
+                if (bbEntityY(collider)<2000*RoomScale || bbEntityY(collider)>2608*RoomScale) {
+                    stamina = 0;
                     Speed = 0.015f;
                     Sprint = 1.f;
                 }
             }
 
-            if (mainPlayer->forceMove>0) {
-                Speed = Speed*mainPlayer->forceMove;
+            if (forceMove>0) {
+                Speed = Speed*forceMove;
             }
 
-            float temp = modFloat(mainPlayer->camAnimState, 360);
-            if (!mainPlayer->disableControls) {
-                mainPlayer->camAnimState = modFloat(mainPlayer->camAnimState + timing->tickDuration * Min(Sprint, 1.5f) * 7, 720);
+            float temp = modFloat(camAnimState, 360);
+            if (!disableControls) {
+                camAnimState = modFloat(camAnimState + timing->tickDuration * Min(Sprint, 1.5f) * 7, 720);
             }
-            if (temp < 180 && modFloat(mainPlayer->camAnimState, 360) >= 180 && !mainPlayer->dead) {
+            if (temp < 180 && modFloat(camAnimState, 360) >= 180 && !dead) {
                 //TODO: define constants for each override state
-                if (mainPlayer->footstepOverride==0) {
-                    temp = (float)GetMaterialStepSound(mainPlayer->collider);
+                if (footstepOverride==0) {
+                    temp = (float)GetMaterialStepSound(collider);
 
                     if (Sprint == 1.f) {
-                        mainPlayer->loudness = Max(4.f,mainPlayer->loudness);
+                        loudness = Max(4.f,loudness);
 
                         if (temp == STEPSOUND_METAL) {
                             tempChn = PlaySound_SM(sndMgmt->footstepMetal[bbRand(0, 7)]);
@@ -298,9 +291,9 @@ void UpdatePlayer() {
                             tempChn = PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
                         }
 
-                        bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.6f))*userOptions->sndVolume);
+                        bbChannelVolume(tempChn, (1.f-(crouching*0.6f))*userOptions->sndVolume);
                     } else {
-                        mainPlayer->loudness = Max(2.5f-(mainPlayer->crouching*0.6f),mainPlayer->loudness);
+                        loudness = Max(2.5f-(crouching*0.6f),loudness);
 
                         if (temp == 1) {
                             tempChn = PlaySound_SM(sndMgmt->footstepMetalRun[bbRand(0, 7)]);
@@ -308,23 +301,23 @@ void UpdatePlayer() {
                             tempChn = PlaySound_SM(sndMgmt->footstepRun[bbRand(0, 7)]);
                         }
 
-                        bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.6f))*userOptions->sndVolume);
+                        bbChannelVolume(tempChn, (1.f-(crouching*0.6f))*userOptions->sndVolume);
                     }
-                } else if (mainPlayer->footstepOverride==1) {
+                } else if (footstepOverride==1) {
                     tempChn = PlaySound_SM(sndMgmt->footstepPD[bbRand(0, 2)]);
-                    bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.4f))*userOptions->sndVolume);
-                } else if (mainPlayer->footstepOverride==2) {
+                    bbChannelVolume(tempChn, (1.f-(crouching*0.4f))*userOptions->sndVolume);
+                } else if (footstepOverride==2) {
                     tempChn = PlaySound_SM(sndMgmt->footstep8601[bbRand(0, 2)]);
-                    bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.4f))*userOptions->sndVolume);
-                } else if (mainPlayer->footstepOverride==3) {
+                    bbChannelVolume(tempChn, (1.f-(crouching*0.4f))*userOptions->sndVolume);
+                } else if (footstepOverride==3) {
                     if (Sprint == 1.f) {
-                        mainPlayer->loudness = Max(4.f,mainPlayer->loudness);
+                        loudness = Max(4.f,loudness);
                         tempChn = PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
-                        bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.6f))*userOptions->sndVolume);
+                        bbChannelVolume(tempChn, (1.f-(crouching*0.6f))*userOptions->sndVolume);
                     } else {
-                        mainPlayer->loudness = Max(2.5f-(mainPlayer->crouching*0.6f),mainPlayer->loudness);
+                        loudness = Max(2.5f-(crouching*0.6f),loudness);
                         tempChn = PlaySound_SM(sndMgmt->footstepRun[bbRand(0, 7)]);
-                        bbChannelVolume(tempChn, (1.f-(mainPlayer->crouching*0.6f))*userOptions->sndVolume);
+                        bbChannelVolume(tempChn, (1.f-(crouching*0.6f))*userOptions->sndVolume);
                     }
                 }
 
@@ -339,48 +332,48 @@ void UpdatePlayer() {
         }
     }
 
-    if (bbKeyHit(keyBinds->crouch) && (!mainPlayer->disableControls)) {
-        mainPlayer->crouching = (!mainPlayer->crouching);
+    if (bbKeyHit(keyBinds->crouch) && (!disableControls)) {
+        crouching = (!crouching);
     }
 
-    float temp2 = (Speed * Sprint) / (1.f+mainPlayer->crouchState);
+    float temp2 = (Speed * Sprint) / (1.f+crouchState);
 
-    if (mainPlayer->noclip) {
-        mainPlayer->camAnimState = 0;
-        mainPlayer->moveSpeed = 0;
-        mainPlayer->crouchState = 0;
-        mainPlayer->crouching = 0;
+    if (noclip) {
+        camAnimState = 0;
+        moveSpeed = 0;
+        crouchState = 0;
+        crouching = 0;
 
-        bbRotateEntity(mainPlayer->collider, WrapAngle(bbEntityPitch(mainPlayer->cam)), WrapAngle(bbEntityYaw(mainPlayer->cam)), 0);
+        bbRotateEntity(collider, WrapAngle(bbEntityPitch(cam)), WrapAngle(bbEntityYaw(cam)), 0);
 
         // * NoClipSpeed ;TODO: reimplement
         temp2 = temp2;
 
         if (bbKeyDown(keyBinds->down)) {
-            bbMoveEntity(mainPlayer->collider, 0, 0, -temp2*timing->tickDuration);
+            bbMoveEntity(collider, 0, 0, -temp2*timing->tickDuration);
         }
         if (bbKeyDown(keyBinds->up)) {
-            bbMoveEntity(mainPlayer->collider, 0, 0, temp2*timing->tickDuration);
+            bbMoveEntity(collider, 0, 0, temp2*timing->tickDuration);
         }
 
         if (bbKeyDown(keyBinds->left)) {
-            bbMoveEntity(mainPlayer->collider, -temp2*timing->tickDuration, 0, 0);
+            bbMoveEntity(collider, -temp2*timing->tickDuration, 0, 0);
         }
         if (bbKeyDown(keyBinds->right)) {
-            bbMoveEntity(mainPlayer->collider, temp2*timing->tickDuration, 0, 0);
+            bbMoveEntity(collider, temp2*timing->tickDuration, 0, 0);
         }
 
-        bbResetEntity(mainPlayer->collider);
+        bbResetEntity(collider);
     } else {
-        temp2 = temp2 / Max((mainPlayer->injuries+3.f)/3.f,1.f);
-        if (mainPlayer->injuries > 0.5f) {
-            temp2 = temp2*Min((bbSin(mainPlayer->camAnimState/2)+1.2f),1.f);
+        temp2 = temp2 / Max((injuries+3.f)/3.f,1.f);
+        if (injuries > 0.5f) {
+            temp2 = temp2*Min((bbSin(camAnimState/2)+1.2f),1.f);
         }
 
         bool temp = false;
         float angle = 0.0f;
         //If (Not IsZombie%)
-        if (bbKeyDown(keyBinds->down) && (!mainPlayer->disableControls)) {
+        if (bbKeyDown(keyBinds->down) && (!disableControls)) {
             temp = true;
             angle = 180;
             if (bbKeyDown(keyBinds->left)) {
@@ -390,7 +383,7 @@ void UpdatePlayer() {
                 angle = -135;
             }
             // Or ForceMove>0
-        } else if ((bbKeyDown(keyBinds->up) && (!mainPlayer->disableControls))) {
+        } else if ((bbKeyDown(keyBinds->up) && (!disableControls))) {
             temp = true;
             angle = 0;
             if (bbKeyDown(keyBinds->left)) {
@@ -399,10 +392,10 @@ void UpdatePlayer() {
             if (bbKeyDown(keyBinds->right)) {
                 angle = -45;
             }
-        } else if ((mainPlayer->forceMove>0)) {
+        } else if ((forceMove>0)) {
             temp = true;
-            angle = mainPlayer->forceAngle;
-        } else if ((!mainPlayer->disableControls)) {
+            angle = forceAngle;
+        } else if ((!disableControls)) {
             if (bbKeyDown(keyBinds->left)) {
                 angle = 90;
                 temp = true;
@@ -417,60 +410,60 @@ void UpdatePlayer() {
         //	angle = ForceAngle
         //EndIf
 
-        angle = WrapAngle(bbEntityYaw(mainPlayer->collider,true)+angle+90.f);
+        angle = WrapAngle(bbEntityYaw(collider,true)+angle+90.f);
 
         if ((int)(temp)) {
-            mainPlayer->moveSpeed = CurveValue(temp2, mainPlayer->moveSpeed, 20.f);
+            moveSpeed = CurveValue(temp2, moveSpeed, 20.f);
         } else {
-            mainPlayer->moveSpeed = Max(CurveValue(0.f, mainPlayer->moveSpeed-0.1f, 1.f),0.f);
+            moveSpeed = Max(CurveValue(0.f, moveSpeed-0.1f, 1.f),0.f);
         }
 
-        if (!mainPlayer->disableControls) {
-            bbTranslateEntity(mainPlayer->collider, bbCos(angle)*mainPlayer->moveSpeed * timing->tickDuration, 0, bbSin(angle)*mainPlayer->moveSpeed * timing->tickDuration, true);
+        if (!disableControls) {
+            bbTranslateEntity(collider, bbCos(angle)*moveSpeed * timing->tickDuration, 0, bbSin(angle)*moveSpeed * timing->tickDuration, true);
         }
 
         bool collidedFloor = false;
-        for (int i = 1; i <= bbCountCollisions(mainPlayer->collider); i++) {
-            if (bbCollisionY(mainPlayer->collider, i) < bbEntityY(mainPlayer->collider,true) && abs(bbCollisionNY(mainPlayer->collider, i))>0.8f) {
+        for (int i = 1; i <= bbCountCollisions(collider); i++) {
+            if (bbCollisionY(collider, i) < bbEntityY(collider,true) && abs(bbCollisionNY(collider, i))>0.8f) {
                 collidedFloor = true;
             }
         }
 
         if (collidedFloor == true) {
-            if (mainPlayer->dropSpeed < - 0.07f) {
-                if (mainPlayer->footstepOverride==0) {
-                    if (GetMaterialStepSound(mainPlayer->collider) == 1) {
+            if (dropSpeed < - 0.07f) {
+                if (footstepOverride==0) {
+                    if (GetMaterialStepSound(collider) == 1) {
                         PlaySound_SM(sndMgmt->footstepMetal[bbRand(0, 7)]);
                     } else {
                         PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
                     }
-                } else if ((mainPlayer->footstepOverride==1)) {
+                } else if ((footstepOverride==1)) {
                     PlaySound_SM(sndMgmt->footstepPD[bbRand(0, 2)]);
-                } else if ((mainPlayer->footstepOverride==2)) {
+                } else if ((footstepOverride==2)) {
                     PlaySound_SM(sndMgmt->footstep8601[bbRand(0, 2)]);
                 } else {
                     PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
                 }
-                mainPlayer->loudness = Max(3.f,mainPlayer->loudness);
+                loudness = Max(3.f,loudness);
             }
-            mainPlayer->dropSpeed = 0;
+            dropSpeed = 0;
         } else {
-            mainPlayer->dropSpeed = Min(Max(mainPlayer->dropSpeed - 0.006f * timing->tickDuration, -2.f), 0.f);
+            dropSpeed = Min(Max(dropSpeed - 0.006f * timing->tickDuration, -2.f), 0.f);
         }
 
-        if (!mainPlayer->disableControls) {
-            bbTranslateEntity(mainPlayer->collider, 0, mainPlayer->dropSpeed * timing->tickDuration, 0);
+        if (!disableControls) {
+            bbTranslateEntity(collider, 0, dropSpeed * timing->tickDuration, 0);
         }
     }
 
-    mainPlayer->forceMove = 0.f;
+    forceMove = 0.f;
 
-    // if (mainPlayer->injuries > 1.f) {
-    //     temp2 = mainPlayer->bloodloss;
-    //     mainPlayer->blurTimer = Max(Max(bbSin(TimeInPosMilliSecs()/100.f)*mainPlayer->bloodloss*30.f,mainPlayer->bloodloss*2*(2.f-mainPlayer->crouchState)),mainPlayer->blurTimer);
-    //     mainPlayer->bloodloss = Min(mainPlayer->bloodloss + (Min(mainPlayer->injuries,3.5f)/300.f)*timing->tickDuration,100);
+    // if (injuries > 1.f) {
+    //     temp2 = bloodloss;
+    //     blurTimer = Max(Max(bbSin(TimeInPosMilliSecs()/100.f)*bloodloss*30.f,bloodloss*2*(2.f-crouchState)),blurTimer);
+    //     bloodloss = Min(bloodloss + (Min(injuries,3.5f)/300.f)*timing->tickDuration,100);
 
-    //     if (temp2 <= 60 && mainPlayer->bloodloss > 60) {
+    //     if (temp2 <= 60 && bloodloss > 60) {
     //         Msg = "You are feeling faint from the amount of blood you loss.";
     //         MsgTimer = 70*4;
     //     }
@@ -478,62 +471,62 @@ void UpdatePlayer() {
 
     UpdateInfect();
 
-    if (mainPlayer->bloodloss > 0) {
-        if (bbRnd(200)<Min(mainPlayer->injuries,4.f)) {
+    if (bloodloss > 0) {
+        if (bbRnd(200)<Min(injuries,4.f)) {
             Pivot* pvt = bbCreatePivot();
-            bbPositionEntity(pvt, bbEntityX(mainPlayer->collider)+bbRnd(-0.05f,0.05f),bbEntityY(mainPlayer->collider)-0.05f,bbEntityZ(mainPlayer->collider)+bbRnd(-0.05f,0.05f));
+            bbPositionEntity(pvt, bbEntityX(collider)+bbRnd(-0.05f,0.05f),bbEntityY(collider)-0.05f,bbEntityZ(collider)+bbRnd(-0.05f,0.05f));
             bbTurnEntity(pvt, 90, 0, 0);
             bbEntityPick(pvt,0.3f);
 
             Decal* de = CreateDecal(bbRand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90.f, (float)bbRand(360), 0.f);
-            de->size = bbRnd(0.03f,0.08f)*Min(mainPlayer->injuries,3.f);
+            de->size = bbRnd(0.03f,0.08f)*Min(injuries,3.f);
             bbEntityAlpha(de->obj, 1.f);
             bbScaleSprite(de->obj, de->size, de->size);
-            tempChn = PlaySound2(mainPlayer->bloodDripSFX[bbRand(0,3)]);
+            tempChn = PlaySound2(bloodDripSFX[bbRand(0,3)]);
             bbChannelVolume(tempChn, bbRnd(0.f,0.8f)*userOptions->sndVolume);
             bbChannelPitch(tempChn, bbRand(20000,30000));
 
             bbFreeEntity(pvt);
         }
 
-        mainPlayer->camZoom = Max(mainPlayer->camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.f)+1.f)*mainPlayer->bloodloss*0.2f);
+        camZoom = Max(camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.f)+1.f)*bloodloss*0.2f);
 
-        if (mainPlayer->bloodloss > 60) {
-            mainPlayer->crouching = true;
+        if (bloodloss > 60) {
+            crouching = true;
         }
-        if (mainPlayer->bloodloss >= 100) {
+        if (bloodloss >= 100) {
             Kill(mainPlayer);
-            mainPlayer->heartbeatIntensity = 0.f;
-        } else if ((mainPlayer->bloodloss > 80.f)) {
-            mainPlayer->heartbeatIntensity = Max(150-(mainPlayer->bloodloss-80)*5,mainPlayer->heartbeatIntensity);
-        } else if ((mainPlayer->bloodloss > 35.f)) {
-            mainPlayer->heartbeatIntensity = Max(70+mainPlayer->bloodloss,mainPlayer->heartbeatIntensity);
+            heartbeatIntensity = 0.f;
+        } else if ((bloodloss > 80.f)) {
+            heartbeatIntensity = Max(150-(bloodloss-80)*5,heartbeatIntensity);
+        } else if ((bloodloss > 35.f)) {
+            heartbeatIntensity = Max(70+bloodloss,heartbeatIntensity);
         }
     }
 
-    if (!mainPlayer->disableControls) {
+    if (!disableControls) {
         if (bbKeyHit(keyBinds->blink)) {
-            mainPlayer->blinkTimer = 0;
+            blinkTimer = 0;
         }
-        if (bbKeyDown(keyBinds->blink) && mainPlayer->blinkTimer < - 10) {
-            mainPlayer->blinkTimer = -10;
+        if (bbKeyDown(keyBinds->blink) && blinkTimer < - 10) {
+            blinkTimer = -10;
         }
     }
 
 
-    if (mainPlayer->heartbeatIntensity > 0) {
-        tempChn = PlaySound2(mainPlayer->heartbeatSFX);
-        bbChannelVolume(tempChn, Max(Min((mainPlayer->heartbeatIntensity-80.f)/60.f,1.f),0.f)*userOptions->sndVolume);
+    if (heartbeatIntensity > 0) {
+        tempChn = PlaySound2(heartbeatSFX);
+        bbChannelVolume(tempChn, Max(Min((heartbeatIntensity-80.f)/60.f,1.f),0.f)*userOptions->sndVolume);
 
-        mainPlayer->heartbeatIntensity -= timing->tickDuration;
+        heartbeatIntensity -= timing->tickDuration;
     }
 
     // Equipped items.
     if (IsPlayerWearingItem(mainPlayer, "gasmask")) {
-        bbShowEntity(mainPlayer->overlays[OVERLAY_GASMASK]);
+        bbShowEntity(overlays[OVERLAY_GASMASK]);
         //TODO: Add ElseIfs here for hazmat and nvgoggles.
     } else {
-        bbHideEntity(mainPlayer->overlays[OVERLAY_GASMASK]);
+        bbHideEntity(overlays[OVERLAY_GASMASK]);
     }
 
 }
@@ -700,19 +693,21 @@ void MouseLook() {
     //EndIf
 }
 
-int SpaceInInventory(Player* player) {
-    int itemCount = 0;
-    for (int i = WORNITEM_SLOT_COUNT; i <= player->inventory->size-1; i++) {
-        if (player->inventory->items[i] != nullptr) {
-            itemCount = itemCount + 1;
-        }
+void Player::pickItem(Item* it) {
+    if (it == nullptr) {
+        it = selectedItem;
     }
 
-    if (itemCount < player->inventory->size-WORNITEM_SLOT_COUNT) {
-        return true;
+    if (!inventory->anyRoom()) {
+        txtMgmt->setMsg(txtMgmt->lang["invfull"]);
+        return;
     }
 
-    return false;
+    inventory->addItem(it);
+    PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+}
+
+void Player::useItem(Item* it) {
 }
 
 void Kill(Player* player) {

@@ -12,7 +12,7 @@ namespace CBN {
 
 class Item;
 
-class ItemCell {
+struct ItemCell {
 private:
     bool hover;
 public:
@@ -48,6 +48,7 @@ public:
     bool anyRoom();
 
     void update();
+    void draw();
 
     void saveXML();
 

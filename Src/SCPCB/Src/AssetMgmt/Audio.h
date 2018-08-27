@@ -3,6 +3,7 @@
 
 #include <StringType.h>
 #include <vector>
+#include <map>
 
 class gxSound;
 class gxChannel;
@@ -11,6 +12,8 @@ class Pivot;
 class Object;
 
 namespace CBN {
+
+enum ItemPickSound;
 
 // Structs.
 struct SoundWrapper {
@@ -65,7 +68,7 @@ public:
     SoundWrapper* scannerErr;
 
     // Pickups
-    SoundWrapper* itemPick[4];
+    std::map<ItemPickSound, SoundWrapper*> itemPick;
 
     // Elevator
     SoundWrapper* elevatorBeep;

@@ -13,6 +13,11 @@ class Sprite;
 
 namespace CBN {
 
+class Item;
+struct ItemCell;
+class Inventory;
+struct Door;
+
 // Constants.
 const int PLAYER_INV_COUNT = 6;
 const int OVERLAY_COUNT = 6;
@@ -48,12 +53,12 @@ public:
 
     Object* grabbedEntity;
 
-    struct Item* closestItem;
-    struct Item* selectedItem;
-    class ItemCell* hoveredItemCell;
+    Item* closestItem;
+    Item* selectedItem;
+    ItemCell* hoveredItemCell;
     MeshModel* closestButton;
-    struct Door* closestDoor;
-    struct Door* selectedDoor;
+    Door* closestDoor;
+    Door* selectedDoor;
 
     int drawDirectionalArrow[4];
     //------------
@@ -123,6 +128,13 @@ public:
     bool godMode;
     bool noclip;
     //------
+
+    void update();
+
+    void pickItem(Item* it = nullptr);
+    void useItem(Item* it);
+    void moveItem(Item* it, Inventory* from, Inventory* to, int toIndex);
+    void dropItem(Item* it, Inventory* inv);
 };
 
 // Globals.
@@ -139,8 +151,6 @@ extern float mouse_x_speed_1;
 extern float mouse_y_speed_1;
 
 // Functions.
-void UpdatePlayer();
-
 void MouseLook();
 
 int SpaceInInventory(Player* player);

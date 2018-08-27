@@ -39,7 +39,7 @@ void ItemCell::draw(int x, int y, int cellSpacing) {
         bbRect(x - 1, y - 1, SIZE + 2, SIZE + 2);
         bbColor(255, 255, 255);
 
-        if (mainPlayer->selectedItem == nullptr) {
+        if (mainPlayer->selectedItem == nullptr && val != nullptr) {
             bbSetFont(uiAssets->font[0]);
             bbColor(0,0,0);
             bbText(x + SIZE / 2 + 1, y + SIZE + cellSpacing - 15 + 1, val->getInvName(), true);
@@ -161,6 +161,15 @@ void Inventory::removeItem(int slot) {
     items[slot].val = nullptr;
 }
 
+bool Inventory::anyRoom() {
+    for (int i = 0; i < size; i++) {
+        if (items[i].val == nullptr) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Inventory::update() {
     int cellX = userOptions->screenWidth / 2 - (int)(xOffset * MenuScale);
     int cellY = userOptions->screenHeight / 2 - (int)(yOffset * MenuScale);
@@ -178,8 +187,8 @@ void Inventory::update() {
 
                 MouseHit1 = false;
                 if (DoubleClick) {
-                    //Using the item.
-                    mainPlayer->useItem(this, i);
+                    // Using the item.
+                    mainPlayer->useItem(it);
 
                     mainPlayer->selectedItem = nullptr;
                     DoubleClick = false;
@@ -189,7 +198,6 @@ void Inventory::update() {
 
                 // Hovering over empty slot. Move the item to the empty slot.
                 if (items[i].val == nullptr) {
-                    // item, from, to, toIndex
                     mainPlayer->moveItem(mainPlayer->selectedItem, mainPlayer->selectedItem->parentInv, this, i);
 
                 } else if (items[i].val != mainPlayer->selectedItem) {
@@ -240,6 +248,37 @@ void Inventory::update() {
     //         }
     //     }
     // }
+}
+
+void Inventory::draw() {
+    int cellX = userOptions->screenWidth / 2 - (int)(xOffset * MenuScale);
+    int cellY = userOptions->screenHeight / 2 - (int)(yOffset * MenuScale);
+
+    for (int i = 0; i < size; i++) {
+        items[i].draw(cellX, cellY, spacing);
+
+        // Move x and y coords to point to next item.
+        if (!displayVertical) {
+            cellX += ItemCell::SIZE + spacing;
+            if (i % itemsPerRow == itemsPerRow-1) {
+                cellY += ItemCell::SIZE + spacing;
+                cellX = userOptions->screenWidth / 2 - (int)(xOffset * MenuScale);
+            }
+        } else {
+            cellY += ItemCell::SIZE + spacing;
+            if (i % itemsPerRow == itemsPerRow-1) {
+                cellX += ItemCell::SIZE + spacing;
+                cellY = userOptions->screenWidth / 2 - (int)(yOffset * MenuScale);
+            }
+        }
+    }
+
+    // Draw the selected item under the cursor when it's not hovering over the item's original slot.
+    if (mainPlayer->selectedItem != nullptr) {
+        if (mainPlayer->hoveredItemCell == nullptr || mainPlayer->selectedItem != mainPlayer->hoveredItemCell->val) {
+            bbDrawImage(mainPlayer->selectedItem->invImg, bbMouseX() - bbImageWidth(mainPlayer->selectedItem->invImg) / 2, bbMouseY() - bbImageHeight(mainPlayer->selectedItem->invImg) / 2);
+        }
+    }
 }
 
 }

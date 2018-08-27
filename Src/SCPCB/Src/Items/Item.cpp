@@ -21,7 +21,6 @@ Item::Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot) : mes
     mesh = bbLoadMesh(meshPath);
     pickSound = sound;
     wornSlot = slot;
-    wornOnly = false;
     needsInvImg = true;
     invImg = nullptr;
     scale = 0.f;
@@ -151,6 +150,7 @@ void Item::update() {
             if (bbEntityY(collider) < - 35.0f) {
                 std::cout << "remove: " + getType() << "\n";
                 markedForRemoval = true;
+                return;
             }
         } else {
             bbHideEntity(collider);
@@ -175,7 +175,7 @@ void Item::updateAll() {
         //If (Not canSeePlayer) Then canSeePlayer = EntityVisible(mainPlayer\closestItem\collider,mainPlayer\collider)
         if (canSeePlayer) {
             if (MouseHit1) {
-                PickItem(mainPlayer->closestItem);
+                mainPlayer->pickItem();
             }
         }
     }

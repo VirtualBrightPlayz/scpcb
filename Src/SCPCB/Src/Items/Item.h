@@ -25,16 +25,16 @@ enum class Setting914 {
 const int WORNITEM_SLOT_COUNT = 3;
 enum class WornItemSlot {
     None,
-    Hand = 0,
+    Head = 0,
     Body = 1,
-    Head = 2
+    Hand = 2
 };
 
 enum class ItemPickSound {
-    Tiny,
-    Metallic,
-    Heafty,
-    Paper
+    Tiny = 0,
+    Metallic = 1,
+    Heafty = 2,
+    Paper = 3
 };
 
 class Item {
@@ -73,7 +73,6 @@ public:
 
     ItemPickSound pickSound;
     WornItemSlot wornSlot;
-    bool wornOnly;
 
     virtual String getType()=0;
     virtual String getInvName()=0;

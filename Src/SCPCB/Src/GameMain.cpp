@@ -356,7 +356,7 @@ void UpdateGame() {
                 CanSave = true;
                 UpdateEmitters();
                 MouseLook();
-                UpdatePlayer();
+                mainPlayer->update();
                 InFacility = CheckForPlayerInFacility();
                 UpdateDoors();
                 UpdateLevers();

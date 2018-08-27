@@ -9,6 +9,7 @@
 #include "../NPCs/NPCs.h"
 #include "../Player/Player.h"
 #include "../GameMain.h"
+#include "../Items/Item.h"
 #include "../Map/Events/Events.h"
 #include "../Map/MapSystem.h"
 #include "../Map/Particles.h"
@@ -104,9 +105,10 @@ void SoundManager::loadInGameSounds() {
     scannerUse = SoundWrapper::Initialize("SFX/Interact/ScannerUse1.ogg");
     scannerErr = SoundWrapper::Initialize("SFX/Interact/ScannerUse2.ogg");
 
-    for (int i = 0; i < 4; i++) {
-        itemPick[i] = SoundWrapper::Load("SFX/Interact/PickItem" + String(i) + ".ogg");
-    }
+    itemPick[ItemPickSound::Tiny] = SoundWrapper::Load("SFX/Interact/PickItem_Tiny.ogg");
+    itemPick[ItemPickSound::Metallic] = SoundWrapper::Load("SFX/Interact/PickItem_Metallic.ogg");
+    itemPick[ItemPickSound::Heafty] = SoundWrapper::Load("SFX/Interact/PickItem_Heafty.ogg");
+    itemPick[ItemPickSound::Paper] = SoundWrapper::Load("SFX/Interact/PickItem_Paper.ogg");
 
     elevatorBeep = SoundWrapper::Initialize("SFX/General/Elevator/Beep.ogg");
     elevatorMove = SoundWrapper::Initialize("SFX/General/Elevator/Moving.ogg");
@@ -138,6 +140,7 @@ void SoundManager::deloadInGameSounds() {
         delete SoundWrapper::list[i];
         i--;
     }
+    itemPick.clear();
 }
 
 // Constants.
