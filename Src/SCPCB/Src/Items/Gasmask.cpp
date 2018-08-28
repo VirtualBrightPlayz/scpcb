@@ -1,11 +1,17 @@
+#include <bbblitz3d.h>
+
 #include "Gasmask.h"
 #include "../AssetMgmt/TextMgmt.h"
 #include "../Player/Player.h"
 
 namespace CBN {
 
-GasMask::GasMask() : Item("", ItemPickSound::Heafty, WornItemSlot::Head) {
+GasMask::GasMask() : Item("GFX/Items/gasmask/gasmask.b3d", ItemPickSound::Heafty, WornItemSlot::Head) {
     type = "gasmask";
+}
+
+GasMask::GasMask(float x, float y, float z) : GasMask() {
+    bbPositionEntity(collider, x, y, z, true);
 }
 
 String GasMask::getType() {
@@ -13,7 +19,7 @@ String GasMask::getType() {
 }
 
 String GasMask::getInvName() {
-    return;
+    return txtMgmt->lang["it_gasmask"];
 }
 
 void GasMask::onPick() {
@@ -22,9 +28,9 @@ void GasMask::onPick() {
 
 void GasMask::onUse() {
     if (mainPlayer->isEquipped(type)) {
-
+        txtMgmt->setMsg(txtMgmt->lang["it_gasmask_on"]);
     } else {
-
+        txtMgmt->setMsg(txtMgmt->lang["it_gasmask_off"]);
     }
 }
 

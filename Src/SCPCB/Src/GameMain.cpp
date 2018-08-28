@@ -19,7 +19,7 @@
 #include "Map/Decals.h"
 #include "Map/Particles.h"
 #include "Map/MapSystem.h"
-#include "Items/Items.h"
+#include "Items/Item.h"
 #include "Map/Doors.h"
 #include "Map/Objects.h"
 #include "Map/Events/Events.h"
@@ -489,9 +489,9 @@ void UpdateGame() {
                 }
 
                 if (mainPlayer->selectedItem != nullptr) {
-                    if (mainPlayer->selectedItem->itemTemplate->name.equals("navigator") || mainPlayer->selectedItem->itemTemplate->name.equals("nav")) {
-                        darkA = Max(darkA, 0.5f);
-                    }
+                    //if (mainPlayer->selectedItem->itemTemplate->name.equals("navigator") || mainPlayer->selectedItem->itemTemplate->name.equals("nav")) {
+                    //    darkA = Max(darkA, 0.5f);
+                    //}
                 }
                 if (SelectedScreen != nullptr) {
                     darkA = Max(darkA, 0.5f);
@@ -1323,7 +1323,7 @@ void RenderWorld2() {
     Item* wornItem = nullptr;
 
     if (wornItem!=nullptr) {
-        if (!wornItem->itemTemplate->name.equals("nvgoggles") && !wornItem->itemTemplate->name.equals("supernv")) {
+        if (!wornItem->getType().equals("nvgoggles") && !wornItem->itemTemplate->name.equals("supernv")) {
             wornItem = nullptr;
         }
     }

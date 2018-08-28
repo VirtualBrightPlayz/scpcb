@@ -47,6 +47,7 @@ private:
 
 protected:
     Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot = WornItemSlot::None);
+    void setCoords(float x, float y, float z);
 
     int id;
     bool markedForRemoval;
@@ -65,6 +66,7 @@ protected:
 
 public:
     ~Item();
+
     static int itemDistanceTimer;
     Inventory* parentInv;
     Pivot* collider;
@@ -89,8 +91,8 @@ public:
     virtual void draw();
     // Functions to call when the item's selected.
     // (I.E. the first aid kit.)
-    virtual void updateUse()=0;
-    virtual void drawUse()=0;
+    virtual void updateUse();
+    virtual void drawUse();
 
     // TODO: tinyxml2
     virtual void saveXML();

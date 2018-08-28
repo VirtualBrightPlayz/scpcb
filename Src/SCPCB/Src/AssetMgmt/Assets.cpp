@@ -409,12 +409,13 @@ void InitNewGame() {
         }
     }
 
-    for (int i = 0; i < Item::getListSize(); i++) {
-        Item* it = Item::getObject(i);
+    // TODO:
+    //for (int i = 0; i < Item::getListSize(); i++) {
+    //    Item* it = Item::getObject(i);
 
-        bbEntityType(it->collider, HIT_ITEM);
-        bbEntityParent(it->collider, 0);
-    }
+    //    bbEntityType(it->collider, HIT_ITEM);
+    //    bbEntityParent(it->collider, 0);
+    //}
 
     DrawLoading(80);
     for (int i = 0; i < SecurityCam::getListSize(); i++) {
@@ -530,7 +531,7 @@ void InitNewGame() {
 
     for (int i = 0; i < 70; i++) {
         bbFlushKeys();
-        UpdatePlayer();
+        mainPlayer->update();
         UpdateRooms();
         UpdateDoors();
         UpdateNPCs();
@@ -669,11 +670,12 @@ void NullGame() {
     }
     delete[] MapRooms;
 
-    for (int i = 0; i < Item::getListSize(); i++) {
-        Item* it = Item::getObject(i);
+    // TODO: 
+    //for (int i = 0; i < Item::l; i++) {
+    //    Item* it = Item::getObject(i);
 
-        delete it;
-    }
+    //    delete it;
+    //}
 
     for (int i = 0; i < NPC::getListSize(); i++) {
         NPC* n = NPC::getObject(i);

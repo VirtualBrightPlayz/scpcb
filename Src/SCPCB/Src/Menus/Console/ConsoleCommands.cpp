@@ -5,6 +5,7 @@
 #include "ConsoleCommands.h"
 #include "../../Player/Player.h"
 #include "../../Items/Items.h"
+#include "../../Items/GasMask.h"
 #include "../../Map/MapSystem.h"
 #include "../../Map/Doors.h"
 #include "../../AssetMgmt/Audio.h"
@@ -65,6 +66,7 @@ void ConsoleCmd::clearCommands() {
 
 void Cmd_Help::execute(std::vector<String> args) {
     txtMgmt->setMsg("JORGE", 8);
+    new GasMask(bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->collider));
     console->msgR = 0;
     console->msgG = 255;
     console->msgB = 255;
@@ -288,18 +290,17 @@ void Cmd_StopSound::execute(std::vector<String> args) {
 void Cmd_Halloween::execute(std::vector<String> args) {
     console->halloween173Tex = !console->halloween173Tex;
 
+    Texture* tex = nullptr;
     if (console->halloween173Tex) {
-        Texture* tex = bbLoadTexture("GFX/npcs/173h.pt", 1);
-        bbEntityTexture(Curr173->obj, tex);
-        bbFreeTexture(tex);
+        tex = bbLoadTexture("GFX/npcs/173h.pt", 1);
         ConsoleMsg::create("173 JACK-O-LANTERN ON");
     }
     else {
-        Texture* tex = bbLoadTexture("GFX/npcs/173texture.png", 1);
-        bbEntityTexture(Curr173->obj, tex);
-        bbFreeTexture(tex);
+        tex = bbLoadTexture("GFX/npcs/173texture.png", 1);
         ConsoleMsg::create("173 JACK-O-LANTERN OFF");
     }
+    bbEntityTexture(Curr173->obj, tex);
+    bbFreeTexture(tex);
 }
 
 }

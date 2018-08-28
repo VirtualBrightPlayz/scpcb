@@ -45,7 +45,7 @@ void TxtManager::drawMsg() {
     bool paperSelected = false;
     if (CurrGameState != GAMESTATE_INVENTORY && mainPlayer->selectedItem != nullptr) {
         // TODO: Replace with getType().
-        if (mainPlayer->selectedItem->itemTemplate->name.equals("paper") || mainPlayer->selectedItem->itemTemplate->name.equals("oldpaper")) {
+        if (mainPlayer->selectedItem->getType().equals("paper")) {
             paperSelected = true;
         }
     }
@@ -118,5 +118,10 @@ void TxtManager::changeLocalization(const String& langCode) {
     lang["dor_keylocked"] = GetINIString(path, "items", "keylocked");
     lang["dor_keyhigher"] = GetINIString(path, "items", "keyhigher");
     lang["dor_keyneeded"] = GetINIString(path, "items", "keyneeded");
+
+    lang["it_gasmask"] = GetINIString(path, "items", "gasmask");
+    lang["it_gasmask_on"] = GetINIString(path, "items", "gasmask_on");
+    lang["it_gasmask_off"] = GetINIString(path, "items", "gasmask_off");
 }
+
 }

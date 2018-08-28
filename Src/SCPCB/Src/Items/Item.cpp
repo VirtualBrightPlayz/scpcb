@@ -20,6 +20,9 @@ Item::Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot) : mes
     markedForRemoval = false;
 
     collider = bbCreatePivot();
+    bbResetEntity(collider);
+    bbRotateEntity(collider, 0.f, (float)bbRand(360), 0.f);
+
     mesh = bbLoadMesh(meshPath, collider);
     pickSound = sound;
     wornSlot = slot;
@@ -53,6 +56,10 @@ Item::~Item() {
     }
 }
 
+void Item::setCoords(float x, float y, float z) {
+    bbPositionEntity(collider, x, y, z, true);
+}
+
 void Item::assignTag(const String& tag) {
     if (hasTag(tag)) { return; }
     tags.push_back(tag);
@@ -77,9 +84,11 @@ void Item::removeTag(const String& tag) {
     }
 }
 
-void Item::OnPick() { return; }
-void Item::OnUse() { return; }
-void Item::On914Use(Setting914 setting) { return; }
+void Item::onPick() { return; }
+void Item::onUse() { return; }
+void Item::on914Use(Setting914 setting) { return; }
+void Item::updateUse() { return; }
+void Item::on914Use(Setting914 setting) { return; }
 
 void Item::update() {
     float hideDistSqr = HideDistance*0.5f; hideDistSqr*=hideDistSqr;
@@ -180,7 +189,7 @@ void Item::updateAll() {
         //If (Not canSeePlayer) Then canSeePlayer = EntityVisible(mainPlayer\closestItem\collider,mainPlayer\collider)
         if (canSeePlayer) {
             if (MouseHit1) {
-                mainPlayer->pickItem();
+                mainPlayer->pickItem(mainPlayer->closestItem);
             }
         }
     }

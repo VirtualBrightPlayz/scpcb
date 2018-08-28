@@ -7,8 +7,10 @@ namespace CBN {
 class GasMask : public Item {
 private:
     String type;
-public:
     GasMask();
+public:
+    GasMask(float x, float y, float z);
+
     virtual String getType();
     virtual String getInvName();
 
