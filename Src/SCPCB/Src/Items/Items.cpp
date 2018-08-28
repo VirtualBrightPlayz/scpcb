@@ -483,7 +483,7 @@ void PickItem(Item* item) {
             }
         }
     } else {
-        txtMgmt->setMsg(txtMgmt->lang["invfull"]);
+        txtMgmt->setMsg(txtMgmt->lang["inv_full"]);
     }
 }
 

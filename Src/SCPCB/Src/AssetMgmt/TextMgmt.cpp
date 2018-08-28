@@ -109,7 +109,10 @@ void TxtManager::changeLocalization(const String& langCode) {
     lang["mnu_loaddone"] = GetINIString(path, "menu", "loaddone");
 
     // items
-    lang["invfull"] = GetINIString(path, "items", "invfull");
+    lang["inv_full"] = GetINIString(path, "items", "inv_full");
+    lang["inv_cantequip"] = GetINIString(path, "items", "inv_cantequip");
+    lang["inv_cantcombine"] = GetINIString(path, "items", "inv_cantcombine");
+    lang["inv_alreadyequip"] = GetINIString(path, "items", "inv_alreadyequip");
     lang["dor_locked"] = GetINIString(path, "items", "locked");
     lang["dor_keyinsert"] = GetINIString(path, "items", "keyinsert");
     lang["dor_keylocked"] = GetINIString(path, "items", "keylocked");

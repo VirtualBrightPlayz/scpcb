@@ -39,8 +39,6 @@ enum class ItemPickSound {
 
 class Item {
 private:
-    Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot = WornItemSlot::None);
-
     static std::vector<Item*> list;
 
     static int ID;
@@ -48,6 +46,8 @@ private:
     void setID(int id);
 
 protected:
+    Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot = WornItemSlot::None);
+
     int id;
     bool markedForRemoval;
 

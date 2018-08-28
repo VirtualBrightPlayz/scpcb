@@ -8,6 +8,7 @@
 #include "../Config/Options.h"
 #include "../AssetMgmt/Assets.h"
 #include "../AssetMgmt/Audio.h"
+#include "../AssetMgmt/TextMgmt.h"
 #include "../Player/Player.h"
 #include "../Menus/Menu.h"
 #include "../Map/MapSystem.h"
@@ -112,27 +113,25 @@ int Inventory::getSize() {
     return size;
 }
 
-void Inventory::addItem(Item* it, int slot) {
-    if (slot >= size) {
+void Inventory::addItem(Item* it) {
+    bool spaceFound = false;
+    for (int i = 0; i < size; i++) {
+        if (items[i].val == nullptr) {
+            setItem(it, i);
+            spaceFound = true;
+            break;
+        }
+    }
+    if (!spaceFound) {
+        throw ("No space in inventory.");
+    }
+}
+
+void Inventory::setItem(Item* it, int slot) {
+    if (slot >= size || slot < 0) {
         throw ("Invalid inventory slot. Slot \"" + String(slot) + "\" when only \"" + String(size) + "\" are available.");
     }
-    if (slot >= 0) {
-        items[slot].val = it;
-    } else {
-        // First available slot.
-        bool spaceFound = false;
-        for (int i = 0; i < size; i++) {
-            if (items[i].val == nullptr) {
-                items[i].val = it;
-                spaceFound = true;
-                break;
-            }
-        }
-        if (!spaceFound) {
-            throw ("No space in inventory.");
-        }
-    }
-
+    items[slot].val = it;
     it->parentInv = this;
 }
 
@@ -194,7 +193,7 @@ void Inventory::update() {
                 MouseHit1 = false;
                 if (DoubleClick) {
                     // Using the item.
-                    mainPlayer->useItem();
+                    mainPlayer->useItem(mainPlayer->selectedItem);
 
                     mainPlayer->selectedItem = nullptr;
                     DoubleClick = false;
@@ -204,15 +203,15 @@ void Inventory::update() {
 
                 // Hovering over empty slot. Move the item to the empty slot.
                 if (items[i].val == nullptr) {
-                    mainPlayer->moveItem(mainPlayer->selectedItem, mainPlayer->selectedItem->parentInv, this, i);
-
+                    mainPlayer->moveItemToEmptySlot(mainPlayer->selectedItem, this, i);
                 } else if (items[i].val != mainPlayer->selectedItem) {
                     // Hovering over another item. Attempt to combine the items.
                     //CombineItems(player\selectedItem, player\openInventory\items[slotIndex])
-                } else {
-                    // Hovering over the item's own slot. Stop selecting the item.
-                    mainPlayer->selectedItem = nullptr;
+                    txtMgmt->setMsg(txtMgmt->lang["inv_cantcombine"]);
                 }
+                // Otherwise hovering over the item's own slot.
+
+                mainPlayer->selectedItem = nullptr;
             }
 
             // If the mouse was hovering over this slot then don't bother iterating through the rest of the inventory.
@@ -237,7 +236,7 @@ void Inventory::update() {
 
     if (MouseUp1 && mainPlayer->selectedItem != nullptr && mainPlayer->hoveredItemCell == nullptr) {
         // Mouse release outside a slot, drop the item.
-        mainPlayer->dropItem(mainPlayer->selectedItem, this);
+        mainPlayer->dropItem(mainPlayer->selectedItem);
         mainPlayer->selectedItem = nullptr;
     }
 

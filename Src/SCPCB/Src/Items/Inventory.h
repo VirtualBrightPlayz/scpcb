@@ -42,7 +42,8 @@ public:
     int spacing;
 
     int getSize();
-    void addItem(Item* it, int slot = -1);
+    void addItem(Item* it);
+    void setItem(Item* it, int slot);
     Item* getItem(int slot);
     int getIndex(Item* it);
     void removeItem(Item* it);

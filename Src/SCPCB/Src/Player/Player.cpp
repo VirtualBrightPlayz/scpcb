@@ -223,16 +223,16 @@ void Player::update() {
                 //out of breath
                 if (stamina < 5) {
                     if (!bbChannelPlaying(breathChn)) {
-                        breathChn = bbPlaySound(breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][0]);
+                        breathChn = bbPlaySound(breathingSFX[isEquipped("gasmask")][0]);
                     }
                     //panting
                 } else if ((stamina < 50)) {
                     if (breathChn == 0) {
-                        breathChn = bbPlaySound(breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][bbRand(1, 3)]);
+                        breathChn = bbPlaySound(breathingSFX[isEquipped("gasmask")][bbRand(1, 3)]);
                         bbChannelVolume(breathChn, Min((70.f-stamina)/70.f,1.f)*userOptions->sndVolume);
                     } else {
                         if (!bbChannelPlaying(breathChn)) {
-                            breathChn = bbPlaySound(breathingSFX[IsPlayerWearingItem(mainPlayer,"gasmask")][bbRand(1, 3)]);
+                            breathChn = bbPlaySound(breathingSFX[isEquipped("gasmask")][bbRand(1, 3)]);
                             bbChannelVolume(breathChn, Min((70.f-stamina)/70.f,1.f)*userOptions->sndVolume);
                         }
                     }
@@ -522,9 +522,8 @@ void Player::update() {
     }
 
     // Equipped items.
-    if (IsPlayerWearingItem(mainPlayer, "gasmask")) {
+    if (isEquipped("gasmask")) {
         bbShowEntity(overlays[OVERLAY_GASMASK]);
-        //TODO: Add ElseIfs here for hazmat and nvgoggles.
     } else {
         bbHideEntity(overlays[OVERLAY_GASMASK]);
     }
@@ -572,8 +571,8 @@ void MouseLook() {
         }
 
         //TODO: CHANGE THESE NAMES
-        float the_yaw = ((mouse_x_speed_1)) * mouselook_x_inc / (1.f+IsPlayerWearingItem(mainPlayer,"vest"));
-        float the_pitch = ((mouse_y_speed_1)) * mouselook_y_inc / (1.f+IsPlayerWearingItem(mainPlayer,"vest"));
+        float the_yaw = mouse_x_speed_1 * mouselook_x_inc;
+        float the_pitch = mouse_y_speed_1 * mouselook_y_inc;
 
         // Turn the user on the Y (yaw) axis.)
         bbTurnEntity(mainPlayer->collider, 0.f, -the_yaw, 0.f);
@@ -586,12 +585,12 @@ void MouseLook() {
             mainPlayer->headPitch = -70.f;
         }
 
-        // Pitch the user;s camera up And down.)
+        // Pitch the user's camera up And down.)
         bbRotateEntity(mainPlayer->cam, WrapAngle(mainPlayer->headPitch + bbRnd(-mainPlayer->camShake, mainPlayer->camShake)), WrapAngle(bbEntityYaw(mainPlayer->collider) + bbRnd(-mainPlayer->camShake, mainPlayer->camShake)), roll);
 
         if (mainPlayer->currRoom->roomTemplate->name.equals("pocketdimension")) {
             if (bbEntityY(mainPlayer->collider)<2000*RoomScale || bbEntityY(mainPlayer->collider)>2608*RoomScale) {
-                // Pitch the user;s camera up And down.)
+                // Pitch the user's camera up And down.)
                 bbRotateEntity(mainPlayer->cam, WrapAngle(bbEntityPitch(mainPlayer->cam)),WrapAngle(bbEntityYaw(mainPlayer->cam)), roll+WrapAngle(bbSin(TimeInPosMilliSecs()/150.f)*30.f));
             }
         }
@@ -694,12 +693,8 @@ void MouseLook() {
 }
 
 void Player::pickItem(Item* it) {
-    if (it == nullptr) {
-        it = selectedItem;
-    }
-
     if (!inventory->anyRoom()) {
-        txtMgmt->setMsg(txtMgmt->lang["invfull"]);
+        txtMgmt->setMsg(txtMgmt->lang["inv_full"]);
         return;
     }
 
@@ -709,18 +704,14 @@ void Player::pickItem(Item* it) {
     it->onPick();
 }
 
-void Player::useItem(Inventory* inv, Item* it) {
-    if (it == nullptr) {
-        it = selectedItem;
-    }
-
+void Player::useItem(Item* it) {
     // In the item is in an equip slot then unequip the item.
-    if (inv == wornInventory) {
-        // item,
+    if (it->parentInv == wornInventory) {
         unEquipItem(it);
         return;
     }
 
+    // If this item is an equippable then equip it.
     if (it->wornSlot != WornItemSlot::None) {
         equipItem(it);
         return;
@@ -728,8 +719,13 @@ void Player::useItem(Inventory* inv, Item* it) {
     it->onUse();
 }
 
-void Player::dropItem(Item* it, Inventory* inv) {
-    inv->removeItem(it);
+void Player::dropItem(Item* it) {
+    if (it->parentInv == wornInventory) {
+        it->onUse();
+    }
+
+    PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+    it->parentInv->removeItem(it);
     it->parentInv = nullptr;
 
     bbShowEntity(it->collider);
@@ -739,6 +735,63 @@ void Player::dropItem(Item* it, Inventory* inv) {
     bbRotateEntity(it->collider, 0, bbEntityYaw(cam)+bbRnd(-110,110), 0);
 
     bbResetEntity(it->collider);
+}
+
+void Player::moveItemToEmptySlot(Item* it, Inventory* to, int toIndex) {
+    Inventory* from = it->parentInv;
+    int fromIndex = from->getIndex(it);
+
+    // Going from inv to equip slot? Check if it's ok.
+    if (to == wornInventory) {
+        WornItemSlot slot = (WornItemSlot)fromIndex;
+        if (slot != it->wornSlot) {
+            txtMgmt->setMsg(txtMgmt->lang["inv_cantequip"]);
+            return;
+        }
+    }
+
+    // From equip slot to somewhere else?
+    if (from == wornInventory) {
+        it->onUse();
+    }
+
+    // Otherwise just move it.
+    from->removeItem(it);
+    to->setItem(it, toIndex);
+}
+
+// void Player::equipItem(Item* it) {
+//     if (wornInventory->getItem((int)it->wornSlot) != nullptr) {
+//         txtMgmt->setMsg(txtMgmt->lang["inv_alreadyequip"]);
+//         return;
+//     }
+
+//     it->parentInv->removeItem(it);
+//     wornInventory->setItem(it, (int)it->wornSlot);
+//     PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+//     it->onUse();
+// }
+
+// void Player::unEquipItem(Item* it) {
+//     if (!inventory->anyRoom()) {
+//         txtMgmt->setMsg(txtMgmt->lang["inv_full"]);
+//         dropItem(it);
+//         return;
+//     }
+
+//     wornInventory->removeItem(it);
+//     inventory->addItem(it);
+//     PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+//     it->onUse();
+// }
+
+bool Player::isEquipped(const String& itType) {
+    for (int i = 0; i < wornInventory->getSize(); i++) {
+        if (wornInventory->getItem(i)->getType().equals(itType)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void Kill(Player* player) {

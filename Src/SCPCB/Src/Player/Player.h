@@ -131,14 +131,14 @@ public:
 
     void update();
 
-    void pickItem(Item* it = nullptr);
-    void useItem(Inventory* inv, Item* it = nullptr);
-    void dropItem(Item* it, Inventory* inv);
-    void moveItem(Item* it, Inventory* from, Inventory* to, int toIndex);
+    void pickItem(Item* it);
+    void useItem(Item* it);
+    void dropItem(Item* it);
+    void moveItemToEmptySlot(Item* it, Inventory* to, int toIndex);
 
-    void equipItem(Item* it);
-    void unEquipItem(Item* it);
-    void isEquipped(const String& itType);
+    // void equipItem(Item* it);
+    // void unEquipItem(Item* it);
+    bool isEquipped(const String& itType);
 };
 
 // Globals.
