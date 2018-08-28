@@ -19,7 +19,8 @@ Item::Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot) : mes
     parentInv = nullptr;
     markedForRemoval = false;
 
-    mesh = bbLoadMesh(meshPath);
+    collider = bbCreatePivot();
+    mesh = bbLoadMesh(meshPath, collider);
     pickSound = sound;
     wornSlot = slot;
     needsInvImg = true;
@@ -27,7 +28,6 @@ Item::Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot) : mes
     scale = 0.f;
     dist = 0.f;
 
-    collider = bbCreatePivot();
     wontColl = false;
     xSpeed = 0.f;
     zSpeed = 0.f;

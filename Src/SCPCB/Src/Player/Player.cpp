@@ -706,7 +706,7 @@ void Player::pickItem(Item* it) {
     bbHideEntity(it->collider);
     inventory->addItem(it);
     PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
-    it->OnPick();
+    it->onPick();
 }
 
 void Player::useItem(Inventory* inv, Item* it) {
@@ -714,24 +714,18 @@ void Player::useItem(Inventory* inv, Item* it) {
         it = selectedItem;
     }
 
-    // In the equip slots then unequip the item.
+    // In the item is in an equip slot then unequip the item.
     if (inv == wornInventory) {
-        // item, slot=-1
-        unEquipItem(it->wornSlot);
+        // item,
+        unEquipItem(it);
         return;
     }
 
     if (it->wornSlot != WornItemSlot::None) {
-        // TODO: inv optional.
-        equipItem(it, inv);
-        // Swap places with the currently equipped item.
-        // if (wornInventory->getItem((int)it->wornSlot) != nullptr) {
-        //     int index = inv->getIndex(it);
-        //     inv->addItem(it);
-        // }
-        // wornInventory->addItem(it, (int)it->wornSlot);
+        equipItem(it);
+        return;
     }
-    it->OnUse();
+    it->onUse();
 }
 
 void Player::dropItem(Item* it, Inventory* inv) {

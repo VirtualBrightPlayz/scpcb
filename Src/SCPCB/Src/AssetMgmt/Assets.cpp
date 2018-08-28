@@ -641,9 +641,6 @@ void NullGame() {
 
     HideDistance = 15.f;
 
-    Contained106 = false;
-    Curr173->idle = false;
-
     MTFtimer = 0;
     for (int i = 0; i < 10; i++) {
         MTFrooms[i] = nullptr;

@@ -81,9 +81,9 @@ public:
     bool hasTag(const String& tag);
     void removeTag(const String& tag);
 
-    virtual void OnPick();
-    virtual void OnUse();
-    virtual void On914Use(Setting914 setting);
+    virtual void onPick();
+    virtual void onUse();
+    virtual void on914Use(Setting914 setting);
 
     virtual void update();
     virtual void draw();

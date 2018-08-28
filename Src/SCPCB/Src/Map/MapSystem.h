@@ -128,7 +128,7 @@ public:
     //TODO: remove duplicates and rename
     static const int MaxRoomLights = 32;
     static const int MaxRoomEmitters = 8;
-    
+
     //TODO: use arraylists for all this stuff?
     int soundEmitter[MaxRoomEmitters];
     Pivot* soundEmitterObj[MaxRoomEmitters];
@@ -332,9 +332,6 @@ extern float RoomScale;
 extern gxSound* RoomAmbience[20];
 extern MeshModel* Sky;
 extern float HideDistance;
-extern float SecondaryLightOn;
-extern bool RemoteDoorOn;
-extern int Contained106;
 extern Screen* SelectedScreen;
 extern SecurityCam* SelectedMonitor;
 extern SecurityCam* CoffinCam;

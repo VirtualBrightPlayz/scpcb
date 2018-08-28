@@ -335,7 +335,7 @@ void UpdateDoors() {
                             }
                         }
                     }
-                    if (d->autoClose && RemoteDoorOn) {
+                    if (d->autoClose) {
                         if (bbEntityDistanceSquared(mainPlayer->cam, d->obj) < 2.1f*2.1f) {
                             //PlaySound2(HorrorSFX(7))) ;TODO: fix
                             d->open = false;

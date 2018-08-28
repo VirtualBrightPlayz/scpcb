@@ -135,8 +135,10 @@ public:
     void useItem(Inventory* inv, Item* it = nullptr);
     void dropItem(Item* it, Inventory* inv);
     void moveItem(Item* it, Inventory* from, Inventory* to, int toIndex);
-    void equipItem(Item* it, Inventory* from, Inventory* to, int toIndex);
-    void moveItem(Item* it, Inventory* from, Inventory* to, int toIndex);
+
+    void equipItem(Item* it);
+    void unEquipItem(Item* it);
+    void isEquipped(const String& itType);
 };
 
 // Globals.

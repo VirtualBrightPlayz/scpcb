@@ -233,11 +233,6 @@ void InitializeMainGame() {
 
     DrawLoading(40,true);
 
-    //TODO: remove/replace with functions
-    SecondaryLightOn = true;
-    RemoteDoorOn = true;
-    Contained106 = false;
-
     DrawLoading(80,true);
 
     viewport_center_x = userOptions->screenWidth / 2;
@@ -464,7 +459,7 @@ void UpdateGame() {
                 }
 
                 if (!IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
-                    darkA = Max((1.f-SecondaryLightOn)*0.9f, darkA);
+                    darkA = Max(0.9f, darkA);
                 }
 
                 if (mainPlayer->dead) {
