@@ -707,21 +707,27 @@ void Player::pickItem(Item* it) {
 void Player::useItem(Item* it) {
     // In the item is in an equip slot then unequip the item.
     if (it->parentInv == wornInventory) {
-        unEquipItem(it);
-        return;
-    }
+        it->parentInv->removeItem(it);
+        inventory->addItem(it);
+        PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+    } else if (it->wornSlot != WornItemSlot::None) {
+        // If this item is an equippable then equip it.
+        int slot = (int)it->wornSlot;
+        if (wornInventory->getItem(slot) != nullptr) {
+            txtMgmt->setMsg(txtMgmt->lang["inv_alreadyequip"]);
+            return;
+        }
 
-    // If this item is an equippable then equip it.
-    if (it->wornSlot != WornItemSlot::None) {
-        equipItem(it);
-        return;
+        it->parentInv->removeItem(it);
+        wornInventory->setItem(it, slot);
+        PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
     }
     it->onUse();
 }
 
 void Player::dropItem(Item* it) {
     if (it->parentInv == wornInventory) {
-        it->onUse();
+        it->onUse(); // Has the de-equip message.
     }
 
     PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
@@ -743,7 +749,7 @@ void Player::moveItemToEmptySlot(Item* it, Inventory* to, int toIndex) {
 
     // Going from inv to equip slot? Check if it's ok.
     if (to == wornInventory) {
-        WornItemSlot slot = (WornItemSlot)fromIndex;
+        WornItemSlot slot = (WornItemSlot)toIndex;
         if (slot != it->wornSlot) {
             txtMgmt->setMsg(txtMgmt->lang["inv_cantequip"]);
             return;
@@ -755,35 +761,9 @@ void Player::moveItemToEmptySlot(Item* it, Inventory* to, int toIndex) {
         it->onUse();
     }
 
-    // Otherwise just move it.
     from->removeItem(it);
     to->setItem(it, toIndex);
 }
-
-// void Player::equipItem(Item* it) {
-//     if (wornInventory->getItem((int)it->wornSlot) != nullptr) {
-//         txtMgmt->setMsg(txtMgmt->lang["inv_alreadyequip"]);
-//         return;
-//     }
-
-//     it->parentInv->removeItem(it);
-//     wornInventory->setItem(it, (int)it->wornSlot);
-//     PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
-//     it->onUse();
-// }
-
-// void Player::unEquipItem(Item* it) {
-//     if (!inventory->anyRoom()) {
-//         txtMgmt->setMsg(txtMgmt->lang["inv_full"]);
-//         dropItem(it);
-//         return;
-//     }
-
-//     wornInventory->removeItem(it);
-//     inventory->addItem(it);
-//     PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
-//     it->onUse();
-// }
 
 bool Player::isEquipped(const String& itType) {
     for (int i = 0; i < wornInventory->getSize(); i++) {
