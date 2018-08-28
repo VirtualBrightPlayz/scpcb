@@ -3,7 +3,7 @@
 
 #include "../MapSystem.h"
 #include "../Doors.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "../Decals.h"
 #include "../Menus/Menu.h"
 #include "Room_tnnl_maintenance_2.h"

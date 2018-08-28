@@ -168,7 +168,6 @@
     <ClCompile Include="Src\Items\Gasmask.cpp" />
     <ClCompile Include="Src\Items\Inventory.cpp" />
     <ClCompile Include="Src\Items\Item.cpp" />
-    <ClCompile Include="Src\Items\Items.cpp" />
     <ClCompile Include="Src\Items\NVG.cpp" />
     <ClCompile Include="Src\Items\Radio.cpp" />
     <ClCompile Include="Src\Map\Decals.cpp" />
@@ -227,7 +226,6 @@
     <ClInclude Include="Src\Items\Gasmask.h" />
     <ClInclude Include="Src\Items\Inventory.h" />
     <ClInclude Include="Src\Items\Item.h" />
-    <ClInclude Include="Src\Items\Items.h" />
     <ClInclude Include="Src\Items\NVG.h" />
     <ClInclude Include="Src\Items\Radio.h" />
     <ClInclude Include="Src\Map\Decals.h" />

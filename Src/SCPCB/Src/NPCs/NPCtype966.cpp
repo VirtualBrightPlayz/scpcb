@@ -9,7 +9,7 @@
 #include "../Map/MapSystem.h"
 #include "../Player/Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "NPCtype966.h"
 
 namespace CBN {
@@ -85,7 +85,7 @@ void UpdateNPCtype966(NPC* n) {
         bbPositionEntity(n->obj,bbEntityX(n->collider,true),bbEntityY(n->collider,true)-0.2f,bbEntityZ(n->collider,true));
         bbRotateEntity(n->obj,-90.f,bbEntityYaw(n->collider),0.f);
 
-        if (!IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
+        if (!mainPlayer->isEquipped("nvgoggles")) {
             bbHideEntity(n->obj);
             // TODO:
             // if (n->playerDistance<1 && n->reload <= 0 && MsgTimer <= 0) {

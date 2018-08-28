@@ -12,7 +12,7 @@
 #include "../GameMain.h"
 #include "../Player/Player.h"
 #include "../MiscGFX/Dreamfilter.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "../Map/MapSystem.h"
 #include "../Map/RM2/Materials.h"
 #include "../Map/Doors.h"
@@ -341,7 +341,7 @@ void LoadEntities() {
     CamOBJ = bbLoadMesh("GFX/Map/CamHead.b3d");
     bbHideEntity(CamOBJ);
 
-    ItemTemplate::LoadTemplates("Data/Items/templates.ini");
+    //ItemTemplate::LoadTemplates("Data/Items/templates.ini");
 
     LoadMaterials("Data/materials.ini");
 
@@ -627,7 +627,7 @@ void InitLoadGame() {
 void NullGame() {
     sndMgmt->deloadInGameSounds();
 
-    ItemTemplate::DeloadTemplates();
+    //ItemTemplate::DeloadTemplates();
 
     delete console;
 
@@ -670,7 +670,7 @@ void NullGame() {
     }
     delete[] MapRooms;
 
-    // TODO: 
+    // TODO:
     //for (int i = 0; i < Item::l; i++) {
     //    Item* it = Item::getObject(i);
 

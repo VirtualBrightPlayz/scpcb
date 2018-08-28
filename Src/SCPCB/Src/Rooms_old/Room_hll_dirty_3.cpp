@@ -1,7 +1,7 @@
 #include <bbblitz3d.h>
 
 #include "../MapSystem.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "../Decals.h"
 #include "Room_hll_dirty_3.h"
 

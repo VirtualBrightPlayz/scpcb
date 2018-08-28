@@ -7,7 +7,7 @@
 #include "../Config/Options.h"
 #include "../Config/INI.h"
 #include "../Player/Player.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 
 namespace CBN {
 

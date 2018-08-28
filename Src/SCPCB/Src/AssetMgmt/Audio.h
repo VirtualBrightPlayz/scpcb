@@ -13,7 +13,7 @@ class Object;
 
 namespace CBN {
 
-enum ItemPickSound;
+enum class ItemPickSound;
 
 // Structs.
 struct SoundWrapper {

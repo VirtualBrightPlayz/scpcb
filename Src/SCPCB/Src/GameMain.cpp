@@ -20,6 +20,7 @@
 #include "Map/Particles.h"
 #include "Map/MapSystem.h"
 #include "Items/Item.h"
+#include "Items/Inventory.h"
 #include "Map/Doors.h"
 #include "Map/Objects.h"
 #include "Map/Events/Events.h"
@@ -335,7 +336,7 @@ void UpdateGame() {
             }
 
             if (bbKeyHit(keyBinds->inv)) {
-                ToggleInventory(mainPlayer);
+                mainPlayer->toggleInventory();
             }
 
             if (!IsPaused()) {
@@ -359,7 +360,7 @@ void UpdateGame() {
                 UpdateDecals();
                 UpdateMTF();
                 UpdateNPCs();
-                UpdateItems();
+                Item::updateAll();
                 UpdateParticles();
                 UpdateScreens();
 
@@ -458,7 +459,7 @@ void UpdateGame() {
                     darkA = 1.f;
                 }
 
-                if (!IsPlayerWearingItem(mainPlayer,"nvgoggles")) {
+                if (!mainPlayer->isEquipped("nvgoggles")) {
                     darkA = Max(0.9f, darkA);
                 }
 
@@ -819,7 +820,7 @@ void UpdateGUI() {
     if (bbKeyHit(1)) {
         if (IsPaused()) {
             if (CurrGameState==GAMESTATE_INVENTORY) {
-                ToggleInventory(mainPlayer);
+                mainPlayer->toggleInventory();
             } else {
                 ResumeSounds();
                 bbMouseXSpeed();
@@ -842,7 +843,7 @@ void UpdateGUI() {
         SelectedMonitor = nullptr;
     }
 
-    UpdateInventory(mainPlayer);
+    mainPlayer->updateInventory();
 }
 
 void DrawGUI() {
@@ -1084,7 +1085,7 @@ void DrawGUI() {
 
     txtMgmt->drawMsg();
 
-    DrawInventory(mainPlayer);
+    mainPlayer->drawInventory();
 }
 
 String f2s(float n, int count) {
@@ -1323,13 +1324,13 @@ void RenderWorld2() {
     Item* wornItem = nullptr;
 
     if (wornItem!=nullptr) {
-        if (!wornItem->getType().equals("nvgoggles") && !wornItem->itemTemplate->name.equals("supernv")) {
+        if (!wornItem->getType().equals("nvgoggles") && !wornItem->getType().equals("supernv")) {
             wornItem = nullptr;
         }
     }
 
     if (wornItem!=nullptr) {
-        if (wornItem->itemTemplate->name.equals("supernv")) {
+        if (wornItem->getType().equals("supernv")) {
             decayMultiplier = 2.f;
         }
         if (hasBattery) {
@@ -1346,7 +1347,8 @@ void RenderWorld2() {
 
     if (mainPlayer->blinkTimer < - 16 || mainPlayer->blinkTimer > - 6) {
         //show a HUD
-        if (IsPlayerWearingItem(mainPlayer,"supernv") && hasBattery!=0) {
+        // TODO: Move.
+        if (mainPlayer->isEquipped("supernv") && hasBattery!=0) {
             //NVTimer=NVTimer-timing\tickDuration
 
             //If (NVTimer<=0.f) Then
@@ -1432,7 +1434,7 @@ void RenderWorld2() {
             //DrawImage(NVGImages,40,userOptions\screenHeight*0.5f+30,1)
 
             bbColor(255,255,255);
-        } else if ((IsPlayerWearingItem(mainPlayer,"nvgoggles") && hasBattery!=0)) {
+        } else if (mainPlayer->isEquipped("nvgoggles") && hasBattery!=0) {
             bbColor(0,55,0);
             for (k = 0; k <= 10; k++) {
                 bbRect(45, (int)(userOptions->screenHeight*0.5f-(k*20)), 54, 10, true);

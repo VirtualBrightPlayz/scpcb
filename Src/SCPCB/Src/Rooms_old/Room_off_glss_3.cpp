@@ -2,7 +2,7 @@
 
 #include "../MapSystem.h"
 #include "../Doors.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "../Decals.h"
 #include "Room_off_glss_3.h"
 

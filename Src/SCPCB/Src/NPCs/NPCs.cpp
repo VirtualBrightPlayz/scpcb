@@ -27,7 +27,7 @@
 #include "../Config/Difficulty.h"
 #include "../Map/Decals.h"
 #include "../Map/Particles.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "../Menus/Menu.h"
 #include "../Map/Doors.h"
 #include "../Config/INI.h"
@@ -454,7 +454,6 @@ void TeleportMTFGroup(NPC* n) {
 
 void Shoot(float x, float y, float z, float hitProb, int particles, int instaKill) {
     String shotMessageUpdate;
-    int wearingVest;
     Pivot* pvt;
     int i;
     Decal* de;

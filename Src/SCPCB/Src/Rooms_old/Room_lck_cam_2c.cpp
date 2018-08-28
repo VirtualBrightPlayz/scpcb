@@ -8,7 +8,7 @@
 #include "../Events.h"
 #include "../Player.h"
 #include "../NPCs/NPCs.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "Room_lck_cam_2c.h"
 
 namespace CBN {

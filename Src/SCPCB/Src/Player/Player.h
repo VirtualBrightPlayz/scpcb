@@ -1,6 +1,7 @@
 #ifndef PLAYER_H_INCLUDED
 #define PLAYER_H_INCLUDED
 #include <vector>
+#include <StringType.h>
 
 class Pivot;
 class Camera;
@@ -17,6 +18,7 @@ class Item;
 struct ItemCell;
 class Inventory;
 struct Door;
+struct Room;
 
 // Constants.
 const int PLAYER_INV_COUNT = 6;
@@ -107,9 +109,9 @@ public:
     //------
 
     //items
-    struct Inventory* inventory;
-    struct Inventory* wornInventory;
-    struct Inventory* openInventory;
+    Inventory* inventory;
+    Inventory* wornInventory;
+    Inventory* openInventory;
     //------
 
     //sounds
@@ -123,7 +125,7 @@ public:
     //------
 
     //other states
-    struct Room* currRoom;
+    Room* currRoom;
 
     bool godMode;
     bool noclip;
@@ -131,13 +133,14 @@ public:
 
     void update();
 
+    void toggleInventory();
+    void updateInventory();
+    void drawInventory();
+
     void pickItem(Item* it);
     void useItem(Item* it);
     void dropItem(Item* it);
     void moveItemToEmptySlot(Item* it, Inventory* to, int toIndex);
-
-    // void equipItem(Item* it);
-    // void unEquipItem(Item* it);
     bool isEquipped(const String& itType);
 };
 

@@ -11,7 +11,7 @@
 #include "../Player.h"
 #include "../NPCs/NPCs.h"
 #include "../Audio.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "Room_lck_air_2.h"
 
 namespace CBN {

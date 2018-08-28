@@ -10,7 +10,7 @@
 #include "../Map/MapSystem.h"
 #include "../Player/Player.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "NPCtype939.h"
 
 namespace CBN {

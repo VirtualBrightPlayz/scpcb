@@ -3,7 +3,7 @@
 #include "../GameMain.h"
 #include "../MapSystem.h"
 #include "../Doors.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "../Decals.h"
 #include "Room_lck_broke_2c.h"
 

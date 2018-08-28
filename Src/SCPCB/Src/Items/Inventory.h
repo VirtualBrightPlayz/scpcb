@@ -16,14 +16,14 @@ struct ItemCell {
 private:
     bool hover;
 public:
+    static const int SIZE = 70;
     ItemCell();
     ~ItemCell();
 
     Item* val;
-    static const int SIZE = 70;
+    bool isHovering();
     void update(int x, int y);
     void draw(int x, int y, int cellSpacing);
-    bool isHovering();
 };
 
 class Inventory {

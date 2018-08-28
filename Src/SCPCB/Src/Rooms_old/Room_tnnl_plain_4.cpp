@@ -2,7 +2,7 @@
 #include <bbmath.h>
 
 #include "../MapSystem.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "../Particles.h"
 #include "../Events.h"
 #include "../NPCs/NPCs.h"

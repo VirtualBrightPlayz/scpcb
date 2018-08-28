@@ -8,7 +8,7 @@
 #include "../GameMain.h"
 #include "../Assets.h"
 #include "../MapSystem.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "../Decals.h"
 #include "../Particles.h"
 #include "../Events.h"

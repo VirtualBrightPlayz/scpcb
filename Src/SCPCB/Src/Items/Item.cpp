@@ -88,7 +88,6 @@ void Item::onPick() { return; }
 void Item::onUse() { return; }
 void Item::on914Use(Setting914 setting) { return; }
 void Item::updateUse() { return; }
-void Item::on914Use(Setting914 setting) { return; }
 
 void Item::update() {
     float hideDistSqr = HideDistance*0.5f; hideDistSqr*=hideDistSqr;

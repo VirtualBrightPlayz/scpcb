@@ -4,7 +4,7 @@
 
 #include "ConsoleCommands.h"
 #include "../../Player/Player.h"
-#include "../../Items/Items.h"
+#include "../../Items/Item.h"
 #include "../../Items/GasMask.h"
 #include "../../Map/MapSystem.h"
 #include "../../Map/Doors.h"
@@ -263,22 +263,22 @@ void Cmd_SpawnItem::execute(std::vector<String> args) {
         return;
     }
 
-    for (int i = 0; i < ItemTemplate::getListSize(); i++) {
-        ItemTemplate* itt = ItemTemplate::getObject(i);
+    //for (int i = 0; i < ItemTemplate::getListSize(); i++) {
+    //    ItemTemplate* itt = ItemTemplate::getObject(i);
 
-        if (itt->name.equals(args[0])) {
-            ConsoleMsg::create(itt->invName + " spawned.");
-            CreateItem(itt->name, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->collider));
-            return;
-        }
-    }
+    //    if (itt->name.equals(args[0])) {
+    //        ConsoleMsg::create(itt->invName + " spawned.");
+    //        CreateItem(itt->name, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->collider));
+    //        return;
+    //    }
+    //}
 
     ConsoleMsg::create("Item not found.", 255, 150, 0);
 }
 
 void Cmd_Omni::execute(std::vector<String> args) {
-    Item* it = CreateItem("keycard", bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->collider));
-    AssignTag(it, ITEM_TAG_OMNI);
+    //Item* it = CreateItem("keycard", bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->collider));
+    //AssignTag(it, ITEM_TAG_OMNI);
     ConsoleMsg::create("Nerd.", 255, 150, 0);
 }
 

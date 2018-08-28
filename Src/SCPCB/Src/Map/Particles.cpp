@@ -10,7 +10,7 @@
 #include "MapSystem.h"
 #include "../Player/Player.h"
 #include "../Menus/Menu.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 
 namespace CBN {
 
@@ -181,7 +181,7 @@ void UpdateEmitters() {
             e->soundCHN = LoopRangedSound_SM(sndMgmt->hiss, e->soundCHN, mainPlayer->cam, e->obj);
 
             if (InSmoke == false) {
-                if (IsPlayerWearingItem(mainPlayer,"gasmask") && IsPlayerWearingItem(mainPlayer,"hazmatsuit")) {
+                if (mainPlayer->isEquipped("gasmask")) {
                     dist = Distance(bbEntityX(mainPlayer->cam, true), bbEntityZ(mainPlayer->cam, true), bbEntityX(e->obj, true), bbEntityZ(e->obj, true));
                     if (dist < 0.8f) {
                         if (abs(bbEntityY(mainPlayer->cam, true)-bbEntityY(e->obj,true))<5.f) {

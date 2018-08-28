@@ -8,7 +8,8 @@
 #include "../AssetMgmt/TextMgmt.h"
 #include "../GameMain.h"
 #include "../MathUtils/MathUtils.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
+#include "../Items/Inventory.h"
 #include "Particles.h"
 #include "../Player/Player.h"
 #include "../AssetMgmt/Audio.h"
@@ -442,10 +443,10 @@ void UseDoor(Door* d, bool showmsg) {
     //Does the door require a keycard?
     if (!d->tag.isEmpty()) {
         //Does the player have the right keycard?
-        for (i = 0; i <= mainPlayer->inventory->size-1; i++) {
-            item = mainPlayer->inventory->items[i];
+        for (i = 0; i < mainPlayer->inventory->getSize(); i++) {
+            item = mainPlayer->inventory->getItem(i);
             if (item != nullptr) {
-                if (item->itemTemplate->name.equals("keycard")) {
+                if (item->getType().equals("keycard")) {
                     if (d->locked) {
                         PlaySound_SM(sndMgmt->keycardErr);
                         txtMgmt->setMsg(txtMgmt->lang["dor_keylocked"]);
@@ -453,7 +454,7 @@ void UseDoor(Door* d, bool showmsg) {
                     }
 
                     playerHasKeycard = true;
-                    if (HasTag(item, d->tag) || HasTag(item, ITEM_TAG_OMNI)) {
+                    if (item->hasTag(d->tag) || item->hasTag(ITEM_TAG_OMNI)) {
                         playerHasRightKeycard = true;
                         break;
                     }

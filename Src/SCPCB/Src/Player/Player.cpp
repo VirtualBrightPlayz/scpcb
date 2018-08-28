@@ -692,6 +692,42 @@ void MouseLook() {
     //EndIf
 }
 
+void Player::toggleInventory() {
+    if (CurrGameState == GAMESTATE_INVENTORY) {
+        if (openInventory == inventory) {
+            CurrGameState = GAMESTATE_PLAYING;
+            ResumeSounds();
+            bbMouseXSpeed();
+            bbMouseYSpeed();
+            bbMouseZSpeed();
+            mouse_x_speed_1 = 0.f;
+            mouse_y_speed_1 = 0.f;
+        } else {
+            openInventory = inventory;
+        }
+    } else {
+        CurrGameState = GAMESTATE_INVENTORY;
+        openInventory = inventory;
+        PauseSounds();
+    }
+
+    mainPlayer->selectedItem = nullptr;
+}
+
+void Player::updateInventory() {
+    openInventory->update();
+    if (openInventory == inventory) {
+        wornInventory->update();
+    }
+}
+
+void Player::drawInventory() {
+    openInventory->draw();
+    if (openInventory == inventory) {
+        wornInventory->draw();
+    }
+}
+
 void Player::pickItem(Item* it) {
     if (!inventory->anyRoom()) {
         txtMgmt->setMsg(txtMgmt->lang["inv_full"]);

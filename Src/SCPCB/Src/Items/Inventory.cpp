@@ -26,6 +26,10 @@ ItemCell::~ItemCell() {
     }
 }
 
+bool ItemCell::isHovering() {
+    return hover;
+}
+
 void ItemCell::update(int x, int y) {
     if (bbMouseX() > x && bbMouseX() < x + ItemCell::SIZE) {
         if (bbMouseY() > y && bbMouseY() < y + ItemCell::SIZE) {

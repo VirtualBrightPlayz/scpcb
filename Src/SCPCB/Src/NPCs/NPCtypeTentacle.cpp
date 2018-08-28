@@ -6,7 +6,7 @@
 #include "../Menus/Menu.h"
 #include "../AssetMgmt/Audio.h"
 #include "../Player/Player.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "../MathUtils/MathUtils.h"
 #include "NPCtypeTentacle.h"
 
@@ -98,22 +98,17 @@ void UpdateNPCtypeTentacle(NPC* n) {
                     if (n->frame>=5 && n->frame<6) {
                         if (n->playerDistance < 1.8f) {
                             if (abs(bbDeltaYaw(n->collider, mainPlayer->collider))<20) {
-                                if (IsPlayerWearingItem(mainPlayer,"hazmatsuit")) {
-                                    mainPlayer->injuries = mainPlayer->injuries+bbRnd(0.5f);
-                                    PlaySound2(LoadTempSound("SFX/General/BodyFall.ogg"));
-                                } else {
-                                    mainPlayer->blurTimer = 100;
-                                    mainPlayer->injuries = mainPlayer->injuries+bbRnd(1.f,1.5f);
-                                    PlaySound2(mainPlayer->damageSFX[bbRand(3,4)]);
+                                mainPlayer->blurTimer = 100;
+                                mainPlayer->injuries = mainPlayer->injuries+bbRnd(1.f,1.5f);
+                                PlaySound2(mainPlayer->damageSFX[bbRand(3,4)]);
 
-                                    if (mainPlayer->injuries > 3.f) {
-                                        //DeathMSG = "\"We will need more than the regular cleaning team to care of this. ";
-                                        //DeathMSG = DeathMSG + "Two large and highly active tentacle-like appendages seem ";
-                                        //DeathMSG = DeathMSG + "to have formed inside the chamber. Their level of aggression is ";
-                                        //DeathMSG = DeathMSG + "unlike anything we've seen before - it looks like they have ";
-                                        //DeathMSG = DeathMSG + "beaten some unfortunate Class D to death at some point during the breach.\"";
-                                        Kill(mainPlayer);
-                                    }
+                                if (mainPlayer->injuries > 3.f) {
+                                    //DeathMSG = "\"We will need more than the regular cleaning team to care of this. ";
+                                    //DeathMSG = DeathMSG + "Two large and highly active tentacle-like appendages seem ";
+                                    //DeathMSG = DeathMSG + "to have formed inside the chamber. Their level of aggression is ";
+                                    //DeathMSG = DeathMSG + "unlike anything we've seen before - it looks like they have ";
+                                    //DeathMSG = DeathMSG + "beaten some unfortunate Class D to death at some point during the breach.\"";
+                                    Kill(mainPlayer);
                                 }
 
                             }

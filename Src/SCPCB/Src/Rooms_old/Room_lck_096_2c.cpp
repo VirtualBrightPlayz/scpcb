@@ -2,7 +2,7 @@
 #include <bbmath.h>
 
 #include "../MapSystem.h"
-#include "../Items/Items.h"
+#include "../Items/Item.h"
 #include "../Decals.h"
 #include "Room_lck_096_2c.h"
 
