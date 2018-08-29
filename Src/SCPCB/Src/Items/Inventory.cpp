@@ -113,7 +113,7 @@ Inventory::~Inventory() {
     delete[] items;
 }
 
-int Inventory::getSize() {
+int Inventory::getSize() const {
     return size;
 }
 

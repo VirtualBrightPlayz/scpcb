@@ -243,8 +243,7 @@ String String::replace(const String& fnd, const String& rplace) const {
         if (memcmp(fnd.wstr(), wstr() + i, fnd.size() * sizeof(wchar)) == 0) {
             newSize += rplace.size() - fnd.size();
             i += fnd.size();
-        }
-        else {
+        } else {
             i++;
         }
     }

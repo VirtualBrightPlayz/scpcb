@@ -20,8 +20,10 @@ Item::Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot) : mes
     markedForRemoval = false;
 
     collider = bbCreatePivot();
+
+    bbEntityType(collider, HIT_ITEM);
     bbResetEntity(collider);
-    bbRotateEntity(collider, 0.f, (float)bbRand(360), 0.f);
+    bbRotateEntity(collider, 0.f, bbRnd(360), 0.f);
 
     mesh = bbLoadMesh(meshPath, collider);
     pickSound = sound;

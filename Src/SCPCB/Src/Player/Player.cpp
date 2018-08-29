@@ -25,6 +25,7 @@ Player::Player() {
     memset(this, 0, sizeof(Player));
 
     inventory = new Inventory(PLAYER_INV_COUNT);
+    wornInventory = new Inventory(WORNITEM_SLOT_COUNT);
 
     this->cam = bbCreateCamera();
     bbCameraViewport(this->cam, 0, 0, userOptions->screenWidth, userOptions->screenHeight);
@@ -154,8 +155,8 @@ Player::Player() {
 }
 
 Player::~Player() {
-    //TODO: delete/drop worn items, delete inventory
     delete inventory;
+    delete wornInventory;
 
     for (int i = 0; i < OVERLAY_COUNT; i++) {
         bbFreeEntity(this->overlays[i]);
@@ -790,11 +791,12 @@ void Player::moveItemToEmptySlot(Item* it, Inventory* to, int toIndex) {
             txtMgmt->setMsg(txtMgmt->lang["inv_cantequip"]);
             return;
         }
-    }
-
-    // From equip slot to somewhere else?
-    if (from == wornInventory) {
-        it->onUse();
+        it->parentInv->removeItem(it);
+        to->setItem(it, toIndex);
+        PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+    } else if (from == wornInventory) {
+        // From equip slot to somewhere else?
+        PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
     }
 
     from->removeItem(it);

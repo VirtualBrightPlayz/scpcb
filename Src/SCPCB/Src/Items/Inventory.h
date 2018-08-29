@@ -41,7 +41,7 @@ public:
     int yOffset;
     int spacing;
 
-    int getSize();
+    int getSize() const;
     void addItem(Item* it);
     void setItem(Item* it, int slot);
     Item* getItem(int slot);
