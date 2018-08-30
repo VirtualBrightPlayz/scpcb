@@ -65,8 +65,6 @@ void ConsoleCmd::clearCommands() {
 }
 
 void Cmd_Help::execute(std::vector<String> args) {
-    txtMgmt->setMsg("JORGE", 8);
-    new GasMask(bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->collider));
     console->msgR = 0;
     console->msgG = 255;
     console->msgB = 255;

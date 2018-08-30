@@ -76,7 +76,7 @@ bool MouseHit1;
 bool MouseDown1;
 bool MouseHit2;
 bool DoubleClick;
-bool LastMouseHit1;
+int LastMouseHit1;
 bool MouseUp1;
 int Brightness;
 Object* SoundEmitter;
@@ -300,7 +300,7 @@ void UpdateGame() {
         MouseHit1 = bbMouseHit(1);
         if (MouseHit1) {
             // TODO: Make this a constant or modifyable through the options.
-            if (TimeInPosMilliSecs() - LastMouseHit1 < 400) {
+            if (TimeInPosMilliSecs() - LastMouseHit1 < 800) {
                 DoubleClick = true;
             }
             LastMouseHit1 = TimeInPosMilliSecs();
@@ -364,7 +364,6 @@ void UpdateGame() {
                 UpdateParticles();
                 UpdateScreens();
 
-                txtMgmt->updateMsg();
                 //TimeCheckpointMonitors()
             }
 
@@ -545,6 +544,7 @@ void UpdateGame() {
 
             console->update();
         }
+        txtMgmt->updateMsg();
         AssetWrap::update();
     } // End FixedUpdate.
 

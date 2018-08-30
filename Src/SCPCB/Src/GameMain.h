@@ -60,7 +60,7 @@ extern bool MouseHit1;
 extern bool MouseDown1;
 extern bool MouseHit2;
 extern bool DoubleClick;
-extern bool LastMouseHit1;
+extern int LastMouseHit1;
 extern bool MouseUp1;
 extern float CoffinDistance;
 extern float ExplosionTimer;

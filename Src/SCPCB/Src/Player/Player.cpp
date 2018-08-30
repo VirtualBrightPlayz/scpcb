@@ -12,6 +12,7 @@
 #include "../GameMain.h"
 #include "../Items/Item.h"
 #include "../Items/Inventory.h"
+#include "../Items/GasMask.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Map/MapSystem.h"
 #include "../Menus/Menu.h"
@@ -198,6 +199,9 @@ void Player::update() {
     // TODO: Remove.
     if (bbKeyHit(49)) {
         noclip = !noclip;
+    }
+    if (bbKeyHit(34)) {
+        new GasMask(bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->collider));
     }
     godMode = true;
 
