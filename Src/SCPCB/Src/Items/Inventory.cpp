@@ -210,8 +210,7 @@ void Inventory::update() {
                     mainPlayer->moveItemToEmptySlot(mainPlayer->selectedItem, this, i);
                 } else if (items[i].val != mainPlayer->selectedItem) {
                     // Hovering over another item. Attempt to combine the items.
-                    //CombineItems(player\selectedItem, player\openInventory\items[slotIndex])
-                    txtMgmt->setMsg(txtMgmt->lang["inv_cantcombine"]);
+                    items[i].val->combineWith(mainPlayer->selectedItem);
                 }
                 // Otherwise hovering over the item's own slot.
 

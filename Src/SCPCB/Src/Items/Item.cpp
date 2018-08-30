@@ -5,6 +5,7 @@
 #include "Item.h"
 #include "Inventory.h"
 #include "../GameMain.h"
+#include "../AssetMgmt/TextMgmt.h"
 #include "../Map/MapSystem.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Player/Player.h"
@@ -90,6 +91,10 @@ void Item::onPick() { return; }
 void Item::onUse() { return; }
 void Item::on914Use(Setting914 setting) { return; }
 void Item::updateUse() { return; }
+
+void Item::combineWith(Item* other) {
+    txtMgmt->setMsg(txtMgmt->lang["inv_cantcombine"]);
+}
 
 void Item::update() {
     float hideDistSqr = HideDistance*0.5f; hideDistSqr*=hideDistSqr;

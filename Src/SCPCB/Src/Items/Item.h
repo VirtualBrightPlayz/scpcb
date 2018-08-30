@@ -86,6 +86,7 @@ public:
     virtual void onPick();
     virtual void onUse();
     virtual void on914Use(Setting914 setting);
+    virtual void combineWith(Item* other);
 
     virtual void update();
     virtual void draw();
