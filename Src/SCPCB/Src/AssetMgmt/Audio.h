@@ -28,9 +28,9 @@ public:
     gxSound* internal;
     String file;
 
-    static SoundWrapper* Initialize(const String& fileName);
+    static SoundWrapper* initialize(const String& fileName);
 
-    static SoundWrapper* Load(const String& fileName);
+    static SoundWrapper* load(const String& fileName);
 };
 
 class SoundManager {
@@ -68,7 +68,7 @@ public:
     SoundWrapper* scannerErr;
 
     // Pickups
-    std::map<ItemPickSound, SoundWrapper*> itemPick;
+    SoundWrapper* itemPick[4];
 
     // Elevator
     SoundWrapper* elevatorBeep;

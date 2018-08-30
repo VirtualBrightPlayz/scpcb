@@ -10,7 +10,10 @@
 #include "../MathUtils/MathUtils.h"
 #include "../Player/Player.h"
 
-namespace CBN {
+using namespace CBN;
+
+std::vector<Item*> Item::list;
+int Item::itemDistanceTimer = 0;
 
 Item::Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot) : meshPath(meshPath) {
     list.push_back(this);
@@ -69,12 +72,17 @@ void Item::assignTag(const String& tag) {
 }
 
 bool Item::hasTag(const String& tag) {
-    return std::find(tags.begin(), tags.end(), tag) != tags.end();
+    for (int i = 0; i < (int)tags.size(); i++) {
+        if (tags[i].equals(tag)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void Item::removeTag(const String& tag) {
     bool found = false;
-    for (int i = 0; i < tags.size(); i++) {
+    for (int i = 0; i < (int)tags.size(); i++) {
         if (tags[i].equals(tag)) {
             found = true;
             tags.erase(tags.begin() + i);
@@ -90,7 +98,11 @@ void Item::removeTag(const String& tag) {
 void Item::onPick() { return; }
 void Item::onUse() { return; }
 void Item::on914Use(Setting914 setting) { return; }
+void Item::draw() { return; }
 void Item::updateUse() { return; }
+void Item::drawUse() { return; }
+void Item::drawAll() { return; }
+void Item::saveXML() { return; }
 
 void Item::combineWith(Item* other) {
     txtMgmt->setMsg(txtMgmt->lang["inv_cantcombine"]);
@@ -139,7 +151,7 @@ void Item::update() {
             }
 
             if (dist < hideDistSqr*0.2f) {
-                for (int i = 0; i < list.size(); i++) {
+                for (int i = 0; i < (int)list.size(); i++) {
                     Item* collItem = list[i];
 
                     if (this != collItem && collItem->parentInv == nullptr && collItem->dist < hideDistSqr*0.2f) {
@@ -179,7 +191,8 @@ void Item::update() {
 }
 
 void Item::updateAll() {
-    for (int i = 0; i < list.size(); i++) {
+    mainPlayer->closestItem = nullptr;
+    for (int i = 0; i < (int)list.size(); i++) {
         if (list[i]->markedForRemoval) {
             delete list[i];
             i--;
@@ -215,6 +228,4 @@ void Item::setID(int id) {
     if (id > ID) {
         ID = id;
     }
-}
-
 }

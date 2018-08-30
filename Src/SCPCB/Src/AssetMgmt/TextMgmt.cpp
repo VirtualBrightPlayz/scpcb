@@ -68,6 +68,8 @@ void TxtManager::drawMsg() {
 }
 
 void TxtManager::changeLocalization(const String& langCode) {
+    lang.clear();
+
     String path = "Data/lang/" + langCode + ".ini";
     if (bbFileType(path) != 1) {
         throw "Language file \"" + path + "\" not found!";

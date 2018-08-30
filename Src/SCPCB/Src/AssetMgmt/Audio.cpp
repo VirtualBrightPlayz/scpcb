@@ -35,15 +35,15 @@ SoundWrapper::~SoundWrapper() {
     }
 }
 
-SoundWrapper* SoundWrapper::Initialize(const String& fileName) {
+SoundWrapper* SoundWrapper::initialize(const String& fileName) {
     SoundWrapper* snd = new SoundWrapper();
     snd->file = fileName;
 
     return snd;
 }
 
-SoundWrapper* SoundWrapper::Load(const String& fileName) {
-    SoundWrapper* snd = SoundWrapper::Initialize(fileName);
+SoundWrapper* SoundWrapper::load(const String& fileName) {
+    SoundWrapper* snd = SoundWrapper::initialize(fileName);
     snd->internal = bbLoadSound(fileName);
 
     return snd;
@@ -51,7 +51,7 @@ SoundWrapper* SoundWrapper::Load(const String& fileName) {
 
 SoundManager::SoundManager() {
     memset(this, 0, sizeof(SoundManager));
-    button = SoundWrapper::Load("SFX/Interact/Button.ogg");
+    button = SoundWrapper::load("SFX/Interact/Button.ogg");
 }
 
 std::vector<SoundChannel*> SoundChannel::list;
@@ -74,63 +74,63 @@ SoundChannel* SoundChannel::getObject(int index) {
 }
 
 void SoundManager::loadInGameSounds() {
-    buttonErr = SoundWrapper::Initialize("SFX/Interact/Button2.ogg");
+    buttonErr = SoundWrapper::initialize("SFX/Interact/Button2.ogg");
 
     for (int i = 0; i < 8; i++) {
-        footstep[i] = SoundWrapper::Load("SFX/Step/Step" + String(i + 1) + ".ogg");
-        footstepRun[i] = SoundWrapper::Load("SFX/Step/Run" + String(i + 1) + ".ogg");
-        footstepMetal[i] = SoundWrapper::Load("SFX/Step/StepMetal" + String(i + 1) + ".ogg");
-        footstepMetalRun[i] = SoundWrapper::Load("SFX/Step/RunMetal" + String(i + 1) + ".ogg");
+        footstep[i] = SoundWrapper::load("SFX/Step/Step" + String(i + 1) + ".ogg");
+        footstepRun[i] = SoundWrapper::load("SFX/Step/Run" + String(i + 1) + ".ogg");
+        footstepMetal[i] = SoundWrapper::load("SFX/Step/StepMetal" + String(i + 1) + ".ogg");
+        footstepMetalRun[i] = SoundWrapper::load("SFX/Step/RunMetal" + String(i + 1) + ".ogg");
     }
 
     for (int i = 0; i < 3; i++) {
-        footstepPD[i] = SoundWrapper::Initialize("SFX/Step/StepPD" + String(i + 1) + ".ogg");
-        footstep8601[i] = SoundWrapper::Initialize("SFX/Step/StepForest" + String(i + 1) + ".ogg");
+        footstepPD[i] = SoundWrapper::initialize("SFX/Step/StepPD" + String(i + 1) + ".ogg");
+        footstep8601[i] = SoundWrapper::initialize("SFX/Step/StepForest" + String(i + 1) + ".ogg");
     }
 
     for (int i = 0; i < 3; i++) {
-        openDoor[i] = SoundWrapper::Load("SFX/Door/DoorOpen" + String(i + 1) + ".ogg");
-        closeDoor[i] = SoundWrapper::Load("SFX/Door/DoorClose" + String(i + 1) + ".ogg");
-        openHCZDoor[i] = SoundWrapper::Load("SFX/Door/Door2Open" + String(i + 1) + ".ogg");
-        closeHCZDoor[i] = SoundWrapper::Load("SFX/Door/Door2Close" + String(i + 1) + ".ogg");
+        openDoor[i] = SoundWrapper::load("SFX/Door/DoorOpen" + String(i + 1) + ".ogg");
+        closeDoor[i] = SoundWrapper::load("SFX/Door/DoorClose" + String(i + 1) + ".ogg");
+        openHCZDoor[i] = SoundWrapper::load("SFX/Door/Door2Open" + String(i + 1) + ".ogg");
+        closeHCZDoor[i] = SoundWrapper::load("SFX/Door/Door2Close" + String(i + 1) + ".ogg");
     }
 
     for (int i = 0; i < 2; i++) {
-        openBigDoor[i] = SoundWrapper::Initialize("SFX/Door/BigDoorOpen" + String(i + 1) + ".ogg");
-        closeBigDoor[i] = SoundWrapper::Initialize("SFX/Door/BigDoorClose" + String(i + 1) + ".ogg");
+        openBigDoor[i] = SoundWrapper::initialize("SFX/Door/BigDoorOpen" + String(i + 1) + ".ogg");
+        closeBigDoor[i] = SoundWrapper::initialize("SFX/Door/BigDoorClose" + String(i + 1) + ".ogg");
     }
 
-    keycardUse = SoundWrapper::Initialize("SFX/Interact/KeyCardUse1.ogg");
-    keycardErr = SoundWrapper::Initialize("SFX/Interact/KeyCardUse2.ogg");
-    scannerUse = SoundWrapper::Initialize("SFX/Interact/ScannerUse1.ogg");
-    scannerErr = SoundWrapper::Initialize("SFX/Interact/ScannerUse2.ogg");
+    keycardUse = SoundWrapper::initialize("SFX/Interact/KeyCardUse1.ogg");
+    keycardErr = SoundWrapper::initialize("SFX/Interact/KeyCardUse2.ogg");
+    scannerUse = SoundWrapper::initialize("SFX/Interact/ScannerUse1.ogg");
+    scannerErr = SoundWrapper::initialize("SFX/Interact/ScannerUse2.ogg");
 
-    itemPick[ItemPickSound::Tiny] = SoundWrapper::Load("SFX/Interact/PickItem_Tiny.ogg");
-    itemPick[ItemPickSound::Metallic] = SoundWrapper::Load("SFX/Interact/PickItem_Metallic.ogg");
-    itemPick[ItemPickSound::Heafty] = SoundWrapper::Load("SFX/Interact/PickItem_Heafty.ogg");
-    itemPick[ItemPickSound::Paper] = SoundWrapper::Load("SFX/Interact/PickItem_Paper.ogg");
+    itemPick[(int)ItemPickSound::Tiny] = SoundWrapper::load("SFX/Interact/PickItem_Tiny.ogg");
+    itemPick[(int)ItemPickSound::Metallic] = SoundWrapper::load("SFX/Interact/PickItem_Metallic.ogg");
+    itemPick[(int)ItemPickSound::Heafty] = SoundWrapper::load("SFX/Interact/PickItem_Heafty.ogg");
+    itemPick[(int)ItemPickSound::Paper] = SoundWrapper::load("SFX/Interact/PickItem_Paper.ogg");
 
-    elevatorBeep = SoundWrapper::Initialize("SFX/General/Elevator/Beep.ogg");
-    elevatorMove = SoundWrapper::Initialize("SFX/General/Elevator/Moving.ogg");
+    elevatorBeep = SoundWrapper::initialize("SFX/General/Elevator/Beep.ogg");
+    elevatorMove = SoundWrapper::initialize("SFX/General/Elevator/Moving.ogg");
 
-    teslaIdle = SoundWrapper::Initialize("SFX/Room/Tesla/Idle.ogg");
-    teslaActive = SoundWrapper::Initialize("SFX/Room/Tesla/WindUp.ogg");
-    teslaPowerUp = SoundWrapper::Initialize("SFX/Room/Tesla/PowerUp.ogg");
-    teslaShock = SoundWrapper::Initialize("SFX/Room/Tesla/Shock.ogg");
+    teslaIdle = SoundWrapper::initialize("SFX/Room/Tesla/Idle.ogg");
+    teslaActive = SoundWrapper::initialize("SFX/Room/Tesla/WindUp.ogg");
+    teslaPowerUp = SoundWrapper::initialize("SFX/Room/Tesla/PowerUp.ogg");
+    teslaShock = SoundWrapper::initialize("SFX/Room/Tesla/Shock.ogg");
 
-    gunshot[0] = SoundWrapper::Initialize("SFX/General/Gunshot.ogg");
-    gunshot[1] = SoundWrapper::Initialize("SFX/General/Gunshot2.ogg");
-    bulletHit = SoundWrapper::Initialize("SFX/General/BulletHit.ogg");
-    bulletMiss = SoundWrapper::Initialize("SFX/General/BulletMiss.ogg");
+    gunshot[0] = SoundWrapper::initialize("SFX/General/Gunshot.ogg");
+    gunshot[1] = SoundWrapper::initialize("SFX/General/Gunshot2.ogg");
+    bulletHit = SoundWrapper::initialize("SFX/General/BulletHit.ogg");
+    bulletMiss = SoundWrapper::initialize("SFX/General/BulletMiss.ogg");
 
-    alarm = SoundWrapper::Initialize("SFX/General/Alarm.ogg");
-    caution = SoundWrapper::Initialize("SFX/Room/LockroomSiren.ogg");
-    hiss = SoundWrapper::Initialize("SFX/General/Hiss.ogg");
-    lightSwitch = SoundWrapper::Initialize("SFX/General/LightSwitch.ogg");
-    lever = SoundWrapper::Initialize("SFX/Interact/LeverFlip.ogg");
-    burst = SoundWrapper::Initialize("SFX/Room/TunnelBurst.ogg");
-    camera = SoundWrapper::Initialize("SFX/General/Camera.ogg");
-    heartbeat = SoundWrapper::Initialize("SFX/Character/D9341/Heartbeat.ogg");
+    alarm = SoundWrapper::initialize("SFX/General/Alarm.ogg");
+    caution = SoundWrapper::initialize("SFX/Room/LockroomSiren.ogg");
+    hiss = SoundWrapper::initialize("SFX/General/Hiss.ogg");
+    lightSwitch = SoundWrapper::initialize("SFX/General/LightSwitch.ogg");
+    lever = SoundWrapper::initialize("SFX/Interact/LeverFlip.ogg");
+    burst = SoundWrapper::initialize("SFX/Room/TunnelBurst.ogg");
+    camera = SoundWrapper::initialize("SFX/General/Camera.ogg");
+    heartbeat = SoundWrapper::initialize("SFX/Character/D9341/Heartbeat.ogg");
 }
 
 void SoundManager::deloadInGameSounds() {
@@ -140,7 +140,6 @@ void SoundManager::deloadInGameSounds() {
         delete SoundWrapper::list[i];
         i--;
     }
-    itemPick.clear();
 }
 
 // Constants.

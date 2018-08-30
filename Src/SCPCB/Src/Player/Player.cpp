@@ -24,8 +24,10 @@ namespace CBN {
 Player::Player() {
     memset(this, 0, sizeof(Player));
 
-    inventory = new Inventory(PLAYER_INV_COUNT);
-    wornInventory = new Inventory(WORNITEM_SLOT_COUNT);
+    inventory = new Inventory(PLAYER_INV_COUNT, 3);
+    wornInventory = new Inventory(WORNITEM_SLOT_COUNT, WORNITEM_SLOT_COUNT);
+    wornInventory->displayVertical = true;
+    wornInventory->xOffset -= 200;
 
     this->cam = bbCreateCamera();
     bbCameraViewport(this->cam, 0, 0, userOptions->screenWidth, userOptions->screenHeight);
@@ -737,7 +739,7 @@ void Player::pickItem(Item* it) {
 
     bbHideEntity(it->collider);
     inventory->addItem(it);
-    PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+    PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
     it->onPick();
 }
 
@@ -746,7 +748,7 @@ void Player::useItem(Item* it) {
     if (it->parentInv == wornInventory) {
         it->parentInv->removeItem(it);
         inventory->addItem(it);
-        PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+        PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
     } else if (it->wornSlot != WornItemSlot::None) {
         // If this item is an equippable then equip it.
         int slot = (int)it->wornSlot;
@@ -757,7 +759,7 @@ void Player::useItem(Item* it) {
 
         it->parentInv->removeItem(it);
         wornInventory->setItem(it, slot);
-        PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+        PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
     }
     it->onUse();
 }
@@ -767,7 +769,7 @@ void Player::dropItem(Item* it) {
         it->onUse(); // Has the de-equip message.
     }
 
-    PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+    PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
     it->parentInv->removeItem(it);
     it->parentInv = nullptr;
 
@@ -791,12 +793,10 @@ void Player::moveItemToEmptySlot(Item* it, Inventory* to, int toIndex) {
             txtMgmt->setMsg(txtMgmt->lang["inv_cantequip"]);
             return;
         }
-        it->parentInv->removeItem(it);
-        to->setItem(it, toIndex);
-        PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+        PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
     } else if (from == wornInventory) {
         // From equip slot to somewhere else?
-        PlaySound_SM(sndMgmt->itemPick[it->pickSound]);
+        PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
     }
 
     from->removeItem(it);
@@ -805,7 +805,7 @@ void Player::moveItemToEmptySlot(Item* it, Inventory* to, int toIndex) {
 
 bool Player::isEquipped(const String& itType) {
     for (int i = 0; i < wornInventory->getSize(); i++) {
-        if (wornInventory->getItem(i)->getType().equals(itType)) {
+        if (wornInventory->getItem(i) != nullptr && wornInventory->getItem(i)->getType().equals(itType)) {
             return true;
         }
     }

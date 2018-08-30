@@ -34,8 +34,10 @@ void ItemCell::update(int x, int y) {
     if (bbMouseX() > x && bbMouseX() < x + ItemCell::SIZE) {
         if (bbMouseY() > y && bbMouseY() < y + ItemCell::SIZE) {
             hover = true;
+            return;
         }
     }
+    hover = false;
 }
 
 void ItemCell::draw(int x, int y, int cellSpacing) {

@@ -843,7 +843,7 @@ void UpdateGUI() {
         SelectedMonitor = nullptr;
     }
 
-    mainPlayer->updateInventory();
+    if (CurrGameState == GAMESTATE_INVENTORY) { mainPlayer->updateInventory(); }
 }
 
 void DrawGUI() {
@@ -1085,7 +1085,7 @@ void DrawGUI() {
 
     txtMgmt->drawMsg();
 
-    mainPlayer->drawInventory();
+    if (CurrGameState == GAMESTATE_INVENTORY) { mainPlayer->drawInventory(); }
 }
 
 String f2s(float n, int count) {
