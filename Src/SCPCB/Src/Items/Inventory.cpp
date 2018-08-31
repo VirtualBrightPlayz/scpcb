@@ -93,8 +93,8 @@ void ItemCell::draw(int x, int y, int cellSpacing) {
             bbAmbientLight((float)Brightness, (float)Brightness, (float)Brightness);
         }
 
-        if (mainPlayer->selectedItem != val) {
-            int offset = (int)(32 * MenuScale);
+        if (mainPlayer->selectedItem != val || mainPlayer->hoveredItemCell == this) {
+            int offset = (int)(43 * MenuScale);
             bbDrawImage(val->invImg, x + SIZE / 2 - offset, y + SIZE / 2 - offset);
         }
     }
@@ -162,6 +162,7 @@ int Inventory::getIndex(Item* it) {
 }
 
 void Inventory::removeItem(Item* it) {
+    it->parentInv = nullptr;
     for (int i = 0; i < size; i++) {
         if (items[i].val == it) {
             items[i].val = nullptr;
@@ -237,12 +238,6 @@ void Inventory::update() {
                 cellY = userOptions->screenWidth / 2 - (int)(yOffset * MenuScale);
             }
         }
-    }
-
-    if (MouseUp1 && mainPlayer->selectedItem != nullptr && mainPlayer->hoveredItemCell == nullptr) {
-        // Mouse release outside a slot, drop the item.
-        mainPlayer->dropItem(mainPlayer->selectedItem);
-        mainPlayer->selectedItem = nullptr;
     }
 
         //Update any items that are used outside the inventory (firstaid for example).

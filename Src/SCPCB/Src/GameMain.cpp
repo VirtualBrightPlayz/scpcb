@@ -281,8 +281,6 @@ void UpdateGame() {
     String rn;
     float darkA;
 
-    updateGameState();
-
     // Start FixedUpdate.
     while (timing->accumulator>0.f) {
         timing->accumulator = timing->accumulator-timing->tickDuration;
@@ -291,10 +289,6 @@ void UpdateGame() {
         }
 
         bbCls();
-
-        if (bbKeyHit(21)) {
-            txtMgmt->setMsg("Oof.");
-        }
 
         DoubleClick = false;
         MouseHit1 = bbMouseHit(1);
@@ -315,6 +309,8 @@ void UpdateGame() {
         }
 
         MouseHit2 = bbMouseHit(2);
+
+        updateGameState();
         //TODO: Add the ability to play no music.
         if (CurrGameState != GAMESTATE_LAUNCHER) {
             musicMgmt->update();

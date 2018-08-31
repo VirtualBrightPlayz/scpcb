@@ -15,7 +15,7 @@ using namespace CBN;
 std::vector<Item*> Item::list;
 int Item::itemDistanceTimer = 0;
 
-Item::Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot) : meshPath(meshPath) {
+Item::Item(const String& meshPath, float scale, ItemPickSound sound, WornItemSlot slot) : meshPath(meshPath), scale(scale) {
     list.push_back(this);
 
     id = -1;
@@ -30,11 +30,11 @@ Item::Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot) : mes
     bbRotateEntity(collider, 0.f, bbRnd(360), 0.f);
 
     mesh = bbLoadMesh(meshPath, collider);
+    bbScaleEntity(mesh, scale * RoomScale, scale * RoomScale, scale * RoomScale);
     pickSound = sound;
     wornSlot = slot;
     needsInvImg = true;
     invImg = nullptr;
-    scale = 0.f;
     dist = 0.f;
 
     wontColl = false;

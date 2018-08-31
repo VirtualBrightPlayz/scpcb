@@ -6,7 +6,7 @@
 
 namespace CBN {
 
-GasMask::GasMask() : Item("GFX/Items/gasmask/gasmask.b3d", ItemPickSound::Heafty, WornItemSlot::Head) {
+GasMask::GasMask() : Item("GFX/Items/gasmask/gasmask.b3d", 6.f, ItemPickSound::Heafty, WornItemSlot::Head) {
     type = "gasmask";
 }
 

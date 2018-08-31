@@ -24,7 +24,7 @@ enum class Setting914 {
 
 const int WORNITEM_SLOT_COUNT = 3;
 enum class WornItemSlot {
-    None,
+    None = WORNITEM_SLOT_COUNT,
     Head = 0,
     Body = 1,
     Hand = 2
@@ -46,7 +46,7 @@ private:
     void setID(int id);
 
 protected:
-    Item(const String& meshPath, ItemPickSound sound, WornItemSlot slot = WornItemSlot::None);
+    Item(const String& meshPath, float scale, ItemPickSound sound, WornItemSlot slot = WornItemSlot::None);
     void setCoords(float x, float y, float z);
 
     int id;

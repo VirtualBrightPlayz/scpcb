@@ -722,9 +722,16 @@ void Player::toggleInventory() {
 }
 
 void Player::updateInventory() {
+    mainPlayer->hoveredItemCell = nullptr;
     openInventory->update();
     if (openInventory == inventory) {
         wornInventory->update();
+    }
+
+    // if the mouse was released outside a slot, drop the item.
+    if (MouseUp1 && selectedItem != nullptr && hoveredItemCell == nullptr) {
+        dropItem(selectedItem);
+        selectedItem = nullptr;
     }
 }
 
@@ -769,13 +776,13 @@ void Player::useItem(Item* it) {
 }
 
 void Player::dropItem(Item* it) {
-    if (it->parentInv == wornInventory) {
-        it->onUse(); // Has the de-equip message.
-    }
-
+    bool wasEquipped = it->parentInv == wornInventory;
     PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
     it->parentInv->removeItem(it);
-    it->parentInv = nullptr;
+
+    if (wasEquipped) {
+        it->onUse(); // Has the de-equip message.
+    }
 
     bbShowEntity(it->collider);
     bbPositionEntity(it->collider, bbEntityX(cam), bbEntityY(cam), bbEntityZ(cam));
@@ -791,20 +798,18 @@ void Player::moveItemToEmptySlot(Item* it, Inventory* to, int toIndex) {
     int fromIndex = from->getIndex(it);
 
     // Going from inv to equip slot? Check if it's ok.
-    if (to == wornInventory) {
-        WornItemSlot slot = (WornItemSlot)toIndex;
-        if (slot != it->wornSlot) {
-            txtMgmt->setMsg(txtMgmt->lang["inv_cantequip"]);
-            return;
-        }
-        PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
-    } else if (from == wornInventory) {
-        // From equip slot to somewhere else?
-        PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
+    if (to == wornInventory && (WornItemSlot)toIndex != it->wornSlot) {
+        txtMgmt->setMsg(txtMgmt->lang["inv_cantequip"]);
+        return;
     }
 
     from->removeItem(it);
     to->setItem(it, toIndex);
+
+    if (to == wornInventory || from == wornInventory) {
+        PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
+        it->onUse(); // Has the equip messages.
+    }
 }
 
 bool Player::isEquipped(const String& itType) {

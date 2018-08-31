@@ -51,10 +51,6 @@ public:
 
     void update();
     void draw();
-
-    void saveXML();
-
-    static void toggleInventory();
 };
 
 }
