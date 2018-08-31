@@ -294,7 +294,7 @@ void UpdateGame() {
         MouseHit1 = bbMouseHit(1);
         if (MouseHit1) {
             // TODO: Make this a constant or modifyable through the options.
-            if (TimeInPosMilliSecs() - LastMouseHit1 < 800) {
+            if (TimeInPosMilliSecs() - LastMouseHit1 < 400) {
                 DoubleClick = true;
             }
             LastMouseHit1 = TimeInPosMilliSecs();
@@ -852,8 +852,6 @@ void DrawGUI() {
     int width;
     int height;
 
-    NPC* npc;
-    int offset;
     MeshAssetWrap* buttonObj;
     Pivot* pvt;
     float projY;

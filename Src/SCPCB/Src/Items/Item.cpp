@@ -36,10 +36,6 @@ Item::Item(const String& meshPath, float scale, ItemPickSound sound, WornItemSlo
     needsInvImg = true;
     invImg = nullptr;
     dist = 0.f;
-
-    wontColl = false;
-    xSpeed = 0.f;
-    zSpeed = 0.f;
     dropSpeed = 0.f;
 }
 
@@ -140,14 +136,10 @@ void Item::update() {
 
             if (bbEntityCollided(collider, HIT_MAP)) {
                 dropSpeed = 0;
-                xSpeed = 0.f;
-                zSpeed = 0.f;
             } else {
+                std::cout << String(dropSpeed) + "\n";
                 dropSpeed = dropSpeed - 0.0004f * timing->tickDuration;
-                bbTranslateEntity(collider, xSpeed*timing->tickDuration, dropSpeed * timing->tickDuration, zSpeed*timing->tickDuration);
-                if (wontColl) {
-                    bbResetEntity(collider);
-                }
+                bbTranslateEntity(collider, 0.f, dropSpeed * timing->tickDuration, 0.f);
             }
 
             if (dist < hideDistSqr*0.2f) {

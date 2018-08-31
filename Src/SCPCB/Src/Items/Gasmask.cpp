@@ -11,7 +11,7 @@ GasMask::GasMask() : Item("GFX/Items/gasmask/gasmask.b3d", 6.f, ItemPickSound::H
 }
 
 GasMask::GasMask(float x, float y, float z) : GasMask() {
-    bbPositionEntity(collider, x, y, z, true);
+    bbPositionEntity(collider, x, y, z);
 }
 
 String GasMask::getType() {

@@ -206,7 +206,7 @@ void Cmd_Heal::execute(std::vector<String> args) {
 }
 
 void Cmd_Kill::execute(std::vector<String> args) {
-    Kill(mainPlayer);
+    mainPlayer->kill();
 }
 
 void Cmd_Revive::execute(std::vector<String> args) {

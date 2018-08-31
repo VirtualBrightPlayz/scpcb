@@ -8,6 +8,7 @@
 #include "../Config/INI.h"
 #include "../Player/Player.h"
 #include "../Items/Item.h"
+#include "../MathUtils/MathUtils.h"
 
 namespace CBN {
 
@@ -63,7 +64,7 @@ void TxtManager::drawMsg() {
     }
     bbColor(0, 0, 0);
     bbText(x + 1, y + 1, displayMsg, true);
-    bbColor(255, 255, 255);
+    bbColor((int)Min(displayTimer / 2, 255), (int)Min(displayTimer / 2, 255), (int)Min(displayTimer / 2, 255));
     bbText(x, y, displayMsg, true);
 }
 

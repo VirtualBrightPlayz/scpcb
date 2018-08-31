@@ -468,7 +468,7 @@ void Shoot(float x, float y, float z, float hitProb, int particles, int instaKil
     if (!mainPlayer->godMode) {
 
         if (instaKill) {
-            Kill(mainPlayer);
+            mainPlayer->kill();
             PlaySound_SM(sndMgmt->bulletHit);
             return;
         }

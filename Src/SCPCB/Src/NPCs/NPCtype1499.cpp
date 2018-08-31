@@ -220,7 +220,7 @@ void UpdateNPCtype1499(NPC* n) {
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75f,1.5f);
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
                             if (mainPlayer->injuries > 10.f) {
-                                Kill(mainPlayer);
+                                mainPlayer->kill();
                                 //if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
                                 //    DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered ";
                                 //    DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event ";
@@ -245,7 +245,7 @@ void UpdateNPCtype1499(NPC* n) {
                             mainPlayer->injuries = mainPlayer->injuries + bbRnd(0.75f,1.5f);
                             PlayRangedSound(LoadTempSound("SFX/General/Slash"+String(bbRand(1,2))+".ogg"), mainPlayer->cam, n->collider);
                             if (mainPlayer->injuries > 10.f) {
-                                Kill(mainPlayer);
+                                mainPlayer->kill();
                                 //if (mainPlayer->currRoom->roomTemplate->name.equals("dimension1499")) {
                                 //    DeathMSG = "All personnel situated within Evacuation Shelter LC-2 during the breach have been administered ";
                                 //    DeathMSG = DeathMSG + "Class-B amnestics due to Incident 1499-E. The Class D subject involved in the event ";

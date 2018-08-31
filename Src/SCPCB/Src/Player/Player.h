@@ -132,6 +132,7 @@ public:
     //------
 
     void update();
+    void kill();
 
     void toggleInventory();
     void updateInventory();
@@ -159,8 +160,6 @@ extern float mouse_y_speed_1;
 
 // Functions.
 void MouseLook();
-
-void Kill(Player* player);
 
 }
 #endif // PLAYER_H_INCLUDED

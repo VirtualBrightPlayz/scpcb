@@ -200,7 +200,7 @@ void UpdateEmitters() {
         }
         if (mainPlayer->blinkEffect > (70 * 24)) {
             //DeathMSG = "Subject D-9341 found dead in [DATA REDACTED]. Cause of death: Suffocation due to decontamination gas.";
-            Kill(mainPlayer);
+            mainPlayer->kill();
         }
 
         if (!mainPlayer->dead) {

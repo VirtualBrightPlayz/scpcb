@@ -241,7 +241,7 @@ void UpdateNPCtype173(NPC* n) {
                                     bbTurnEntity(mainPlayer->cam, 0.f, (float)bbRand(-100,-80), 0.f);
                                 }
 
-                                Kill(mainPlayer);
+                                mainPlayer->kill();
                             }
                         } else {
                             bbPointEntity(n->collider, mainPlayer->collider);

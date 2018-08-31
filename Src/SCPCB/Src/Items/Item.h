@@ -59,11 +59,6 @@ protected:
     float scale;
     float dist;
 
-    bool wontColl;
-    float xSpeed;
-    float zSpeed;
-    float dropSpeed;
-
 public:
     ~Item();
 
@@ -72,6 +67,7 @@ public:
     Pivot* collider;
     bool needsInvImg;
     bbImage* invImg;
+    float dropSpeed;
 
     ItemPickSound pickSound;
     WornItemSlot wornSlot;

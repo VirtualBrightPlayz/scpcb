@@ -107,7 +107,7 @@ void UpdateNPCtype049(NPC* n) {
                         TODO ashfjaidfjas*/
                     } else {
                         //DeathMSG = "An active instance of SCP-049-2 was discovered in [REDACTED]. Terminated by Nine-Tailed Fox.";
-                        Kill(mainPlayer);
+                        mainPlayer->kill();
                     }
 
                     NPCStopAllChannels(n);
