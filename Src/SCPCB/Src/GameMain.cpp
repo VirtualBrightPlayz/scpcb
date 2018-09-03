@@ -158,6 +158,8 @@ int EntryPoint() {
         InitializeMainGame();
     }
 
+    updateGameState();
+
     while (true) {
         UpdateGame();
     }
@@ -310,7 +312,6 @@ void UpdateGame() {
 
         MouseHit2 = bbMouseHit(2);
 
-        updateGameState();
         //TODO: Add the ability to play no music.
         if (CurrGameState != GAMESTATE_LAUNCHER) {
             musicMgmt->update();
@@ -542,9 +543,9 @@ void UpdateGame() {
         }
         txtMgmt->updateMsg();
         AssetWrap::update();
-    } // End FixedUpdate.
 
-    updateGameState(); // Call this again here incase its state was updated in FixedUpdate.
+        updateGameState();
+    } // End FixedUpdate.
 
     if (CurrGameState==GAMESTATE_LAUNCHER) {
         if (launcher != nullptr) {
@@ -1444,7 +1445,7 @@ void RenderWorld2() {
     //render sprites
     bbCameraProjMode(ark_blur_cam,2);
     bbCameraProjMode(mainPlayer->cam,0);
-    //bbRenderWorld();
+    bbRenderWorld();
     bbCameraProjMode(ark_blur_cam,0);
 
     if (mainPlayer->blinkTimer < - 16 || mainPlayer->blinkTimer > - 6) {

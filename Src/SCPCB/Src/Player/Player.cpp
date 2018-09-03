@@ -53,7 +53,7 @@ Player::Player() {
     bbEntityBlend(overlays[OVERLAY_GASMASK], 2);
     bbEntityFX(overlays[OVERLAY_GASMASK], 1);
     bbEntityOrder(overlays[OVERLAY_GASMASK], -1003);
-    bbMoveEntity(overlays[OVERLAY_GASMASK], 0, 0, 1.f);
+    bbTranslateEntity(overlays[OVERLAY_GASMASK], 0, 0, 1.f);
     bbHideEntity(overlays[OVERLAY_GASMASK]);
 
     Texture* infectTexture = bbLoadTexture("GFX/Overlays/InfectOverlay.jpg", 1);
@@ -63,7 +63,7 @@ Player::Player() {
     bbEntityBlend(overlays[OVERLAY_008], 3);
     bbEntityFX(overlays[OVERLAY_008], 1);
     bbEntityOrder(overlays[OVERLAY_008], -1003);
-    bbMoveEntity(overlays[OVERLAY_008], 0, 0, 1.f);
+    bbTranslateEntity(overlays[OVERLAY_008], 0, 0, 1.f);
     //EntityAlpha(InfectOverlay, 255.f)
     bbHideEntity(overlays[OVERLAY_008]);
 
@@ -99,14 +99,14 @@ Player::Player() {
     bbEntityTexture(overlays[OVERLAY_FOG], fogTexture);
     bbEntityBlend(overlays[OVERLAY_FOG], 2);
     bbEntityOrder(overlays[OVERLAY_FOG], -1000);
-    bbMoveEntity(overlays[OVERLAY_FOG], 0, 0, 1.f);
+    bbTranslateEntity(overlays[OVERLAY_FOG], 0, 0, 1.f);
 
     overlays[OVERLAY_BLACK] = bbCreateSprite(cam);
     bbScaleSprite(overlays[OVERLAY_BLACK], Max(scaleWidth, 1.f), Max(scaleHeight, 0.8f));
     bbEntityTexture(overlays[OVERLAY_BLACK], darkTexture);
     bbEntityBlend(overlays[OVERLAY_BLACK], 1);
     bbEntityOrder(overlays[OVERLAY_BLACK], -1002);
-    bbMoveEntity(overlays[OVERLAY_BLACK], 0, 0, 1.f);
+    bbTranslateEntity(overlays[OVERLAY_BLACK], 0, 0, 1.f);
     bbEntityAlpha(overlays[OVERLAY_BLACK], 0.f);
 
     Texture* lightTexture = bbCreateTexture(1024, 1024, 1 + 2);
@@ -121,7 +121,7 @@ Player::Player() {
     bbEntityTexture(overlays[OVERLAY_WHITE], lightTexture);
     bbEntityBlend(overlays[OVERLAY_WHITE], 1);
     bbEntityOrder(overlays[OVERLAY_WHITE], -1002);
-    bbMoveEntity(overlays[OVERLAY_WHITE], 0, 0, 1.f);
+    bbTranslateEntity(overlays[OVERLAY_WHITE], 0, 0, 1.f);
     bbHideEntity(overlays[OVERLAY_WHITE]);
 
     bbFreeTexture(gasMaskTexture);
