@@ -455,7 +455,7 @@ void UpdateGame() {
                 }
 
                 if (!mainPlayer->isEquipped("nvgoggles")) {
-                    darkA = Max(0.9f, darkA);
+                    darkA = Max(0.f, darkA);
                 }
 
                 if (mainPlayer->dead) {

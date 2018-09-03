@@ -39,6 +39,7 @@ enum class ItemPickSound {
 
 class Item {
 private:
+    static int itemDistanceTimer;
     static std::vector<Item*> list;
 
     static int ID;
@@ -62,7 +63,6 @@ protected:
 public:
     ~Item();
 
-    static int itemDistanceTimer;
     Inventory* parentInv;
     Pivot* collider;
     bool needsInvImg;

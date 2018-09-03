@@ -67,15 +67,15 @@ Player::Player() {
     //EntityAlpha(InfectOverlay, 255.f)
     bbHideEntity(overlays[OVERLAY_008]);
 
-    Texture* nvTexture = bbLoadTexture("GFX/Overlays/NightVisionOverlay.jpg", 1);
-    overlays[OVERLAY_NIGHTVISION] = bbCreateSprite(ark_blur_cam);
-    bbScaleSprite(overlays[OVERLAY_NIGHTVISION], Max(scaleWidth, 1.f), Max(scaleHeight, 0.8f));
-    bbEntityTexture(overlays[OVERLAY_NIGHTVISION], nvTexture);
-    bbEntityBlend(overlays[OVERLAY_NIGHTVISION], 2);
-    bbEntityFX(overlays[OVERLAY_NIGHTVISION], 1);
-    bbEntityOrder(overlays[OVERLAY_NIGHTVISION], -1003);
-    bbMoveEntity(overlays[OVERLAY_NIGHTVISION], 0, 0, 1.f);
-    bbHideEntity(overlays[OVERLAY_NIGHTVISION]);
+    //Texture* nvTexture = bbLoadTexture("GFX/Overlays/NightVisionOverlay.jpg", 1);
+    //overlays[OVERLAY_NIGHTVISION] = bbCreateSprite(ark_blur_cam);
+    //bbScaleSprite(overlays[OVERLAY_NIGHTVISION], Max(scaleWidth, 1.f), Max(scaleHeight, 0.8f));
+    //bbEntityTexture(overlays[OVERLAY_NIGHTVISION], nvTexture);
+    //bbEntityBlend(overlays[OVERLAY_NIGHTVISION], 2);
+    //bbEntityFX(overlays[OVERLAY_NIGHTVISION], 1);
+    //bbEntityOrder(overlays[OVERLAY_NIGHTVISION], -1003);
+    //bbMoveEntity(overlays[OVERLAY_NIGHTVISION], 0, 0, 1.f);
+    //bbHideEntity(overlays[OVERLAY_NIGHTVISION]);
 
     //TODO: do we need this?
     //NVBlink = CreateSprite(ark_blur_cam)
@@ -126,7 +126,7 @@ Player::Player() {
 
     bbFreeTexture(gasMaskTexture);
     bbFreeTexture(infectTexture);
-    bbFreeTexture(nvTexture);
+    //bbFreeTexture(nvTexture);
     bbFreeTexture(fogTexture);
     bbFreeTexture(darkTexture);
     bbFreeTexture(lightTexture);

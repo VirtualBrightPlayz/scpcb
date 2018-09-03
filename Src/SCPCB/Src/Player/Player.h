@@ -27,7 +27,7 @@ const int OVERLAY_BLACK = 0;
 const int OVERLAY_WHITE = 1;
 const int OVERLAY_FOG = 2;
 const int OVERLAY_GASMASK = 3;
-const int OVERLAY_NIGHTVISION = 4;
+//const int OVERLAY_NIGHTVISION = 4;
 const int OVERLAY_008 = 5;
 
 // Structs.
