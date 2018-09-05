@@ -125,6 +125,8 @@ void TxtManager::changeLocalization(const String& langCode) {
     lang["it_gasmask"] = GetINIString(path, "items", "gasmask");
     lang["it_gasmask_on"] = GetINIString(path, "items", "gasmask_on");
     lang["it_gasmask_off"] = GetINIString(path, "items", "gasmask_off");
+
+    lang["it_firstaid"] = GetINIString(path, "items", "firstaid");
 }
 
 }

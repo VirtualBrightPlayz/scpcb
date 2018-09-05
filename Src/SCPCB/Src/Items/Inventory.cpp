@@ -57,41 +57,8 @@ void ItemCell::draw(int x, int y, int cellSpacing) {
     DrawFrame(x, y, SIZE, SIZE, (x % 64), (x % 64));
 
     if (val != nullptr) {
-        //Render icon.
-        if (val->needsInvImg) {
-            val->needsInvImg = false;
-            val->invImg = bbCreateImage(64,64);
-            Camera* tempCamera = bbCreateCamera();
-            Pivot* tempObj = val->collider;
-            bbCameraZoom(tempCamera,1.2f);
-            Light* tempLight = bbCreateLight(1);
-            bbAmbientLight(40,40,40);
-
-            bbRotateEntity(tempObj,0,0,0,true);
-
-            bbCameraRange(tempCamera,0.01f,512.f*RoomScale);
-            bbCameraViewport(tempCamera,0,0,64,64);
-            bbCameraClsColor(tempCamera,255,0,255);
-            bbPositionEntity(tempCamera,10000.f+10.f*RoomScale,10000.f+70.f*RoomScale,10000.f+20.f*RoomScale,true);
-            bbPositionEntity(tempLight,10000.f,10000.f+20.f*RoomScale,10000.f,true);
-            bbShowEntity(tempObj);
-            bbPositionEntity(tempObj,10000.f,10000.f,10000.f,true);
-            bbPointEntity(tempCamera,tempObj);
-            bbPointEntity(tempLight,tempObj);
-            bbPositionEntity(tempObj,10000.f,10000.f+12.f*RoomScale,10000.f,true);
-            bbHideEntity(mainPlayer->cam);
-
-            bbSetBuffer(bbBackBuffer());
-            bbRenderWorld();
-            bbCopyRect(0,0,64,64,0,0,bbBackBuffer(),bbImageBuffer(val->invImg));
-            bbMaskImage(val->invImg,255,0,255);
-
-            bbHideEntity(tempObj);
-            bbShowEntity(mainPlayer->cam);
-            bbFreeEntity(tempCamera);
-            bbFreeEntity(tempLight);
-            bbAmbientLight((float)Brightness, (float)Brightness, (float)Brightness);
-        }
+        // Render icon.
+        val->generateInvImg();
 
         if (mainPlayer->selectedItem != val || mainPlayer->hoveredItemCell == this) {
             int offset = (int)(43 * MenuScale);

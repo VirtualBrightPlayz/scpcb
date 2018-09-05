@@ -5,6 +5,7 @@
 #include <bbinput.h>
 #include <bbmath.h>
 #include <bbstring.h>
+#include <cmath>
 
 #include "LoadingScreen.h"
 #include "../GameMain.h"

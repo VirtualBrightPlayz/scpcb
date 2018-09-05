@@ -62,6 +62,43 @@ void Item::setCoords(float x, float y, float z) {
     bbPositionEntity(collider, x, y, z, true);
 }
 
+void Item::generateInvImg() {
+    if (!needsInvImg) { return; }
+
+    needsInvImg = false;
+    invImg = bbCreateImage(64,64);
+    Camera* tempCamera = bbCreateCamera();
+    Pivot* tempObj = collider;
+    bbCameraZoom(tempCamera,1.2f);
+    Light* tempLight = bbCreateLight(1);
+    bbAmbientLight(40,40,40);
+
+    bbRotateEntity(tempObj,0,0,0,true);
+
+    bbCameraRange(tempCamera,0.01f,512.f*RoomScale);
+    bbCameraViewport(tempCamera,0,0,64,64);
+    bbCameraClsColor(tempCamera,255,0,255);
+    bbPositionEntity(tempCamera,10000.f+10.f*RoomScale,10000.f+70.f*RoomScale,10000.f+20.f*RoomScale,true);
+    bbPositionEntity(tempLight,10000.f,10000.f+20.f*RoomScale,10000.f,true);
+    bbShowEntity(tempObj);
+    bbPositionEntity(tempObj,10000.f,10000.f,10000.f,true);
+    bbPointEntity(tempCamera,tempObj);
+    bbPointEntity(tempLight,tempObj);
+    bbPositionEntity(tempObj,10000.f,10000.f+12.f*RoomScale,10000.f,true);
+    bbHideEntity(mainPlayer->cam);
+
+    bbSetBuffer(bbBackBuffer());
+    bbRenderWorld();
+    bbCopyRect(0,0,64,64,0,0,bbBackBuffer(),bbImageBuffer(invImg));
+    bbMaskImage(invImg,255,0,255);
+
+    bbHideEntity(tempObj);
+    bbShowEntity(mainPlayer->cam);
+    bbFreeEntity(tempCamera);
+    bbFreeEntity(tempLight);
+    bbAmbientLight((float)Brightness, (float)Brightness, (float)Brightness);
+}
+
 void Item::assignTag(const String& tag) {
     if (hasTag(tag)) { return; }
     tags.push_back(tag);

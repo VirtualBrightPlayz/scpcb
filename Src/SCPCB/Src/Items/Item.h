@@ -46,6 +46,8 @@ private:
     void addID();
     void setID(int id);
 
+    bool needsInvImg;
+
 protected:
     Item(const String& meshPath, float scale, ItemPickSound sound, WornItemSlot slot = WornItemSlot::None);
     void setCoords(float x, float y, float z);
@@ -65,7 +67,6 @@ public:
 
     Inventory* parentInv;
     Pivot* collider;
-    bool needsInvImg;
     bbImage* invImg;
     float dropSpeed;
 
@@ -74,6 +75,8 @@ public:
 
     virtual String getType()=0;
     virtual String getInvName()=0;
+
+    void generateInvImg();
 
     void assignTag(const String& tag);
     bool hasTag(const String& tag);

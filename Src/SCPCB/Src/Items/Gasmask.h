@@ -11,11 +11,11 @@ private:
 public:
     GasMask(float x, float y, float z);
 
-    virtual String getType();
-    virtual String getInvName();
+    String getType();
+    String getInvName();
 
-    virtual void onPick();
-    virtual void onUse();
+    void onPick();
+    void onUse();
 };
 
 }
