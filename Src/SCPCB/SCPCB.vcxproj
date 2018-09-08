@@ -165,6 +165,7 @@
     <ClCompile Include="Src\Config\KeyName.cpp" />
     <ClCompile Include="Src\Config\Options.cpp" />
     <ClCompile Include="Src\GameMain.cpp" />
+    <ClCompile Include="Src\Items\FirstAid.cpp" />
     <ClCompile Include="Src\Items\Gasmask.cpp" />
     <ClCompile Include="Src\Items\Inventory.cpp" />
     <ClCompile Include="Src\Items\Item.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="Src\Config\KeyName.h" />
     <ClInclude Include="Src\Config\Options.h" />
     <ClInclude Include="Src\GameMain.h" />
+    <ClInclude Include="Src\Items\FirstAid.h" />
     <ClInclude Include="Src\Items\Gasmask.h" />
     <ClInclude Include="Src\Items\Inventory.h" />
     <ClInclude Include="Src\Items\Item.h" />

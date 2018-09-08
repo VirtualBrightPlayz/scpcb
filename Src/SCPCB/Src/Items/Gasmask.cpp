@@ -10,8 +10,10 @@ GasMask::GasMask() : Item("GFX/Items/gasmask/gasmask.b3d", 6.f, ItemPickSound::H
     type = "gasmask";
 }
 
-GasMask::GasMask(float x, float y, float z) : GasMask() {
-    bbPositionEntity(collider, x, y, z);
+GasMask* GasMask::spawn(float x, float y, float z) {
+    GasMask* it = new GasMask();
+    bbPositionEntity(it->collider, x, y, z);
+    return it;
 }
 
 String GasMask::getType() {

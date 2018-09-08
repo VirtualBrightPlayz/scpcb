@@ -9,7 +9,7 @@ private:
     String type;
     GasMask();
 public:
-    GasMask(float x, float y, float z);
+    static GasMask* spawn(float x, float y, float z);
 
     String getType();
     String getInvName();

@@ -201,7 +201,7 @@ void Player::update() {
         noclip = !noclip;
     }
     if (bbKeyHit(34)) {
-        new GasMask(bbEntityX(collider), bbEntityY(cam), bbEntityZ(collider));
+        GasMask::spawn(bbEntityX(collider), bbEntityY(cam), bbEntityZ(collider));
     }
     godMode = true;
 

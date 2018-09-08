@@ -38,8 +38,6 @@ struct String {
         String toUpper() const;
         String toLower() const;
         String trim() const;
-        String unHex() const;
-        String resourcePath() const;
 
         String& operator=(const String& other);
 
@@ -47,7 +45,8 @@ struct String {
         bool equals(const char* other) const;
         bool isEmpty() const;
 
-		std::vector<String> split(const String& needle, bool removeEmptyEntries = false) const;
+        std::vector<String> split(const String& needle, bool removeEmptyEntries = false) const;
+        static String join(const std::vector<String>& vect, const String& separator = "");
     protected:
         enum class DOMINANT_BUFFER {
             C, W
