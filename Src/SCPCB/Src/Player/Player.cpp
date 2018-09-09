@@ -390,7 +390,7 @@ void Player::update() {
                 angle = -135;
             }
             // Or ForceMove>0
-        } else if ((bbKeyDown(keyBinds->up) && (!disableControls))) {
+        } else if (bbKeyDown(keyBinds->up) && !disableControls) {
             temp = true;
             angle = 0;
             if (bbKeyDown(keyBinds->left)) {

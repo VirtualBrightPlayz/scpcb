@@ -12,7 +12,7 @@ GasMask::GasMask() : Item("GFX/Items/gasmask/gasmask.b3d", 6.f, ItemPickSound::H
 
 GasMask* GasMask::spawn(float x, float y, float z) {
     GasMask* it = new GasMask();
-    bbPositionEntity(it->collider, x, y, z);
+    it->setCoords(x, y, z);
     return it;
 }
 

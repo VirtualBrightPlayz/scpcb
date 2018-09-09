@@ -24,7 +24,7 @@ Item::Item(const String& meshPath, float scale, ItemPickSound sound, WornItemSlo
     markedForRemoval = false;
 
     collider = bbCreatePivot();
-    bbEntityRadius(collider, 0.01);
+    bbEntityRadius(collider, 0.01f);
     bbEntityPickMode(collider, 1, false);
 
     bbEntityType(collider, HIT_ITEM);
@@ -64,7 +64,8 @@ Item::~Item() {
 }
 
 void Item::setCoords(float x, float y, float z) {
-    bbPositionEntity(collider, x, y, z, true);
+    bbPositionEntity(collider, x, y, z);
+    bbResetEntity(collider);
 }
 
 void Item::generateInvImg() {

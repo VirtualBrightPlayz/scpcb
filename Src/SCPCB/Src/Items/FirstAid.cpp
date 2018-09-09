@@ -16,7 +16,7 @@ FirstAid::FirstAid() : Item("GFX/Items/firstaid/firstaid.b3d", 10.f, ItemPickSou
 
 FirstAid* FirstAid::spawn(float x, float y, float z) {
     FirstAid* it = new FirstAid();
-    bbPositionEntity(it->collider, x, y, z);
+    it->setCoords(x, y, z);
     return it;
 }
 
