@@ -16,6 +16,7 @@
 #include "../MathUtils/MathUtils.h"
 #include "../Map/MapSystem.h"
 #include "../Menus/Menu.h"
+#include "../Menus/PauseMenu.h"
 #include "../Config/Options.h"
 #include "../Map/Particles.h"
 
@@ -196,6 +197,92 @@ float mouse_y_speed_1;
 
 // Functions.
 void Player::update() {
+    isMoving = false;
+    isSprinting = false;
+    speedMultiplier = 1.f;
+    speed = 0.018f; // TODO: Constant this.
+
+    mouseLook();
+
+    if (!noclip) {
+        if (!disableControls) {
+            updateInput();
+        }
+        updateMove();
+    } else {
+        updateNoClip();
+    }
+
+    updateBlink();
+    updateItemUse();
+
+    // Dimming the screen.
+    float darkA = 0.f;
+
+    //TODO: fix
+    //			If (EyeStuck > 0) Then
+    //				mainPlayer\blinkTimer = mainPlayer\blinkFreq
+    //				EyeStuck = Max(EyeStuck-timing\tickDuration,0)
+    //
+    //				If (EyeStuck < 9000) Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (9000-EyeStuck)*0.5f)
+    //				If (EyeStuck < 6000) Then darkA = Min(Max(darkA, (6000-EyeStuck)/5000.f),1.f)
+    //				If (EyeStuck < 9000 And EyeStuck+timing\tickDuration =>9000) Then
+    //					Msg = "The eyedrops are causing your eyes to tear up."
+    //					MsgTimer = 70*6
+    //				EndIf
+    //			EndIf
+
+    //TODO: reimplement, move to Player struct.
+    //LightBlink = Max(LightBlink - (timing\tickDuration / 35.f), 0)
+    //If (LightBlink > 0) Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3f, 0.8f)), 1.f)
+
+    if (CurrGameState==GAMESTATE_SCP294) {
+        darkA = 1.f;
+    }
+
+    if (!mainPlayer->isEquipped("nvgoggles")) {
+        darkA = Max(0.f, darkA);
+    }
+
+    if (mainPlayer->dead) {
+        CurrGameState = GAMESTATE_PLAYING;
+        mainPlayer->selectedItem = nullptr;
+        SelectedScreen = nullptr;
+        SelectedMonitor = nullptr;
+        //mainPlayer\blurTimer = abs(mainPlayer\fallTimer*5)
+        //mainPlayer\fallTimer=mainPlayer\fallTimer-(timing\tickDuration*0.8f)
+        if (mainPlayer->fallTimer < - 360) {
+            CurrGameState = GAMESTATE_PAUSED;
+            pauseMenu->currState = PauseMenuState::Dead;
+            //TODO: fix
+            //If (SelectedEnding <> "") Then EndingTimer = Min(mainPlayer\fallTimer,-0.1f)
+        }
+        darkA = Max(darkA, Min(abs(mainPlayer->fallTimer / 400.f), 1.f));
+    }
+
+    if (mainPlayer->fallTimer < 0) {
+        CurrGameState = GAMESTATE_PLAYING;
+        mainPlayer->selectedItem = nullptr;
+        SelectedScreen = nullptr;
+        SelectedMonitor = nullptr;
+        mainPlayer->blurTimer = abs(mainPlayer->fallTimer*10);
+        mainPlayer->fallTimer = mainPlayer->fallTimer-timing->tickDuration;
+        darkA = Max(darkA, Min(abs(mainPlayer->fallTimer / 400.f), 1.f));
+    }
+
+    if (mainPlayer->selectedItem != nullptr) {
+        //if (mainPlayer->selectedItem->itemTemplate->name.equals("navigator") || mainPlayer->selectedItem->itemTemplate->name.equals("nav")) {
+        //    darkA = Max(darkA, 0.5f);
+        //}
+    }
+    if (SelectedScreen != nullptr) {
+        darkA = Max(darkA, 0.5f);
+    }
+
+    bbEntityAlpha(mainPlayer->overlays[OVERLAY_BLACK], darkA);
+}
+
+void Player::updateInput() {
     // TODO: Remove.
     if (bbKeyHit(49)) {
         noclip = !noclip;
@@ -203,19 +290,124 @@ void Player::update() {
     if (bbKeyHit(34)) {
         new GasMask(bbEntityX(collider), bbEntityY(cam), bbEntityZ(collider));
     }
-    godMode = true;
 
-    float Sprint = 1.f;
-    float Speed = 0.018f;
-    gxChannel* tempChn = nullptr;
+    // Moving.
+    if (bbKeyDown(keyBinds->down)) {
+        isMoving = true;
 
-    //If (DeathTimer > 0) Then
-    //	DeathTimer=DeathTimer-timing\tickDuration
-    //	If (DeathTimer < 1) Then DeathTimer = -1.f
-    //ElseIf DeathTimer < 0
-    //	mainPlayer->kill()
-    //EndIf
+        if (bbKeyDown(keyBinds->left)) {
+            moveAngle = 135;
+        } else if (bbKeyDown(keyBinds->right)) {
+            moveAngle = -135;
+        } else {
+            moveAngle = 180;
+        }
+    } else if (bbKeyDown(keyBinds->up)) {
+        isMoving = true;
+        moveAngle = 0;
+        if (bbKeyDown(keyBinds->left)) {
+            moveAngle = 45;
+        } else if (bbKeyDown(keyBinds->right)) {
+            moveAngle = -45;
+        }
+    } else if (forceWalk > 0) {
+        isMoving = true;
+        moveAngle = forceAngle;
+    } else {
+        if (bbKeyDown(keyBinds->left)) {
+            moveAngle = 90;
+            isMoving = true;
+        }
+        if (bbKeyDown(keyBinds->right)) {
+            moveAngle = -90;
+            isMoving = true;
+        }
+    }
 
+    if ((bbKeyDown(keyBinds->down) ^ bbKeyDown(keyBinds->up)) | (bbKeyDown(keyBinds->right) ^ bbKeyDown(keyBinds->left))) {
+        if (!crouching && (bbKeyDown(keyBinds->sprint)) && stamina > 0.f) {
+            isSprinting = true;
+            speedMultiplier = 2.5f;
+            stamina -= timing->tickDuration * 0.5f * (1.f/staminaEffect);
+            if (stamina <= 0) {
+                stamina = -20.f;
+            }
+        }
+
+        // TODO: Re-implement.
+        // if (currRoom->roomTemplate->name.equals("pocketdimension")) {
+        //     if (bbEntityY(collider)<2000*RoomScale || bbEntityY(collider)>2608*RoomScale) {
+        //         stamina = 0;
+        //         Speed = 0.015f;
+        //         Sprint = 1.f;
+        //     }
+        // }
+
+        float temp = modFloat(camAnimState, 360);
+        if (!disableControls) {
+            camAnimState = modFloat(camAnimState + timing->tickDuration * Min(speedMultiplier, 1.5f) * 7, 720);
+        }
+        // if (temp < 180 && modFloat(camAnimState, 360) >= 180 && !dead) {
+        //     //TODO: define constants for each override state
+        //     if (footstepOverride==0) {
+        //         temp = (float)GetMaterialStepSound(collider);
+
+        //         if (Sprint == 1.f) {
+        //             loudness = Max(4.f,loudness);
+
+        //             if (temp == STEPSOUND_METAL) {
+        //                 tempChn = PlaySound_SM(sndMgmt->footstepMetal[bbRand(0, 7)]);
+        //             } else {
+        //                 tempChn = PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
+        //             }
+
+        //             bbChannelVolume(tempChn, (1.f-(crouching*0.6f))*userOptions->sndVolume);
+        //         } else {
+        //             loudness = Max(2.5f-(crouching*0.6f),loudness);
+
+        //             if (temp == 1) {
+        //                 tempChn = PlaySound_SM(sndMgmt->footstepMetalRun[bbRand(0, 7)]);
+        //             } else {
+        //                 tempChn = PlaySound_SM(sndMgmt->footstepRun[bbRand(0, 7)]);
+        //             }
+
+        //             bbChannelVolume(tempChn, (1.f-(crouching*0.6f))*userOptions->sndVolume);
+        //         }
+        //     } else if (footstepOverride==1) {
+        //         tempChn = PlaySound_SM(sndMgmt->footstepPD[bbRand(0, 2)]);
+        //         bbChannelVolume(tempChn, (1.f-(crouching*0.4f))*userOptions->sndVolume);
+        //     } else if (footstepOverride==2) {
+        //         tempChn = PlaySound_SM(sndMgmt->footstep8601[bbRand(0, 2)]);
+        //         bbChannelVolume(tempChn, (1.f-(crouching*0.4f))*userOptions->sndVolume);
+        //     } else if (footstepOverride==3) {
+        //         if (Sprint == 1.f) {
+        //             loudness = Max(4.f,loudness);
+        //             tempChn = PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
+        //             bbChannelVolume(tempChn, (1.f-(crouching*0.6f))*userOptions->sndVolume);
+        //         } else {
+        //             loudness = Max(2.5f-(crouching*0.6f),loudness);
+        //             tempChn = PlaySound_SM(sndMgmt->footstepRun[bbRand(0, 7)]);
+        //             bbChannelVolume(tempChn, (1.f-(crouching*0.6f))*userOptions->sndVolume);
+        //         }
+        //     }
+
+        // }
+    }
+
+    // Blinking.
+    if (bbKeyHit(keyBinds->blink)) {
+        blinkTimer = 0;
+    }
+    if (bbKeyDown(keyBinds->blink) && blinkTimer < - 10) {
+        blinkTimer = -10;
+    }
+
+    if (bbKeyHit(keyBinds->crouch)) {
+        crouching = !crouching;
+    }
+}
+
+void Player::updateMove() {
     stamina = Min(stamina + 0.15f * timing->tickDuration, 100.f);
 
     if (staminaEffectTimer > 0) {
@@ -224,320 +416,163 @@ void Player::update() {
         staminaEffect = 1.f;
     }
 
-    if (currRoom!=nullptr) {
-        if (!currRoom->roomTemplate->name.equals("pocketdimension")) {
-            if (bbKeyDown(keyBinds->sprint)) {
-                //out of breath
-                if (stamina < 5) {
-                    if (!bbChannelPlaying(breathChn)) {
-                        breathChn = bbPlaySound(breathingSFX[isEquipped("gasmask")][0]);
-                    }
-                    //panting
-                } else if ((stamina < 50)) {
-                    if (breathChn == 0) {
-                        breathChn = bbPlaySound(breathingSFX[isEquipped("gasmask")][bbRand(1, 3)]);
-                        bbChannelVolume(breathChn, Min((70.f-stamina)/70.f,1.f)*userOptions->sndVolume);
-                    } else {
-                        if (!bbChannelPlaying(breathChn)) {
-                            breathChn = bbPlaySound(breathingSFX[isEquipped("gasmask")][bbRand(1, 3)]);
-                            bbChannelVolume(breathChn, Min((70.f-stamina)/70.f,1.f)*userOptions->sndVolume);
-                        }
-                    }
-                }
-            }
-        }
+    if (forceWalk > 0) {
+        speed *= forceWalk;
     }
 
-    //If (IsZombie) Then Crouch = False
+    // TODO: Re-implement.
+    // if (isSprinting) {
+    //     //out of breath
+    //     if (stamina < 5) {
+    //         if (!bbChannelPlaying(breathChn)) {
+    //             breathChn = bbPlaySound(breathingSFX[isEquipped("gasmask")][0]);
+    //         }
+    //     } else if (stamina < 50) {
+    //         //panting
+    //         if (breathChn == nullptr) {
+    //             breathChn = bbPlaySound(breathingSFX[isEquipped("gasmask")][bbRand(1, 3)]);
+    //             bbChannelVolume(breathChn, Min((70.f-stamina)/70.f,1.f)*userOptions->sndVolume);
+    //         } else {
+    //             if (!bbChannelPlaying(breathChn)) {
+    //                 breathChn = bbPlaySound(breathingSFX[isEquipped("gasmask")][bbRand(1, 3)]);
+    //                 bbChannelVolume(breathChn, Min((70.f-stamina)/70.f,1.f)*userOptions->sndVolume);
+    //             }
+    //         }
+    //     }
+    // }
 
+    // Transitioning from standing <-> crouching.
     if (abs(crouchState-crouching)<0.001f) {
         crouchState = crouching;
     } else {
         crouchState = CurveValue(crouching, crouchState, 10.f);
     }
 
-    if (!noclip) {
-        if (((bbKeyDown(keyBinds->down) ^ bbKeyDown(keyBinds->up)) | (bbKeyDown(keyBinds->right) ^ bbKeyDown(keyBinds->left)) && (!disableControls)) || forceMove>0) {
+    // Moving.
+    float temp2 = (speed * speedMultiplier) / (1.f+crouchState);
 
-            // And (Not IsZombie)) Then
-            if (crouching == 0 && (bbKeyDown(keyBinds->sprint)) && stamina > 0.f) {
-                Sprint = 2.5f;
-                stamina = stamina - timing->tickDuration * 0.5f * (1.f/staminaEffect);
-                if (stamina <= 0) {
-                    stamina = -20.f;
-                }
-            }
+    temp2 = temp2 / Max((injuries+3.f)/3.f,1.f);
+    if (injuries > 0.5f) {
+        temp2 = temp2*Min((bbSin(camAnimState/2)+1.2f),1.f);
+    }
 
-            if (currRoom->roomTemplate->name.equals("pocketdimension")) {
-                if (bbEntityY(collider)<2000*RoomScale || bbEntityY(collider)>2608*RoomScale) {
-                    stamina = 0;
-                    Speed = 0.015f;
-                    Sprint = 1.f;
-                }
-            }
+    moveAngle = WrapAngle(bbEntityYaw(collider,true)+moveAngle+90.f);
 
-            if (forceMove>0) {
-                Speed = Speed*forceMove;
-            }
-
-            float temp = modFloat(camAnimState, 360);
-            if (!disableControls) {
-                camAnimState = modFloat(camAnimState + timing->tickDuration * Min(Sprint, 1.5f) * 7, 720);
-            }
-            if (temp < 180 && modFloat(camAnimState, 360) >= 180 && !dead) {
-                //TODO: define constants for each override state
-                if (footstepOverride==0) {
-                    temp = (float)GetMaterialStepSound(collider);
-
-                    if (Sprint == 1.f) {
-                        loudness = Max(4.f,loudness);
-
-                        if (temp == STEPSOUND_METAL) {
-                            tempChn = PlaySound_SM(sndMgmt->footstepMetal[bbRand(0, 7)]);
-                        } else {
-                            tempChn = PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
-                        }
-
-                        bbChannelVolume(tempChn, (1.f-(crouching*0.6f))*userOptions->sndVolume);
-                    } else {
-                        loudness = Max(2.5f-(crouching*0.6f),loudness);
-
-                        if (temp == 1) {
-                            tempChn = PlaySound_SM(sndMgmt->footstepMetalRun[bbRand(0, 7)]);
-                        } else {
-                            tempChn = PlaySound_SM(sndMgmt->footstepRun[bbRand(0, 7)]);
-                        }
-
-                        bbChannelVolume(tempChn, (1.f-(crouching*0.6f))*userOptions->sndVolume);
-                    }
-                } else if (footstepOverride==1) {
-                    tempChn = PlaySound_SM(sndMgmt->footstepPD[bbRand(0, 2)]);
-                    bbChannelVolume(tempChn, (1.f-(crouching*0.4f))*userOptions->sndVolume);
-                } else if (footstepOverride==2) {
-                    tempChn = PlaySound_SM(sndMgmt->footstep8601[bbRand(0, 2)]);
-                    bbChannelVolume(tempChn, (1.f-(crouching*0.4f))*userOptions->sndVolume);
-                } else if (footstepOverride==3) {
-                    if (Sprint == 1.f) {
-                        loudness = Max(4.f,loudness);
-                        tempChn = PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
-                        bbChannelVolume(tempChn, (1.f-(crouching*0.6f))*userOptions->sndVolume);
-                    } else {
-                        loudness = Max(2.5f-(crouching*0.6f),loudness);
-                        tempChn = PlaySound_SM(sndMgmt->footstepRun[bbRand(0, 7)]);
-                        bbChannelVolume(tempChn, (1.f-(crouching*0.6f))*userOptions->sndVolume);
-                    }
-                }
-
-            }
-        }
-        //noclip on
+    if (isMoving) {
+        moveSpeed = CurveValue(temp2, moveSpeed, 20.f);
     } else {
-        if (bbKeyDown(keyBinds->sprint)) {
-            Sprint = 2.5f;
-        } else if ((bbKeyDown(keyBinds->crouch))) {
-            Sprint = 0.5f;
+        moveSpeed = Max(CurveValue(0.f, moveSpeed-0.1f, 1.f),0.f);
+    }
+
+    bbTranslateEntity(collider, bbCos(moveAngle)*moveSpeed * timing->tickDuration, 0, bbSin(moveAngle)*moveSpeed * timing->tickDuration, true);
+
+    forceWalk = 0.f;
+
+    // Floor collision.
+    bool collidedFloor = false;
+    for (int i = 1; i <= bbCountCollisions(collider); i++) {
+        if (bbCollisionY(collider, i) < bbEntityY(collider,true) && abs(bbCollisionNY(collider, i))>0.8f) {
+            collidedFloor = true;
         }
     }
 
-    if (bbKeyHit(keyBinds->crouch) && (!disableControls)) {
-        crouching = (!crouching);
-    }
-
-    float temp2 = (Speed * Sprint) / (1.f+crouchState);
-
-    if (noclip) {
-        camAnimState = 0;
-        moveSpeed = 0;
-        crouchState = 0;
-        crouching = 0;
-
-        bbRotateEntity(collider, WrapAngle(bbEntityPitch(cam)), WrapAngle(bbEntityYaw(cam)), 0);
-
-        // * NoClipSpeed ;TODO: reimplement
-        temp2 = temp2;
-
-        if (bbKeyDown(keyBinds->down)) {
-            bbMoveEntity(collider, 0, 0, -temp2*timing->tickDuration);
-        }
-        if (bbKeyDown(keyBinds->up)) {
-            bbMoveEntity(collider, 0, 0, temp2*timing->tickDuration);
-        }
-
-        if (bbKeyDown(keyBinds->left)) {
-            bbMoveEntity(collider, -temp2*timing->tickDuration, 0, 0);
-        }
-        if (bbKeyDown(keyBinds->right)) {
-            bbMoveEntity(collider, temp2*timing->tickDuration, 0, 0);
-        }
-
-        bbResetEntity(collider);
-    } else {
-        temp2 = temp2 / Max((injuries+3.f)/3.f,1.f);
-        if (injuries > 0.5f) {
-            temp2 = temp2*Min((bbSin(camAnimState/2)+1.2f),1.f);
-        }
-
-        bool temp = false;
-        float angle = 0.0f;
-        //If (Not IsZombie%)
-        if (bbKeyDown(keyBinds->down) && (!disableControls)) {
-            temp = true;
-            angle = 180;
-            if (bbKeyDown(keyBinds->left)) {
-                angle = 135;
-            }
-            if (bbKeyDown(keyBinds->right)) {
-                angle = -135;
-            }
-            // Or ForceMove>0
-        } else if ((bbKeyDown(keyBinds->up) && (!disableControls))) {
-            temp = true;
-            angle = 0;
-            if (bbKeyDown(keyBinds->left)) {
-                angle = 45;
-            }
-            if (bbKeyDown(keyBinds->right)) {
-                angle = -45;
-            }
-        } else if ((forceMove>0)) {
-            temp = true;
-            angle = forceAngle;
-        } else if ((!disableControls)) {
-            if (bbKeyDown(keyBinds->left)) {
-                angle = 90;
-                temp = true;
-            }
-            if (bbKeyDown(keyBinds->right)) {
-                angle = -90;
-                temp = true;
-            }
-        }
-        //Else
-        //	temp=True
-        //	angle = ForceAngle
-        //EndIf
-
-        angle = WrapAngle(bbEntityYaw(collider,true)+angle+90.f);
-
-        if ((int)(temp)) {
-            moveSpeed = CurveValue(temp2, moveSpeed, 20.f);
-        } else {
-            moveSpeed = Max(CurveValue(0.f, moveSpeed-0.1f, 1.f),0.f);
-        }
-
-        if (!disableControls) {
-            bbTranslateEntity(collider, bbCos(angle)*moveSpeed * timing->tickDuration, 0, bbSin(angle)*moveSpeed * timing->tickDuration, true);
-        }
-
-        bool collidedFloor = false;
-        for (int i = 1; i <= bbCountCollisions(collider); i++) {
-            if (bbCollisionY(collider, i) < bbEntityY(collider,true) && abs(bbCollisionNY(collider, i))>0.8f) {
-                collidedFloor = true;
-            }
-        }
-
-        if (collidedFloor == true) {
-            if (dropSpeed < - 0.07f) {
-                if (footstepOverride==0) {
-                    if (GetMaterialStepSound(collider) == 1) {
-                        PlaySound_SM(sndMgmt->footstepMetal[bbRand(0, 7)]);
-                    } else {
-                        PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
-                    }
-                } else if ((footstepOverride==1)) {
-                    PlaySound_SM(sndMgmt->footstepPD[bbRand(0, 2)]);
-                } else if ((footstepOverride==2)) {
-                    PlaySound_SM(sndMgmt->footstep8601[bbRand(0, 2)]);
+    if (collidedFloor) {
+        if (dropSpeed < - 0.07f) {
+            if (footstepOverride==0) {
+                if (GetMaterialStepSound(collider) == 1) {
+                    PlaySound_SM(sndMgmt->footstepMetal[bbRand(0, 7)]);
                 } else {
                     PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
                 }
-                loudness = Max(3.f,loudness);
+            } else if ((footstepOverride==1)) {
+                PlaySound_SM(sndMgmt->footstepPD[bbRand(0, 2)]);
+            } else if ((footstepOverride==2)) {
+                PlaySound_SM(sndMgmt->footstep8601[bbRand(0, 2)]);
+            } else {
+                PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
             }
-            dropSpeed = 0;
-        } else {
-            dropSpeed = Min(Max(dropSpeed - 0.006f * timing->tickDuration, -2.f), 0.f);
+            loudness = Max(3.f,loudness);
         }
-
-        if (!disableControls) {
-            bbTranslateEntity(collider, 0, dropSpeed * timing->tickDuration, 0);
-        }
-    }
-
-    forceMove = 0.f;
-
-    // if (injuries > 1.f) {
-    //     temp2 = bloodloss;
-    //     blurTimer = Max(Max(bbSin(TimeInPosMilliSecs()/100.f)*bloodloss*30.f,bloodloss*2*(2.f-crouchState)),blurTimer);
-    //     bloodloss = Min(bloodloss + (Min(injuries,3.5f)/300.f)*timing->tickDuration,100);
-
-    //     if (temp2 <= 60 && bloodloss > 60) {
-    //         Msg = "You are feeling faint from the amount of blood you loss.";
-    //         MsgTimer = 70*4;
-    //     }
-    // }
-
-    UpdateInfect();
-
-    if (bloodloss > 0) {
-        if (bbRnd(200)<Min(injuries,4.f)) {
-            Pivot* pvt = bbCreatePivot();
-            bbPositionEntity(pvt, bbEntityX(collider)+bbRnd(-0.05f,0.05f),bbEntityY(collider)-0.05f,bbEntityZ(collider)+bbRnd(-0.05f,0.05f));
-            bbTurnEntity(pvt, 90, 0, 0);
-            bbEntityPick(pvt,0.3f);
-
-            Decal* de = CreateDecal(bbRand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90.f, (float)bbRand(360), 0.f);
-            de->size = bbRnd(0.03f,0.08f)*Min(injuries,3.f);
-            bbEntityAlpha(de->obj, 1.f);
-            bbScaleSprite(de->obj, de->size, de->size);
-            tempChn = PlaySound2(bloodDripSFX[bbRand(0,3)]);
-            bbChannelVolume(tempChn, bbRnd(0.f,0.8f)*userOptions->sndVolume);
-            bbChannelPitch(tempChn, bbRand(20000,30000));
-
-            bbFreeEntity(pvt);
-        }
-
-        camZoom = Max(camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.f)+1.f)*bloodloss*0.2f);
-
-        if (bloodloss > 60) {
-            crouching = true;
-        }
-        if (bloodloss >= 100) {
-            kill();
-            heartbeatIntensity = 0.f;
-        } else if (bloodloss > 80.f) {
-            heartbeatIntensity = Max(150-(bloodloss-80)*5,heartbeatIntensity);
-        } else if (bloodloss > 35.f) {
-            heartbeatIntensity = Max(70+bloodloss,heartbeatIntensity);
-        }
-    }
-
-    if (!disableControls) {
-        if (bbKeyHit(keyBinds->blink)) {
-            blinkTimer = 0;
-        }
-        if (bbKeyDown(keyBinds->blink) && blinkTimer < - 10) {
-            blinkTimer = -10;
-        }
-    }
-
-
-    if (heartbeatIntensity > 0) {
-        tempChn = PlaySound2(heartbeatSFX);
-        bbChannelVolume(tempChn, Max(Min((heartbeatIntensity-80.f)/60.f,1.f),0.f)*userOptions->sndVolume);
-
-        heartbeatIntensity -= timing->tickDuration;
-    }
-
-    // Equipped items.
-    if (isEquipped("gasmask")) {
-        bbShowEntity(overlays[OVERLAY_GASMASK]);
+        dropSpeed = 0;
     } else {
-        bbHideEntity(overlays[OVERLAY_GASMASK]);
+        dropSpeed = Min(Max(dropSpeed - 0.006f * timing->tickDuration, -2.f), 0.f);
     }
 
+    bbTranslateEntity(collider, 0, dropSpeed * timing->tickDuration, 0);
 }
 
-void MouseLook() {
+void Player::updateBlink() {
+    if (blinkTimer < 0) {
+        if (blinkTimer > - 5) {
+            darkA = Max(darkA, bbSin(abs(blinkTimer * 18.f)));
+        } else if (blinkTimer > - 15) {
+            darkA = 1.f;
+        } else {
+            darkA = Max(darkA, abs(bbSin(blinkTimer * 18.f)));
+        }
+
+        if (blinkTimer <= - 20) {
+            //Randomizes the frequency of blinking.
+            // TODO: Scales with difficulty.
+            blinkFreq = bbRnd(490,700);
+            blinkTimer = blinkFreq;
+        }
+
+        blinkTimer -= timing->tickDuration;
+    } else {
+        blinkTimer -= timing->tickDuration * 0.6f * blinkEffect;
+        //TODO: fix
+        //If (EyeIrritation > 0) Then mainPlayer\blinkTimer=BlinkTimer-Min(EyeIrritation / 100.f + 1.f, 4.f) * timing\tickDuration
+
+        darkA = Max(darkA, 0.f);
+    }
+
+    //TODO: fix
+    //EyeIrritation = Max(0, EyeIrritation - timing\tickDuration)
+
+    if (mainPlayer->blinkEffectTimer > 0) {
+        mainPlayer->blinkEffect = mainPlayer->blinkEffect - (timing->tickDuration/70);
+    } else {
+        mainPlayer->blinkEffect = 1.f;
+    }
+}
+
+void Player::updateNoClip() {
+    speed = 1.f;
+    if (bbKeyDown(keyBinds->sprint)) {
+        speed = 2.5f;
+    } else if (bbKeyDown(keyBinds->crouch)) {
+        speed = 0.5f;
+    }
+
+    camAnimState = 0;
+    moveSpeed = 0;
+    crouchState = 0;
+    crouching = 0;
+
+    bbRotateEntity(collider, WrapAngle(bbEntityPitch(cam)), WrapAngle(bbEntityYaw(cam)), 0);
+
+    // speed *= NoClipSpeed ;TODO: reimplement
+
+    speed *= timing->tickDuration;
+    if (bbKeyDown(keyBinds->down)) {
+        bbMoveEntity(collider, 0, 0, -speed);
+    }
+    if (bbKeyDown(keyBinds->up)) {
+        bbMoveEntity(collider, 0, 0, speed);
+    }
+
+    if (bbKeyDown(keyBinds->left)) {
+        bbMoveEntity(collider, -speed, 0, 0);
+    }
+    if (bbKeyDown(keyBinds->right)) {
+        bbMoveEntity(collider, speed, 0, 0);
+    }
+
+    bbResetEntity(collider);
+}
+
+void Player::mouseLook() {
     mainPlayer->camShake = Max(mainPlayer->camShake - (timing->tickDuration / 10), 0);
 
     //CameraZoomTemp = CurveValue(mainPlayer\camZoom,CameraZoomTemp, 5.f)
@@ -697,6 +732,89 @@ void MouseLook() {
     //	HideEntity(mainPlayer\overlays[OVERLAY_NIGHTVISION])
     //	;EntityTexture(Fog, FogTexture)
     //EndIf
+}
+
+void Player::updateItemUse() {
+    for (int i = 0; i < wornInventory->getSize(); i++) {
+        wornInventory->getItem(i)->updateUse();
+    }
+
+    // Equipped items.
+    if (isEquipped("gasmask")) {
+        bbShowEntity(overlays[OVERLAY_GASMASK]);
+    } else {
+        bbHideEntity(overlays[OVERLAY_GASMASK]);
+    }
+}
+
+// TODO: Re-implement.
+void Player::updateInjuries() {
+    UpdateInfect();
+
+    // if (injuries > 1.f) {
+    //     temp2 = bloodloss;
+    //     blurTimer = Max(Max(bbSin(TimeInPosMilliSecs()/100.f)*bloodloss*30.f,bloodloss*2*(2.f-crouchState)),blurTimer);
+    //     bloodloss = Min(bloodloss + (Min(injuries,3.5f)/300.f)*timing->tickDuration,100);
+
+    //     if (temp2 <= 60 && bloodloss > 60) {
+    //         Msg = "You are feeling faint from the amount of blood you loss.";
+    //         MsgTimer = 70*4;
+    //     }
+    // }
+
+    // if (bloodloss > 0) {
+    //     if (bbRnd(200)<Min(injuries,4.f)) {
+    //         Pivot* pvt = bbCreatePivot();
+    //         bbPositionEntity(pvt, bbEntityX(collider)+bbRnd(-0.05f,0.05f),bbEntityY(collider)-0.05f,bbEntityZ(collider)+bbRnd(-0.05f,0.05f));
+    //         bbTurnEntity(pvt, 90, 0, 0);
+    //         bbEntityPick(pvt,0.3f);
+
+    //         Decal* de = CreateDecal(bbRand(DECAL_BLOOD_DROP1, DECAL_BLOOD_DROP2), bbPickedX(), bbPickedY()+0.005f, bbPickedZ(), 90.f, (float)bbRand(360), 0.f);
+    //         de->size = bbRnd(0.03f,0.08f)*Min(injuries,3.f);
+    //         bbEntityAlpha(de->obj, 1.f);
+    //         bbScaleSprite(de->obj, de->size, de->size);
+    //         tempChn = PlaySound2(bloodDripSFX[bbRand(0,3)]);
+    //         bbChannelVolume(tempChn, bbRnd(0.f,0.8f)*userOptions->sndVolume);
+    //         bbChannelPitch(tempChn, bbRand(20000,30000));
+
+    //         bbFreeEntity(pvt);
+    //     }
+
+    //     camZoom = Max(camZoom, (bbSin((float)(TimeInPosMilliSecs())/20.f)+1.f)*bloodloss*0.2f);
+
+    //     if (bloodloss > 60) {
+    //         crouching = true;
+    //     }
+    //     if (bloodloss >= 100) {
+    //         kill();
+    //         heartbeatIntensity = 0.f;
+    //     } else if (bloodloss > 80.f) {
+    //         heartbeatIntensity = Max(150-(bloodloss-80)*5,heartbeatIntensity);
+    //     } else if (bloodloss > 35.f) {
+    //         heartbeatIntensity = Max(70+bloodloss,heartbeatIntensity);
+    //     }
+    // }
+
+    // TODO: Re-implement.
+    // if (heartbeatIntensity > 0) {
+    //     tempChn = PlaySound2(heartbeatSFX);
+    //     bbChannelVolume(tempChn, Max(Min((heartbeatIntensity-80.f)/60.f,1.f),0.f)*userOptions->sndVolume);
+
+    //     heartbeatIntensity -= timing->tickDuration;
+    // }
+}
+
+void Player::update895Sanity() {
+    if (sanity895 < 0) {
+        sanity895 = Min(sanity895 + timing->tickDuration, 0.f);
+        if (sanity895 < (-200)) {
+            darkA = Max(Min((-sanity895 - 200) / 700.f, 0.6f), darkA);
+            if (!dead) {
+                //HeartBeatVolume = Min(abs(mainPlayer\sanity895+200)/500.f,1.f)
+                heartbeatIntensity = Max(70 + abs(sanity895+200)/6.f, heartbeatIntensity);
+            }
+        }
+    }
 }
 
 void Player::toggleInventory() {

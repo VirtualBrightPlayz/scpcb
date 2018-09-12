@@ -281,7 +281,6 @@ void UpdateGame() {
     timing->fps = Max(0,timing->fps*0.99f + instantFramerate*0.01f);
 
     String rn;
-    float darkA;
 
     // Start FixedUpdate.
     while (timing->accumulator>0.f) {
@@ -348,7 +347,6 @@ void UpdateGame() {
 
                 CanSave = true;
                 UpdateEmitters();
-                MouseLook();
                 mainPlayer->update();
                 InFacility = CheckForPlayerInFacility();
                 UpdateDoors();
@@ -374,128 +372,6 @@ void UpdateGame() {
             //	mainPlayer\blurTimer = Max(Min(0.95f, mainPlayer\blurTimer / 1000.f), mainPlayer\blurTimer)
             //	mainPlayer\blurTimer = Max(mainPlayer\blurTimer - timing\tickDuration, 0.f)
             //EndIf
-
-
-
-            darkA = 0.f;
-            // TODO: Move all this to player update.
-            if (!IsPaused()) {
-                if (mainPlayer->sanity895 < 0) {
-                    mainPlayer->sanity895 = Min(mainPlayer->sanity895 + timing->tickDuration, 0.f);
-                    if (mainPlayer->sanity895 < (-200)) {
-                        darkA = Max(Min((-mainPlayer->sanity895 - 200) / 700.f, 0.6f), darkA);
-                        if (!mainPlayer->dead) {
-                            //HeartBeatVolume = Min(abs(mainPlayer\sanity895+200)/500.f,1.f)
-                            mainPlayer->heartbeatIntensity = Max(70 + abs(mainPlayer->sanity895+200)/6.f,mainPlayer->heartbeatIntensity);
-                        }
-                    }
-                }
-
-                //TODO: fix
-                //			If (EyeStuck > 0) Then
-                //				mainPlayer\blinkTimer = mainPlayer\blinkFreq
-                //				EyeStuck = Max(EyeStuck-timing\tickDuration,0)
-                //
-                //				If (EyeStuck < 9000) Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (9000-EyeStuck)*0.5f)
-                //				If (EyeStuck < 6000) Then darkA = Min(Max(darkA, (6000-EyeStuck)/5000.f),1.f)
-                //				If (EyeStuck < 9000 And EyeStuck+timing\tickDuration =>9000) Then
-                //					Msg = "The eyedrops are causing your eyes to tear up."
-                //					MsgTimer = 70*6
-                //				EndIf
-                //			EndIf
-
-                if (mainPlayer->blinkTimer < 0) {
-                    if (mainPlayer->blinkTimer > - 5) {
-                        darkA = Max(darkA, bbSin(abs(mainPlayer->blinkTimer * 18.f)));
-                    } else if ((mainPlayer->blinkTimer > - 15)) {
-                        darkA = 1.f;
-                    } else {
-                        darkA = Max(darkA, abs(bbSin(mainPlayer->blinkTimer * 18.f)));
-                    }
-
-                    if (mainPlayer->blinkTimer <= - 20) {
-                        //Randomizes the frequency of blinking. Scales with difficulty.
-                        switch (SelectedDifficulty->otherFactors) {
-                            case EASY: {
-                                mainPlayer->blinkFreq = bbRnd(490,700);
-                            } break;
-                            case NORMAL: {
-                                mainPlayer->blinkFreq = bbRnd(455,665);
-                            } break;
-                            case HARD: {
-                                mainPlayer->blinkFreq = bbRnd(420,630);
-                            } break;
-                        }
-                        mainPlayer->blinkTimer = mainPlayer->blinkFreq;
-                    }
-
-                    mainPlayer->blinkTimer = mainPlayer->blinkTimer - timing->tickDuration;
-                } else {
-                    mainPlayer->blinkTimer = mainPlayer->blinkTimer - timing->tickDuration * 0.6f * mainPlayer->blinkEffect;
-                    //TODO: fix
-                    //If (EyeIrritation > 0) Then mainPlayer\blinkTimer=BlinkTimer-Min(EyeIrritation / 100.f + 1.f, 4.f) * timing\tickDuration
-
-                    darkA = Max(darkA, 0.f);
-                }
-
-                //TODO: fix
-                //EyeIrritation = Max(0, EyeIrritation - timing\tickDuration)
-
-                if (mainPlayer->blinkEffectTimer > 0) {
-                    mainPlayer->blinkEffect = mainPlayer->blinkEffect - (timing->tickDuration/70);
-                } else {
-                    mainPlayer->blinkEffect = 1.f;
-                }
-
-                //TODO: reimplement
-                //LightBlink = Max(LightBlink - (timing\tickDuration / 35.f), 0)
-                //If (LightBlink > 0) Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3f, 0.8f)), 1.f)
-
-                if (CurrGameState==GAMESTATE_SCP294) {
-                    darkA = 1.f;
-                }
-
-                if (!mainPlayer->isEquipped("nvgoggles")) {
-                    darkA = Max(0.f, darkA);
-                }
-
-                if (mainPlayer->dead) {
-                    CurrGameState = GAMESTATE_PLAYING;
-                    mainPlayer->selectedItem = nullptr;
-                    SelectedScreen = nullptr;
-                    SelectedMonitor = nullptr;
-                    //mainPlayer\blurTimer = abs(mainPlayer\fallTimer*5)
-                    //mainPlayer\fallTimer=mainPlayer\fallTimer-(timing\tickDuration*0.8f)
-                    if (mainPlayer->fallTimer < - 360) {
-                        CurrGameState = GAMESTATE_PAUSED;
-                        pauseMenu->currState = PauseMenuState::Dead;
-                        //TODO: fix
-                        //If (SelectedEnding <> "") Then EndingTimer = Min(mainPlayer\fallTimer,-0.1f)
-                    }
-                    darkA = Max(darkA, Min(abs(mainPlayer->fallTimer / 400.f), 1.f));
-                }
-
-                if (mainPlayer->fallTimer < 0) {
-                    CurrGameState = GAMESTATE_PLAYING;
-                    mainPlayer->selectedItem = nullptr;
-                    SelectedScreen = nullptr;
-                    SelectedMonitor = nullptr;
-                    mainPlayer->blurTimer = abs(mainPlayer->fallTimer*10);
-                    mainPlayer->fallTimer = mainPlayer->fallTimer-timing->tickDuration;
-                    darkA = Max(darkA, Min(abs(mainPlayer->fallTimer / 400.f), 1.f));
-                }
-
-                if (mainPlayer->selectedItem != nullptr) {
-                    //if (mainPlayer->selectedItem->itemTemplate->name.equals("navigator") || mainPlayer->selectedItem->itemTemplate->name.equals("nav")) {
-                    //    darkA = Max(darkA, 0.5f);
-                    //}
-                }
-                if (SelectedScreen != nullptr) {
-                    darkA = Max(darkA, 0.5f);
-                }
-
-                bbEntityAlpha(mainPlayer->overlays[OVERLAY_BLACK], darkA);
-            }
 
             if (mainPlayer->lightFlash > 0) {
                 bbShowEntity(mainPlayer->overlays[OVERLAY_WHITE]);

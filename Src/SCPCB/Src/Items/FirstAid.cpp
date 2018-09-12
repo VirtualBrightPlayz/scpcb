@@ -40,8 +40,8 @@ void FirstAid::drawUse() {
 
     int width = 300;
     int height = 20;
-    x = userOptions->screenWidth / 2 - width / 2;
-    y = userOptions->screenHeight / 2 + 30 - 100;
+    x -= width / 2;
+    y -= 70;
 
     bbRect(x, y, width + 4, height, false);
     // TODO: wtf

@@ -32,6 +32,27 @@ const int OVERLAY_008 = 5;
 
 // Structs.
 struct Player {
+private:
+    float moveAngle;
+    // Any movement happening. For acceleration.
+    bool isMoving;
+    bool isSprinting;
+    bool crouched;
+    float speed;
+    // Multipliers this with speed. Used for sprint, crouching, ect.
+    float speedMultiplier;
+
+    float darkA;
+
+    void updateInput();
+    void updateMove();
+    void updateBlink();
+    void updateNoClip();
+    void mouseLook();
+
+    void updateItemUse();
+    void updateInjuries();
+    void update895Sanity();
 public:
     Player();
     ~Player();
@@ -76,6 +97,7 @@ public:
     float blinkTimer;
     float stamina;
 
+    // TODO: Enum.
     int footstepOverride;
     //------------
 
@@ -92,7 +114,7 @@ public:
 
     float sanity895;
 
-    float forceMove;
+    float forceWalk;
     float forceAngle;
 
     bool disableControls;
@@ -157,9 +179,6 @@ extern int mouse_top_limit;
 extern int mouse_bottom_limit;
 extern float mouse_x_speed_1;
 extern float mouse_y_speed_1;
-
-// Functions.
-void MouseLook();
 
 }
 #endif // PLAYER_H_INCLUDED

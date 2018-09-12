@@ -38,8 +38,6 @@ struct String {
         String toUpper() const;
         String toLower() const;
         String trim() const;
-        String unHex() const;
-        String resourcePath() const;
 
         String& operator=(const String& other);
 

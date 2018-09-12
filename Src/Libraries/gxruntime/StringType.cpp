@@ -329,54 +329,6 @@ String String::trim() const {
     return retVal;
 }
 
-String String::resourcePath() const {
-    return *this;
-}
-
-String String::unHex() const {
-    int isUnhexing = 0;
-
-    wchar resultBuffer[64];
-    int resultSize = 0;
-
-    int tempAscVal = 0;
-    for (int i = 0; i<size(); i++) {
-        if (isUnhexing == 0) {
-            if (wbuffer[i] == L'%') {
-                isUnhexing = 1;
-            }
-            else {
-                resultBuffer[resultSize] = wbuffer[i];
-                resultSize++;
-            }
-        }
-        else {
-            int toDec = 0;
-            if (wbuffer[i] >= L'0' && wbuffer[i] <= L'9') {
-                toDec = wbuffer[i] - L'0';
-            }
-            else if (wbuffer[i] >= L'a' && wbuffer[i] <= L'f') {
-                toDec = wbuffer[i] + 10 - L'a';
-            }
-            else if (wbuffer[i] >= L'A' && wbuffer[i] <= L'F') {
-                toDec = wbuffer[i] + 10 - L'A';
-            }
-            if (isUnhexing == 1) {
-                tempAscVal = toDec << 4;
-                isUnhexing = 2;
-            }
-            else if (isUnhexing == 2) {
-                tempAscVal |= toDec;
-                resultBuffer[resultSize] = tempAscVal;
-                resultSize++;
-                isUnhexing = 0;
-            }
-        }
-    }
-    resultBuffer[resultSize] = '\0';
-    return String(resultBuffer);
-}
-
 std::vector<String> String::split(const String& needle, bool removeEmptyEntries) const {
 	std::vector<String> retVal;
 	String haystack = String(*this);
