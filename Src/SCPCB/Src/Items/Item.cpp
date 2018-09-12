@@ -24,6 +24,8 @@ Item::Item(const String& meshPath, float scale, ItemPickSound sound, WornItemSlo
     markedForRemoval = false;
 
     collider = bbCreatePivot();
+    bbEntityRadius(collider, 0.01f);
+    bbEntityPickMode(collider, 1, false);
 
     bbEntityType(collider, HIT_ITEM);
     bbResetEntity(collider);
@@ -37,6 +39,9 @@ Item::Item(const String& meshPath, float scale, ItemPickSound sound, WornItemSlo
     invImg = nullptr;
     dist = 0.f;
     dropSpeed = 0.f;
+
+    bbShowEntity(collider);
+    bbShowEntity(mesh);
 }
 
 Item::~Item() {
@@ -59,7 +64,8 @@ Item::~Item() {
 }
 
 void Item::setCoords(float x, float y, float z) {
-    bbPositionEntity(collider, x, y, z, true);
+    bbPositionEntity(collider, x, y, z);
+    bbResetEntity(collider);
 }
 
 void Item::generateInvImg() {
@@ -149,6 +155,8 @@ void Item::update() {
             dist = bbEntityDistanceSquared(mainPlayer->collider, collider);
         }
 
+        //std::cout << "x: " + String(bbEntityX(collider)) + " y: " + String(bbEntityY(collider)) + " z: " + String(bbEntityZ(collider)) + "\n";
+
         if (dist < hideDistSqr) {
             bbShowEntity(collider);
 
@@ -174,7 +182,7 @@ void Item::update() {
             if (bbEntityCollided(collider, HIT_MAP)) {
                 dropSpeed = 0;
             } else {
-                std::cout << String(dropSpeed) + "\n";
+                //std::cout << String(dropSpeed) + "\n";
                 dropSpeed = dropSpeed - 0.0004f * timing->tickDuration;
                 bbTranslateEntity(collider, 0.f, dropSpeed * timing->tickDuration, 0.f);
             }
@@ -208,6 +216,7 @@ void Item::update() {
                 }
             }
 
+            // TODO: This never actually executes since the item's update calls stop before it has a chance to be this far away.
             if (bbEntityY(collider) < - 35.0f) {
                 std::cout << "remove: " + getType() << "\n";
                 markedForRemoval = true;

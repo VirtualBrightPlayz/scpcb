@@ -14,8 +14,10 @@ FirstAid::FirstAid() : Item("GFX/Items/firstaid/firstaid.b3d", 10.f, ItemPickSou
     type = "firstaid";
 }
 
-FirstAid::FirstAid(float x, float y, float z) : FirstAid() {
-    bbPositionEntity(collider, x, y, z);
+FirstAid* FirstAid::spawn(float x, float y, float z) {
+    FirstAid* it = new FirstAid();
+    it->setCoords(x, y, z);
+    return it;
 }
 
 String FirstAid::getType() {

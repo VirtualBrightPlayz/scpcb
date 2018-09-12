@@ -16,7 +16,7 @@ private:
     void updateUse();
     void drawUse();
 public:
-    FirstAid(float x, float y, float z);
+    static FirstAid* spawn(float x, float y, float z);
 
     String getType();
     String getInvName();

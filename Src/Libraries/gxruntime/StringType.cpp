@@ -350,3 +350,16 @@ std::vector<String> String::split(const String& needle, bool removeEmptyEntries)
 
 	return retVal;
 }
+
+String String::join(const std::vector<String>& vect, const String& separator) {
+    if (vect.size() <= 0) {
+        return String("");
+    }
+
+    String retVal = vect[0];
+    for (int i = 1; i < vect.size(); i++) {
+        retVal = retVal + separator + vect[i];
+    }
+
+    return retVal;
+}

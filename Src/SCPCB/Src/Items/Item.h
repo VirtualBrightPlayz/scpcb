@@ -13,7 +13,7 @@ namespace CBN {
 
 class Inventory;
 
-// FIXME: MOVE SOMEWHERE RELEVANT
+// TODO: MOVE SOMEWHERE RELEVANT
 enum class Setting914 {
     Rough,
     Coarse,

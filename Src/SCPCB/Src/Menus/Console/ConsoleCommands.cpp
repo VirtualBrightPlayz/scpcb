@@ -5,7 +5,6 @@
 #include "ConsoleCommands.h"
 #include "../../Player/Player.h"
 #include "../../Items/Item.h"
-#include "../../Items/GasMask.h"
 #include "../../Map/MapSystem.h"
 #include "../../Map/Doors.h"
 #include "../../AssetMgmt/Audio.h"
@@ -13,6 +12,10 @@
 #include "../../NPCs/NPCs.h"
 #include "../../Config/Options.h"
 #include "../../AssetMgmt/TextMgmt.h"
+
+
+#include "../../Items/GasMask.h"
+#include "../../Items/FirstAid.h"
 
 namespace CBN {
 
@@ -261,15 +264,18 @@ void Cmd_SpawnItem::execute(std::vector<String> args) {
         return;
     }
 
-    //for (int i = 0; i < ItemTemplate::getListSize(); i++) {
-    //    ItemTemplate* itt = ItemTemplate::getObject(i);
-
-    //    if (itt->name.equals(args[0])) {
-    //        ConsoleMsg::create(itt->invName + " spawned.");
-    //        CreateItem(itt->name, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->collider));
-    //        return;
-    //    }
-    //}
+    String name = String::join(args);
+    float x = bbEntityX(mainPlayer->collider);
+    float y = bbEntityY(mainPlayer->cam);
+    float z = bbEntityZ(mainPlayer->collider);
+    if (name.equals("gasmask")) {
+        GasMask::spawn(x, y, z);
+        return;
+    }
+    if (name.equals("firstaid") || name.equals("firstaidkit")) {
+        FirstAid::spawn(x, y, z);
+        return;
+    }
 
     ConsoleMsg::create("Item not found.", 255, 150, 0);
 }
