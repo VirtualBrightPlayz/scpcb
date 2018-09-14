@@ -23,15 +23,76 @@
 
 namespace CBN {
 
-// Structs.
+// TODO: Clean up.
 Player::Player() {
-    // TODO: Remove and clean up this function.
-    memset(this, 0, sizeof(Player));
+    disableCameraControls = false;
+    disableControls = false;
+
+    moveAngle = 0.f;
+    isMoving = false;
+    isSprinting = false;
+    crouched = false;
+    speed = 0.f;
+    speedMultiplier = 0.f;
+    overlayBlackAlpha = 0.f;
+
+    headPitch = 0.f;
+    headYaw = 0.f;
+    camShake = 0.f;
+    camAnimState = 0.f;
+    camZoom = 0.f;
+    camFogNear = 0.f;
+    camFogFar = 0.f;
+
+    grabbedEntity = nullptr;
+    closestItem = nullptr;
+    selectedItem = nullptr;
+    hoveredItemCell = nullptr;
+    closestButton = nullptr;
+    closestDoor = nullptr;
+    selectedDoor = nullptr;
+
+    crouching = false;
+    crouchState = 0.f;
+    moveSpeed = 0.f;
+    dropSpeed = 0.f;
+
+    blinkFreq = 0.f;
+    blinkTimer = 0.f;
+    stamina = 0.f;
+
+    footstepOverride = 0;
+    dead = false;
+    fallTimer = 0.f;
+    injuries = 0.f;
+    bloodloss = 0.f;
+    heartbeatIntensity = 0.f;
+    infect008 = 0.f;
+    sanity895 = 0.f;
+
+    forceWalk = 0.f;
+    forceAngle = 0.f;
+
+    blinkEffect = 0.f;
+    blinkEffectTimer = 0.f;
+    staminaEffect = 0.f;
+    staminaEffectTimer = 0.f;
+
+    lightFlash = 0.f;
+    blurTimer = 0.f;
+    loudness = 0.f;
+
+    breathChn = nullptr;
+    currRoom = nullptr;
+
+    godMode = false;
+    noclip = false;
 
     inventory = new Inventory(PLAYER_INV_COUNT, 3);
     wornInventory = new Inventory(WORNITEM_SLOT_COUNT, WORNITEM_SLOT_COUNT);
     wornInventory->displayVertical = true;
     wornInventory->xOffset -= 200;
+    openInventory = nullptr;
 
     cam = bbCreateCamera();
     bbCameraViewport(cam, 0, 0, userOptions->screenWidth, userOptions->screenHeight);
@@ -45,6 +106,7 @@ Player::Player() {
     Texture* fogTexture = bbLoadTexture("GFX/Overlays/fog.jpg", 1);
     //FogNVTexture = LoadTexture("GFX/fogNV.jpg", 1)
 
+    // TODO: Re-scale these when the resolution changes.
     float scaleWidth = userOptions->screenWidth / 1024.f;
     float scaleHeight = MenuScale * 0.8f;
 

@@ -42,7 +42,7 @@ private:
     bool crouched;
     float speed;
     const float DEFAULT_SPEED = 0.018f;
-    // Multipliers this with speed. Used for sprint, crouching, ect.
+    // Multiplied with speed. Used for sprint, crouching, ect.
     float speedMultiplier;
 
     float overlayBlackAlpha;
