@@ -25,6 +25,7 @@ namespace CBN {
 
 // Structs.
 Player::Player() {
+    // TODO: Remove and clean up this function.
     memset(this, 0, sizeof(Player));
 
     inventory = new Inventory(PLAYER_INV_COUNT, 3);
@@ -204,6 +205,9 @@ void Player::update() {
     speed = DEFAULT_SPEED;
     overlayBlackAlpha = 0.f;
 
+    if (!disableCameraControls) {
+        updateMouseInput();
+    }
     mouseLook();
 
     if (!noclip) {
@@ -212,6 +216,7 @@ void Player::update() {
         }
         updateMove();
     } else {
+        // Input is also handled here since the two should always be intertwined.
         updateNoClip();
     }
 
@@ -343,6 +348,23 @@ void Player::updateInput() {
 
     if (bbKeyHit(keyBinds->crouch)) {
         crouching = !crouching;
+    }
+}
+
+void Player::updateMouseInput() {
+    // -- Update the smoothing que To smooth the movement of the mouse.
+    mouse_x_speed_1 = CurveValue(bbMouseXSpeed() * (userOptions->mouseSensitivity + 0.6f) , mouse_x_speed_1, 6.f / (userOptions->mouseSensitivity + 1.f));
+    if ((int)(mouse_x_speed_1) == (int)(NAN)) {
+        mouse_x_speed_1 = 0;
+    }
+
+    if (userOptions->invertMouseY) {
+        mouse_y_speed_1 = CurveValue(-bbMouseYSpeed() * (userOptions->mouseSensitivity + 0.6f), mouse_y_speed_1, 6.f/(userOptions->mouseSensitivity+1.f));
+    } else {
+        mouse_y_speed_1 = CurveValue(bbMouseYSpeed() * (userOptions->mouseSensitivity + 0.6f), mouse_y_speed_1, 6.f/(userOptions->mouseSensitivity+1.f));
+    }
+    if ((int)(mouse_y_speed_1) == (int)(NAN)) {
+        mouse_y_speed_1 = 0;
     }
 }
 
@@ -494,20 +516,6 @@ void Player::mouseLook() {
 
         //RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), 0)
         //moveentity player, side, up, 0
-        // -- Update the smoothing que To smooth the movement of the mouse.
-        mouse_x_speed_1 = CurveValue(bbMouseXSpeed() * (userOptions->mouseSensitivity + 0.6f) , mouse_x_speed_1, 6.f / (userOptions->mouseSensitivity + 1.f));
-        if ((int)(mouse_x_speed_1) == (int)(Nan1)) {
-            mouse_x_speed_1 = 0;
-        }
-
-        if (userOptions->invertMouseY) {
-            mouse_y_speed_1 = CurveValue(-bbMouseYSpeed() * (userOptions->mouseSensitivity + 0.6f), mouse_y_speed_1, 6.f/(userOptions->mouseSensitivity+1.f));
-        } else {
-            mouse_y_speed_1 = CurveValue(bbMouseYSpeed() * (userOptions->mouseSensitivity + 0.6f), mouse_y_speed_1, 6.f/(userOptions->mouseSensitivity+1.f));
-        }
-        if ((int)(mouse_y_speed_1) == (int)(Nan1)) {
-            mouse_y_speed_1 = 0;
-        }
 
         //TODO: CHANGE THESE NAMES
         float the_yaw = mouse_x_speed_1 * mouselook_x_inc;

@@ -33,6 +33,8 @@ const int OVERLAY_008 = 5;
 // Structs.
 struct Player {
 private:
+    bool disableCameraControls;
+
     float moveAngle;
     // Any movement happening. For acceleration.
     bool isMoving;
@@ -46,6 +48,7 @@ private:
     float overlayBlackAlpha;
 
     void updateInput();
+    void updateMouseInput();
     void updateMove();
     void updateNoClip();
     void mouseLook();
