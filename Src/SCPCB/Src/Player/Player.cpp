@@ -3,6 +3,7 @@
 #include <bbgraphics.h>
 #include <bbinput.h>
 #include <bbmath.h>
+#include <cmath>
 
 #include "Player.h"
 #include "../AssetMgmt/Audio.h"
@@ -108,7 +109,7 @@ Player::Player() {
     bbEntityBlend(overlays[OVERLAY_BLACK], 1);
     bbEntityOrder(overlays[OVERLAY_BLACK], -1002);
     bbTranslateEntity(overlays[OVERLAY_BLACK], 0, 0, 1.f);
-    bbEntityAlpha(overlays[OVERLAY_BLACK], 0.f);
+    bbEntityAlpha(overlays[OVERLAY_BLACK], overlayBlackAlpha);
 
     Texture* lightTexture = bbCreateTexture(1024, 1024, 1 + 2);
     bbSetBuffer(bbTextureBuffer(lightTexture));
@@ -200,7 +201,8 @@ void Player::update() {
     isMoving = false;
     isSprinting = false;
     speedMultiplier = 1.f;
-    speed = 0.018f; // TODO: Constant this.
+    speed = DEFAULT_SPEED;
+    overlayBlackAlpha = 0.f;
 
     mouseLook();
 
@@ -214,72 +216,8 @@ void Player::update() {
     }
 
     updateBlink();
+    updateOverlays();
     updateItemUse();
-
-    // Dimming the screen.
-    float darkA = 0.f;
-
-    //TODO: fix
-    //			If (EyeStuck > 0) Then
-    //				mainPlayer\blinkTimer = mainPlayer\blinkFreq
-    //				EyeStuck = Max(EyeStuck-timing\tickDuration,0)
-    //
-    //				If (EyeStuck < 9000) Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (9000-EyeStuck)*0.5f)
-    //				If (EyeStuck < 6000) Then darkA = Min(Max(darkA, (6000-EyeStuck)/5000.f),1.f)
-    //				If (EyeStuck < 9000 And EyeStuck+timing\tickDuration =>9000) Then
-    //					Msg = "The eyedrops are causing your eyes to tear up."
-    //					MsgTimer = 70*6
-    //				EndIf
-    //			EndIf
-
-    //TODO: reimplement, move to Player struct.
-    //LightBlink = Max(LightBlink - (timing\tickDuration / 35.f), 0)
-    //If (LightBlink > 0) Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3f, 0.8f)), 1.f)
-
-    if (CurrGameState==GAMESTATE_SCP294) {
-        darkA = 1.f;
-    }
-
-    if (!mainPlayer->isEquipped("nvgoggles")) {
-        darkA = Max(0.f, darkA);
-    }
-
-    if (mainPlayer->dead) {
-        CurrGameState = GAMESTATE_PLAYING;
-        mainPlayer->selectedItem = nullptr;
-        SelectedScreen = nullptr;
-        SelectedMonitor = nullptr;
-        //mainPlayer\blurTimer = abs(mainPlayer\fallTimer*5)
-        //mainPlayer\fallTimer=mainPlayer\fallTimer-(timing\tickDuration*0.8f)
-        if (mainPlayer->fallTimer < - 360) {
-            CurrGameState = GAMESTATE_PAUSED;
-            pauseMenu->currState = PauseMenuState::Dead;
-            //TODO: fix
-            //If (SelectedEnding <> "") Then EndingTimer = Min(mainPlayer\fallTimer,-0.1f)
-        }
-        darkA = Max(darkA, Min(abs(mainPlayer->fallTimer / 400.f), 1.f));
-    }
-
-    if (mainPlayer->fallTimer < 0) {
-        CurrGameState = GAMESTATE_PLAYING;
-        mainPlayer->selectedItem = nullptr;
-        SelectedScreen = nullptr;
-        SelectedMonitor = nullptr;
-        mainPlayer->blurTimer = abs(mainPlayer->fallTimer*10);
-        mainPlayer->fallTimer = mainPlayer->fallTimer-timing->tickDuration;
-        darkA = Max(darkA, Min(abs(mainPlayer->fallTimer / 400.f), 1.f));
-    }
-
-    if (mainPlayer->selectedItem != nullptr) {
-        //if (mainPlayer->selectedItem->itemTemplate->name.equals("navigator") || mainPlayer->selectedItem->itemTemplate->name.equals("nav")) {
-        //    darkA = Max(darkA, 0.5f);
-        //}
-    }
-    if (SelectedScreen != nullptr) {
-        darkA = Max(darkA, 0.5f);
-    }
-
-    bbEntityAlpha(mainPlayer->overlays[OVERLAY_BLACK], darkA);
 }
 
 void Player::updateInput() {
@@ -288,7 +226,7 @@ void Player::updateInput() {
         noclip = !noclip;
     }
     if (bbKeyHit(34)) {
-        new GasMask(bbEntityX(collider), bbEntityY(cam), bbEntityZ(collider));
+        GasMask::spawn(bbEntityX(collider), bbEntityY(cam), bbEntityZ(collider));
     }
 
     // Moving.
@@ -343,6 +281,7 @@ void Player::updateInput() {
         //     }
         // }
 
+        // TODO: Move somewhere more relevant.
         float temp = modFloat(camAnimState, 360);
         if (!disableControls) {
             camAnimState = modFloat(camAnimState + timing->tickDuration * Min(speedMultiplier, 1.5f) * 7, 720);
@@ -449,17 +388,18 @@ void Player::updateMove() {
     }
 
     // Moving.
-    float temp2 = (speed * speedMultiplier) / (1.f+crouchState);
+    float finalTranslation = (speed * speedMultiplier) / (1.f+crouchState);
 
-    temp2 = temp2 / Max((injuries+3.f)/3.f,1.f);
+    // TODO: Move to updateInjuries().
+    finalTranslation /= Max((injuries+3.f)/3.f,1.f);
     if (injuries > 0.5f) {
-        temp2 = temp2*Min((bbSin(camAnimState/2)+1.2f),1.f);
+        finalTranslation *= Min((bbSin(camAnimState/2)+1.2f),1.f);
     }
 
     moveAngle = WrapAngle(bbEntityYaw(collider,true)+moveAngle+90.f);
 
     if (isMoving) {
-        moveSpeed = CurveValue(temp2, moveSpeed, 20.f);
+        moveSpeed = CurveValue(finalTranslation, moveSpeed, 20.f);
     } else {
         moveSpeed = Max(CurveValue(0.f, moveSpeed-0.1f, 1.f),0.f);
     }
@@ -469,14 +409,7 @@ void Player::updateMove() {
     forceWalk = 0.f;
 
     // Floor collision.
-    bool collidedFloor = false;
-    for (int i = 1; i <= bbCountCollisions(collider); i++) {
-        if (bbCollisionY(collider, i) < bbEntityY(collider,true) && abs(bbCollisionNY(collider, i))>0.8f) {
-            collidedFloor = true;
-        }
-    }
-
-    if (collidedFloor) {
+    if (collidedWithFloor()) {
         if (dropSpeed < - 0.07f) {
             if (footstepOverride==0) {
                 if (GetMaterialStepSound(collider) == 1) {
@@ -499,42 +432,6 @@ void Player::updateMove() {
     }
 
     bbTranslateEntity(collider, 0, dropSpeed * timing->tickDuration, 0);
-}
-
-void Player::updateBlink() {
-    if (blinkTimer < 0) {
-        if (blinkTimer > - 5) {
-            darkA = Max(darkA, bbSin(abs(blinkTimer * 18.f)));
-        } else if (blinkTimer > - 15) {
-            darkA = 1.f;
-        } else {
-            darkA = Max(darkA, abs(bbSin(blinkTimer * 18.f)));
-        }
-
-        if (blinkTimer <= - 20) {
-            //Randomizes the frequency of blinking.
-            // TODO: Scales with difficulty.
-            blinkFreq = bbRnd(490,700);
-            blinkTimer = blinkFreq;
-        }
-
-        blinkTimer -= timing->tickDuration;
-    } else {
-        blinkTimer -= timing->tickDuration * 0.6f * blinkEffect;
-        //TODO: fix
-        //If (EyeIrritation > 0) Then mainPlayer\blinkTimer=BlinkTimer-Min(EyeIrritation / 100.f + 1.f, 4.f) * timing\tickDuration
-
-        darkA = Max(darkA, 0.f);
-    }
-
-    //TODO: fix
-    //EyeIrritation = Max(0, EyeIrritation - timing\tickDuration)
-
-    if (mainPlayer->blinkEffectTimer > 0) {
-        mainPlayer->blinkEffect = mainPlayer->blinkEffect - (timing->tickDuration/70);
-    } else {
-        mainPlayer->blinkEffect = 1.f;
-    }
 }
 
 void Player::updateNoClip() {
@@ -573,27 +470,27 @@ void Player::updateNoClip() {
 }
 
 void Player::mouseLook() {
-    mainPlayer->camShake = Max(mainPlayer->camShake - (timing->tickDuration / 10), 0);
+    camShake = Max(camShake - (timing->tickDuration / 10), 0);
 
     //CameraZoomTemp = CurveValue(mainPlayer\camZoom,CameraZoomTemp, 5.f)
-    bbCameraZoom(mainPlayer->cam, Min(1.f+(mainPlayer->camZoom/400.f),1.1f));
-    mainPlayer->camZoom = Max(mainPlayer->camZoom - timing->tickDuration, 0);
+    bbCameraZoom(cam, Min(1.f+(camZoom/400.f),1.1f));
+    camZoom = Max(camZoom - timing->tickDuration, 0);
 
     float Nan1 = NAN;
 
-    if (mainPlayer->fallTimer >=0) {
+    if (fallTimer >=0) {
 
         //HeadDropSpeed = 0
 
-        float up = bbSin(mainPlayer->camAnimState) / (20.f+mainPlayer->crouchState*20.f)*0.6f;
-        float roll = Max(Min(bbSin(mainPlayer->camAnimState*0.5f)*2.5f*Min(mainPlayer->injuries+0.25f,3.f),8.f),-8.f);
+        float up = bbSin(camAnimState) / (20.f+crouchState*20.f)*0.6f;
+        float roll = Max(Min(bbSin(camAnimState*0.5f)*2.5f*Min(injuries+0.25f,3.f),8.f),-8.f);
 
         //tilt the camera to the side if the player is injured
         //RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), Max(Min(up*30*mainPlayer\injuries,50),-50))
-        bbPositionEntity(mainPlayer->cam, bbEntityX(mainPlayer->collider), bbEntityY(mainPlayer->collider), bbEntityZ(mainPlayer->collider));
-        bbRotateEntity(mainPlayer->cam, 0, bbEntityYaw(mainPlayer->collider), roll*0.5f);
+        bbPositionEntity(cam, bbEntityX(collider), bbEntityY(collider), bbEntityZ(collider));
+        bbRotateEntity(cam, 0, bbEntityYaw(collider), roll*0.5f);
 
-        bbMoveEntity(mainPlayer->cam, 0.f, up + 0.6f + mainPlayer->crouchState * -0.3f, 0);
+        bbMoveEntity(cam, 0.f, up + 0.6f + crouchState * -0.3f, 0);
 
         //RotateEntity(mainPlayer\collider, EntityPitch(mainPlayer\collider), EntityYaw(mainPlayer\collider), 0)
         //moveentity player, side, up, 0
@@ -617,38 +514,32 @@ void Player::mouseLook() {
         float the_pitch = mouse_y_speed_1 * mouselook_y_inc;
 
         // Turn the user on the Y (yaw) axis.)
-        bbTurnEntity(mainPlayer->collider, 0.f, -the_yaw, 0.f);
-        mainPlayer->headPitch = mainPlayer->headPitch + the_pitch;
+        bbTurnEntity(collider, 0.f, -the_yaw, 0.f);
+        headPitch += the_pitch;
         // -- Limit the user;s camera To within 180 degrees of pitch rotation. ;EntityPitch(); returns useless values so we need To use a variable To keep track of the camera pitch.
-        if (mainPlayer->headPitch > 70.f) {
-            mainPlayer->headPitch = 70.f;
+        if (headPitch > 70.f) {
+            headPitch = 70.f;
         }
-        if (mainPlayer->headPitch < - 70.f) {
-            mainPlayer->headPitch = -70.f;
+        if (headPitch < - 70.f) {
+            headPitch = -70.f;
         }
 
         // Pitch the user's camera up And down.)
-        bbRotateEntity(mainPlayer->cam, WrapAngle(mainPlayer->headPitch + bbRnd(-mainPlayer->camShake, mainPlayer->camShake)), WrapAngle(bbEntityYaw(mainPlayer->collider) + bbRnd(-mainPlayer->camShake, mainPlayer->camShake)), roll);
+        bbRotateEntity(cam, WrapAngle(headPitch + bbRnd(-camShake, camShake)), WrapAngle(bbEntityYaw(collider) + bbRnd(-camShake, camShake)), roll);
 
-        if (mainPlayer->currRoom->roomTemplate->name.equals("pocketdimension")) {
-            if (bbEntityY(mainPlayer->collider)<2000*RoomScale || bbEntityY(mainPlayer->collider)>2608*RoomScale) {
-                // Pitch the user's camera up And down.)
-                bbRotateEntity(mainPlayer->cam, WrapAngle(bbEntityPitch(mainPlayer->cam)),WrapAngle(bbEntityYaw(mainPlayer->cam)), roll+WrapAngle(bbSin(TimeInPosMilliSecs()/150.f)*30.f));
-            }
-        }
+        // TODO: Re-implement.
+        // if (currRoom->roomTemplate->name.equals("pocketdimension")) {
+        //     if (bbEntityY(collider)<2000*RoomScale || bbEntityY(collider)>2608*RoomScale) {
+        //         // Pitch the user's camera up And down.)
+        //         bbRotateEntity(cam, WrapAngle(bbEntityPitch(cam)),WrapAngle(bbEntityYaw(cam)), roll+WrapAngle(bbSin(TimeInPosMilliSecs()/150.f)*30.f));
+        //     }
+        // }
 
     } else {
-        bbHideEntity(mainPlayer->collider);
-        bbPositionEntity(mainPlayer->cam, bbEntityX(mainPlayer->head), bbEntityY(mainPlayer->head), bbEntityZ(mainPlayer->head));
+        bbHideEntity(collider);
+        bbPositionEntity(cam, bbEntityX(head), bbEntityY(head), bbEntityZ(head));
 
-        bool collidedFloor = false;
-        for (int i = 1; i <= bbCountCollisions(mainPlayer->head); i++) {
-            if (bbCollisionY(mainPlayer->head, i) < bbEntityY(mainPlayer->head) - 0.01f) {
-                collidedFloor = true;
-            }
-        }
-
-        if (collidedFloor) {
+        if (collidedWithFloor()) {
             //HeadDropSpeed# = 0
         } else {
 
@@ -667,9 +558,9 @@ void Player::mouseLook() {
         }
 
         if (userOptions->invertMouseY) {
-            bbTurnEntity(mainPlayer->cam, -bbMouseYSpeed() * 0.05f * timing->tickDuration, -bbMouseXSpeed() * 0.15f * timing->tickDuration, 0);
+            bbTurnEntity(cam, -bbMouseYSpeed() * 0.05f * timing->tickDuration, -bbMouseXSpeed() * 0.15f * timing->tickDuration, 0);
         } else {
-            bbTurnEntity(mainPlayer->cam, bbMouseYSpeed() * 0.05f * timing->tickDuration, -bbMouseXSpeed() * 0.15f * timing->tickDuration, 0);
+            bbTurnEntity(cam, bbMouseYSpeed() * 0.05f * timing->tickDuration, -bbMouseXSpeed() * 0.15f * timing->tickDuration, 0);
         }
 
     }
@@ -677,7 +568,7 @@ void Player::mouseLook() {
     //DUST PARTICLES
     if (bbRand(35) == 1) {
         Pivot* pvt = bbCreatePivot();
-        bbPositionEntity(pvt, bbEntityX(mainPlayer->cam, true), bbEntityY(mainPlayer->cam, true), bbEntityZ(mainPlayer->cam, true));
+        bbPositionEntity(pvt, bbEntityX(cam, true), bbEntityY(cam, true), bbEntityZ(cam, true));
         bbRotateEntity(pvt, 0, bbRnd(360), 0);
         if (bbRand(2) == 1) {
             bbMoveEntity(pvt, 0, bbRnd(-0.5f, 0.5f), bbRnd(0.5f, 1.f));
@@ -700,20 +591,6 @@ void Player::mouseLook() {
     }
 
     //TODO: Move this to MovePlayer().
-    //If (wearingGasMask Or wearingHazmat Or wearing1499) Then
-    //	If (wearingGasMask = 2) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.f-mainPlayer\stamina)*0.01f*timing\tickDuration)
-    //	If (wearing1499 = 2) Then mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.f-mainPlayer\stamina)*0.01f*timing\tickDuration)
-    //	If (wearingHazmat = 2) Then
-    //		mainPlayer\stamina = Min(100, mainPlayer\stamina + (100.f-mainPlayer\stamina)*0.01f*timing\tickDuration)
-    //	ElseIf ((wearingHazmat=1)) Then
-    //		mainPlayer\stamina = Min(60, mainPlayer\stamina)
-    //	EndIf
-    //
-    //	ShowEntity(mainPlayer\overlays[OVERLAY_GASMASK])
-    //Else
-    //	HideEntity(mainPlayer\overlays[OVERLAY_GASMASK])
-    //EndIf
-
     //If (Not wearingNightVision=0) Then
     //	ShowEntity(mainPlayer\overlays[OVERLAY_NIGHTVISION])
     //	If (wearingNightVision=2) Then
@@ -734,16 +611,75 @@ void Player::mouseLook() {
     //EndIf
 }
 
-void Player::updateItemUse() {
-    for (int i = 0; i < wornInventory->getSize(); i++) {
-        wornInventory->getItem(i)->updateUse();
+void Player::updateBlink() {
+    if (blinkTimer < 0) {
+        if (blinkTimer > - 5) {
+            overlayBlackAlpha = Max(overlayBlackAlpha, bbSin(abs(blinkTimer * 18.f)));
+        } else if (blinkTimer > - 15) {
+            overlayBlackAlpha = 1.f;
+        } else {
+            overlayBlackAlpha = Max(overlayBlackAlpha, abs(bbSin(blinkTimer * 18.f)));
+        }
+
+        if (blinkTimer <= - 20) {
+            //Randomizes the frequency of blinking.
+            // TODO: Scales with difficulty.
+            blinkFreq = bbRnd(490,700);
+            blinkTimer = blinkFreq;
+        }
+
+        blinkTimer -= timing->tickDuration;
+    } else {
+        blinkTimer -= timing->tickDuration * 0.6f * blinkEffect;
+        //TODO: fix
+        //If (EyeIrritation > 0) Then mainPlayer\blinkTimer=BlinkTimer-Min(EyeIrritation / 100.f + 1.f, 4.f) * timing\tickDuration
+
+        overlayBlackAlpha = Max(overlayBlackAlpha, 0.f);
     }
 
-    // Equipped items.
+    //TODO: fix
+    //EyeIrritation = Max(0, EyeIrritation - timing\tickDuration)
+
+    //TODO: fix
+    //			If (EyeStuck > 0) Then
+    //				mainPlayer\blinkTimer = mainPlayer\blinkFreq
+    //				EyeStuck = Max(EyeStuck-timing\tickDuration,0)
+    //
+    //				If (EyeStuck < 9000) Then mainPlayer\blurTimer = Max(mainPlayer\blurTimer, (9000-EyeStuck)*0.5f)
+    //				If (EyeStuck < 6000) Then darkA = Min(Max(darkA, (6000-EyeStuck)/5000.f),1.f)
+    //				If (EyeStuck < 9000 And EyeStuck+timing\tickDuration =>9000) Then
+    //					Msg = "The eyedrops are causing your eyes to tear up."
+    //					MsgTimer = 70*6
+    //				EndIf
+    //			EndIf
+
+    if (blinkEffectTimer > 0) {
+        blinkEffect -= (timing->tickDuration / 70);
+    } else {
+        blinkEffect = 1.f;
+    }
+}
+
+void Player::updateOverlays() {
+    bbEntityAlpha(overlays[OVERLAY_BLACK], overlayBlackAlpha);
+
     if (isEquipped("gasmask")) {
         bbShowEntity(overlays[OVERLAY_GASMASK]);
     } else {
         bbHideEntity(overlays[OVERLAY_GASMASK]);
+    }
+
+    //TODO: reimplement, move to Player struct.
+    //LightBlink = Max(LightBlink - (timing\tickDuration / 35.f), 0)
+    //If (LightBlink > 0) Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3f, 0.8f)), 1.f)
+}
+
+void Player::updateItemUse() {
+    for (int i = 0; i < wornInventory->getSize(); i++) {
+        Item* it = wornInventory->getItem(i);
+        if (it != nullptr) {
+            it->updateUse();
+        }
     }
 }
 
@@ -808,13 +744,47 @@ void Player::update895Sanity() {
     if (sanity895 < 0) {
         sanity895 = Min(sanity895 + timing->tickDuration, 0.f);
         if (sanity895 < (-200)) {
-            darkA = Max(Min((-sanity895 - 200) / 700.f, 0.6f), darkA);
+            overlayBlackAlpha = Max(Min((-sanity895 - 200) / 700.f, 0.6f), overlayBlackAlpha);
             if (!dead) {
                 //HeartBeatVolume = Min(abs(mainPlayer\sanity895+200)/500.f,1.f)
                 heartbeatIntensity = Max(70 + abs(sanity895+200)/6.f, heartbeatIntensity);
             }
         }
     }
+}
+
+void Player::updateDeathAnim() {
+    if (dead) {
+        CurrGameState = GAMESTATE_PLAYING;
+        selectedItem = nullptr;
+        SelectedScreen = nullptr;
+        SelectedMonitor = nullptr;
+        //mainPlayer\blurTimer = abs(mainPlayer\fallTimer*5)
+        //mainPlayer\fallTimer=mainPlayer\fallTimer-(timing\tickDuration*0.8f)
+        if (fallTimer < - 360) {
+            CurrGameState = GAMESTATE_PAUSED;
+            pauseMenu->currState = PauseMenuState::Dead;
+            //TODO: fix
+            //If (SelectedEnding <> "") Then EndingTimer = Min(mainPlayer\fallTimer,-0.1f)
+        }
+    }
+
+    if (fallTimer < 0) {
+        CurrGameState = GAMESTATE_PLAYING;
+        selectedItem = nullptr;
+        blurTimer = std::abs(fallTimer*10);
+        fallTimer -= timing->tickDuration;
+        overlayBlackAlpha = Max(overlayBlackAlpha, Min(abs(fallTimer / 400.f), 1.f));
+    }
+}
+
+bool Player::collidedWithFloor() {
+    for (int i = 1; i <= bbCountCollisions(head); i++) {
+        if (bbCollisionY(head, i) < bbEntityY(head) - 0.01f) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void Player::toggleInventory() {

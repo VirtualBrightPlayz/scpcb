@@ -39,20 +39,26 @@ private:
     bool isSprinting;
     bool crouched;
     float speed;
+    const float DEFAULT_SPEED = 0.018f;
     // Multipliers this with speed. Used for sprint, crouching, ect.
     float speedMultiplier;
 
-    float darkA;
+    float overlayBlackAlpha;
 
     void updateInput();
     void updateMove();
-    void updateBlink();
     void updateNoClip();
     void mouseLook();
+
+    void updateBlink();
+    void updateOverlays();
 
     void updateItemUse();
     void updateInjuries();
     void update895Sanity();
+    void updateDeathAnim();
+
+    bool collidedWithFloor();
 public:
     Player();
     ~Player();
