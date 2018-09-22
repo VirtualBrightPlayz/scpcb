@@ -74,8 +74,8 @@ Inventory::Inventory(int size, int itemsPerRow) {
     displayVertical = false;
     this->itemsPerRow = itemsPerRow;
     spacing = 35;
-    xOffset = ItemCell::SIZE * itemsPerRow + spacing * (itemsPerRow - 1) / 2;
-    yOffset = (ItemCell::SIZE + spacing) * (size / itemsPerRow) / 2 + spacing / 2;
+    xOffset = 0;
+    yOffset = 0;
 }
 
 Inventory::~Inventory() {
@@ -150,8 +150,8 @@ bool Inventory::anyRoom() {
 }
 
 void Inventory::update() {
-    int cellX = userOptions->screenWidth / 2 - (int)(xOffset * MenuScale);
-    int cellY = userOptions->screenHeight / 2 - (int)(yOffset * MenuScale);
+    int cellX = userOptions->screenWidth / 2 - (ItemCell::SIZE * itemsPerRow + spacing * (itemsPerRow - 1) / 2) + (int)(xOffset * MenuScale);
+    int cellY = userOptions->screenHeight / 2 - ((ItemCell::SIZE + spacing) * (size / itemsPerRow) / 2 + spacing / 2) + (int)(yOffset * MenuScale);
 
     for (int i = 0; i < size; i++) {
         items[i].update(cellX, cellY);

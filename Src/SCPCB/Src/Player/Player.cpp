@@ -91,7 +91,7 @@ Player::Player() {
     inventory = new Inventory(PLAYER_INV_COUNT, 3);
     wornInventory = new Inventory(WORNITEM_SLOT_COUNT, WORNITEM_SLOT_COUNT);
     wornInventory->displayVertical = true;
-    wornInventory->xOffset -= 200;
+    wornInventory->xOffset -= 600;
     openInventory = nullptr;
 
     cam = bbCreateCamera();
@@ -272,13 +272,14 @@ void Player::update() {
     }
     mouseLook();
 
+
+	if (!disableControls) {
+		updateInput();
+	}
+
     if (!noclip) {
-        if (!disableControls) {
-            updateInput();
-        }
         updateMove();
     } else {
-        // Input is also handled here since the two should always be intertwined.
         updateNoClip();
     }
 
@@ -332,11 +333,6 @@ void Player::updateInput() {
     if ((bbKeyDown(keyBinds->down) ^ bbKeyDown(keyBinds->up)) | (bbKeyDown(keyBinds->right) ^ bbKeyDown(keyBinds->left))) {
         if (!crouching && (bbKeyDown(keyBinds->sprint)) && stamina > 0.f) {
             isSprinting = true;
-            speedMultiplier = 2.5f;
-            stamina -= timing->tickDuration * 0.5f * (1.f/staminaEffect);
-            if (stamina <= 0) {
-                stamina = -20.f;
-            }
         }
 
         // TODO: Re-implement.
@@ -431,7 +427,15 @@ void Player::updateMouseInput() {
 }
 
 void Player::updateMove() {
-    stamina = Min(stamina + 0.15f * timing->tickDuration, 100.f);
+	if (isSprinting) {
+		speedMultiplier = 2.5f;
+		stamina -= timing->tickDuration * 0.5f * (1.f / staminaEffect);
+		if (stamina <= 0) {
+			stamina = -20.f;
+		}
+	} else {
+		stamina = Min(stamina + 0.15f * timing->tickDuration, 100.f);
+	}
 
     if (staminaEffectTimer > 0) {
         staminaEffect = staminaEffect - (timing->tickDuration/70);
@@ -493,21 +497,29 @@ void Player::updateMove() {
     forceWalk = 0.f;
 
     // Floor collision.
-    if (collidedWithFloor()) {
+	bool collidedWithFloor = false;
+	for (int i = 1; i <= bbCountCollisions(collider); i++) {
+		if (bbCollisionY(collider, i) < bbEntityY(collider, true) && abs(bbCollisionNY(collider, i)) > 0.8f) {
+			collidedWithFloor = true;
+		}
+	}
+
+	if (collidedWithFloor) {
         if (dropSpeed < - 0.07f) {
-            if (footstepOverride==0) {
-                if (GetMaterialStepSound(collider) == 1) {
-                    PlaySound_SM(sndMgmt->footstepMetal[bbRand(0, 7)]);
-                } else {
-                    PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
-                }
-            } else if ((footstepOverride==1)) {
-                PlaySound_SM(sndMgmt->footstepPD[bbRand(0, 2)]);
-            } else if ((footstepOverride==2)) {
-                PlaySound_SM(sndMgmt->footstep8601[bbRand(0, 2)]);
-            } else {
-                PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
-            }
+			// TODO: Re-implement.
+            //if (footstepOverride==0) {
+            //    if (GetMaterialStepSound(collider) == 1) {
+            //        PlaySound_SM(sndMgmt->footstepMetal[bbRand(0, 7)]);
+            //    } else {
+            //        PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
+            //    }
+            //} else if ((footstepOverride==1)) {
+            //    PlaySound_SM(sndMgmt->footstepPD[bbRand(0, 2)]);
+            //} else if ((footstepOverride==2)) {
+            //    PlaySound_SM(sndMgmt->footstep8601[bbRand(0, 2)]);
+            //} else {
+            //    PlaySound_SM(sndMgmt->footstep[bbRand(0, 7)]);
+            //}
             loudness = Max(3.f,loudness);
         }
         dropSpeed = 0;
@@ -522,20 +534,21 @@ void Player::updateNoClip() {
     speed = 1.f;
     if (bbKeyDown(keyBinds->sprint)) {
         speed = 2.5f;
-    } else if (bbKeyDown(keyBinds->crouch)) {
-        speed = 0.5f;
-    }
+	} else if (bbKeyDown(keyBinds->crouch)) {
+		speed = 0.5f;
+	}
 
     camAnimState = 0;
     moveSpeed = 0;
     crouchState = 0;
     crouching = 0;
+	stamina = 100.f;
 
     bbRotateEntity(collider, WrapAngle(bbEntityPitch(cam)), WrapAngle(bbEntityYaw(cam)), 0);
 
     // speed *= NoClipSpeed ;TODO: reimplement
 
-    speed *= timing->tickDuration;
+    speed *= DEFAULT_SPEED * timing->tickDuration;
     if (bbKeyDown(keyBinds->down)) {
         bbMoveEntity(collider, 0, 0, -speed);
     }
@@ -559,8 +572,6 @@ void Player::mouseLook() {
     //CameraZoomTemp = CurveValue(mainPlayer\camZoom,CameraZoomTemp, 5.f)
     bbCameraZoom(cam, Min(1.f+(camZoom/400.f),1.1f));
     camZoom = Max(camZoom - timing->tickDuration, 0);
-
-    float Nan1 = NAN;
 
     if (fallTimer >=0) {
 
@@ -609,8 +620,15 @@ void Player::mouseLook() {
         bbHideEntity(collider);
         bbPositionEntity(cam, bbEntityX(head), bbEntityY(head), bbEntityZ(head));
 
-        if (collidedWithFloor()) {
-            //HeadDropSpeed# = 0
+        bool collidedWithFloor = false;
+        for (int i = 1; i <= bbCountCollisions(mainPlayer->head); i++) {
+            if (bbCollisionY(mainPlayer->head, i) < bbEntityY(mainPlayer->head) - 0.01f) {
+				collidedWithFloor = true;
+            }
+        }
+
+        if (collidedWithFloor) {
+			//HeadDropSpeed# = 0
         } else {
 
             //TODO: reimplement head falling
@@ -846,15 +864,6 @@ void Player::updateDeathAnim() {
         fallTimer -= timing->tickDuration;
         overlayBlackAlpha = Max(overlayBlackAlpha, Min(abs(fallTimer / 400.f), 1.f));
     }
-}
-
-bool Player::collidedWithFloor() {
-    for (int i = 1; i <= bbCountCollisions(head); i++) {
-        if (bbCollisionY(head, i) < bbEntityY(head) - 0.01f) {
-            return true;
-        }
-    }
-    return false;
 }
 
 void Player::toggleInventory() {

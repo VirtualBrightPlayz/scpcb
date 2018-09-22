@@ -60,8 +60,6 @@ private:
     void updateInjuries();
     void update895Sanity();
     void updateDeathAnim();
-
-    bool collidedWithFloor();
 public:
     Player();
     ~Player();
