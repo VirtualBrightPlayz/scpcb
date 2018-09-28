@@ -12,16 +12,16 @@ private:
     FirstAid();
 
     const float DEFAULT_TIME = 10 * 70;
-    float timer = DEFAULT_TIME;
-
-    void onUse();
-    void updateUse();
-    void drawUse();
+    float timer;
 public:
     static FirstAid* spawn(float x, float y, float z);
 
     String getType();
     String getInvName();
+
+    void onUse();
+    void updateUse();
+    void drawUse();
 };
 
 }

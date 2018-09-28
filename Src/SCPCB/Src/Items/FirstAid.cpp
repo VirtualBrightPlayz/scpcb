@@ -13,6 +13,7 @@ using namespace CBN;
 
 FirstAid::FirstAid() : Item("GFX/Items/firstaid/firstaid.b3d", 10.f, ItemPickSound::Heafty, WornItemSlot::Hand) {
     type = "firstaid";
+    timer = DEFAULT_TIME;
 }
 
 FirstAid* FirstAid::spawn(float x, float y, float z) {
@@ -37,6 +38,7 @@ void FirstAid::onUse() {
     } else {
         mainPlayer->disableControls = false;
         mainPlayer->crouching = prevCrouch;
+        timer = DEFAULT_TIME;
     }
 }
 
