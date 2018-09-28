@@ -6,6 +6,7 @@
 #include "../AssetMgmt/TextMgmt.h"
 #include "../AssetMgmt/Assets.h"
 #include "../Config/Options.h"
+#include "../Player/Player.h"
 #include "../GameMain.h"
 
 using namespace CBN;
@@ -28,8 +29,27 @@ String FirstAid::getInvName() {
     return txtMgmt->lang["it_firstaid"];
 }
 
+void FirstAid::onUse() {
+    if (mainPlayer->isEquipped(type)) {
+        mainPlayer->disableControls = true;
+        prevCrouch = mainPlayer->crouching;
+        mainPlayer->crouching = true;
+    } else {
+        mainPlayer->disableControls = false;
+        mainPlayer->crouching = prevCrouch;
+    }
+}
+
 void FirstAid::updateUse() {
     timer -= timing->tickDuration;
+    mainPlayer->disableControls = true;
+    // TODO: Messages and injuries.
+    if (timer < 0) {
+        mainPlayer->disableControls = false;
+        mainPlayer->crouching = prevCrouch;
+        markedForRemoval = true;
+        txtMgmt->setMsg("Test.");
+    }
 }
 
 void FirstAid::drawUse() {

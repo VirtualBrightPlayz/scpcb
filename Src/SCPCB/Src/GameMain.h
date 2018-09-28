@@ -121,7 +121,7 @@ String f2s(float n, int count);
 
 float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, int loop = true);
 
-void UpdateInfect();
+void updateInfect();
 
 void Graphics3DExt(int width, int height, int depth = 32, int mode = 2);
 

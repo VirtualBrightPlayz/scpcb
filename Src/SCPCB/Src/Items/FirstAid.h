@@ -7,12 +7,14 @@ namespace CBN {
 
 class FirstAid : public Item {
 private:
+    bool prevCrouch;
     String type;
     FirstAid();
 
     const float DEFAULT_TIME = 10 * 70;
     float timer = DEFAULT_TIME;
 
+    void onUse();
     void updateUse();
     void drawUse();
 public:

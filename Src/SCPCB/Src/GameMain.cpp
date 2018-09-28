@@ -1010,7 +1010,7 @@ float Animate2(MeshModel* entity, float curr, int start, int quit, float speed, 
 
 }
 
-void UpdateInfect() {
+void updateInfect() {
 #if 0
     float temp;
     int i;

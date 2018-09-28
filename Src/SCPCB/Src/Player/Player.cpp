@@ -286,6 +286,10 @@ void Player::update() {
     updateBlink();
     updateOverlays();
     updateItemUse();
+
+    // Reset these variables after updating.
+    disableCameraControls = false;
+    disableControls = false;
 }
 
 void Player::updateInput() {
@@ -773,7 +777,7 @@ void Player::updateItemUse() {
 
 // TODO: Re-implement.
 void Player::updateInjuries() {
-    UpdateInfect();
+    updateInfect();
 
     // if (injuries > 1.f) {
     //     temp2 = bloodloss;
