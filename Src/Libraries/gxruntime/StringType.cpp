@@ -138,7 +138,7 @@ String operator+(const char* a, const String& b) {
 }
 
 bool operator<(const String& a, const String& b) {
-    return 0 < strcmp(a.cstr(), b.cstr());
+    return strcmp(a.cstr(), b.cstr()) < 0;
 }
 
 bool operator>(const String& a, const String& b) {
@@ -344,6 +344,7 @@ std::vector<String> String::split(const String& needle, bool removeEmptyEntries)
         for (int i = 0; i < retVal.size(); i++) {
             if (retVal[i].isEmpty()) {
                 retVal.erase(retVal.begin() + i);
+                i--;
             }
         }
     }
