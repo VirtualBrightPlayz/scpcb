@@ -140,6 +140,8 @@ String::String(float f) {
 }
 
 String& String::operator=(const String& other) {
+    if (equals(other)) { return *this; }
+
     if (wbuffer != nullptr) { delete[] wbuffer; }
     if (cbuffer != nullptr) { delete[] cbuffer; }
     wbuffer = new wchar[other.capacity];
