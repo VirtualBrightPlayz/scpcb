@@ -30,7 +30,6 @@ This game and the source code are licensed under [Creative Commons Attribution-S
 * Declaring several variables in one statement.
 * Placing the pointer/reference symbol anywhere other than next to the type.
 * Any doc commenting style besides [XML Comments][xmldoc].
-* JPEG.
 
 [vs2017]: https://visualstudio.microsoft.com/vs/
 [scp-wiki]: http://www.scp-wiki.net/
