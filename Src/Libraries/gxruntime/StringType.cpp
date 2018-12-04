@@ -153,11 +153,11 @@ String& String::operator=(const String& other) {
     return *this;
 }
 
-String operator+(const String& a, const String& b) {
+const String operator+(const String& a, const String& b) {
     return String(a, b);
 }
 
-String operator+(const char* a, const String& b) {
+const String operator+(const char* a, const String& b) {
     return String(String(a), b);
 }
 
