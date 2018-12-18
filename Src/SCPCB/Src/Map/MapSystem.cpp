@@ -112,7 +112,25 @@ Material* Material::getObject(int index) {
 
 std::vector<RoomTemplate*> RoomTemplate::list;
 RoomTemplate::RoomTemplate() {
-    memset(this,0,sizeof(RoomTemplate));
+	shape = 0;
+	large = 0;
+
+	loaded = 0;
+
+	opaqueMesh = nullptr;
+	alphaMesh = nullptr;
+
+	zones = 0;
+
+	commonness = 0.f;
+	minAmount = 0;
+	maxAmount = 0;
+	xRangeStart = 0.f;
+	xRangeEnd = 0.f;
+	yRangeStart = 0.f;
+	yRangeEnd = 0.f;
+
+	tempTriggerboxAmount = 0;
 
     list.push_back(this);
 }
@@ -446,7 +464,7 @@ void LoadRoomTemplates(const String& file) {
                     rt->xRangeEnd = xRange.substr(xRange.findFirst("-")+1).toFloat();
 
                     rt->yRangeStart = yRange.substr(0, yRange.findFirst("-")).toFloat();
-                    rt->yrangeEnd = yRange.substr(yRange.findFirst("-") + 1).toFloat();
+                    rt->yRangeEnd = yRange.substr(yRange.findFirst("-") + 1).toFloat();
                 } else {
                     rt->minAmount = 0;
                     rt->maxAmount = 0;
@@ -1754,7 +1772,7 @@ void CreateMap() {
             loopStartX = (int)(Min(bbFloor((float)(mapDim)*rt->xRangeStart),mapDim-1.f));
             loopStartY = (int)(Min(bbFloor((float)(mapDim)*rt->yRangeStart),mapDim-1.f));
             loopEndX = (int)(Min(bbFloor((float)(mapDim)*rt->xRangeEnd),mapDim-1.f));
-            loopEndY = (int)(Min(bbFloor((float)(mapDim)*rt->yrangeEnd),mapDim-1.f));
+            loopEndY = (int)(Min(bbFloor((float)(mapDim)*rt->yRangeEnd),mapDim-1.f));
 
             loopX = loopEndX-loopStartX;
             loopY = loopEndY-loopStartY;

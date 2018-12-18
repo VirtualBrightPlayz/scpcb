@@ -83,7 +83,7 @@ public:
     float xRangeStart;
     float xRangeEnd;
     float yRangeStart;
-    float yrangeEnd;
+    float yRangeEnd;
     int disableDecals;
 
     //TODO: remove

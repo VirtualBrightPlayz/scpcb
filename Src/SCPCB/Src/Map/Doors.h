@@ -9,6 +9,7 @@ namespace CBN {
 struct Room;
 
 // Constants.
+// TODO: Use enums.
 const int DOOR_TYPE_DEF = 0;
 const int DOOR_TYPE_HCZ = 1;
 const int DOOR_TYPE_CONT = 2;
@@ -25,11 +26,13 @@ public:
     static Door* getObject(int index);
 
     MeshModel* obj;
-	MeshModel* obj2;
+	MeshModel* obj2; // TODO: rename
 	MeshModel* frameobj;
     MeshModel* buttons[2];
+
     bool locked;
     bool open;
+
     float angle;
     float openstate;
     int fastopen;

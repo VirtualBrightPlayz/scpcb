@@ -25,8 +25,8 @@ public:
     void setInput(const String& txt);
     String getInput();
     void clear();
-    virtual void update();
-    virtual void draw();
+    virtual void update() override;
+    virtual void draw() override;
 };
 
 }

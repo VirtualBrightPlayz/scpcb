@@ -15,8 +15,8 @@ public:
 
     bool ticked;
 
-    virtual void update();
-    virtual void draw();
+    virtual void update() override;
+    virtual void draw() override;
 };
 
 }

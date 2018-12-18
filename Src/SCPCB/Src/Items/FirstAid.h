@@ -16,12 +16,12 @@ private:
 public:
     static FirstAid* spawn(float x, float y, float z);
 
-    String getType();
-    String getInvName();
+    String getType() override;
+    String getInvName() override;
 
-    void onUse();
-    void updateUse();
-    void drawUse();
+    void onUse() override;
+    void updateUse() override;
+    void drawUse() override;
 };
 
 }

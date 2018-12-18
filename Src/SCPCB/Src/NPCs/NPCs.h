@@ -9,6 +9,7 @@ class gxSound;
 namespace CBN {
 
 // Constants.
+// TODO: Remove.
 const int NPCtype173 = 1;
 const int NPCtype106 = 2;
 const int NPCtype049 = 3;
@@ -41,7 +42,7 @@ public:
     static int getListSize();
     static NPC* getObject(int index);
 
-    //TODO: USE INHERITANCE
+    // TODO: USE INHERITANCE
     MeshModel* obj;
     MeshModel* obj2;
     MeshModel* obj3;
@@ -53,13 +54,13 @@ public:
 
     int polyData;
 
-    //TODO: Deprecate state2 and state3. Make state an integer.
+    // TODO: Deprecate state2 and state3. Make state an integer.
     float state;
     float state2;
     float state3;
     int prevState;
 
-    //TODO: Deprecate?
+    // TODO: Deprecate?
     int makingNoise;
 
     float frame;
@@ -70,7 +71,7 @@ public:
 
     float playerDistance;
 
-    //TODO: wtf why aren't we using this more instead of reload?
+    // TODO: why aren't we using this more instead of reload?
     float soundTimer;
 
     float speed;
@@ -78,10 +79,10 @@ public:
 
     String texture;
 
-    //TODO: Deprecate in favor of state.
+    // TODO: Deprecate in favor of state.
     float idle;
 
-    //TODO: Deprecate in favor of timer.
+    // TODO: Deprecate in favor of timer.
     float reload;
 
     float timer;
@@ -96,7 +97,7 @@ public:
     NPC* target;
     int targetID;
 
-    //TODO: Deprecate in favor of target.
+    // TODO: Deprecate in favor of target.
     float enemyX;
     float enemyY;
     float enemyZ;
@@ -121,19 +122,19 @@ public:
     int gravity;
     float gravityMult = 1.0f;
 
-    //TODO: Deprecate in favor of terminalVelocity.
+    // TODO: Deprecate in favor of terminalVelocity.
     float maxGravity = 0.2f;
 
     float terminalVelocity = 0.2f;
 
-    //TODO: Move this to DataMTF
+    // TODO: Move this to MTF class.
     int mtfVariant;
     NPC* mtfLeader;
     int isDead;
     float blinkTimer = 1.0f;
     int ignorePlayer;
 
-    //TODO: Deprecate.
+    // TODO: Deprecate.
     String npcNameInSection;
     int manipulateBone;
     String boneToManipulate;

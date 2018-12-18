@@ -11,11 +11,11 @@ private:
 public:
     static GasMask* spawn(float x, float y, float z);
 
-    String getType();
-    String getInvName();
+    String getType() override;
+    String getInvName() override;
 
-    void onPick();
-    void onUse();
+    void onPick() override;
+    void onUse() override;
 };
 
 }
