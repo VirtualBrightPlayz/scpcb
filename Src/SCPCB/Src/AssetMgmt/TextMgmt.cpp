@@ -45,7 +45,6 @@ void TxtManager::drawMsg() {
 
     bool paperSelected = false;
     if (CurrGameState != GAMESTATE_INVENTORY && mainPlayer->selectedItem != nullptr) {
-        // TODO: Replace with getType().
         if (mainPlayer->selectedItem->getType().equals("paper")) {
             paperSelected = true;
         }

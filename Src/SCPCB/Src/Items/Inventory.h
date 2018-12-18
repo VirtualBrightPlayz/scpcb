@@ -12,7 +12,7 @@ namespace CBN {
 
 class Item;
 
-struct ItemCell {
+class ItemCell {
 private:
     bool hover;
     Item* val;
@@ -24,10 +24,12 @@ public:
     ~ItemCell();
 
     bool isHovering();
-
     bool isEmpty();
+
+    bool contains(Item* it);
+    Item* getItem();
     void insertItem(Item* it);
-    Item* removeItem();
+    void removeItem();
 
     void update(int x, int y);
     void draw(int x, int y, int cellSpacing);
@@ -39,9 +41,8 @@ private:
     ItemCell* equipSlots;
     int size;
 
-    bool hoveringOverSlot;
-
     void setItem(Item* it, int slot);
+    int getIndex(Item* it) const;
 
     void updateMainInv();
     void updateEquipInv();
@@ -49,7 +50,8 @@ private:
 public:
     Inventory(int size, int itemsPerRow = 5);
     ~Inventory();
-
+    
+    // Main inventory.
     int itemsPerRow;
     int xOffset;
     int yOffset;
@@ -59,6 +61,10 @@ public:
     void addItem(Item* it);
     bool anyRoom() const;
 
+    // Equip Slot <-> Inventory
+    void moveItem(Item* it, WornItemSlot slot);
+    // Move item (from some index in the inv) to another slot in the inv.
+    void moveItem(Item* it, int destIndex);
     void useItem(Item* it);
     void dropItem(Item* it);
 
