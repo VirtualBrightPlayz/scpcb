@@ -26,8 +26,8 @@ public:
     static Door* getObject(int index);
 
     MeshModel* obj;
-	MeshModel* obj2; // TODO: rename
-	MeshModel* frameobj;
+    MeshModel* obj2; // TODO: rename
+    MeshModel* frameobj;
     MeshModel* buttons[2];
 
     bool locked;

@@ -65,13 +65,14 @@ protected:
 public:
     ~Item();
 
-    Inventory* parentInv;
     Pivot* collider;
     bbImage* invImg;
     float dropSpeed;
 
     ItemPickSound pickSound;
     WornItemSlot wornSlot;
+
+    bool inInv;
 
     virtual String getType()=0;
     virtual String getInvName()=0;

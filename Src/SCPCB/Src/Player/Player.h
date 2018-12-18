@@ -85,7 +85,6 @@ public:
 
     Item* closestItem;
     Item* selectedItem;
-    ItemCell* hoveredItemCell;
     MeshModel* closestButton;
     Door* closestDoor;
     Door* selectedDoor;
@@ -135,13 +134,10 @@ public:
     float blurTimer;
 
     float loudness;
+
     //------
 
-    //items
     Inventory* inventory;
-    Inventory* wornInventory;
-    Inventory* openInventory;
-    //------
 
     //sounds
     gxSound* breathingSFX[2][5];
@@ -164,13 +160,10 @@ public:
     void kill();
 
     void toggleInventory();
-    void updateInventory();
-    void drawInventory();
 
     void pickItem(Item* it);
     void useItem(Item* it);
     void dropItem(Item* it);
-    void moveItemToEmptySlot(Item* it, Inventory* to, int toIndex);
     bool isEquipped(const String& itType);
 };
 

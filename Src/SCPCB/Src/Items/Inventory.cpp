@@ -15,9 +15,10 @@
 
 namespace CBN {
 
-ItemCell::ItemCell() {
+ItemCell::ItemCell(int size) {
     hover = false;
     val = nullptr;
+    size = 0;
 }
 
 ItemCell::~ItemCell() {
@@ -30,9 +31,26 @@ bool ItemCell::isHovering() {
     return hover;
 }
 
+bool ItemCell::isEmpty() {
+    return val == nullptr;
+}
+
+void ItemCell::insertItem(Item* it) {
+    val = it;
+    it->inInv = true;
+}
+
+Item* ItemCell::removeItem() {
+    Item* it = val;
+    it->inInv = false;
+    val = nullptr;
+
+    return it;
+}
+
 void ItemCell::update(int x, int y) {
-    if (bbMouseX() > x && bbMouseX() < x + ItemCell::SIZE) {
-        if (bbMouseY() > y && bbMouseY() < y + ItemCell::SIZE) {
+    if (bbMouseX() > x && bbMouseX() < x + size) {
+        if (bbMouseY() > y && bbMouseY() < y + size) {
             hover = true;
             return;
         }
@@ -43,35 +61,36 @@ void ItemCell::update(int x, int y) {
 void ItemCell::draw(int x, int y, int cellSpacing) {
     if (hover) {
         bbColor(255, 0, 0);
-        bbRect(x - 1, y - 1, SIZE + 2, SIZE + 2);
+        bbRect(x - 1, y - 1, size + 2, size + 2);
         bbColor(255, 255, 255);
 
         if (mainPlayer->selectedItem == nullptr && val != nullptr) {
             bbSetFont(uiAssets->font[0]);
             bbColor(0,0,0);
-            bbText(x + SIZE / 2 + 1, y + SIZE + cellSpacing - 15 + 1, val->getInvName(), true);
+            bbText(x + size / 2 + 1, y + size + cellSpacing - 15 + 1, val->getInvName(), true);
             bbColor(255, 255, 255);
-            bbText(x + SIZE / 2, y + SIZE + cellSpacing - 15, val->getInvName(), true);
+            bbText(x + size / 2, y + size + cellSpacing - 15, val->getInvName(), true);
         }
     }
-    DrawFrame(x, y, SIZE, SIZE, (x % 64), (x % 64));
+    DrawFrame(x, y, size, size, (x % 64), (x % 64));
 
     if (val != nullptr) {
         // Render icon.
         val->generateInvImg();
 
-        if (mainPlayer->selectedItem != val || mainPlayer->hoveredItemCell == this) {
+        if (mainPlayer->selectedItem != val || hover) {
             int offset = (int)(43 * MenuScale);
-            bbDrawImage(val->invImg, x + SIZE / 2 - offset, y + SIZE / 2 - offset);
+            bbDrawImage(val->invImg, x + size / 2 - offset, y + size / 2 - offset);
         }
     }
 }
 
 Inventory::Inventory(int size, int itemsPerRow) {
     items = new ItemCell[size];
+    equipSlots = new ItemCell[WORNITEM_SLOT_COUNT];
     this->size = size;
+    hoveringOverSlot = false;
 
-    displayVertical = false;
     this->itemsPerRow = itemsPerRow;
     spacing = 35;
     xOffset = 0;
@@ -79,7 +98,12 @@ Inventory::Inventory(int size, int itemsPerRow) {
 }
 
 Inventory::~Inventory() {
-    delete[] items;
+    if (items != nullptr) {
+        delete[] items;
+    }
+    if (equipSlots != nullptr) {
+        delete[] equipSlots;
+    }
 }
 
 int Inventory::getSize() const {
@@ -89,7 +113,7 @@ int Inventory::getSize() const {
 void Inventory::addItem(Item* it) {
     bool spaceFound = false;
     for (int i = 0; i < size; i++) {
-        if (items[i].val == nullptr) {
+        if (items[i].isEmpty()) {
             setItem(it, i);
             spaceFound = true;
             break;
@@ -104,52 +128,60 @@ void Inventory::setItem(Item* it, int slot) {
     if (slot >= size || slot < 0) {
         throw ("Invalid inventory slot. Slot \"" + String(slot) + "\" when only \"" + String(size) + "\" are available.");
     }
-    items[slot].val = it;
-    it->parentInv = this;
+    items[slot].insertItem(it);
 }
 
-Item* Inventory::getItem(int slot) {
-    if (slot >= size || slot < 0) {
-        throw ("Invalid inventory slot. Slot \"" + String(slot) + "\" when only \"" + String(size) + "\" are available.");
-    }
-    if (items[slot].val == nullptr) {
-        return nullptr;
-    }
-    return items[slot].val;
-}
-
-int Inventory::getIndex(Item* it) {
+bool Inventory::anyRoom() const {
     for (int i = 0; i < size; i++) {
-        if (items[i].val == it) {
-            return i;
-        }
-    }
-
-    return -1;
-}
-
-void Inventory::removeItem(Item* it) {
-    it->parentInv = nullptr;
-    for (int i = 0; i < size; i++) {
-        if (items[i].val == it) {
-            items[i].val = nullptr;
-            return;
-        }
-    }
-
-    throw ("Attempted to remove non-existant item \"" + it->getType() + " from inventory.\"");
-}
-
-bool Inventory::anyRoom() {
-    for (int i = 0; i < size; i++) {
-        if (items[i].val == nullptr) {
+        if (items[i].isEmpty()) {
             return true;
         }
     }
     return false;
 }
 
-void Inventory::update() {
+void Inventory::useItem(Item* it) {
+    // In the item is in an equip slot then unequip the item.
+    if (it->parentInv == wornInventory) {
+        it->parentInv->removeItem(it);
+        inventory->addItem(it);
+        PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
+    }
+    else if (it->wornSlot != WornItemSlot::None) {
+        // If this item is an equippable then equip it.
+        int slot = (int)it->wornSlot;
+        if (wornInventory->getItem(slot) != nullptr) {
+            txtMgmt->setMsg(txtMgmt->lang["inv_alreadyequip"]);
+            return;
+        }
+
+        it->parentInv->removeItem(it);
+        wornInventory->setItem(it, slot);
+        PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
+    }
+    it->onUse();
+}
+
+void Inventory::dropItem(Item* it) {
+    bool wasEquipped = it->parentInv == wornInventory;
+    PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
+    it->parentInv->removeItem(it);
+
+    if (wasEquipped) {
+        it->onUse(); // Has the de-equip message.
+    }
+
+    bbShowEntity(it->collider);
+    bbPositionEntity(it->collider, bbEntityX(cam), bbEntityY(cam), bbEntityZ(cam));
+    bbRotateEntity(it->collider, bbEntityPitch(cam), bbEntityYaw(cam) + bbRnd(-20, 20), 0);
+    bbMoveEntity(it->collider, 0, -0.1f, 0.1f);
+    bbRotateEntity(it->collider, 0, bbEntityYaw(cam) + bbRnd(-110, 110), 0);
+
+    bbResetEntity(it->collider);
+    it->dropSpeed = 0.f;
+}
+
+void Inventory::updateMainInv() {
     int cellX = userOptions->screenWidth / 2 - (ItemCell::SIZE * itemsPerRow + spacing * (itemsPerRow - 1) / 2) + (int)(xOffset * MenuScale);
     int cellY = userOptions->screenHeight / 2 - ((ItemCell::SIZE + spacing) * (size / itemsPerRow) / 2 + spacing / 2) + (int)(yOffset * MenuScale);
 
@@ -158,7 +190,7 @@ void Inventory::update() {
 
         if (items[i].isHovering()) {
             mainPlayer->hoveredItemCell = &items[i];
-            if (MouseHit1 && items[i].val != nullptr) {
+            if (MouseHit1 && !items[i].isEmpty()) {
                 // Selecting an item.
                 if (mainPlayer->selectedItem == nullptr) {
                     mainPlayer->selectedItem = items[i].val;
@@ -192,18 +224,10 @@ void Inventory::update() {
         }
 
         // Move x and y coords to point to next item.
-        if (!displayVertical) {
-            cellX += ItemCell::SIZE + spacing;
-            if (i % itemsPerRow == itemsPerRow-1) {
-                cellY += ItemCell::SIZE + spacing;
-                cellX = userOptions->screenWidth / 2 - (int)(xOffset * MenuScale);
-            }
-        } else {
+        cellX += ItemCell::SIZE + spacing;
+        if (i % itemsPerRow == itemsPerRow-1) {
             cellY += ItemCell::SIZE + spacing;
-            if (i % itemsPerRow == itemsPerRow-1) {
-                cellX += ItemCell::SIZE + spacing;
-                cellY = userOptions->screenWidth / 2 - (int)(yOffset * MenuScale);
-            }
+            cellX = userOptions->screenWidth / 2 - (int)(xOffset * MenuScale);
         }
     }
 
@@ -222,6 +246,10 @@ void Inventory::update() {
     // }
 }
 
+void Inventory::update() {
+    updateMainInv();
+}
+
 void Inventory::draw() {
     int cellX = userOptions->screenWidth / 2 - (int)(xOffset * MenuScale);
     int cellY = userOptions->screenHeight / 2 - (int)(yOffset * MenuScale);
@@ -230,19 +258,16 @@ void Inventory::draw() {
         items[i].draw(cellX, cellY, spacing);
 
         // Move x and y coords to point to next item.
-        if (!displayVertical) {
-            cellX += ItemCell::SIZE + spacing;
-            if (i % itemsPerRow == itemsPerRow-1) {
-                cellY += ItemCell::SIZE + spacing;
-                cellX = userOptions->screenWidth / 2 - (int)(xOffset * MenuScale);
-            }
-        } else {
+        cellX += ItemCell::SIZE + spacing;
+        if (i % itemsPerRow == itemsPerRow-1) {
             cellY += ItemCell::SIZE + spacing;
-            if (i % itemsPerRow == itemsPerRow-1) {
-                cellX += ItemCell::SIZE + spacing;
-                cellY = userOptions->screenWidth / 2 - (int)(yOffset * MenuScale);
-            }
+            cellX = userOptions->screenWidth / 2 - (int)(xOffset * MenuScale);
         }
+        //cellY += ItemCell::SIZE + spacing;
+        //if (i % itemsPerRow == itemsPerRow-1) {
+        //    cellX += ItemCell::SIZE + spacing;
+        //    cellY = userOptions->screenWidth / 2 - (int)(yOffset * MenuScale);
+        //}
     }
 
     // Draw the selected item under the cursor when it's not hovering over the item's original slot.

@@ -47,7 +47,6 @@ Player::Player() {
     grabbedEntity = nullptr;
     closestItem = nullptr;
     selectedItem = nullptr;
-    hoveredItemCell = nullptr;
     closestButton = nullptr;
     closestDoor = nullptr;
     selectedDoor = nullptr;
@@ -92,7 +91,6 @@ Player::Player() {
     wornInventory = new Inventory(WORNITEM_SLOT_COUNT, WORNITEM_SLOT_COUNT);
     wornInventory->displayVertical = true;
     wornInventory->xOffset -= 600;
-    openInventory = nullptr;
 
     cam = bbCreateCamera();
     bbCameraViewport(cam, 0, 0, userOptions->screenWidth, userOptions->screenHeight);
@@ -223,9 +221,6 @@ Player::Player() {
 }
 
 Player::~Player() {
-    delete inventory;
-    delete wornInventory;
-
     for (int i = 0; i < OVERLAY_COUNT; i++) {
         bbFreeEntity(overlays[i]);
     }
@@ -872,20 +867,15 @@ void Player::updateDeathAnim() {
 
 void Player::toggleInventory() {
     if (CurrGameState == GAMESTATE_INVENTORY) {
-        if (openInventory == inventory) {
-            CurrGameState = GAMESTATE_PLAYING;
-            ResumeSounds();
-            bbMouseXSpeed();
-            bbMouseYSpeed();
-            bbMouseZSpeed();
-            mouse_x_speed_1 = 0.f;
-            mouse_y_speed_1 = 0.f;
-        } else {
-            openInventory = inventory;
-        }
+        CurrGameState = GAMESTATE_PLAYING;
+        ResumeSounds();
+        bbMouseXSpeed();
+        bbMouseYSpeed();
+        bbMouseZSpeed();
+        mouse_x_speed_1 = 0.f;
+        mouse_y_speed_1 = 0.f;
     } else {
         CurrGameState = GAMESTATE_INVENTORY;
-        openInventory = inventory;
         PauseSounds();
     }
 
@@ -906,13 +896,6 @@ void Player::updateInventory() {
     }
 }
 
-void Player::drawInventory() {
-    openInventory->draw();
-    if (openInventory == inventory) {
-        wornInventory->draw();
-    }
-}
-
 void Player::pickItem(Item* it) {
     if (!inventory->anyRoom()) {
         txtMgmt->setMsg(txtMgmt->lang["inv_full"]);
@@ -924,65 +907,6 @@ void Player::pickItem(Item* it) {
     inventory->addItem(it);
     PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
     it->onPick();
-}
-
-void Player::useItem(Item* it) {
-    // In the item is in an equip slot then unequip the item.
-    if (it->parentInv == wornInventory) {
-        it->parentInv->removeItem(it);
-        inventory->addItem(it);
-        PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
-    } else if (it->wornSlot != WornItemSlot::None) {
-        // If this item is an equippable then equip it.
-        int slot = (int)it->wornSlot;
-        if (wornInventory->getItem(slot) != nullptr) {
-            txtMgmt->setMsg(txtMgmt->lang["inv_alreadyequip"]);
-            return;
-        }
-
-        it->parentInv->removeItem(it);
-        wornInventory->setItem(it, slot);
-        PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
-    }
-    it->onUse();
-}
-
-void Player::dropItem(Item* it) {
-    bool wasEquipped = it->parentInv == wornInventory;
-    PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
-    it->parentInv->removeItem(it);
-
-    if (wasEquipped) {
-        it->onUse(); // Has the de-equip message.
-    }
-
-    bbShowEntity(it->collider);
-    bbPositionEntity(it->collider, bbEntityX(cam), bbEntityY(cam), bbEntityZ(cam));
-    bbRotateEntity(it->collider, bbEntityPitch(cam), bbEntityYaw(cam)+bbRnd(-20,20), 0);
-    bbMoveEntity(it->collider, 0, -0.1f, 0.1f);
-    bbRotateEntity(it->collider, 0, bbEntityYaw(cam)+bbRnd(-110,110), 0);
-
-    bbResetEntity(it->collider);
-    it->dropSpeed = 0.f;
-}
-
-void Player::moveItemToEmptySlot(Item* it, Inventory* to, int toIndex) {
-    Inventory* from = it->parentInv;
-    int fromIndex = from->getIndex(it);
-
-    // Going from inv to equip slot? Check if it's ok.
-    if (to == wornInventory && (WornItemSlot)toIndex != it->wornSlot) {
-        txtMgmt->setMsg(txtMgmt->lang["inv_cantequip"]);
-        return;
-    }
-
-    from->removeItem(it);
-    to->setItem(it, toIndex);
-
-    if (to == wornInventory || from == wornInventory) {
-        PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
-        it->onUse(); // Has the equip messages.
-    }
 }
 
 bool Player::isEquipped(const String& itType) {

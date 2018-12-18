@@ -15,13 +15,20 @@ class Item;
 struct ItemCell {
 private:
     bool hover;
+    Item* val;
+    int size;
+
 public:
     static const int SIZE = 70;
-    ItemCell();
+    ItemCell(int size = SIZE);
     ~ItemCell();
 
-    Item* val;
     bool isHovering();
+
+    bool isEmpty();
+    void insertItem(Item* it);
+    Item* removeItem();
+
     void update(int x, int y);
     void draw(int x, int y, int cellSpacing);
 };
@@ -29,13 +36,20 @@ public:
 class Inventory {
 private:
     ItemCell* items;
+    ItemCell* equipSlots;
     int size;
+
+    bool hoveringOverSlot;
+
+    void setItem(Item* it, int slot);
+
+    void updateMainInv();
+    void updateEquipInv();
 
 public:
     Inventory(int size, int itemsPerRow = 5);
     ~Inventory();
 
-    bool displayVertical;
     int itemsPerRow;
     int xOffset;
     int yOffset;
@@ -43,11 +57,10 @@ public:
 
     int getSize() const;
     void addItem(Item* it);
-    void setItem(Item* it, int slot);
-    Item* getItem(int slot);
-    int getIndex(Item* it);
-    void removeItem(Item* it);
-    bool anyRoom();
+    bool anyRoom() const;
+
+    void useItem(Item* it);
+    void dropItem(Item* it);
 
     void update();
     void draw();

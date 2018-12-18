@@ -20,7 +20,6 @@ Item::Item(const String& meshPath, float scale, ItemPickSound sound, WornItemSlo
 
     id = -1;
     addID();
-    parentInv = nullptr;
     markedForRemoval = false;
 
     collider = bbCreatePivot();
@@ -36,6 +35,7 @@ Item::Item(const String& meshPath, float scale, ItemPickSound sound, WornItemSlo
     pickSound = sound;
     wornSlot = slot;
     needsInvImg = true;
+    inInv = false;
     invImg = nullptr;
     dist = 0.f;
     dropSpeed = 0.f;
@@ -50,10 +50,6 @@ Item::~Item() {
         bbFreeImage(invImg);
     }
     bbFreeEntity(collider);
-
-    if (parentInv != nullptr) {
-        parentInv->removeItem(this);
-    }
 
     for (int i = 0; i < (int)list.size(); i++) {
         if (list[i] == this) {
@@ -150,7 +146,7 @@ void Item::combineWith(Item* other) {
 void Item::update() {
     float hideDistSqr = HideDistance*0.5f; hideDistSqr*=hideDistSqr;
 
-    if (parentInv == nullptr) {
+    if (!inInv) {
         if (itemDistanceTimer < TimeInPosMilliSecs()) {
             dist = bbEntityDistanceSquared(mainPlayer->collider, collider);
         }
@@ -191,7 +187,7 @@ void Item::update() {
                 for (int i = 0; i < (int)list.size(); i++) {
                     Item* collItem = list[i];
 
-                    if (this != collItem && collItem->parentInv == nullptr && collItem->dist < hideDistSqr*0.2f) {
+                    if (this != collItem && collItem->inInv == false && collItem->dist < hideDistSqr*0.2f) {
 
                         float xtemp = bbEntityX(collItem->collider,true)-bbEntityX(collider,true);
                         float ytemp = bbEntityY(collItem->collider,true)-bbEntityY(collider,true);
