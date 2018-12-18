@@ -39,81 +39,81 @@ namespace CBN {
 // Structs.
 std::vector<NPC*> NPC::list;
 NPC::NPC() {
-	obj = nullptr;
-	obj2 = nullptr;
-	obj3 = nullptr;
-	obj4 = nullptr;
-	collider = nullptr;
+    obj = nullptr;
+    obj2 = nullptr;
+    obj3 = nullptr;
+    obj4 = nullptr;
+    collider = nullptr;
 
-	npcType = 0;
-	id = 0;
+    npcType = 0;
+    id = 0;
 
-	polyData = 0;
+    polyData = 0;
 
-	state = 0.f;
-	state2 = 0.f;
-	state3 = 0.f;
-	prevState = 0;
-	makingNoise = 0;
+    state = 0.f;
+    state2 = 0.f;
+    state3 = 0.f;
+    prevState = 0;
+    makingNoise = 0;
 
-	frame = 0.f;
-	angle = 0.f;
-	playerDistance = 0.f;
-	soundTimer = 0.f;
-	speed = 0.f;
-	currSpeed = 0.f;
+    frame = 0.f;
+    angle = 0.f;
+    playerDistance = 0.f;
+    soundTimer = 0.f;
+    speed = 0.f;
+    currSpeed = 0.f;
 
-	idle = 0.f;
-	reload = 0.f;
-	timer = 0.f;
-	lastSeen = 0;
-	lastDist = 0.f;
-	prevX = 0.f;
-	prevY = 0.f;
-	prevZ = 0.f;
+    idle = 0.f;
+    reload = 0.f;
+    timer = 0.f;
+    lastSeen = 0;
+    lastDist = 0.f;
+    prevX = 0.f;
+    prevY = 0.f;
+    prevZ = 0.f;
 
-	target = nullptr;
-	targetID = 0;
-	enemyX = 0.f;
-	enemyY = 0.f;
-	enemyZ = 0.f;
-	targetX = 0.f;
-	targetY = 0.f;
-	targetZ = 0.f;
+    target = nullptr;
+    targetID = 0;
+    enemyX = 0.f;
+    enemyY = 0.f;
+    enemyZ = 0.f;
+    targetX = 0.f;
+    targetY = 0.f;
+    targetZ = 0.f;
 
-	pathStatus = 0;
-	pathTimer = 0.f;
-	pathLocation = 0;
-	pathX = 0;
-	pathZ = 0;
+    pathStatus = 0;
+    pathTimer = 0.f;
+    pathLocation = 0;
+    pathX = 0;
+    pathZ = 0;
 
-	nvX = 0.f;
-	nvY = 0.f;
-	nvZ = 0.f;
+    nvX = 0.f;
+    nvY = 0.f;
+    nvZ = 0.f;
 
-	dropSpeed = 0.f;
-	gravity = 0;
-	
-	mtfVariant = 0;
-	mtfLeader = nullptr;
-	isDead = 0;
-	ignorePlayer = 0;
+    dropSpeed = 0.f;
+    gravity = 0;
 
-	manipulateBone = 0;
-	manipulationType = 0;
+    mtfVariant = 0;
+    mtfLeader = nullptr;
+    isDead = 0;
+    ignorePlayer = 0;
 
-	boneX = 0.f;
-	boneY = 0.f;
-	boneZ = 0.f;
-	bonePitch = 0.f;
-	boneYaw = 0.f;
-	boneRoll = 0.f;
+    manipulateBone = 0;
+    manipulationType = 0;
 
-	currElevator = nullptr;
-	hp = 0;
-	modelScaleX = 0.f;
-	modelScaleY = 0.f;
-	modelScaleZ = 0.f;
+    boneX = 0.f;
+    boneY = 0.f;
+    boneZ = 0.f;
+    bonePitch = 0.f;
+    boneYaw = 0.f;
+    boneRoll = 0.f;
+
+    currElevator = nullptr;
+    hp = 0;
+    modelScaleX = 0.f;
+    modelScaleY = 0.f;
+    modelScaleZ = 0.f;
 
     list.push_back(this);
 }

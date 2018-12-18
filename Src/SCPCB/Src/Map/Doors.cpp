@@ -20,26 +20,26 @@ namespace CBN {
 // Structs.
 std::vector<Door*> Door::list;
 Door::Door() {
-	obj = nullptr;
-	obj2 = nullptr;
-	frameobj = nullptr;
+    obj = nullptr;
+    obj2 = nullptr;
+    frameobj = nullptr;
 
-	locked = false;
-	open = false;
+    locked = false;
+    open = false;
 
-	float angle = 0.f;
-	openstate = 0.f;
-	fastopen = 0;
-	typ = 0;
-	timer = 0;
-	timerstate = 0.f;
-	room = nullptr;
+    float angle = 0.f;
+    openstate = 0.f;
+    fastopen = 0;
+    typ = 0;
+    timer = 0;
+    timerstate = 0.f;
+    room = nullptr;
 
-	dist = 0.f;
+    dist = 0.f;
 
-	id = 0;
-	autoClose = 0;
-	linkedDoor = nullptr;
+    id = 0;
+    autoClose = 0;
+    linkedDoor = nullptr;
 
     list.push_back(this);
 }

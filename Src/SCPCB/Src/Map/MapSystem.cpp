@@ -112,25 +112,25 @@ Material* Material::getObject(int index) {
 
 std::vector<RoomTemplate*> RoomTemplate::list;
 RoomTemplate::RoomTemplate() {
-	shape = 0;
-	large = 0;
+    shape = 0;
+    large = 0;
 
-	loaded = 0;
+    loaded = 0;
 
-	opaqueMesh = nullptr;
-	alphaMesh = nullptr;
+    opaqueMesh = nullptr;
+    alphaMesh = nullptr;
 
-	zones = 0;
+    zones = 0;
 
-	commonness = 0.f;
-	minAmount = 0;
-	maxAmount = 0;
-	xRangeStart = 0.f;
-	xRangeEnd = 0.f;
-	yRangeStart = 0.f;
-	yRangeEnd = 0.f;
+    commonness = 0.f;
+    minAmount = 0;
+    maxAmount = 0;
+    xRangeStart = 0.f;
+    xRangeEnd = 0.f;
+    yRangeStart = 0.f;
+    yRangeEnd = 0.f;
 
-	tempTriggerboxAmount = 0;
+    tempTriggerboxAmount = 0;
 
     list.push_back(this);
 }
