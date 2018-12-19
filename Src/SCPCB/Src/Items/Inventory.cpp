@@ -130,15 +130,6 @@ bool Inventory::anyRoom() const {
     return false;
 }
 
-int Inventory::getIndex(Item* it) const {
-    for (int i = 0; i < size; i++) {
-        if (items[i].contains(it)) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 Item* Inventory::getItem(int index) {
     if (index < 0 || index >= size) {
         throw ("Inventory::getItem() out of range!");
@@ -148,6 +139,23 @@ Item* Inventory::getItem(int index) {
         return nullptr;
     }
     return items[index].getItem();
+}
+
+int Inventory::getIndex(Item* it) const {
+    for (int i = 0; i < size; i++) {
+        if (items[i].contains(it)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+bool Inventory::isEquipped(Item* it) const {
+    if (it->wornSlot == WornItemSlot::None) {
+        return false;
+    }
+
+    return equipSlots[(int)it->wornSlot].contains(it);
 }
 
 Item* Inventory::getEquippedItem(int index) {
@@ -179,7 +187,7 @@ void Inventory::setItem(Item* it, int slot) {
 
 void Inventory::moveItem(Item* it, enum class WornItemSlot slot) {
     // Don't do anything if the item doesn't have an equip slot.
-    if (it->wornSlot == WornItemSlot::None) {
+    if (it->wornSlot == WornItemSlot::None || it->wornSlot != slot) {
         return;
     }
 
@@ -194,9 +202,9 @@ void Inventory::moveItem(Item* it, enum class WornItemSlot slot) {
         // Put it in the equip slot.
         equipSlots[(int)slot].insertItem(it);
     }
-    else if (equipSlots[(int)slot].contains(it)) {
+    else if (isEquipped(it)) {
         // De-equipping an item?
-        
+
         // Unequip it.
         equipSlots[(int)slot].removeItem();
 
@@ -206,11 +214,16 @@ void Inventory::moveItem(Item* it, enum class WornItemSlot slot) {
 }
 
 void Inventory::moveItem(Item* it, int destIndex) {
-    // Get item's inventory index.
-    int index = getIndex(it);
+    if (isEquipped(it)) {
+        // Unequip it.
+        equipSlots[(int)it->wornSlot].removeItem();
+    } else {
+        // Get item's inventory index.
+        int index = getIndex(it);
 
-    // Remove it from this slot.
-    items[index].removeItem();
+        // Remove it from this slot.
+        items[index].removeItem();
+    }
 
     // Put it in the other slot.
     items[destIndex].insertItem(it);
@@ -373,7 +386,7 @@ void Inventory::draw() {
             int index = getIndex(item);
             hoveringOverItemsOwnSlot = items[index].isHovering();
         }
-        
+
         if (!hoveringOverItemsOwnSlot) {
             bbDrawImage(item->invImg, bbMouseX() - bbImageWidth(item->invImg) / 2, bbMouseY() - bbImageHeight(item->invImg) / 2);
         }

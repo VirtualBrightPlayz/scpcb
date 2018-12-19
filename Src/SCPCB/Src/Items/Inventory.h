@@ -52,6 +52,7 @@ private:
 
     void setItem(Item* it, int slot);
     int getIndex(Item* it) const;
+    bool isEquipped(Item* it) const;
 
     // Equip slots.
     ItemCell* equipSlots;
