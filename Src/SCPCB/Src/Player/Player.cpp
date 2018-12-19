@@ -88,9 +88,7 @@ Player::Player() {
     noclip = false;
 
     inventory = new Inventory(PLAYER_INV_COUNT, 3);
-    wornInventory = new Inventory(WORNITEM_SLOT_COUNT, WORNITEM_SLOT_COUNT);
-    wornInventory->displayVertical = true;
-    wornInventory->xOffset -= 600;
+    //wornInventory->xOffset -= 600; // TODO: Move to equip slots.
 
     cam = bbCreateCamera();
     bbCameraViewport(cam, 0, 0, userOptions->screenWidth, userOptions->screenHeight);
@@ -761,15 +759,6 @@ void Player::updateOverlays() {
     //If (LightBlink > 0) Then darkA = Min(Max(darkA, LightBlink * Rnd(0.3f, 0.8f)), 1.f)
 }
 
-void Player::updateItemUse() {
-    for (int i = 0; i < wornInventory->getSize(); i++) {
-        Item* it = wornInventory->getItem(i);
-        if (it != nullptr) {
-            it->updateUse();
-        }
-    }
-}
-
 // TODO: Re-implement.
 void Player::updateInjuries() {
     updateInfect();
@@ -865,6 +854,15 @@ void Player::updateDeathAnim() {
     }
 }
 
+void Player::updateItemUse() {
+    for (int i = 0; i < WORNITEM_SLOT_COUNT; i++) {
+        Item* it = inventory->getEquippedItem(i);
+        if (it != nullptr) {
+            it->updateUse();
+        }
+    }
+}
+
 void Player::toggleInventory() {
     if (CurrGameState == GAMESTATE_INVENTORY) {
         CurrGameState = GAMESTATE_PLAYING;
@@ -882,36 +880,21 @@ void Player::toggleInventory() {
     selectedItem = nullptr;
 }
 
-void Player::updateInventory() {
-    hoveredItemCell = nullptr;
-    openInventory->update();
-    if (openInventory == inventory) {
-        wornInventory->update();
-    }
-
-    // if the mouse was released outside a slot, drop the item.
-    if (MouseUp1 && selectedItem != nullptr && hoveredItemCell == nullptr) {
-        dropItem(selectedItem);
-        selectedItem = nullptr;
-    }
-}
-
 void Player::pickItem(Item* it) {
     if (!inventory->anyRoom()) {
         txtMgmt->setMsg(txtMgmt->lang["inv_full"]);
         return;
     }
 
-    bbHideEntity(it->collider);
-    it->dropSpeed = 0.f;
     inventory->addItem(it);
     PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
     it->onPick();
 }
 
 bool Player::isEquipped(const String& itType) {
-    for (int i = 0; i < wornInventory->getSize(); i++) {
-        if (wornInventory->getItem(i) != nullptr && wornInventory->getItem(i)->getType().equals(itType)) {
+    for (int i = 0; i < WORNITEM_SLOT_COUNT; i++) {
+        Item* it = inventory->getEquippedItem(i);
+        if (it != nullptr && it->getType().equals(itType)) {
             return true;
         }
     }

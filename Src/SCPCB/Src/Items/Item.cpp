@@ -35,7 +35,7 @@ Item::Item(const String& meshPath, float scale, ItemPickSound sound, WornItemSlo
     pickSound = sound;
     wornSlot = slot;
     needsInvImg = true;
-    inInv = false;
+    visible = true;
     invImg = nullptr;
     dist = 0.f;
     dropSpeed = 0.f;
@@ -56,6 +56,25 @@ Item::~Item() {
             list.erase(list.begin() + i);
             break;
         }
+    }
+}
+
+void Item::setVisibility(bool isV) {
+    visible = isV;
+
+    if (visible) {
+        bbShowEntity(collider);
+        bbPositionEntity(collider, bbEntityX(mainPlayer->cam), bbEntityY(mainPlayer->cam), bbEntityZ(mainPlayer->cam));
+        bbRotateEntity(collider, bbEntityPitch(mainPlayer->cam), bbEntityYaw(mainPlayer->cam) + bbRnd(-20, 20), 0);
+        bbMoveEntity(collider, 0, -0.1f, 0.1f);
+        bbRotateEntity(collider, 0, bbEntityYaw(mainPlayer->cam) + bbRnd(-110, 110), 0);
+
+        bbResetEntity(collider);
+        dropSpeed = 0.f;
+    }
+    else {
+        bbHideEntity(collider);
+        dropSpeed = 0.f;
     }
 }
 
@@ -144,9 +163,9 @@ void Item::combineWith(Item* other) {
 }
 
 void Item::update() {
-    float hideDistSqr = HideDistance*0.5f; hideDistSqr*=hideDistSqr;
+    if (visible) {
+        float hideDistSqr = HideDistance*0.5f; hideDistSqr*=hideDistSqr;
 
-    if (!inInv) {
         if (itemDistanceTimer < TimeInPosMilliSecs()) {
             dist = bbEntityDistanceSquared(mainPlayer->collider, collider);
         }
@@ -187,7 +206,7 @@ void Item::update() {
                 for (int i = 0; i < (int)list.size(); i++) {
                     Item* collItem = list[i];
 
-                    if (this != collItem && collItem->inInv == false && collItem->dist < hideDistSqr*0.2f) {
+                    if (this != collItem && collItem->visible && collItem->dist < hideDistSqr*0.2f) {
 
                         float xtemp = bbEntityX(collItem->collider,true)-bbEntityX(collider,true);
                         float ytemp = bbEntityY(collItem->collider,true)-bbEntityY(collider,true);

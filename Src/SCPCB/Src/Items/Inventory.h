@@ -58,11 +58,14 @@ public:
     int spacing;
 
     int getSize() const;
-    void addItem(Item* it);
     bool anyRoom() const;
 
+    Item* getItem(int index);
+    Item* getEquippedItem(int index);
+    void addItem(Item* it);
+
     // Equip Slot <-> Inventory
-    void moveItem(Item* it, WornItemSlot slot);
+    void moveItem(Item* it, enum class WornItemSlot slot);
     // Move item (from some index in the inv) to another slot in the inv.
     void moveItem(Item* it, int destIndex);
     void useItem(Item* it);

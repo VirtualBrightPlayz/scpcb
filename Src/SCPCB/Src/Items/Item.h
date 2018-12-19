@@ -54,6 +54,7 @@ protected:
 
     int id;
     bool markedForRemoval;
+    bool visible;
 
     std::vector<String> tags;
 
@@ -69,10 +70,10 @@ public:
     bbImage* invImg;
     float dropSpeed;
 
+    void setVisibility(bool visible);
+
     ItemPickSound pickSound;
     WornItemSlot wornSlot;
-
-    bool inInv;
 
     virtual String getType()=0;
     virtual String getInvName()=0;

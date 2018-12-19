@@ -162,8 +162,6 @@ public:
     void toggleInventory();
 
     void pickItem(Item* it);
-    void useItem(Item* it);
-    void dropItem(Item* it);
     bool isEquipped(const String& itType);
 };
 

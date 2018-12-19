@@ -52,11 +52,11 @@ Item* ItemCell::getItem() {
 
 void ItemCell::insertItem(Item* it) {
     val = it;
-    it->inInv = true;
+    it->setVisibility(false);
 }
 
 void ItemCell::removeItem() {
-    val->inInv = false;
+    val->setVisibility(true);
     val = nullptr;
 }
 
@@ -121,6 +121,43 @@ int Inventory::getSize() const {
     return size;
 }
 
+bool Inventory::anyRoom() const {
+    for (int i = 0; i < size; i++) {
+        if (items[i].isEmpty()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+int Inventory::getIndex(Item* it) const {
+    for (int i = 0; i < size; i++) {
+        if (items[i].contains(it)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+Item* Inventory::getItem(int index) {
+    if (index < 0 || index >= size) {
+        throw ("Inventory::getItem() out of range!");
+    }
+
+    if (items[index].isEmpty()) {
+        return nullptr;
+    }
+    return items[index].getItem();
+}
+
+Item* Inventory::getEquippedItem(int index) {
+    if (index < 0 || index >= WORNITEM_SLOT_COUNT || equipSlots[index].isEmpty()) {
+        return nullptr;
+    }
+
+    return equipSlots[index].getItem();
+}
+
 void Inventory::addItem(Item* it) {
     for (int i = 0; i < size; i++) {
         if (items[i].isEmpty()) {
@@ -140,25 +177,7 @@ void Inventory::setItem(Item* it, int slot) {
     items[slot].insertItem(it);
 }
 
-int Inventory::getIndex(Item* it) const {
-    for (int i = 0; i < size; i++) {
-        if (items[i].contains(it)) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-bool Inventory::anyRoom() const {
-    for (int i = 0; i < size; i++) {
-        if (items[i].isEmpty()) {
-            return true; 
-        }
-    }
-    return false;
-}
-
-void Inventory::moveItem(Item* it, WornItemSlot slot) {
+void Inventory::moveItem(Item* it, enum class WornItemSlot slot) {
     // Equipping an item?
     if (equipSlots[(int)slot].isEmpty()) {
         // Get item's inventory index.
@@ -194,7 +213,7 @@ void Inventory::moveItem(Item* it, int destIndex) {
 
 void Inventory::useItem(Item* it) {
     if (it->wornSlot != WornItemSlot::None) {
-        if (!(equipSlots->isEmpty() || equipSlots->contains(it))) {
+        if (equipSlots[(int)it->wornSlot].contains(it)) {
             txtMgmt->setMsg(txtMgmt->lang["inv_alreadyequip"]);
             return;
         }
@@ -208,22 +227,15 @@ void Inventory::useItem(Item* it) {
 }
 
 void Inventory::dropItem(Item* it) {
-    bool wasEquipped = it->parentInv == wornInventory;
-    PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
-    it->parentInv->removeItem(it);
-
-    if (wasEquipped) {
+    if (it->wornSlot != WornItemSlot::None && equipSlots[(int)it->wornSlot].contains(it)) {
+        equipSlots[(int)it->wornSlot].removeItem();
         it->onUse(); // Has the de-equip message.
     }
+    else {
+        items[getIndex(it)].removeItem();
+    }
 
-    bbShowEntity(it->collider);
-    bbPositionEntity(it->collider, bbEntityX(cam), bbEntityY(cam), bbEntityZ(cam));
-    bbRotateEntity(it->collider, bbEntityPitch(cam), bbEntityYaw(cam) + bbRnd(-20, 20), 0);
-    bbMoveEntity(it->collider, 0, -0.1f, 0.1f);
-    bbRotateEntity(it->collider, 0, bbEntityYaw(cam) + bbRnd(-110, 110), 0);
-
-    bbResetEntity(it->collider);
-    it->dropSpeed = 0.f;
+    PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
 }
 
 void Inventory::updateMainInv() {
@@ -243,7 +255,7 @@ void Inventory::updateMainInv() {
                 MouseHit1 = false;
                 if (DoubleClick) {
                     // Using the item.
-                    mainPlayer->useItem(mainPlayer->selectedItem);
+                    useItem(mainPlayer->selectedItem);
 
                     mainPlayer->selectedItem = nullptr;
                     DoubleClick = false;
@@ -290,8 +302,13 @@ void Inventory::updateMainInv() {
     // }
 }
 
+void Inventory::updateEquipInv() {
+    // TODO:
+}
+
 void Inventory::update() {
     updateMainInv();
+    updateEquipInv();
 }
 
 // TODO: Render equip slots.
@@ -317,8 +334,19 @@ void Inventory::draw() {
 
     // Draw the selected item under the cursor when it's not hovering over the item's original slot.
     if (mainPlayer->selectedItem != nullptr) {
-        if (mainPlayer->hoveredItemCell == nullptr || mainPlayer->selectedItem != mainPlayer->hoveredItemCell->val) {
-            bbDrawImage(mainPlayer->selectedItem->invImg, bbMouseX() - bbImageWidth(mainPlayer->selectedItem->invImg) / 2, bbMouseY() - bbImageHeight(mainPlayer->selectedItem->invImg) / 2);
+        Item* item = mainPlayer->selectedItem;
+        bool hoveringOverItemsOwnSlot = false;
+
+        if (item->wornSlot != WornItemSlot::None && equipSlots[(int)item->wornSlot].contains(item)) {
+            hoveringOverItemsOwnSlot = true;
+        }
+        else {
+            int index = getIndex(item);
+            hoveringOverItemsOwnSlot = items[index].isHovering();
+        }
+        
+        if (!hoveringOverItemsOwnSlot) {
+            bbDrawImage(item->invImg, bbMouseX() - bbImageWidth(item->invImg) / 2, bbMouseY() - bbImageHeight(item->invImg) / 2);
         }
     }
 }

@@ -45,6 +45,15 @@ NPC::NPC() {
     obj4 = nullptr;
     collider = nullptr;
 
+    for (int i = 0; i < NPC_CHANNEL_COUNT; i++) {
+        sounds[i] = nullptr;
+        soundChannels[i] = nullptr;
+    }
+
+    for (int i = 0; i < 20; i++) {
+        path[i] = nullptr;
+    }
+
     npcType = 0;
     id = 0;
 
