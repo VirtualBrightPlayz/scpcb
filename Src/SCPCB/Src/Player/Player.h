@@ -15,7 +15,7 @@ class Sprite;
 namespace CBN {
 
 class Item;
-struct ItemCell;
+class ItemCell;
 class Inventory;
 struct Door;
 struct Room;

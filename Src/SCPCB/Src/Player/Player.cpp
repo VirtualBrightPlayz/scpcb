@@ -87,7 +87,7 @@ Player::Player() {
     godMode = false;
     noclip = false;
 
-    inventory = new Inventory(PLAYER_INV_COUNT, 3);
+    inventory = new Inventory(PLAYER_INV_COUNT);
     //wornInventory->xOffset -= 600; // TODO: Move to equip slots.
 
     cam = bbCreateCamera();

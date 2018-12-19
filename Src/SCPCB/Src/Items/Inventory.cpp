@@ -18,7 +18,7 @@ namespace CBN {
 ItemCell::ItemCell(int size) {
     hover = false;
     val = nullptr;
-    size = 0;
+    this->size = size;
 }
 
 ItemCell::~ItemCell() {
@@ -178,6 +178,11 @@ void Inventory::setItem(Item* it, int slot) {
 }
 
 void Inventory::moveItem(Item* it, enum class WornItemSlot slot) {
+    // Don't do anything if the item doesn't have an equip slot.
+    if (it->wornSlot == WornItemSlot::None) {
+        return;
+    }
+
     // Equipping an item?
     if (equipSlots[(int)slot].isEmpty()) {
         // Get item's inventory index.
@@ -213,7 +218,7 @@ void Inventory::moveItem(Item* it, int destIndex) {
 
 void Inventory::useItem(Item* it) {
     if (it->wornSlot != WornItemSlot::None) {
-        if (equipSlots[(int)it->wornSlot].contains(it)) {
+        if (!(equipSlots[(int)it->wornSlot].contains(it) || equipSlots[(int)it->wornSlot].isEmpty())) {
             txtMgmt->setMsg(txtMgmt->lang["inv_alreadyequip"]);
             return;
         }
@@ -238,9 +243,28 @@ void Inventory::dropItem(Item* it) {
     PlaySound_SM(sndMgmt->itemPick[(int)it->pickSound]);
 }
 
+int Inventory::getInvStartX() {
+    return userOptions->screenWidth / 2 - (ItemCell::SIZE * itemsPerRow + spacing * (itemsPerRow - 1) / 2) + (int)(xOffset * MenuScale);
+}
+
+int Inventory::getInvStartY() {
+    return userOptions->screenHeight / 2 - ((ItemCell::SIZE + spacing) * (size / itemsPerRow) / 2 + spacing / 2) + (int)(yOffset * MenuScale);
+}
+
+void Inventory::nextInvSlotPosition(int& cellX, int& cellY, int currCellIndex) {
+    // Move x and y coords to point to next item.
+    if (currCellIndex % itemsPerRow == itemsPerRow - 1) {
+        cellY += ItemCell::SIZE + spacing;
+        cellX = getInvStartX();
+    }
+    else {
+        cellX += ItemCell::SIZE + spacing;
+    }
+}
+
 void Inventory::updateMainInv() {
-    int cellX = userOptions->screenWidth / 2 - (ItemCell::SIZE * itemsPerRow + spacing * (itemsPerRow - 1) / 2) + (int)(xOffset * MenuScale);
-    int cellY = userOptions->screenHeight / 2 - ((ItemCell::SIZE + spacing) * (size / itemsPerRow) / 2 + spacing / 2) + (int)(yOffset * MenuScale);
+    int cellX = getInvStartX();
+    int cellY = getInvStartY();
 
     for (int i = 0; i < size; i++) {
         items[i].update(cellX, cellY);
@@ -279,12 +303,13 @@ void Inventory::updateMainInv() {
             break;
         }
 
-        // Move x and y coords to point to next item.
-        cellX += ItemCell::SIZE + spacing;
-        if (i % itemsPerRow == itemsPerRow-1) {
-            cellY += ItemCell::SIZE + spacing;
-            cellX = userOptions->screenWidth / 2 - (int)(xOffset * MenuScale);
-        }
+        nextInvSlotPosition(cellX, cellY, i);
+    }
+
+    // if the mouse was released outside a slot, drop the item.
+    if (MouseUp1 && mainPlayer->selectedItem != nullptr) {
+        dropItem(mainPlayer->selectedItem);
+        mainPlayer->selectedItem = nullptr;
     }
 
         //Update any items that are used outside the inventory (firstaid for example).
@@ -302,6 +327,20 @@ void Inventory::updateMainInv() {
     // }
 }
 
+int Inventory::getEquipStartX() {
+    return userOptions->screenWidth / 2 - (ItemCell::SIZE + equipSlotSpacing * (WORNITEM_SLOT_COUNT - 1) / 2) + (int)(equipXOffset * MenuScale);
+}
+
+int Inventory::getEquipStartY() {
+    return userOptions->screenHeight / 2 - ((ItemCell::SIZE + spacing) / 2 + equipSlotSpacing / 2) + (int)(equipYOffset * MenuScale);
+}
+
+void Inventory::setEquipSlotPosition(int x, int y, int spacing) {
+    equipXOffset = x;
+    equipYOffset = y;
+    equipSlotSpacing = spacing;
+}
+
 void Inventory::updateEquipInv() {
     // TODO:
 }
@@ -313,26 +352,16 @@ void Inventory::update() {
 
 // TODO: Render equip slots.
 void Inventory::draw() {
-    int cellX = userOptions->screenWidth / 2 - (int)(xOffset * MenuScale);
-    int cellY = userOptions->screenHeight / 2 - (int)(yOffset * MenuScale);
+    int cellX = getInvStartX();
+    int cellY = getInvStartY();
 
     for (int i = 0; i < size; i++) {
         items[i].draw(cellX, cellY, spacing);
 
-        // Move x and y coords to point to next item.
-        cellX += ItemCell::SIZE + spacing;
-        if (i % itemsPerRow == itemsPerRow-1) {
-            cellY += ItemCell::SIZE + spacing;
-            cellX = userOptions->screenWidth / 2 - (int)(xOffset * MenuScale);
-        }
-        //cellY += ItemCell::SIZE + spacing;
-        //if (i % itemsPerRow == itemsPerRow-1) {
-        //    cellX += ItemCell::SIZE + spacing;
-        //    cellY = userOptions->screenWidth / 2 - (int)(yOffset * MenuScale);
-        //}
+        nextInvSlotPosition(cellX, cellY, i);
     }
 
-    // Draw the selected item under the cursor when it's not hovering over the item's original slot.
+    // Draw the selected item under the cursor when it's not over the item's original slot.
     if (mainPlayer->selectedItem != nullptr) {
         Item* item = mainPlayer->selectedItem;
         bool hoveringOverItemsOwnSlot = false;

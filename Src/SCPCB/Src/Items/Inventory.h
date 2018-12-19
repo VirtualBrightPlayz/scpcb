@@ -37,28 +37,42 @@ public:
 
 class Inventory {
 private:
+    // Main inventory.
     ItemCell* items;
-    ItemCell* equipSlots;
+
+    int itemsPerRow;
+    int xOffset;
+    int yOffset;
+    int spacing;
     int size;
+
+    int getInvStartX();
+    int getInvStartY();
+    void nextInvSlotPosition(int& cellX, int& cellY, int currCellIndex);
 
     void setItem(Item* it, int slot);
     int getIndex(Item* it) const;
+
+    // Equip slots.
+    ItemCell* equipSlots;
+
+    int equipXOffset;
+    int equipYOffset;
+    int equipSlotSpacing;
+
+    int getEquipStartX();
+    int getEquipStartY();
 
     void updateMainInv();
     void updateEquipInv();
 
 public:
-    Inventory(int size, int itemsPerRow = 5);
+    Inventory(int size, int itemsPerRow = 3);
     ~Inventory();
-    
-    // Main inventory.
-    int itemsPerRow;
-    int xOffset;
-    int yOffset;
-    int spacing;
 
     int getSize() const;
     bool anyRoom() const;
+    void setEquipSlotPosition(int x, int y, int spacing);
 
     Item* getItem(int index);
     Item* getEquippedItem(int index);
