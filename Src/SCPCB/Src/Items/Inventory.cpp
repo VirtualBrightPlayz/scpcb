@@ -60,10 +60,27 @@ void ItemCell::removeItem() {
     val = nullptr;
 }
 
-void ItemCell::update(int x, int y) {
+void ItemCell::update(int x, int y, Inventory* const inv) {
     if (bbMouseX() > x && bbMouseX() < x + size) {
         if (bbMouseY() > y && bbMouseY() < y + size) {
             hover = true;
+
+            if (MouseHit1 && !isEmpty()) {
+                // Selecting an item.
+                if (mainPlayer->selectedItem == nullptr) {
+                    mainPlayer->selectedItem = getItem();
+                }
+
+                MouseHit1 = false;
+                if (DoubleClick) {
+                    // Using the item.
+                    inv->useItem(mainPlayer->selectedItem);
+
+                    mainPlayer->selectedItem = nullptr;
+                    DoubleClick = false;
+                }
+            }
+
             return;
         }
     }
@@ -103,9 +120,12 @@ Inventory::Inventory(int size, int itemsPerRow) {
     this->size = size;
 
     this->itemsPerRow = itemsPerRow;
-    spacing = 35;
+    spacing = ItemCell::SIZE / 2;
     xOffset = 0;
     yOffset = 0;
+    equipXOffset = 0;
+    equipYOffset = 0;
+    equipSlotSpacing = 0;
 }
 
 Inventory::~Inventory() {
@@ -211,12 +231,14 @@ void Inventory::moveItem(Item* it, enum class WornItemSlot slot) {
         // Add it to the inventory.
         addItem(it);
     }
+    it->onUse();
 }
 
 void Inventory::moveItem(Item* it, int destIndex) {
     if (isEquipped(it)) {
         // Unequip it.
         equipSlots[(int)it->wornSlot].removeItem();
+        it->onUse();
     } else {
         // Get item's inventory index.
         int index = getIndex(it);
@@ -257,11 +279,14 @@ void Inventory::dropItem(Item* it) {
 }
 
 int Inventory::getInvStartX() {
-    return userOptions->screenWidth / 2 - (ItemCell::SIZE * itemsPerRow + spacing * (itemsPerRow - 1) / 2) + (int)(xOffset * MenuScale);
+    int length = ItemCell::SIZE * itemsPerRow + (spacing * (itemsPerRow - 1));
+    return userOptions->screenWidth / 2 - (int)(length / 2) + (int)(xOffset * MenuScale);
 }
 
 int Inventory::getInvStartY() {
-    return userOptions->screenHeight / 2 - ((ItemCell::SIZE + spacing) * (size / itemsPerRow) / 2 + spacing / 2) + (int)(yOffset * MenuScale);
+    int rowCount = size / itemsPerRow;
+    int height = ItemCell::SIZE * rowCount + (spacing * (rowCount - 1));
+    return userOptions->screenHeight / 2 - (int)(height / 2) + (int)(yOffset * MenuScale);
 }
 
 void Inventory::nextInvSlotPosition(int& cellX, int& cellY, int currCellIndex) {
@@ -275,31 +300,16 @@ void Inventory::nextInvSlotPosition(int& cellX, int& cellY, int currCellIndex) {
     }
 }
 
-void Inventory::updateMainInv() {
+void Inventory::updateInvSlots() {
     int cellX = getInvStartX();
     int cellY = getInvStartY();
 
     for (int i = 0; i < size; i++) {
-        items[i].update(cellX, cellY);
+        items[i].update(cellX, cellY, this);
 
         if (items[i].isHovering()) {
-            if (MouseHit1 && !items[i].isEmpty()) {
-                // Selecting an item.
-                if (mainPlayer->selectedItem == nullptr) {
-                    mainPlayer->selectedItem = items[i].getItem();
-                }
-
-                MouseHit1 = false;
-                if (DoubleClick) {
-                    // Using the item.
-                    useItem(mainPlayer->selectedItem);
-
-                    mainPlayer->selectedItem = nullptr;
-                    DoubleClick = false;
-                }
-            } else if (MouseUp1 && mainPlayer->selectedItem != nullptr) {
-                // Item already selected and mouse release.
-
+            // Item already selected and mouse release.
+            if (MouseUp1 && mainPlayer->selectedItem != nullptr) {
                 // Hovering over empty slot. Move the item to the empty slot.
                 if (items[i].isEmpty()) {
                     moveItem(mainPlayer->selectedItem, i);
@@ -319,12 +329,6 @@ void Inventory::updateMainInv() {
         nextInvSlotPosition(cellX, cellY, i);
     }
 
-    // if the mouse was released outside a slot, drop the item.
-    if (MouseUp1 && mainPlayer->selectedItem != nullptr) {
-        dropItem(mainPlayer->selectedItem);
-        mainPlayer->selectedItem = nullptr;
-    }
-
         //Update any items that are used outside the inventory (firstaid for example).
     // TODO:
     // } else {
@@ -340,31 +344,7 @@ void Inventory::updateMainInv() {
     // }
 }
 
-int Inventory::getEquipStartX() {
-    return userOptions->screenWidth / 2 - (ItemCell::SIZE + equipSlotSpacing * (WORNITEM_SLOT_COUNT - 1) / 2) + (int)(equipXOffset * MenuScale);
-}
-
-int Inventory::getEquipStartY() {
-    return userOptions->screenHeight / 2 - ((ItemCell::SIZE + spacing) / 2 + equipSlotSpacing / 2) + (int)(equipYOffset * MenuScale);
-}
-
-void Inventory::setEquipSlotPosition(int x, int y, int spacing) {
-    equipXOffset = x;
-    equipYOffset = y;
-    equipSlotSpacing = spacing;
-}
-
-void Inventory::updateEquipInv() {
-    // TODO:
-}
-
-void Inventory::update() {
-    updateMainInv();
-    updateEquipInv();
-}
-
-// TODO: Render equip slots.
-void Inventory::draw() {
+void Inventory::drawInvSlots() {
     int cellX = getInvStartX();
     int cellY = getInvStartY();
 
@@ -373,6 +353,84 @@ void Inventory::draw() {
 
         nextInvSlotPosition(cellX, cellY, i);
     }
+}
+
+int Inventory::getEquipStartX() {
+    int length = ItemCell::SIZE;
+    return userOptions->screenWidth / 2 - (int)(length / 2) + (int)(equipXOffset * MenuScale);
+}
+
+int Inventory::getEquipStartY() {
+    int height = ItemCell::SIZE * WORNITEM_SLOT_COUNT + (equipSlotSpacing * (WORNITEM_SLOT_COUNT - 1));
+    return userOptions->screenHeight / 2 - (int)(height / 2) + (int)(equipYOffset * MenuScale);
+}
+
+void Inventory::nextEquipSlotPosition(int& cellX, int& cellY) {
+    cellY += ItemCell::SIZE + equipSlotSpacing;
+}
+
+void Inventory::setEquipSlotPosition(int x, int y, int spacing) {
+    equipXOffset = x;
+    equipYOffset = y;
+    equipSlotSpacing = spacing;
+}
+
+void Inventory::updateEquipSlots() {
+    int cellX = getEquipStartX();
+    int cellY = getEquipStartY();
+
+    for (int i = 0; i < WORNITEM_SLOT_COUNT; i++) {
+        equipSlots[i].update(cellX, cellY, this);
+
+        if (equipSlots[i].isHovering()) {
+            // Item already selected and mouse release.
+            if (MouseUp1 && mainPlayer->selectedItem != nullptr) {
+                // Hovering over empty slot. Move the item to the empty slot.
+                if (equipSlots[i].isEmpty()) {
+                    moveItem(mainPlayer->selectedItem, (WornItemSlot)i);
+                }
+                else if (equipSlots[i].getItem() != mainPlayer->selectedItem) {
+                    // Hovering over another item. Attempt to combine the items.
+                    equipSlots[i].getItem()->combineWith(mainPlayer->selectedItem);
+                }
+                // Otherwise hovering over the item's own slot.
+
+                mainPlayer->selectedItem = nullptr;
+            }
+
+            // If the mouse was hovering over this slot then don't bother iterating through the rest of the inventory.
+            break;
+        }
+
+        nextEquipSlotPosition(cellX, cellY);
+    }
+}
+
+void Inventory::drawEquipSlots() {
+    int cellX = getEquipStartX();
+    int cellY = getEquipStartY();
+
+    for (int i = 0; i < WORNITEM_SLOT_COUNT; i++) {
+        equipSlots[i].draw(cellX, cellY, equipSlotSpacing);
+
+        nextEquipSlotPosition(cellX, cellY);
+    }
+}
+
+void Inventory::update() {
+    updateInvSlots();
+    updateEquipSlots();
+
+    // if the mouse was released outside a slot, drop the item.
+    if (MouseUp1 && mainPlayer->selectedItem != nullptr) {
+        dropItem(mainPlayer->selectedItem);
+        mainPlayer->selectedItem = nullptr;
+    }
+}
+
+void Inventory::draw() {
+    drawInvSlots();
+    drawEquipSlots();
 
     // Draw the selected item under the cursor when it's not over the item's original slot.
     if (mainPlayer->selectedItem != nullptr) {
@@ -380,7 +438,7 @@ void Inventory::draw() {
         bool hoveringOverItemsOwnSlot = false;
 
         if (item->wornSlot != WornItemSlot::None && equipSlots[(int)item->wornSlot].contains(item)) {
-            hoveringOverItemsOwnSlot = true;
+            hoveringOverItemsOwnSlot = equipSlots[(int)item->wornSlot].isHovering();
         }
         else {
             int index = getIndex(item);

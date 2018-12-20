@@ -11,6 +11,7 @@ class Pivot;
 namespace CBN {
 
 class Item;
+class Inventory;
 
 class ItemCell {
 private:
@@ -31,7 +32,7 @@ public:
     void insertItem(Item* it);
     void removeItem();
 
-    void update(int x, int y);
+    void update(int x, int y, Inventory* const inv);
     void draw(int x, int y, int cellSpacing);
 };
 
@@ -52,7 +53,6 @@ private:
 
     void setItem(Item* it, int slot);
     int getIndex(Item* it) const;
-    bool isEquipped(Item* it) const;
 
     // Equip slots.
     ItemCell* equipSlots;
@@ -63,9 +63,14 @@ private:
 
     int getEquipStartX();
     int getEquipStartY();
+    void nextEquipSlotPosition(int& cellX, int& cellY);
 
-    void updateMainInv();
-    void updateEquipInv();
+    bool isEquipped(Item* it) const;
+
+    void updateInvSlots();
+    void drawInvSlots();
+    void updateEquipSlots();
+    void drawEquipSlots();
 
 public:
     Inventory(int size, int itemsPerRow = 3);
