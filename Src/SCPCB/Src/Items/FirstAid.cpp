@@ -11,8 +11,6 @@
 
 using namespace CBN;
 
-String type = "firstaid";
-
 FirstAid::FirstAid() : Item("GFX/Items/firstaid/firstaid.b3d", 10.f, ItemPickSound::Heafty, WornItemSlot::Hand) {
     timer = DEFAULT_TIME;
 }
@@ -24,7 +22,7 @@ FirstAid* FirstAid::spawn(float x, float y, float z) {
 }
 
 String FirstAid::getType() {
-    return type;
+    return "firstaid";
 }
 
 String FirstAid::getInvName() {
@@ -32,7 +30,7 @@ String FirstAid::getInvName() {
 }
 
 void FirstAid::onUse() {
-    if (mainPlayer->isEquipped(type)) {
+    if (mainPlayer->isEquipped(getType())) {
         mainPlayer->disableControls = true;
         prevCrouch = mainPlayer->crouching;
         mainPlayer->crouching = true;

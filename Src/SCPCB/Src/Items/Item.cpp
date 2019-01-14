@@ -247,9 +247,7 @@ void Item::updateAll() {
     mainPlayer->closestItem = nullptr;
     for (int i = 0; i < (int)list.size(); i++) {
         if (list[i]->markedForRemoval) {
-            delete list[i];
-            list.erase(list.begin() + i);
-            i--;
+            delete list[i]; // Item destructor removes itself from the list.
             continue;
         }
         list[i]->update();

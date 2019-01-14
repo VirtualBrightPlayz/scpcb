@@ -6,8 +6,6 @@
 
 using namespace CBN;
 
-String type = "gasmask";
-
 GasMask::GasMask() : Item("GFX/Items/gasmask/gasmask.b3d", 6.f, ItemPickSound::Heafty, WornItemSlot::Head) { }
 
 GasMask* GasMask::spawn(float x, float y, float z) {
@@ -17,7 +15,7 @@ GasMask* GasMask::spawn(float x, float y, float z) {
 }
 
 String GasMask::getType() {
-    return type;
+    return "gasmask";
 }
 
 String GasMask::getInvName() {
@@ -29,7 +27,7 @@ void GasMask::onPick() {
 }
 
 void GasMask::onUse() {
-    if (mainPlayer->isEquipped(type)) {
+    if (mainPlayer->isEquipped(getType())) {
         txtMgmt->setMsg(txtMgmt->lang["it_gasmask_on"]);
     } else {
         txtMgmt->setMsg(txtMgmt->lang["it_gasmask_off"]);
