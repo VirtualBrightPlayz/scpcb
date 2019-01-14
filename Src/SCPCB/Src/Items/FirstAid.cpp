@@ -11,8 +11,9 @@
 
 using namespace CBN;
 
+String type = "firstaid";
+
 FirstAid::FirstAid() : Item("GFX/Items/firstaid/firstaid.b3d", 10.f, ItemPickSound::Heafty, WornItemSlot::Hand) {
-    type = "firstaid";
     timer = DEFAULT_TIME;
 }
 

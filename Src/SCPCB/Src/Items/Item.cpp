@@ -248,6 +248,7 @@ void Item::updateAll() {
     for (int i = 0; i < (int)list.size(); i++) {
         if (list[i]->markedForRemoval) {
             delete list[i];
+            list.erase(list.begin() + i);
             i--;
             continue;
         }

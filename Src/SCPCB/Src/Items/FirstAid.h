@@ -7,12 +7,14 @@ namespace CBN {
 
 class FirstAid : public Item {
 private:
-    bool prevCrouch;
-    String type;
     FirstAid();
+
+    // Stores the player's crouch state prior to using the first aid.
+    bool prevCrouch;
 
     const float DEFAULT_TIME = 10 * 70;
     float timer;
+
 public:
     static FirstAid* spawn(float x, float y, float z);
 

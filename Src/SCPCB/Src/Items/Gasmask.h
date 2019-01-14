@@ -6,8 +6,8 @@ namespace CBN {
 
 class GasMask : public Item {
 private:
-    String type;
     GasMask();
+
 public:
     static GasMask* spawn(float x, float y, float z);
 

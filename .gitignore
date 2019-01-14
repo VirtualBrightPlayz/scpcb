@@ -21,3 +21,7 @@ Thumbs.db
 
 # macOS
 *.DS_Store
+
+# Executables
+*.exe
+*.app

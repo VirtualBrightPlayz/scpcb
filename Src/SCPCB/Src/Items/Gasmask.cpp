@@ -4,11 +4,11 @@
 #include "../AssetMgmt/TextMgmt.h"
 #include "../Player/Player.h"
 
-namespace CBN {
+using namespace CBN;
 
-GasMask::GasMask() : Item("GFX/Items/gasmask/gasmask.b3d", 6.f, ItemPickSound::Heafty, WornItemSlot::Head) {
-    type = "gasmask";
-}
+String type = "gasmask";
+
+GasMask::GasMask() : Item("GFX/Items/gasmask/gasmask.b3d", 6.f, ItemPickSound::Heafty, WornItemSlot::Head) { }
 
 GasMask* GasMask::spawn(float x, float y, float z) {
     GasMask* it = new GasMask();
@@ -34,6 +34,4 @@ void GasMask::onUse() {
     } else {
         txtMgmt->setMsg(txtMgmt->lang["it_gasmask_off"]);
     }
-}
-
 }
