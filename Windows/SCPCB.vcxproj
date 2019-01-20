@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{EBF63DF4-1D71-45A2-9B88-D5005F6E30DF}</ProjectGuid>
+    <RootNamespace>SCPCB</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>.\obj\$(Platform)\$(Configuration)\</AssemblerListingLocation>
+      <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
+      <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>wsock32.lib;amstrmid.lib;winmm.lib;dxguid.lib;ddraw.lib;dsound.lib;dinput8.lib;odbc32.lib;odbccp32.lib;../Libraries/bbruntime/lib/$(Platform)/$(Configuration)/bbruntime.lib;../Libraries/blitz3d/lib/$(Platform)/$(Configuration)/blitz3d.lib;../Libraries/freeimage/ZLib/lib/$(Platform)/$(Configuration)/ZLib.lib;../Libraries/freeimage/LibJPEG/lib/$(Platform)/$(Configuration)/LibJPEG.lib;../Libraries/freeimage/LibPNG/lib/$(Platform)/$(Configuration)/LibPNG.lib;../Libraries/freeimage/FreeImageLib/lib/$(Platform)/$(Configuration)/FreeImage.lib;../Libraries/gxruntime/lib/$(Platform)/$(Configuration)/gxruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AssemblerListingLocation>.\obj\$(Platform)\$(Configuration)\</AssemblerListingLocation>
+      <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
+      <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
+      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>wsock32.lib;amstrmid.lib;winmm.lib;dxguid.lib;ddraw.lib;dsound.lib;dinput8.lib;odbc32.lib;odbccp32.lib;../Libraries/bbruntime/lib/$(Platform)/$(Configuration)/bbruntime.lib;../Libraries/blitz3d/lib/$(Platform)/$(Configuration)/blitz3d.lib;../Libraries/freeimage/ZLib/lib/$(Platform)/$(Configuration)/ZLib.lib;../Libraries/freeimage/LibJPEG/lib/$(Platform)/$(Configuration)/LibJPEG.lib;../Libraries/freeimage/LibPNG/lib/$(Platform)/$(Configuration)/LibPNG.lib;../Libraries/freeimage/FreeImageLib/lib/$(Platform)/$(Configuration)/FreeImage.lib;../Libraries/gxruntime/lib/$(Platform)/$(Configuration)/gxruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AssemblerListingLocation>.\obj\$(Platform)\$(Configuration)\</AssemblerListingLocation>
+      <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
+      <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
+      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>wsock32.lib;amstrmid.lib;winmm.lib;dxguid.lib;ddraw.lib;dsound.lib;dinput8.lib;odbc32.lib;odbccp32.lib;../Libraries/bbruntime/lib/$(Platform)/$(Configuration)/bbruntime.lib;../Libraries/blitz3d/lib/$(Platform)/$(Configuration)/blitz3d.lib;../Libraries/freeimage/ZLib/lib/$(Platform)/$(Configuration)/ZLib.lib;../Libraries/freeimage/LibJPEG/lib/$(Platform)/$(Configuration)/LibJPEG.lib;../Libraries/freeimage/LibPNG/lib/$(Platform)/$(Configuration)/LibPNG.lib;../Libraries/freeimage/FreeImageLib/lib/$(Platform)/$(Configuration)/FreeImage.lib;../Libraries/gxruntime/lib/$(Platform)/$(Configuration)/gxruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../Libraries/bbruntime/;../Libraries/blitz3d/;../Libraries/freeimage/;../Libraries/gxruntime/</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>.\obj\$(Platform)\$(Configuration)\</AssemblerListingLocation>
+      <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
+      <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>wsock32.lib;amstrmid.lib;winmm.lib;dxguid.lib;ddraw.lib;dsound.lib;dinput8.lib;odbc32.lib;odbccp32.lib;../Libraries/bbruntime/lib/$(Platform)/$(Configuration)/bbruntime.lib;../Libraries/blitz3d/lib/$(Platform)/$(Configuration)/blitz3d.lib;../Libraries/freeimage/ZLib/lib/$(Platform)/$(Configuration)/ZLib.lib;../Libraries/freeimage/LibJPEG/lib/$(Platform)/$(Configuration)/LibJPEG.lib;../Libraries/freeimage/LibPNG/lib/$(Platform)/$(Configuration)/LibPNG.lib;../Libraries/freeimage/FreeImageLib/lib/$(Platform)/$(Configuration)/FreeImage.lib;../Libraries/gxruntime/lib/$(Platform)/$(Configuration)/gxruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Src\AssetMgmt\Assets.cpp" />
+    <ClCompile Include="..\Src\AssetMgmt\Audio.cpp" />
+    <ClCompile Include="..\Src\AssetMgmt\TextMgmt.cpp" />
+    <ClCompile Include="..\Src\Config\Difficulty.cpp" />
+    <ClCompile Include="..\Src\Config\INI.cpp" />
+    <ClCompile Include="..\Src\Config\KeyName.cpp" />
+    <ClCompile Include="..\Src\Config\Options.cpp" />
+    <ClCompile Include="..\Src\GameMain.cpp" />
+    <ClCompile Include="..\Src\Items\FirstAid.cpp" />
+    <ClCompile Include="..\Src\Items\Gasmask.cpp" />
+    <ClCompile Include="..\Src\Items\Inventory.cpp" />
+    <ClCompile Include="..\Src\Items\Item.cpp" />
+    <ClCompile Include="..\Src\Items\NVG.cpp" />
+    <ClCompile Include="..\Src\Items\Radio.cpp" />
+    <ClCompile Include="..\Src\Main.cpp" />
+    <ClCompile Include="..\Src\Map\Decals.cpp" />
+    <ClCompile Include="..\Src\Map\Doors.cpp" />
+    <ClCompile Include="..\Src\Map\Events\Events.cpp" />
+    <ClCompile Include="..\Src\Map\MapSystem.cpp" />
+    <ClCompile Include="..\Src\Map\Objects.cpp" />
+    <ClCompile Include="..\Src\Map\Particles.cpp" />
+    <ClCompile Include="..\Src\Map\RM2\Materials.cpp" />
+    <ClCompile Include="..\Src\Map\RM2\RM2.cpp" />
+    <ClCompile Include="..\Src\Map\Skybox.cpp" />
+    <ClCompile Include="..\Src\MathUtils\MathUtils.cpp" />
+    <ClCompile Include="..\Src\Menus\Console\Console.cpp" />
+    <ClCompile Include="..\Src\Menus\Console\ConsoleCommands.cpp" />
+    <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp" />
+    <ClCompile Include="..\Src\Menus\GUI\GUIButtonBase.cpp" />
+    <ClCompile Include="..\Src\Menus\GUI\GUIBase.cpp" />
+    <ClCompile Include="..\Src\Menus\GUI\GUIInput.cpp" />
+    <ClCompile Include="..\Src\Menus\GUI\GUITick.cpp" />
+    <ClCompile Include="..\Src\Menus\Launcher.cpp" />
+    <ClCompile Include="..\Src\Menus\LoadingScreen.cpp" />
+    <ClCompile Include="..\Src\Menus\MainMenu.cpp" />
+    <ClCompile Include="..\Src\Menus\Menu.cpp" />
+    <ClCompile Include="..\Src\Menus\PauseMenu.cpp" />
+    <ClCompile Include="..\Src\MiscGFX\Dreamfilter.cpp" />
+    <ClCompile Include="..\Src\MiscGFX\FastResize.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCs.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtype049.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtype066.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtype096.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtype106.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtype1499.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtype173.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtype860.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtype939.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtype966.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtypeApache.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtypeD.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtypeGuard.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtypeMTF.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtypeTentacle.cpp" />
+    <ClCompile Include="..\Src\NPCs\NPCtypeZombie.cpp" />
+    <ClCompile Include="..\Src\Player\Player.cpp" />
+    <ClCompile Include="..\Src\Save\Save.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="..\Src\AssetMgmt\Assets.h" />
+    <ClInclude Include="..\Src\AssetMgmt\Audio.h" />
+    <ClInclude Include="..\Src\AssetMgmt\TextMgmt.h" />
+    <ClInclude Include="..\Src\Config\Difficulty.h" />
+    <ClInclude Include="..\Src\Config\INI.h" />
+    <ClInclude Include="..\Src\Config\KeyName.h" />
+    <ClInclude Include="..\Src\Config\Options.h" />
+    <ClInclude Include="..\Src\GameMain.h" />
+    <ClInclude Include="..\Src\Items\FirstAid.h" />
+    <ClInclude Include="..\Src\Items\Gasmask.h" />
+    <ClInclude Include="..\Src\Items\Inventory.h" />
+    <ClInclude Include="..\Src\Items\Item.h" />
+    <ClInclude Include="..\Src\Items\NVG.h" />
+    <ClInclude Include="..\Src\Items\Radio.h" />
+    <ClInclude Include="..\Src\Map\Decals.h" />
+    <ClInclude Include="..\Src\Map\Doors.h" />
+    <ClInclude Include="..\Src\Map\Events\Events.h" />
+    <ClInclude Include="..\Src\Map\MapSystem.h" />
+    <ClInclude Include="..\Src\Map\Objects.h" />
+    <ClInclude Include="..\Src\Map\Particles.h" />
+    <ClInclude Include="..\Src\Map\RM2\Materials.h" />
+    <ClInclude Include="..\Src\Map\RM2\RM2.h" />
+    <ClInclude Include="..\Src\Map\Skybox.h" />
+    <ClInclude Include="..\Src\MathUtils\MathUtils.h" />
+    <ClInclude Include="..\Src\Menus\Console\Console.h" />
+    <ClInclude Include="..\Src\Menus\Console\ConsoleCommands.h" />
+    <ClInclude Include="..\Src\Menus\GUI\GUIButton.h" />
+    <ClInclude Include="..\Src\Menus\GUI\GUIButtonBase.h" />
+    <ClInclude Include="..\Src\Menus\GUI\GUIBase.h" />
+    <ClInclude Include="..\Src\Menus\GUI\GUIInput.h" />
+    <ClInclude Include="..\Src\Menus\GUI\GUITick.h" />
+    <ClInclude Include="..\Src\Menus\Launcher.h" />
+    <ClInclude Include="..\Src\Menus\LoadingScreen.h" />
+    <ClInclude Include="..\Src\Menus\MainMenu.h" />
+    <ClInclude Include="..\Src\Menus\Menu.h" />
+    <ClInclude Include="..\Src\Menus\PauseMenu.h" />
+    <ClInclude Include="..\Src\MiscGFX\Dreamfilter.h" />
+    <ClInclude Include="..\Src\MiscGFX\FastResize.h" />
+    <ClInclude Include="..\Src\NPCs\NPCs.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtype049.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtype066.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtype096.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtype106.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtype1499.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtype173.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtype860.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtype939.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtype966.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtypeApache.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtypeD.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtypeGuard.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtypeMTF.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtypeTentacle.h" />
+    <ClInclude Include="..\Src\NPCs\NPCtypeZombie.h" />
+    <ClInclude Include="..\Src\Player\Player.h" />
+    <ClInclude Include="..\Src\Save\Save.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SCPCB.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\logo.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
