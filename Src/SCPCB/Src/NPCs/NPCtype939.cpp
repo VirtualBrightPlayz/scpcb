@@ -63,11 +63,11 @@ void InitializeNPCtype939(NPC* n) {
     if (n->obj == 0) {
         n->obj = bbLoadAnimMesh("GFX/NPCs/scp939/scp-939.b3d");
 
-        temp = GetINIFloat("Data/NPCs.ini", "SCP-939", "scale")/2.5f;
+        temp = getINIFloat("Data/NPCs.ini", "SCP-939", "scale")/2.5f;
         bbScaleEntity(n->obj, temp, temp, temp);
     }
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-939", "speed") / 100.f);
+    n->speed = (getINIFloat("Data/NPCs.ini", "SCP-939", "speed") / 100.f);
 }
 
 void UpdateNPCtype939(NPC* n) {

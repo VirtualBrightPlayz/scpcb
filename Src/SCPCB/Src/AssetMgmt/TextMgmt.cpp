@@ -22,13 +22,13 @@ TxtManager::TxtManager(const String& langCode) {
     changeLocalization(langCode);
 }
 
-void TxtManager::setMsg(const String& msg, float time) {
-    displayMsg = msg;
+void TxtManager::setMsg(const String& local, float time) {
+    displayMsg = getLocalTxt(local);
     displayTimer = time * 70;
 }
 
-void TxtManager::setDeathMsg(const String& msg) {
-    deathMsg = msg;
+void TxtManager::setDeathMsg(const String& local) {
+    deathMsg = getLocalTxt(local);
 }
 
 String TxtManager::getDeathMsg() {
@@ -67,65 +67,26 @@ void TxtManager::drawMsg() {
     bbText(x, y, displayMsg, true);
 }
 
+String TxtManager::getLocalTxt(const String& key) {
+    // TODO: Throw a console error (or some other kind) if an invalid key is requested.
+    std::map<String, String>::iterator it = lang.find(key);
+    String retVal;
+    if (it != lang.end()) {
+        return it->second;
+    }
+
+    return key;
+}
+
 void TxtManager::changeLocalization(const String& langCode) {
     lang.clear();
 
-    String path = "Data/lang/" + langCode + ".ini";
+    String path = "Data/lang/" + langCode + "/text.ini";
     if (bbFileType(path) != 1) {
         throw "Language file \"" + path + "\" not found!";
     }
 
-    // launcher
-    lang["lch_start"] = GetINIString(path, "launcher", "start");
-    lang["lch_quit"] = GetINIString(path, "launcher", "quit");
-    lang["lch_fullscreen"] = GetINIString(path, "launcher", "fullscreen");
-    lang["lch_launcher"] = GetINIString(path, "launcher", "launcher");
-    lang["lch_res"] = GetINIString(path, "launcher", "resolution");
-    lang["lch_graphics"] = GetINIString(path, "launcher", "graphics");
-
-    // menu
-    lang["mnu_new"] = GetINIString(path, "menu", "new");
-    lang["mnu_load"] = GetINIString(path, "menu", "load");
-    lang["mnu_opt"] = GetINIString(path, "menu", "options");
-    lang["mnu_quit"] = GetINIString(path, "menu", "quit");
-    lang["mnu_loadmap"] = GetINIString(path, "menu", "loadmap");
-    lang["mnu_back"] = GetINIString(path, "menu", "back");
-
-    lang["mnu_start"] = GetINIString(path, "menu", "start");
-    lang["mnu_loadmap_btn"] = GetINIString(path, "menu", "loadmap_btn");
-    lang["mnu_intro"] = GetINIString(path, "menu", "intro");
-    lang["mnu_name"] = GetINIString(path, "menu", "name");
-    lang["mnu_seed"] = GetINIString(path, "menu", "seed");
-
-    lang["mnu_nosav"] = GetINIString(path, "menu", "nosav");
-    lang["mnu_nomap"] = GetINIString(path, "menu", "nomap");
-
-    lang["pau_title"] = GetINIString(path, "menu", "pau_title");
-    lang["pau_dead"] = GetINIString(path, "menu", "pau_dead");
-    lang["pau_resume"] = GetINIString(path, "menu", "resume");
-    lang["pau_load"] = GetINIString(path, "menu", "pau_load");
-    lang["pau_opt"] = GetINIString(path, "menu", "pau_opt");
-    lang["pau_quit"] = GetINIString(path, "menu", "pau_quit");
-
-    lang["mnu_loadimg"] = GetINIString(path, "menu", "loading");
-    lang["mnu_loaddone"] = GetINIString(path, "menu", "loaddone");
-
-    // items
-    lang["inv_full"] = GetINIString(path, "items", "inv_full");
-    lang["inv_cantequip"] = GetINIString(path, "items", "inv_cantequip");
-    lang["inv_cantcombine"] = GetINIString(path, "items", "inv_cantcombine");
-    lang["inv_alreadyequip"] = GetINIString(path, "items", "inv_alreadyequip");
-    lang["dor_locked"] = GetINIString(path, "items", "locked");
-    lang["dor_keyinsert"] = GetINIString(path, "items", "keyinsert");
-    lang["dor_keylocked"] = GetINIString(path, "items", "keylocked");
-    lang["dor_keyhigher"] = GetINIString(path, "items", "keyhigher");
-    lang["dor_keyneeded"] = GetINIString(path, "items", "keyneeded");
-
-    lang["it_gasmask"] = GetINIString(path, "items", "gasmask");
-    lang["it_gasmask_on"] = GetINIString(path, "items", "gasmask_on");
-    lang["it_gasmask_off"] = GetINIString(path, "items", "gasmask_off");
-
-    lang["it_firstaid"] = GetINIString(path, "items", "firstaid");
+    lang = getINISection(path, "text");
 }
 
 }

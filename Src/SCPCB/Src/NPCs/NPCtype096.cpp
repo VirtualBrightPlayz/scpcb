@@ -26,9 +26,9 @@ void InitializeNPCtype096(NPC* n) {
     n->obj = bbLoadAnimMesh("GFX/NPCs/scp096/scp096.b3d");
     n->sounds[2] = bbLoadSound("SFX/Door/DoorOpenFast.ogg");
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-096", "speed") / 100.f);
+    n->speed = (getINIFloat("Data/NPCs.ini", "SCP-096", "speed") / 100.f);
 
-    float temp = (GetINIFloat("Data/NPCs.ini", "SCP-096", "scale") / 3.f);
+    float temp = (getINIFloat("Data/NPCs.ini", "SCP-096", "scale") / 3.f);
     bbScaleEntity(n->obj, temp, temp, temp);
 
     bbMeshCullBox(n->obj, -bbMeshWidth(n->obj)*2, -bbMeshHeight(n->obj)*2, -bbMeshDepth(n->obj)*2, bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*4, bbMeshDepth(n->obj)*4);

@@ -36,13 +36,13 @@ void InitializeNPCtypeZombie(NPC* n) {
     if (n->obj == 0) {
         n->obj = bbLoadAnimMesh("GFX/NPCs/zombie/zombie.b3d");
 
-        temp = (GetINIFloat("Data/NPCs.ini", "SCP-049-2", "scale") / 2.5f);
+        temp = (getINIFloat("Data/NPCs.ini", "SCP-049-2", "scale") / 2.5f);
         bbScaleEntity(n->obj, temp, temp, temp);
 
         bbMeshCullBox(n->obj, -bbMeshWidth(n->obj), -bbMeshHeight(n->obj), -bbMeshDepth(n->obj), bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*2, bbMeshDepth(n->obj)*2);
     }
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-049-2", "speed") / 100.f);
+    n->speed = (getINIFloat("Data/NPCs.ini", "SCP-049-2", "speed") / 100.f);
 
     bbSetAnimTime(n->obj, 107);
 

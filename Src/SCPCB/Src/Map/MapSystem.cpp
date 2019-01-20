@@ -339,7 +339,7 @@ void LoadMaterials(const String& file) {
 
             mat->diff = 0;
 
-            stepSound = GetINIString(file, TemporaryString, "stepsound");
+            stepSound = getINIString(file, TemporaryString, "stepsound");
             if (stepSound.toLower().equals("metal")) {
                 mat->stepSound = STEPSOUND_METAL;
             }
@@ -394,12 +394,12 @@ void LoadRoomTemplates(const String& file) {
             TemporaryString = TemporaryString.substr(1, TemporaryString.size() - 2);
             // TODO: Remove room ambience.
             if (!TemporaryString.toLower().equals("room ambience")) {
-                StrTemp = GetINIString(file, TemporaryString, "meshpath");
+                StrTemp = getINIString(file, TemporaryString, "meshpath");
 
                 rt = CreateRoomTemplate(StrTemp);
                 rt->name = TemporaryString.toLower();
 
-                StrTemp = GetINIString(file, TemporaryString, "shape", "0").toLower();
+                StrTemp = getINIString(file, TemporaryString, "shape", "0").toLower();
 
                 if (StrTemp.equals("room1") || StrTemp.equals("1")) {
                     rt->shape = ROOM1;
@@ -420,7 +420,7 @@ void LoadRoomTemplates(const String& file) {
                     rt->shape = ROOM0;
                 }
 
-                Zones = GetINIString(file, TemporaryString, "zones").toLower();
+                Zones = getINIString(file, TemporaryString, "zones").toLower();
                 rt->zones = 0;
                 if (Zones.findFirst("lcz")!=-1) {
                     rt->zones = rt->zones | ZONE_LCZ;
@@ -433,9 +433,9 @@ void LoadRoomTemplates(const String& file) {
                 }
 
                 if (rt->shape!=ROOM0) {
-                    rt->commonness = Max(Min(GetINIFloat(file, TemporaryString, "commonness"), 100), 0);
+                    rt->commonness = Max(Min(getINIFloat(file, TemporaryString, "commonness"), 100), 0);
 
-                    AmountRange = GetINIString(file, TemporaryString, "amount", "");
+                    AmountRange = getINIString(file, TemporaryString, "amount", "");
                     if (AmountRange.isEmpty()) {
                         rt->minAmount = -1;
                         rt->maxAmount = -1;
@@ -447,11 +447,11 @@ void LoadRoomTemplates(const String& file) {
                         rt->maxAmount = rt->minAmount;
                     }
 
-                    rt->large = GetINIInt(file, TemporaryString, "large");
-                    rt->disableDecals = GetINIInt(file, TemporaryString, "disabledecals");
+                    rt->large = getINIInt(file, TemporaryString, "large");
+                    rt->disableDecals = getINIInt(file, TemporaryString, "disabledecals");
 
-                    xRange = GetINIString(file, TemporaryString, "xrange");
-                    yRange = GetINIString(file, TemporaryString, "yrange");
+                    xRange = getINIString(file, TemporaryString, "xrange");
+                    yRange = getINIString(file, TemporaryString, "yrange");
 
                     if (xRange.isEmpty()) {
                         xRange = "0-1";
@@ -478,7 +478,7 @@ void LoadRoomTemplates(const String& file) {
 
     i = 1;
     while (true) {
-        StrTemp = GetINIString(file, "room ambience", "ambience"+String(i));
+        StrTemp = getINIString(file, "room ambience", "ambience"+String(i));
         if (StrTemp.isEmpty()) {
             break;
         }

@@ -207,7 +207,7 @@ void Update294() {
                     Input294 = bbRight(Input294, Input294.size()-9);
                 }
 
-                strtemp = GetINIString("Data/SCP-294.ini", Input294, "color", "N/A");
+                strtemp = getINIString("Data/SCP-294.ini", Input294, "color", "N/A");
 
                 if (!strtemp.equals("N/A")) {
                     int sep1 = bbInstr(strtemp, ",", 1);
@@ -216,20 +216,20 @@ void Update294() {
                     int g = bbMid(strtemp, sep1 + 1, sep2 - sep1 - 1).trim().toInt();
                     int b = bbRight(strtemp, strtemp.size() - sep2).trim().toInt();
 
-                    strtemp = GetINIString("Data/SCP-294.ini", Input294, "dispensesound");
+                    strtemp = getINIString("Data/SCP-294.ini", Input294, "dispensesound");
                     if (strtemp.isEmpty()) {
                         mainPlayer->currRoom->soundCHN = bbPlaySound(LoadTempSound("SFX/SCP/294/dispense1.ogg"));
                     } else {
                         mainPlayer->currRoom->soundCHN = bbPlaySound(LoadTempSound(strtemp));
                     }
 
-                    if (GetINIInt("Data/SCP-294.ini", Input294, "explosion")==true) {
+                    if (getINIInt("Data/SCP-294.ini", Input294, "explosion")==true) {
                         ExplosionTimer = 135;
-                        DeathMSG = GetINIString("Data/SCP-294.ini", Input294, "deathmessage");
+                        DeathMSG = getINIString("Data/SCP-294.ini", Input294, "deathmessage");
                     }
 
-                    float alpha = GetINIString("Data/SCP-294.ini", Input294, "alpha").toFloat();
-                    bool glow = GetINIInt("Data/SCP-294.ini", Input294, "glow");
+                    float alpha = getINIString("Data/SCP-294.ini", Input294, "alpha").toFloat();
+                    bool glow = getINIInt("Data/SCP-294.ini", Input294, "glow");
                     // FIXME: Float equality.
                     if (alpha == 0) {
                         alpha = 1.f;

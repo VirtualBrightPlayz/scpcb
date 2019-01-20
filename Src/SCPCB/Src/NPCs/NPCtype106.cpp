@@ -54,13 +54,13 @@ void InitializeNPCtype106(NPC* n) {
 
     n->gravity = false;
 
-    float temp = (GetINIFloat("Data/NPCs.ini", "SCP-106", "scale") / 2.2f);
+    float temp = (getINIFloat("Data/NPCs.ini", "SCP-106", "scale") / 2.2f);
     bbScaleEntity(n->obj, temp, temp, temp);
 
     // TODO: Re-implement.
     // Texture* oldManEyes = bbLoadTexture("GFX/NPCs/scp106/oldmaneyes.jpg");
 
-    // n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-106", "speed") / 100.f);
+    // n->speed = (getINIFloat("Data/NPCs.ini", "SCP-106", "speed") / 100.f);
 
     // n->obj2 = bbCreateSprite();
     // bbScaleSprite(n->obj2, 0.03f, 0.03f);

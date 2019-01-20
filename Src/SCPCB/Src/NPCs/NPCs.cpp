@@ -1035,7 +1035,7 @@ String GetNPCManipulationValue(const String& NPC, const String& bone, const Stri
     //2 - Float
     //3 - Boolean
 
-    String value = GetINIString("Data/NPCBones.ini",NPC,bone+"_"+section);
+    String value = getINIString("Data/NPCBones.ini",NPC,bone+"_"+section);
     switch (valuetype) {
         case 0:
         case 1:

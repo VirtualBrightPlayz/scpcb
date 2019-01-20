@@ -18,40 +18,40 @@ void LoadOptionsINI() {
     String optBin = "binds";
     String optHud = "hud";
 
-    userOptions->introEnabled = GetINIInt(OptionFile, optGen, "intro enabled");
-    userOptions->mouseSensitivity = GetINIFloat(OptionFile, optGen, "mouse sensitivity");
-    userOptions->invertMouseY = GetINIInt(OptionFile, optGen, "invert mouse y");
-    userOptions->consoleOpenOnError = GetINIInt(OptionFile, optGen, "open console on error");
+    userOptions->introEnabled = getINIInt(OptionFile, optGen, "intro enabled");
+    userOptions->mouseSensitivity = getINIFloat(OptionFile, optGen, "mouse sensitivity");
+    userOptions->invertMouseY = getINIInt(OptionFile, optGen, "invert mouse y");
+    userOptions->consoleOpenOnError = getINIInt(OptionFile, optGen, "open console on error");
 
     //Min is 640x480.
-    userOptions->screenWidth = (int)(Max((float)GetINIInt(OptionFile, optGra, "screen width"), 640.f));
-    userOptions->screenHeight = (int)(Max((float)GetINIInt(OptionFile, optGra, "screen height"), 480.f));
-    userOptions->fullscreen = GetINIInt(OptionFile, optGra, "fullscreen");
-    userOptions->gfxDriver = (int)(Max((float)GetINIInt(OptionFile, optGra, "gfx driver"), 1.f));
-    userOptions->screenGamma = GetINIFloat(OptionFile, optGra, "screengamma");
-    userOptions->framelimit = GetINIInt(OptionFile, optGra, "framelimit");
-    userOptions->vsync = GetINIInt(OptionFile, optGra, "vsync");
+    userOptions->screenWidth = (int)(Max((float)getINIInt(OptionFile, optGra, "screen width"), 640.f));
+    userOptions->screenHeight = (int)(Max((float)getINIInt(OptionFile, optGra, "screen height"), 480.f));
+    userOptions->fullscreen = getINIInt(OptionFile, optGra, "fullscreen");
+    userOptions->gfxDriver = (int)(Max((float)getINIInt(OptionFile, optGra, "gfx driver"), 1.f));
+    userOptions->screenGamma = getINIFloat(OptionFile, optGra, "screengamma");
+    userOptions->framelimit = getINIInt(OptionFile, optGra, "framelimit");
+    userOptions->vsync = getINIInt(OptionFile, optGra, "vsync");
 
-    userOptions->musicVolume = GetINIFloat(OptionFile, optAud, "music volume");
-    userOptions->sndVolume = GetINIFloat(OptionFile, optAud, "sound volume");
+    userOptions->musicVolume = getINIFloat(OptionFile, optAud, "music volume");
+    userOptions->sndVolume = getINIFloat(OptionFile, optAud, "sound volume");
 
-    userOptions->hudEnabled = GetINIInt(OptionFile, optHud, "HUD enabled");
-    userOptions->showFPS = GetINIInt(OptionFile, optHud, "show FPS");
+    userOptions->hudEnabled = getINIInt(OptionFile, optHud, "HUD enabled");
+    userOptions->showFPS = getINIInt(OptionFile, optHud, "show FPS");
 
-    keyBinds->right = GetINIInt(OptionFile, optBin, "Right key");
-    keyBinds->left = GetINIInt(OptionFile, optBin, "Left key");
-    keyBinds->up = GetINIInt(OptionFile, optBin, "Up key");
-    keyBinds->down = GetINIInt(OptionFile, optBin, "Down key");
+    keyBinds->right = getINIInt(OptionFile, optBin, "Right key");
+    keyBinds->left = getINIInt(OptionFile, optBin, "Left key");
+    keyBinds->up = getINIInt(OptionFile, optBin, "Up key");
+    keyBinds->down = getINIInt(OptionFile, optBin, "Down key");
 
-    keyBinds->blink = GetINIInt(OptionFile, optBin, "Blink key");
-    keyBinds->sprint = GetINIInt(OptionFile, optBin, "Sprint key");
-    keyBinds->inv = GetINIInt(OptionFile, optBin, "Inventory key");
-    keyBinds->crouch = GetINIInt(OptionFile, optBin, "Crouch key");
+    keyBinds->blink = getINIInt(OptionFile, optBin, "Blink key");
+    keyBinds->sprint = getINIInt(OptionFile, optBin, "Sprint key");
+    keyBinds->inv = getINIInt(OptionFile, optBin, "Inventory key");
+    keyBinds->crouch = getINIInt(OptionFile, optBin, "Crouch key");
 
-    keyBinds->save = GetINIInt(OptionFile, optBin, "Save key");
-    keyBinds->console = GetINIInt(OptionFile, optBin, "Console key");
+    keyBinds->save = getINIInt(OptionFile, optBin, "Save key");
+    keyBinds->console = getINIInt(OptionFile, optBin, "Console key");
 
-    userOptions->launcher = GetINIInt(OptionFile, "launcher", "launcher enabled");
+    userOptions->launcher = getINIInt(OptionFile, "launcher", "launcher enabled");
 }
 
 void SaveOptionsINI() {
@@ -61,38 +61,38 @@ void SaveOptionsINI() {
     String optBin = "binds";
     String optHud = "hud";
 
-    PutINIValue(OptionFile, optGen, "intro enabled", String(userOptions->introEnabled));
-    PutINIValue(OptionFile, optGen, "mouse sensitivity", String(userOptions->mouseSensitivity));
-    PutINIValue(OptionFile, optGen, "invert mouse y", String(userOptions->invertMouseY));
-    PutINIValue(OptionFile, optGen, "open console on error", String(userOptions->consoleOpenOnError));
+    putINIValue(OptionFile, optGen, "intro enabled", String(userOptions->introEnabled));
+    putINIValue(OptionFile, optGen, "mouse sensitivity", String(userOptions->mouseSensitivity));
+    putINIValue(OptionFile, optGen, "invert mouse y", String(userOptions->invertMouseY));
+    putINIValue(OptionFile, optGen, "open console on error", String(userOptions->consoleOpenOnError));
 
-    PutINIValue(OptionFile, optGra, "screen width", String(userOptions->screenWidth));
-    PutINIValue(OptionFile, optGra, "screen height", String(userOptions->screenHeight));
-    PutINIValue(OptionFile, optGra, "fullscreen", String(userOptions->fullscreen));
-    PutINIValue(OptionFile, optGra, "gfx driver", String(userOptions->gfxDriver));
-    PutINIValue(OptionFile, optGra, "screengamma", String(userOptions->screenGamma));
-    PutINIValue(OptionFile, optGra, "framelimit", String(userOptions->framelimit));
-    PutINIValue(OptionFile, optGra, "vsync", String(userOptions->vsync));
+    putINIValue(OptionFile, optGra, "screen width", String(userOptions->screenWidth));
+    putINIValue(OptionFile, optGra, "screen height", String(userOptions->screenHeight));
+    putINIValue(OptionFile, optGra, "fullscreen", String(userOptions->fullscreen));
+    putINIValue(OptionFile, optGra, "gfx driver", String(userOptions->gfxDriver));
+    putINIValue(OptionFile, optGra, "screengamma", String(userOptions->screenGamma));
+    putINIValue(OptionFile, optGra, "framelimit", String(userOptions->framelimit));
+    putINIValue(OptionFile, optGra, "vsync", String(userOptions->vsync));
 
-    PutINIValue(OptionFile, optAud, "music volume", String(userOptions->musicVolume));
-    PutINIValue(OptionFile, optAud, "sound volume", String(userOptions->sndVolume));
-    PutINIValue(OptionFile, optHud, "HUD enabled", String(userOptions->hudEnabled));
-    PutINIValue(OptionFile, optHud, "show FPS", String(userOptions->showFPS));
+    putINIValue(OptionFile, optAud, "music volume", String(userOptions->musicVolume));
+    putINIValue(OptionFile, optAud, "sound volume", String(userOptions->sndVolume));
+    putINIValue(OptionFile, optHud, "HUD enabled", String(userOptions->hudEnabled));
+    putINIValue(OptionFile, optHud, "show FPS", String(userOptions->showFPS));
 
-    PutINIValue(OptionFile, optBin, "Right key", String(keyBinds->right));
-    PutINIValue(OptionFile, optBin, "Left key", String(keyBinds->left));
-    PutINIValue(OptionFile, optBin, "Up key", String(keyBinds->up));
-    PutINIValue(OptionFile, optBin, "Down key", String(keyBinds->down));
+    putINIValue(OptionFile, optBin, "Right key", String(keyBinds->right));
+    putINIValue(OptionFile, optBin, "Left key", String(keyBinds->left));
+    putINIValue(OptionFile, optBin, "Up key", String(keyBinds->up));
+    putINIValue(OptionFile, optBin, "Down key", String(keyBinds->down));
 
-    PutINIValue(OptionFile, optBin, "Blink key", String(keyBinds->blink));
-    PutINIValue(OptionFile, optBin, "Sprint key", String(keyBinds->sprint));
-    PutINIValue(OptionFile, optBin, "Inventory key", String(keyBinds->inv));
-    PutINIValue(OptionFile, optBin, "Crouch key", String(keyBinds->crouch));
+    putINIValue(OptionFile, optBin, "Blink key", String(keyBinds->blink));
+    putINIValue(OptionFile, optBin, "Sprint key", String(keyBinds->sprint));
+    putINIValue(OptionFile, optBin, "Inventory key", String(keyBinds->inv));
+    putINIValue(OptionFile, optBin, "Crouch key", String(keyBinds->crouch));
 
-    PutINIValue(OptionFile, optBin, "Save key", String(keyBinds->save));
-    PutINIValue(OptionFile, optBin, "Console key", String(keyBinds->console));
+    putINIValue(OptionFile, optBin, "Save key", String(keyBinds->save));
+    putINIValue(OptionFile, optBin, "Console key", String(keyBinds->console));
 
-    PutINIValue(OptionFile, "launcher", "launcher enabled", String(userOptions->launcher));
+    putINIValue(OptionFile, "launcher", "launcher enabled", String(userOptions->launcher));
 }
 
 }

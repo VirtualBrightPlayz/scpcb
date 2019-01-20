@@ -28,9 +28,9 @@ void InitializeNPCtypeGuard(NPC* n) {
 
     LoadOrCopyMesh(n, "GFX/NPCs/guard/guard.b3d");
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "Guard", "speed") / 100.f);
+    n->speed = (getINIFloat("Data/NPCs.ini", "Guard", "speed") / 100.f);
 
-    float temp = (GetINIFloat("Data/NPCs.ini", "Guard", "scale") / 2.5f);
+    float temp = (getINIFloat("Data/NPCs.ini", "Guard", "scale") / 2.5f);
     bbScaleEntity(n->obj, temp, temp, temp);
 
     bbMeshCullBox(n->obj, -bbMeshWidth(n->obj), -bbMeshHeight(n->obj), -bbMeshDepth(n->obj), bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*2, bbMeshDepth(n->obj)*2);

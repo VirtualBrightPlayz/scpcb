@@ -45,7 +45,7 @@ void InitializeNPCtype966(NPC* n) {
 
     bbEntityFX(n->obj,1);
 
-    float temp = GetINIFloat("Data/NPCs.ini", "SCP-966", "scale")/40.f;
+    float temp = getINIFloat("Data/NPCs.ini", "SCP-966", "scale")/40.f;
     bbScaleEntity(n->obj, temp, temp, temp);
 
     //EntityColor(n\obj,Rnd(0,50),0,Rnd(50,100))

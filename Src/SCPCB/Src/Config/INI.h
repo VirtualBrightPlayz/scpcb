@@ -2,6 +2,7 @@
 #define INI_H_INCLUDED
 #include <StringType.h>
 #include <vector>
+#include <map>
 
 struct bbFile;
 
@@ -33,6 +34,8 @@ public:
     String getValue(const String& section, const String& key, const String& defaultValue);
     void setValue(const String& section, const String& key, const String& value);
 
+    std::map<String, String> getSection(const String& section);
+
     void save();
 
     int bankOffset = 0;
@@ -40,13 +43,15 @@ public:
 };
 
 // Functions.
-String GetINIString(const String& file, const String& section, const String& parameter, const String& defaultValue = "");
+String getINIString(const String& file, const String& section, const String& parameter, const String& defaultValue = "");
 
-int GetINIInt(const String& file, const String& section, const String& parameter, int defaultvalue = 0);
+int getINIInt(const String& file, const String& section, const String& parameter, int defaultvalue = 0);
 
-float GetINIFloat(const String& file, const String& section, const String& parameter, float defaultvalue = 0.0);
+float getINIFloat(const String& file, const String& section, const String& parameter, float defaultvalue = 0.0);
 
-void PutINIValue(const String& file, const String& INI_sSection, const String& INI_sKey, const String& INI_sValue);
+void putINIValue(const String& file, const String& INI_sSection, const String& INI_sKey, const String& INI_sValue);
+
+std::map<String, String> getINISection(const String& file, const String& section);
 
 }
 #endif // INI_H_INCLUDED

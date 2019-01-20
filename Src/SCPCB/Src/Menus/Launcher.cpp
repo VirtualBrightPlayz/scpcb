@@ -18,8 +18,8 @@ namespace CBN {
 Launcher* launcher = nullptr;
 
 Launcher::Launcher() {
-    this->width = (int)(Min((float)GetINIInt(OptionFile, "launcher", "launcher width"), 1024.f));
-    this->height = (int)(Min((float)GetINIInt(OptionFile, "launcher", "launcher height"), 768.f));
+    this->width = (int)(Min((float)getINIInt(OptionFile, "launcher", "launcher width"), 1024.f));
+    this->height = (int)(Min((float)getINIInt(OptionFile, "launcher", "launcher height"), 768.f));
 
     for (int i = 1; i <= bbCountGfxModes3D(); i++) {
         if (bbGfxModeDepth(i) == 32) {

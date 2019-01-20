@@ -41,9 +41,9 @@ void InitializeNPCtype860(NPC* n) {
     bbEntityBlend(n->obj2, BLEND_ADD);
     //bbSpriteViewMode(n->obj2, 2);
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "forestmonster", "speed") / 100.f);
+    n->speed = (getINIFloat("Data/NPCs.ini", "forestmonster", "speed") / 100.f);
 
-    float temp = (GetINIFloat("Data/NPCs.ini", "forestmonster", "scale") / 20.f);
+    float temp = (getINIFloat("Data/NPCs.ini", "forestmonster", "scale") / 20.f);
     bbScaleEntity(n->obj, temp, temp, temp);
 
     bbMeshCullBox(n->obj, -bbMeshWidth(n->obj)*2, -bbMeshHeight(n->obj)*2, -bbMeshDepth(n->obj)*2, bbMeshWidth(n->obj)*2, bbMeshHeight(n->obj)*4, bbMeshDepth(n->obj)*4);

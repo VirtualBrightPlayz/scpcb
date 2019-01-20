@@ -43,10 +43,10 @@ void InitializeNPCtype173(NPC* n) {
         bbFreeTexture(texFestive);
     }
 
-    float temp = (GetINIFloat("Data/NPCs.ini", "SCP-173", "scale") / bbMeshDepth(n->obj));
+    float temp = (getINIFloat("Data/NPCs.ini", "SCP-173", "scale") / bbMeshDepth(n->obj));
     bbScaleEntity(n->obj, temp, temp, temp);
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-173", "speed") / 100.f);
+    n->speed = (getINIFloat("Data/NPCs.ini", "SCP-173", "speed") / 100.f);
 
     n->obj2 = bbLoadMesh("GFX/NPCs/scp173/173box.b3d");
     bbScaleEntity(n->obj2, RoomScale, RoomScale, RoomScale);

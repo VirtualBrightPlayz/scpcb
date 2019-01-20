@@ -64,21 +64,21 @@ void InitLoadingScreens(const String& file) {
             ls->id = LoadingScreenAmount;
 
             ls->title = TemporaryString;
-            ls->imgpath = GetINIString(file, TemporaryString, "image path");
+            ls->imgpath = getINIString(file, TemporaryString, "image path");
             std::cout<<ls->imgpath<<"\n";
 
             ls->img = nullptr;
 
             for (i = 0; i <= 4; i++) {
-                ls->txt[i] = GetINIString(file, TemporaryString, "text"+String(i+1));
+                ls->txt[i] = getINIString(file, TemporaryString, "text"+String(i+1));
                 if (!ls->txt[i].isEmpty()) {
                     ls->txtamount = ls->txtamount+1;
                 }
             }
 
-            ls->disablebackground = GetINIInt(file, TemporaryString, "disablebackground");
+            ls->disablebackground = getINIInt(file, TemporaryString, "disablebackground");
 
-            String alignmentX = GetINIString(file, TemporaryString, "align x").toLower();
+            String alignmentX = getINIString(file, TemporaryString, "align x").toLower();
             if (alignmentX.equals("left")) {
                 ls->alignx = -1;
             } else if (alignmentX.equals("middle") || alignmentX.equals("center")) {
@@ -87,7 +87,7 @@ void InitLoadingScreens(const String& file) {
                 ls->alignx = 1;
             }
 
-            String alignmentY = GetINIString(file, TemporaryString, "align y").toLower();
+            String alignmentY = getINIString(file, TemporaryString, "align y").toLower();
             if (alignmentY.equals("top") || alignmentY.equals("up")) {
                 ls->aligny = -1;
             } else if (alignmentY.equals("middle") || alignmentY.equals("center")) {
@@ -277,9 +277,9 @@ void DrawLoading(int percent, int shortloading) {
         }
 
         bbColor(0,0,0);
-        bbText(userOptions->screenWidth / 2 + 1, userOptions->screenHeight / 2 - 100 + 1, txtMgmt->lang["mnu_loadimg"] + " - " + String(percent) + " %", true, true);
+        bbText(userOptions->screenWidth / 2 + 1, userOptions->screenHeight / 2 - 100 + 1, txtMgmt->lang["mnu_loading"] + " - " + String(percent) + " %", true, true);
         bbColor(255,255,255);
-        bbText(userOptions->screenWidth / 2, userOptions->screenHeight / 2 - 100, txtMgmt->lang["mnu_loadimg"] + " - " + String(percent) + " %", true, true);
+        bbText(userOptions->screenWidth / 2, userOptions->screenHeight / 2 - 100, txtMgmt->lang["mnu_loading"] + " - " + String(percent) + " %", true, true);
 
         if (percent == 100) {
             //If (firstloop And SelectedLoadingScreen\title <> "CWM") Then PlaySound2(HorrorSFX(8) ;TODO: fix)

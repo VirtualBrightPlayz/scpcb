@@ -13,16 +13,19 @@ private:
     float displayTimer;
     String deathMsg;
 
+    std::map<String, String> lang;
+
 public:
     TxtManager(const String& langCode);
 
-    void setMsg(const String& msg, float time = 5.f);
-    void setDeathMsg(const String& msg);
+    void setMsg(const String& local, float time = 5.f);
+
+    void setDeathMsg(const String& local);
     String getDeathMsg();
     void updateMsg();
     void drawMsg();
 
-    std::map<String, String> lang;
+    String getLocalTxt(const String& key);
     void changeLocalization(const String& langCode);
 };
 extern TxtManager* txtMgmt;

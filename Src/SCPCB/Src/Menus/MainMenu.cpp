@@ -139,7 +139,7 @@ void MainMenu::update() {
         if (btnBack.isMouseHit()) {
             switch (currState) {
                 case MainMenuState::NewGame: {
-                    PutINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
+                    putINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
                     txtName.selected = false;
                     txtSeed.selected = false;
                     currState = MainMenuState::Main;
@@ -228,7 +228,7 @@ void MainMenu::update() {
                     bbFlushKeys();
                     bbFlushMouse();
 
-                    PutINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
+                    putINIValue(OptionFile, "general", "intro enabled", String(userOptions->introEnabled));
 
                     return;
                 }

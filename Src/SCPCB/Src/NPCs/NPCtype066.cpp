@@ -23,10 +23,10 @@ void InitializeNPCtype066(NPC* n) {
     bbEntityType(n->collider, HIT_PLAYER);
 
     n->obj = bbLoadAnimMesh("GFX/NPCs/scp066/scp-066.b3d");
-    float temp = GetINIFloat("Data/NPCs.ini", "SCP-066", "scale")/2.5f;
+    float temp = getINIFloat("Data/NPCs.ini", "SCP-066", "scale")/2.5f;
     bbScaleEntity(n->obj, temp, temp, temp);
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-066", "speed") / 100.f);
+    n->speed = (getINIFloat("Data/NPCs.ini", "SCP-066", "speed") / 100.f);
 }
 
 void UpdateNPCtype066(NPC* n) {

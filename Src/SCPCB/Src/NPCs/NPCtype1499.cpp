@@ -36,8 +36,8 @@ void InitializeNPCtype1499(NPC* n) {
         n->obj = bbLoadAnimMesh("GFX/NPCs/scp1499/scp1499.b3d");
     }
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "SCP-1499-1", "speed") / 100.f) * bbRnd(0.9f,1.1f);
-    float temp = (GetINIFloat("Data/NPCs.ini", "SCP-1499-1", "scale") / 6.f) * bbRnd(0.8f,1.f);
+    n->speed = (getINIFloat("Data/NPCs.ini", "SCP-1499-1", "speed") / 100.f) * bbRnd(0.9f,1.1f);
+    float temp = (getINIFloat("Data/NPCs.ini", "SCP-1499-1", "scale") / 6.f) * bbRnd(0.8f,1.f);
 
     bbScaleEntity(n->obj, temp, temp, temp);
 

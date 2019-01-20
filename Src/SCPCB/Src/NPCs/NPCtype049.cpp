@@ -33,9 +33,9 @@ void InitializeNPCtype049(NPC* n) {
 
     n->obj = bbLoadAnimMesh("GFX/NPCs/scp049/scp-049.b3d");
 
-    n->speed = GetINIFloat("Data/NPCs.ini", "SCP-049", "speed") / 100.f;
+    n->speed = getINIFloat("Data/NPCs.ini", "SCP-049", "speed") / 100.f;
 
-    float temp = GetINIFloat("Data/NPCs.ini", "SCP-049", "scale");
+    float temp = getINIFloat("Data/NPCs.ini", "SCP-049", "scale");
     bbScaleEntity(n->obj, temp, temp, temp);
 
     n->sounds[0] = bbLoadSound("SFX/SCP/049/Catch.ogg");

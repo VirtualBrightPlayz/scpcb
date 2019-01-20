@@ -46,9 +46,9 @@ void InitializeNPCtypeMTF(NPC* n) {
         n->obj = bbLoadAnimMesh("GFX/NPCs/MTF/mtf.b3d");
     }
 
-    n->speed = (GetINIFloat("Data/NPCs.ini", "MTF", "speed") / 100.f);
+    n->speed = (getINIFloat("Data/NPCs.ini", "MTF", "speed") / 100.f);
 
-    float temp = (GetINIFloat("Data/NPCs.ini", "MTF", "scale") / 2.5f);
+    float temp = (getINIFloat("Data/NPCs.ini", "MTF", "scale") / 2.5f);
 
     bbScaleEntity(n->obj, temp, temp, temp);
 
