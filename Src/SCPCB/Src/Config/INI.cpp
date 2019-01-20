@@ -3,7 +3,7 @@
 
 #include "INI.h"
 
-using namespace CBN;
+namespace CBN {
 
 // Structs.
 std::vector<INIFile*> INIFile::list;
@@ -187,4 +187,6 @@ std::map<String, String> getINISection(const String& file, const String& section
     }
     INIFile* newFile = new INIFile(file);
     return newFile->getSection(section);
+}
+
 }
