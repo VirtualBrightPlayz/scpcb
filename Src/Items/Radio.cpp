@@ -19,7 +19,7 @@ Radio::~Radio() {
     }
 }
 int Radio::getListSize() {
-    return list.size();
+    return (int)list.size();
 }
 Radio* Radio::getObject(int index) {
     return list[index];

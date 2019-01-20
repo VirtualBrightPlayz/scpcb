@@ -16,7 +16,7 @@ Difficulty::~Difficulty() {
     }
 }
 int Difficulty::getListSize() {
-    return list.size();
+    return (int)list.size();
 }
 Difficulty* Difficulty::getObject(int index) {
     return list[index];

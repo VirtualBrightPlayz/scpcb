@@ -56,7 +56,7 @@ INIFile::~INIFile() {
     }
 }
 int INIFile::getListSize() {
-    return list.size();
+    return (int)list.size();
 }
 INIFile* INIFile::getObject(int index) {
     return list[index];
@@ -113,6 +113,8 @@ std::map<String, String> INIFile::getSection(const String& section) {
             }
         }
     }
+
+    return std::map<String, String>();
 }
 
 void INIFile::save() {

@@ -53,7 +53,7 @@ Launcher::~Launcher() {
 }
 
 void Launcher::verifyResolution() {
-    selectedGFXMode = resWidths.size()-1;
+    selectedGFXMode = (int)(resWidths.size() - 1);
     for (int i = 0;i< (int)resWidths.size();i++) {
         if (userOptions->screenWidth == resWidths[i] && userOptions->screenHeight == resHeights[i]) {
             selectedGFXMode = i;

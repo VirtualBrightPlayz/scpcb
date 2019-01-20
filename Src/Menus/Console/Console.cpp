@@ -162,7 +162,7 @@ void Console::update() {
             int index = console->reissue - 1;
 
             while (index != initIndex) {
-                if (index<0) { index += console->msgList.size(); }
+                if (index<0) { index += (int)console->msgList.size(); }
                 if (console->msgList[index]->isCommand) {
                     break;
                 }
