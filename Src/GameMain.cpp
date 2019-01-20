@@ -504,8 +504,9 @@ void updateGameState() {
 
     // Create new resources.
     switch (CurrGameState) {
-        case GAMESTATE_LAUNCHER:
-            launcher = new Launcher(); break;
+        case GAMESTATE_LAUNCHER: {
+            launcher = new Launcher();
+        } break;
         case GAMESTATE_MAINMENU: {
             mainMenu = new MainMenu();
             if (prevGameState == GAMESTATE_PLAYING) {
@@ -513,8 +514,9 @@ void updateGameState() {
                 pauseMenu = nullptr;
             }
         } break;
-        case GAMESTATE_PLAYING:
-            pauseMenu = new PauseMenu(); break;
+        case GAMESTATE_PLAYING: {
+            pauseMenu = new PauseMenu();
+        } break;
     }
 
     prevGameState = CurrGameState;
@@ -690,7 +692,7 @@ void UpdateGUI() {
     }
 
     //TODO: fix ;And EndingTimer = 0 Then
-    if (bbKeyHit(1)) {
+    if (bbKeyHit(1) || bbKeyHit(69)) {
         if (IsPaused()) {
             if (CurrGameState==GAMESTATE_INVENTORY) {
                 mainPlayer->toggleInventory();
