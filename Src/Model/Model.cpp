@@ -30,8 +30,8 @@ Model::Model(Graphics* graphics,String filename,Shader* shader) {
         if (pair.ind < pair.node->mNumChildren) {
             meshCount += pair.node->mChildren[pair.ind]->mNumMeshes;
             NodeIndPair newPair(pair.node->mChildren[pair.ind],0);
-            nodeIndPairs.push_back(newPair);
             pair.ind++;
+            nodeIndPairs.push_back(newPair);
         } else {
             nodeIndPairs.pop_back();
         }
