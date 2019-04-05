@@ -159,7 +159,7 @@ void Item::drawAll() { return; }
 void Item::saveXML() { return; }
 
 void Item::combineWith(Item* other) {
-    txtMgmt->setMsg(txtMgmt->getLocalTxt("inv_cantcombine"));
+    txtMgmt->setMsg("inv_cantcombine");
 }
 
 void Item::update() {

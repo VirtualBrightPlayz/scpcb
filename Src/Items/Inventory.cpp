@@ -254,7 +254,7 @@ void Inventory::moveItem(Item* it, int destIndex) {
 void Inventory::useItem(Item* it) {
     if (it->wornSlot != WornItemSlot::None) {
         if (!(equipSlots[(int)it->wornSlot].contains(it) || equipSlots[(int)it->wornSlot].isEmpty())) {
-            txtMgmt->setMsg(txtMgmt->getLocalTxt("inv_alreadyequip"));
+            txtMgmt->setMsg("inv_alreadyequip");
             return;
         }
 

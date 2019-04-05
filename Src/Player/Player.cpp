@@ -13,7 +13,7 @@
 #include "../GameMain.h"
 #include "../Items/Item.h"
 #include "../Items/Inventory.h"
-#include "../Items/GasMask.h"
+#include "../Items/Gasmask.h"
 #include "../MathUtils/MathUtils.h"
 #include "../Map/MapSystem.h"
 #include "../Menus/Menu.h"
@@ -882,7 +882,7 @@ void Player::toggleInventory() {
 
 void Player::pickItem(Item* it) {
     if (!inventory->anyRoom()) {
-        txtMgmt->setMsg(txtMgmt->getLocalTxt("inv_full"));
+        txtMgmt->setMsg("inv_full");
         return;
     }
 

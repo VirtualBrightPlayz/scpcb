@@ -28,8 +28,8 @@ void GasMask::onPick() {
 
 void GasMask::onUse() {
     if (mainPlayer->isEquipped(getType())) {
-        txtMgmt->setMsg(txtMgmt->getLocalTxt("it_gasmask_on"));
+        txtMgmt->setMsg("it_gasmask_on");
     } else {
-        txtMgmt->setMsg(txtMgmt->getLocalTxt("it_gasmask_off"));
+        txtMgmt->setMsg("it_gasmask_off");
     }
 }
