@@ -45,10 +45,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>../Engine/Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>../Engine/Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -100,7 +102,6 @@
     <ClCompile Include="..\Src\Items\Item.cpp" />
     <ClCompile Include="..\Src\Items\NVG.cpp" />
     <ClCompile Include="..\Src\Items\Radio.cpp" />
-    <ClCompile Include="..\Src\Main.cpp" />
     <ClCompile Include="..\Src\Map\Decals.cpp" />
     <ClCompile Include="..\Src\Map\Doors.cpp" />
     <ClCompile Include="..\Src\Map\Events\Events.cpp" />

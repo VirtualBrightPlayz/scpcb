@@ -103,6 +103,9 @@
     <Filter Include="Header Files\Menus\GUI">
       <UniqueIdentifier>{fcb7ef52-900e-4c11-a76c-6c519edf194f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\RefCount">
+      <UniqueIdentifier>{15e86302-e835-4f2f-9028-65fe161250c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Src\GameMain.cpp">
@@ -272,9 +275,6 @@
     </ClCompile>
     <ClCompile Include="..\Src\Items\FirstAid.cpp">
       <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Main.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

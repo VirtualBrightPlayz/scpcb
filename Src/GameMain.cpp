@@ -1,9 +1,5 @@
-#include <bbruntime.h>
-#include <bbgraphics.h>
-#include <bbblitz3d.h>
-#include <bbaudio.h>
-#include <bbinput.h>
-#include <bbmath.h>
+#include <Init/Init.h>
+#include <Misc/String.h>
 
 #include "GameMain.h"
 #include "Config/Options.h"
@@ -34,7 +30,8 @@
 #include "MiscGFX/FastResize.h"
 #include "AssetMgmt/TextMgmt.h"
 
-namespace CBN {
+using namespace PGE;
+using namespace CBN;
 
 // Structs.
 std::vector<Timing*> Timing::list;
@@ -138,7 +135,7 @@ void ResetTimingAccumulator() {
     timing->accumulator = 0.f;
 }
 
-int EntryPoint() {
+int PGE::Main() {
     keyBinds = new KeyBinds();
     userOptions = new Options();
     LoadOptionsINI();
@@ -1357,6 +1354,4 @@ int CheckForPlayerInFacility() {
 
 String CheckTriggers() {
     return ""; //TODO: kill
-}
-
 }
