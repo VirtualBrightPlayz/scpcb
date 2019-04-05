@@ -1,0 +1,345 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		190E9C2D2257866300A59243 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 190E9C2C2257866300A59243 /* AppDelegate.m */; };
+		190E9C342257866500A59243 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 190E9C332257866500A59243 /* Assets.xcassets */; };
+		190E9C372257866500A59243 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 190E9C352257866500A59243 /* Main.storyboard */; };
+		194C2F742257874800AB9902 /* Loadingscreens in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F702257874800AB9902 /* Loadingscreens */; };
+		194C2F752257874800AB9902 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F712257874800AB9902 /* Data */; };
+		194C2F762257874800AB9902 /* SFX in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F722257874800AB9902 /* SFX */; };
+		194C2F772257874800AB9902 /* GFX in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F732257874800AB9902 /* GFX */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		190E9C282257866300A59243 /* SCPCB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SCPCB.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		190E9C2B2257866300A59243 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		190E9C2C2257866300A59243 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		190E9C332257866500A59243 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		190E9C362257866500A59243 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		190E9C382257866500A59243 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		190E9C3B2257866500A59243 /* SCPCB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SCPCB.entitlements; sourceTree = "<group>"; };
+		194C2F702257874800AB9902 /* Loadingscreens */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Loadingscreens; path = ../../Content/Loadingscreens; sourceTree = "<group>"; };
+		194C2F712257874800AB9902 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Data; path = ../../Content/Data; sourceTree = "<group>"; };
+		194C2F722257874800AB9902 /* SFX */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SFX; path = ../../Content/SFX; sourceTree = "<group>"; };
+		194C2F732257874800AB9902 /* GFX */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GFX; path = ../../Content/GFX; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		190E9C252257866300A59243 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		190E9C1F2257866300A59243 = {
+			isa = PBXGroup;
+			children = (
+				194C2F6F2257872B00AB9902 /* Resources */,
+				190E9C2A2257866300A59243 /* SCPCB */,
+				190E9C292257866300A59243 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		190E9C292257866300A59243 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				190E9C282257866300A59243 /* SCPCB.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		190E9C2A2257866300A59243 /* SCPCB */ = {
+			isa = PBXGroup;
+			children = (
+				190E9C2B2257866300A59243 /* AppDelegate.h */,
+				190E9C2C2257866300A59243 /* AppDelegate.m */,
+				190E9C332257866500A59243 /* Assets.xcassets */,
+				190E9C352257866500A59243 /* Main.storyboard */,
+				190E9C382257866500A59243 /* Info.plist */,
+				190E9C3B2257866500A59243 /* SCPCB.entitlements */,
+			);
+			path = SCPCB;
+			sourceTree = "<group>";
+		};
+		194C2F6F2257872B00AB9902 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				194C2F712257874800AB9902 /* Data */,
+				194C2F732257874800AB9902 /* GFX */,
+				194C2F702257874800AB9902 /* Loadingscreens */,
+				194C2F722257874800AB9902 /* SFX */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		190E9C272257866300A59243 /* SCPCB */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 190E9C3E2257866500A59243 /* Build configuration list for PBXNativeTarget "SCPCB" */;
+			buildPhases = (
+				190E9C242257866300A59243 /* Sources */,
+				190E9C252257866300A59243 /* Frameworks */,
+				190E9C262257866300A59243 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SCPCB;
+			productName = SCPCB;
+			productReference = 190E9C282257866300A59243 /* SCPCB.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		190E9C202257866300A59243 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = CHANGE;
+				TargetAttributes = {
+					190E9C272257866300A59243 = {
+						CreatedOnToolsVersion = 10.2;
+					};
+				};
+			};
+			buildConfigurationList = 190E9C232257866300A59243 /* Build configuration list for PBXProject "SCPCB" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 190E9C1F2257866300A59243;
+			productRefGroup = 190E9C292257866300A59243 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				190E9C272257866300A59243 /* SCPCB */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		190E9C262257866300A59243 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				194C2F772257874800AB9902 /* GFX in Resources */,
+				190E9C372257866500A59243 /* Main.storyboard in Resources */,
+				194C2F762257874800AB9902 /* SFX in Resources */,
+				190E9C342257866500A59243 /* Assets.xcassets in Resources */,
+				194C2F752257874800AB9902 /* Data in Resources */,
+				194C2F742257874800AB9902 /* Loadingscreens in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		190E9C242257866300A59243 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				190E9C2D2257866300A59243 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		190E9C352257866500A59243 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				190E9C362257866500A59243 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		190E9C3C2257866500A59243 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		190E9C3D2257866500A59243 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		190E9C3F2257866500A59243 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SCPCB/SCPCB.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SCPCB/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = todo.SCPCB;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		190E9C402257866500A59243 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SCPCB/SCPCB.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SCPCB/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = todo.SCPCB;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		190E9C232257866300A59243 /* Build configuration list for PBXProject "SCPCB" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				190E9C3C2257866500A59243 /* Debug */,
+				190E9C3D2257866500A59243 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		190E9C3E2257866500A59243 /* Build configuration list for PBXNativeTarget "SCPCB" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				190E9C3F2257866500A59243 /* Debug */,
+				190E9C402257866500A59243 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 190E9C202257866300A59243 /* Project object */;
+}

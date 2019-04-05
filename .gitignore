@@ -17,6 +17,25 @@
 # VS Line Ending Unifier
 .leu
 
+# Xcode
+DerivedData/
+xcuserdata
+*.xccheckout
+*.xcuserstate
+# user settings
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+!default.pbxuser
+!default.mode1v3
+!default.mode2v3
+!default.perspectivev3
+
+# Objective-C
+*.hmap
+*.ipa
+
 # Windows
 Thumbs.db
 
