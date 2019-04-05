@@ -468,7 +468,7 @@ void UseDoor(Door* d, bool showmsg) {
                 if (item->getType().equals("keycard")) {
                     if (d->locked) {
                         PlaySound_SM(sndMgmt->keycardErr);
-                        txtMgmt->setMsg(txtMgmt->getLocalTxt("dor_keylocked"));
+                        txtMgmt->setMsg("dor_keylocked");
                         return;
                     }
 
@@ -484,21 +484,21 @@ void UseDoor(Door* d, bool showmsg) {
         if (playerHasRightKeycard) {
             PlaySound_SM(sndMgmt->keycardUse);
             if (showmsg) {
-                txtMgmt->setMsg(txtMgmt->getLocalTxt("dor_keyinsert"));
+                txtMgmt->setMsg("dor_keyinsert");
             }
         } else if ((playerHasKeycard)) {
             PlaySound_SM(sndMgmt->keycardErr);
-            txtMgmt->setMsg(txtMgmt->getLocalTxt("dor_keyhigher"));
+            txtMgmt->setMsg("dor_keyhigher");
             return;
         } else {
-            txtMgmt->setMsg(txtMgmt->getLocalTxt("dor_keyneeded"));
+            txtMgmt->setMsg("dor_keyneeded");
             return;
         }
     } else {
         if (d->locked) {
             if (showmsg) {
                 PlaySound_SM(sndMgmt->buttonErr);
-                txtMgmt->setMsg(txtMgmt->getLocalTxt("dor_locked"));
+                txtMgmt->setMsg("dor_locked");
 
             }
             return;
