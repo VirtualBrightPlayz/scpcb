@@ -8,6 +8,7 @@
 *.dll
 *.pdb
 *.ilk
+*.vcxproj.user
 .vs
 
 # Visual Studio Code
