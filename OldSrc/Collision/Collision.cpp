@@ -25,7 +25,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 
 #include <math.h>
 
-//#include <SDL.h>
+#include <SDL.h>
 
 #include <iostream>
 

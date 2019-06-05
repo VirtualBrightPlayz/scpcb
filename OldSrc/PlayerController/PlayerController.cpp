@@ -1,7 +1,6 @@
-#include <cmath>
-#include <Math/Plane.h>
-
 #include "PlayerController.h"
+#include <Math/Plane.h>
+#include <SDL.h>
 
 using namespace PGE;
 using namespace CBN;
@@ -32,8 +31,8 @@ void PlayerController::update(float angle,INPUT input) {
     if ((input&(INPUT::FORWARD|INPUT::BACKWARD|INPUT::LEFT|INPUT::RIGHT)) == INPUT::NONE) {
         stand(); //not pressing any movement keys: we're standing still
     } else {
-        float sinAngle = std::sin(angle);
-        float cosAngle = std::cos(angle);
+        float sinAngle = sin(angle);
+        float cosAngle = cos(angle);
         float targetSpeed = WALK_SPEED_MAX;
         if ((input&INPUT::SPRINT) != INPUT::NONE) {
             targetSpeed = SPRINT_SPEED_MAX*getClampedStamina() + WALK_SPEED_MAX*(1.f-getClampedStamina());

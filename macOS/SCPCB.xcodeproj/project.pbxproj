@@ -10,11 +10,45 @@
 		190E9C2D2257866300A59243 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 190E9C2C2257866300A59243 /* AppDelegate.m */; };
 		190E9C342257866500A59243 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 190E9C332257866500A59243 /* Assets.xcassets */; };
 		190E9C372257866500A59243 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 190E9C352257866500A59243 /* Main.storyboard */; };
+		191BDD9822A844FF00270B9D /* TextMgmt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDD9722A844FF00270B9D /* TextMgmt.cpp */; };
+		191BDDA822A8458000270B9D /* libEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 191BDDA722A8457700270B9D /* libEngine.a */; };
+		191BDDB122A846EE00270B9D /* CollisionMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDAA22A846EE00270B9D /* CollisionMesh.cpp */; };
+		191BDDB222A846EE00270B9D /* Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDAD22A846EE00270B9D /* Collision.cpp */; };
+		191BDDB322A846EE00270B9D /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDAF22A846EE00270B9D /* PlayerController.cpp */; };
+		191BDDB622A846F600270B9D /* INI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDB422A846F600270B9D /* INI.cpp */; };
+		191BDDB922A84F7700270B9D /* FileUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDB822A84F7700270B9D /* FileUtil.cpp */; };
+		191BDDBB22A8547E00270B9D /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 191BDDBA22A8547E00270B9D /* SDL2.framework */; };
+		191BDDBD22A854A900270B9D /* SDL2.framework in Copy Bundle Frameworks */ = {isa = PBXBuildFile; fileRef = 191BDDBA22A8547E00270B9D /* SDL2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		191BDDBF22A8551A00270B9D /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDBE22A8551A00270B9D /* Main.cpp */; };
 		194C2F742257874800AB9902 /* Loadingscreens in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F702257874800AB9902 /* Loadingscreens */; };
 		194C2F752257874800AB9902 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F712257874800AB9902 /* Data */; };
 		194C2F762257874800AB9902 /* SFX in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F722257874800AB9902 /* SFX */; };
 		194C2F772257874800AB9902 /* GFX in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F732257874800AB9902 /* GFX */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		191BDDA622A8457700270B9D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 191BDD9A22A8457700270B9D /* Engine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194AA01E2209FF3800837F38;
+			remoteInfo = Engine;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		191BDDBC22A8549700270B9D /* Copy Bundle Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				191BDDBD22A854A900270B9D /* SDL2.framework in Copy Bundle Frameworks */,
+			);
+			name = "Copy Bundle Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		190E9C282257866300A59243 /* SCPCB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SCPCB.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,6 +58,21 @@
 		190E9C362257866500A59243 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		190E9C382257866500A59243 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		190E9C3B2257866500A59243 /* SCPCB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SCPCB.entitlements; sourceTree = "<group>"; };
+		191BDD9622A844FF00270B9D /* TextMgmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMgmt.h; sourceTree = "<group>"; };
+		191BDD9722A844FF00270B9D /* TextMgmt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextMgmt.cpp; sourceTree = "<group>"; };
+		191BDD9A22A8457700270B9D /* Engine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Engine.xcodeproj; path = ../Engine/macOS/Engine/Engine.xcodeproj; sourceTree = "<group>"; };
+		191BDDAA22A846EE00270B9D /* CollisionMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionMesh.cpp; sourceTree = "<group>"; };
+		191BDDAB22A846EE00270B9D /* Collision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collision.h; sourceTree = "<group>"; };
+		191BDDAC22A846EE00270B9D /* CollisionMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollisionMesh.h; sourceTree = "<group>"; };
+		191BDDAD22A846EE00270B9D /* Collision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Collision.cpp; sourceTree = "<group>"; };
+		191BDDAF22A846EE00270B9D /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
+		191BDDB022A846EE00270B9D /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
+		191BDDB422A846F600270B9D /* INI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = INI.cpp; sourceTree = "<group>"; };
+		191BDDB522A846F600270B9D /* INI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INI.h; sourceTree = "<group>"; };
+		191BDDB722A84F7700270B9D /* FileUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileUtil.h; sourceTree = "<group>"; };
+		191BDDB822A84F7700270B9D /* FileUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileUtil.cpp; sourceTree = "<group>"; };
+		191BDDBA22A8547E00270B9D /* SDL2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SDL2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		191BDDBE22A8551A00270B9D /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		194C2F702257874800AB9902 /* Loadingscreens */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Loadingscreens; path = ../../Content/Loadingscreens; sourceTree = "<group>"; };
 		194C2F712257874800AB9902 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Data; path = ../../Content/Data; sourceTree = "<group>"; };
 		194C2F722257874800AB9902 /* SFX */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SFX; path = ../../Content/SFX; sourceTree = "<group>"; };
@@ -35,6 +84,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				191BDDBB22A8547E00270B9D /* SDL2.framework in Frameworks */,
+				191BDDA822A8458000270B9D /* libEngine.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +95,8 @@
 		190E9C1F2257866300A59243 = {
 			isa = PBXGroup;
 			children = (
+				191BDD9422A844FF00270B9D /* Src */,
+				191BDD9922A8457600270B9D /* Frameworks */,
 				194C2F6F2257872B00AB9902 /* Resources */,
 				190E9C2A2257866300A59243 /* SCPCB */,
 				190E9C292257866300A59243 /* Products */,
@@ -71,6 +124,68 @@
 			path = SCPCB;
 			sourceTree = "<group>";
 		};
+		191BDD9422A844FF00270B9D /* Src */ = {
+			isa = PBXGroup;
+			children = (
+				191BDDBE22A8551A00270B9D /* Main.cpp */,
+				191BDDA922A846EE00270B9D /* Collision */,
+				191BDDAE22A846EE00270B9D /* PlayerController */,
+				191BDD9522A844FF00270B9D /* Utils */,
+			);
+			name = Src;
+			path = ../Src;
+			sourceTree = "<group>";
+		};
+		191BDD9522A844FF00270B9D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				191BDDB422A846F600270B9D /* INI.cpp */,
+				191BDDB522A846F600270B9D /* INI.h */,
+				191BDD9722A844FF00270B9D /* TextMgmt.cpp */,
+				191BDD9622A844FF00270B9D /* TextMgmt.h */,
+				191BDDB822A84F7700270B9D /* FileUtil.cpp */,
+				191BDDB722A84F7700270B9D /* FileUtil.h */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		191BDD9922A8457600270B9D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				191BDDBA22A8547E00270B9D /* SDL2.framework */,
+				191BDD9A22A8457700270B9D /* Engine.xcodeproj */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		191BDD9B22A8457700270B9D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				191BDDA722A8457700270B9D /* libEngine.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		191BDDA922A846EE00270B9D /* Collision */ = {
+			isa = PBXGroup;
+			children = (
+				191BDDAA22A846EE00270B9D /* CollisionMesh.cpp */,
+				191BDDAC22A846EE00270B9D /* CollisionMesh.h */,
+				191BDDAD22A846EE00270B9D /* Collision.cpp */,
+				191BDDAB22A846EE00270B9D /* Collision.h */,
+			);
+			path = Collision;
+			sourceTree = "<group>";
+		};
+		191BDDAE22A846EE00270B9D /* PlayerController */ = {
+			isa = PBXGroup;
+			children = (
+				191BDDAF22A846EE00270B9D /* PlayerController.cpp */,
+				191BDDB022A846EE00270B9D /* PlayerController.h */,
+			);
+			path = PlayerController;
+			sourceTree = "<group>";
+		};
 		194C2F6F2257872B00AB9902 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +207,7 @@
 				190E9C242257866300A59243 /* Sources */,
 				190E9C252257866300A59243 /* Frameworks */,
 				190E9C262257866300A59243 /* Resources */,
+				191BDDBC22A8549700270B9D /* Copy Bundle Frameworks */,
 			);
 			buildRules = (
 			);
@@ -127,12 +243,28 @@
 			mainGroup = 190E9C1F2257866300A59243;
 			productRefGroup = 190E9C292257866300A59243 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 191BDD9B22A8457700270B9D /* Products */;
+					ProjectRef = 191BDD9A22A8457700270B9D /* Engine.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				190E9C272257866300A59243 /* SCPCB */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		191BDDA722A8457700270B9D /* libEngine.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libEngine.a;
+			remoteRef = 191BDDA622A8457700270B9D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		190E9C262257866300A59243 /* Resources */ = {
@@ -155,7 +287,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				191BDDB622A846F600270B9D /* INI.cpp in Sources */,
 				190E9C2D2257866300A59243 /* AppDelegate.m in Sources */,
+				191BDDB322A846EE00270B9D /* PlayerController.cpp in Sources */,
+				191BDDB922A84F7700270B9D /* FileUtil.cpp in Sources */,
+				191BDD9822A844FF00270B9D /* TextMgmt.cpp in Sources */,
+				191BDDB222A846EE00270B9D /* Collision.cpp in Sources */,
+				191BDDBF22A8551A00270B9D /* Main.cpp in Sources */,
+				191BDDB122A846EE00270B9D /* CollisionMesh.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +430,7 @@
 				CODE_SIGN_ENTITLEMENTS = SCPCB/SCPCB.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = ../Engine/Include/;
 				INFOPLIST_FILE = SCPCB/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -308,6 +448,7 @@
 				CODE_SIGN_ENTITLEMENTS = SCPCB/SCPCB.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = ../Engine/Include/;
 				INFOPLIST_FILE = SCPCB/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
