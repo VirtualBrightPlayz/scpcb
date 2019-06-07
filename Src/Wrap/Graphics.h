@@ -15,11 +15,11 @@ private:
     // Decrements the copy tracker and returns true if it tracks no more copies of an object.
     bool decrement() const;
     
-    Graphics()=default;
-    
     PGE::Graphics* internal = nullptr;
     
 public:
+    Graphics()=default;
+    
     Graphics(const Graphics& cpy);
     Graphics& operator=(const Graphics& other);
     ~Graphics();

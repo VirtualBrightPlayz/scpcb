@@ -26,6 +26,9 @@
 		194C2F752257874800AB9902 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F712257874800AB9902 /* Data */; };
 		194C2F762257874800AB9902 /* SFX in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F722257874800AB9902 /* SFX */; };
 		194C2F772257874800AB9902 /* GFX in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F732257874800AB9902 /* GFX */; };
+		19646FC022A9FAB4005E027E /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19646FBF22A9FAB4005E027E /* World.cpp */; };
+		19646FC322A9FB6D005E027E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19646FC222A9FB6D005E027E /* Timing.cpp */; };
+		19646FC822AA082D005E027E /* IO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19646FC722AA082D005E027E /* IO.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +85,12 @@
 		194C2F712257874800AB9902 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Data; path = ../../Content/Data; sourceTree = "<group>"; };
 		194C2F722257874800AB9902 /* SFX */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SFX; path = ../../Content/SFX; sourceTree = "<group>"; };
 		194C2F732257874800AB9902 /* GFX */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GFX; path = ../../Content/GFX; sourceTree = "<group>"; };
+		19646FBE22A9FAB4005E027E /* World.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
+		19646FBF22A9FAB4005E027E /* World.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
+		19646FC122A9FB6D005E027E /* Timing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Timing.h; sourceTree = "<group>"; };
+		19646FC222A9FB6D005E027E /* Timing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Timing.cpp; sourceTree = "<group>"; };
+		19646FC622AA082D005E027E /* IO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IO.h; sourceTree = "<group>"; };
+		19646FC722AA082D005E027E /* IO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IO.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +143,8 @@
 			children = (
 				1910375B22A9A3B5005A1AA0 /* Graphics.cpp */,
 				1910375A22A9A3B5005A1AA0 /* Graphics.h */,
+				19646FC722AA082D005E027E /* IO.cpp */,
+				19646FC622AA082D005E027E /* IO.h */,
 			);
 			path = Wrap;
 			sourceTree = "<group>";
@@ -144,8 +155,9 @@
 				191BDDBE22A8551A00270B9D /* Main.cpp */,
 				191BDDA922A846EE00270B9D /* Collision */,
 				191BDDAE22A846EE00270B9D /* PlayerController */,
-				191BDD9522A844FF00270B9D /* Utils */,
+				19646FBD22A9FAA0005E027E /* World */,
 				1910375522A9A090005A1AA0 /* Wrap */,
+				191BDD9522A844FF00270B9D /* Utils */,
 			);
 			name = Src;
 			path = ../Src;
@@ -211,6 +223,17 @@
 				194C2F722257874800AB9902 /* SFX */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		19646FBD22A9FAA0005E027E /* World */ = {
+			isa = PBXGroup;
+			children = (
+				19646FC222A9FB6D005E027E /* Timing.cpp */,
+				19646FC122A9FB6D005E027E /* Timing.h */,
+				19646FBF22A9FAB4005E027E /* World.cpp */,
+				19646FBE22A9FAB4005E027E /* World.h */,
+			);
+			path = World;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,9 +330,12 @@
 				191BDDB622A846F600270B9D /* INI.cpp in Sources */,
 				190E9C2D2257866300A59243 /* AppDelegate.m in Sources */,
 				191BDDB322A846EE00270B9D /* PlayerController.cpp in Sources */,
+				19646FC322A9FB6D005E027E /* Timing.cpp in Sources */,
 				191BDDB922A84F7700270B9D /* FileUtil.cpp in Sources */,
 				191BDD9822A844FF00270B9D /* TextMgmt.cpp in Sources */,
 				191BDDB222A846EE00270B9D /* Collision.cpp in Sources */,
+				19646FC822AA082D005E027E /* IO.cpp in Sources */,
+				19646FC022A9FAB4005E027E /* World.cpp in Sources */,
 				191BDDBF22A8551A00270B9D /* Main.cpp in Sources */,
 				1910375C22A9A3B5005A1AA0 /* Graphics.cpp in Sources */,
 				191BDDB122A846EE00270B9D /* CollisionMesh.cpp in Sources */,

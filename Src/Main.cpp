@@ -1,16 +1,12 @@
 #include <Init/Init.h>
 #include <iostream>
-#include <Graphics/Graphics.h>
 
-#include "Wrap/Graphics.h"
+#include "World/World.h"
 
 int PGE::Main() {
-    CBN::Graphics gfx = CBN::Graphics::create("The Test", 1280, 720, false);
+    World* world = new World();
+    while (world->run()) { }
     
-    while (true) {
-        gfx->swap(false);
-    }
-//    std::cout << ".....aaAAAAAAAAHHHH-";
-    
+    delete world;
     return 0;
 }
