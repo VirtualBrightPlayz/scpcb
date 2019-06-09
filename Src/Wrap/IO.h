@@ -6,8 +6,6 @@
 #include <Misc/String.h>
 #include <map>
 
-namespace CBN {
-
 class IO {
 private:
     static std::map<PGE::IO*, int> cpyTracker;
@@ -31,7 +29,5 @@ public:
 
     PGE::IO* getInternal();
 };
-
-}
 
 #endif // IO_H_INCLUDED

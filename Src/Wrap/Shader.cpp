@@ -1,30 +1,30 @@
-#include "Graphics.h"
+#include "Shader.h"
 
-std::map<PGE::Graphics*, int> Graphics::cpyTracker = std::map<PGE::Graphics*, int>();
+std::map<PGE::Shader*, int> Shader::cpyTracker = std::map<PGE::Shader*, int>();
 
-void Graphics::increment() const {
+void Shader::increment() const {
     cpyTracker[internal] = cpyTracker[internal] + 1;
 }
 
-bool Graphics::decrement() const {
+bool Shader::decrement() const {
     int newCount = cpyTracker[internal] = cpyTracker[internal] - 1;
     return newCount <= 0;
 }
 
-Graphics Graphics::create(PGE::String name,int w, int h, bool fs) {
-    Graphics gfx;
-    gfx.internal = PGE::Graphics::create(name, w, h, fs);
-    cpyTracker.insert(std::pair<PGE::Graphics*, int>(gfx.internal, 1));
+Shader Shader::load(Graphics gfx, const PGE::String& path) {
+    Shader shd;
+    shd.internal = PGE::Shader::load(gfx.getInternal(), path.resourcePath());
+    cpyTracker.insert(std::pair<PGE::Shader*, int>(shd.internal, 1));
 
-    return gfx;
+    return shd;
 }
 
-Graphics::Graphics(const Graphics& cpy) {
+Shader::Shader(const Shader& cpy) {
     internal = cpy.internal;
     cpy.increment();
 }
 
-Graphics& Graphics::operator=(const Graphics& other) {
+Shader& Shader::operator=(const Shader& other) {
     if (&other == this) return *this;
 
     // Wipe current reference.
@@ -43,7 +43,7 @@ Graphics& Graphics::operator=(const Graphics& other) {
     return *this;
 }
 
-Graphics::~Graphics() {
+Shader::~Shader() {
     bool remove = decrement();
 
     if (remove) {
@@ -52,10 +52,10 @@ Graphics::~Graphics() {
     }
 }
 
-PGE::Graphics* Graphics::operator->() const {
+PGE::Shader* Shader::operator->() const {
     return internal;
 }
 
-PGE::Graphics* Graphics::getInternal() {
+PGE::Shader* Shader::getInternal() {
     return internal;
 }

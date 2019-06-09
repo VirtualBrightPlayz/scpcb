@@ -8,17 +8,17 @@ class Timing;
 
 class World {
 private:
-    CBN::Graphics graphics;
-    CBN::IO io;
+    Graphics graphics;
+    IO io;
     Timing* timing;
     int ticks;
-    
+
     bool isRoadRollered;
 
 public:
     World();
     ~World();
-    
+
     bool run();
     void runTick();
 };

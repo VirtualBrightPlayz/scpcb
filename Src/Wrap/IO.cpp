@@ -1,7 +1,5 @@
 #include "IO.h"
 
-using namespace CBN;
-
 std::map<PGE::IO*, int> IO::cpyTracker = std::map<PGE::IO*, int>();
 
 void IO::increment() const {
@@ -14,11 +12,11 @@ bool IO::decrement() const {
 }
 
 IO IO::create(PGE::Window* window) {
-    IO gfx;
-    gfx.internal = PGE::IO::create(window);
-    cpyTracker.insert(std::pair<PGE::IO*, int>(gfx.internal, 1));
+    IO io;
+    io.internal = PGE::IO::create(window);
+    cpyTracker.insert(std::pair<PGE::IO*, int>(io.internal, 1));
 
-    return gfx;
+    return io;
 }
 
 IO::IO(const IO& cpy) {
