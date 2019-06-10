@@ -30,7 +30,7 @@ public:
 
     PGE::Texture* operator->() const;
 
-    PGE::Texture* getInternal();
+    PGE::Texture* getInternal() const;
 };
 
 #endif // TEXTURE_H_INCLUDED

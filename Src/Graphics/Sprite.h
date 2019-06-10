@@ -1,5 +1,5 @@
-#ifndef Sprite_H_INCLUDED
-#define Sprite_H_INCLUDED
+#ifndef SPRITE_H_INCLUDED
+#define SPRITE_H_INCLUDED
 
 #include <Mesh/Mesh.h>
 #include "../Wrap/Texture.h"
@@ -9,13 +9,17 @@
 class Sprite {
 private:
     static Mesh sharedMesh;
+    static void createSpriteMesh(Graphics gfx);
 
     Texture texture;
-    PGE::Vector2f texCoords[4];
     Shader shader;
     PGE::Color color;
 
-    float scale;
+    PGE::Vector3f position;
+    PGE::Vector3f rotation;
+    PGE::Vector2f scale;
+
+    Graphics gfx;
 
     Sprite(Graphics gfx, Shader shader, Texture tex);
 
@@ -24,6 +28,8 @@ public:
     static Sprite create(Graphics gfx, Shader shader, PGE::String texPath);
 
     void setScale(float scale);
+
+    void render();
 };
 
-#endif // Sprite_H_INCLUDED
+#endif // SPRITE_H_INCLUDED

@@ -3,10 +3,13 @@
 std::map<PGE::ThreadManager*, int> ThreadManager::cpyTracker = std::map<PGE::ThreadManager*, int>();
 
 void ThreadManager::increment() const {
-    cpyTracker[internal] = cpyTracker[internal] + 1;
+    if (internal != nullptr) {
+        cpyTracker[internal] = cpyTracker[internal] + 1;
+    }
 }
 
 bool ThreadManager::decrement() const {
+    if (internal == nullptr) { return false; }
     int newCount = cpyTracker[internal] = cpyTracker[internal] - 1;
     return newCount <= 0;
 }
@@ -46,7 +49,7 @@ ThreadManager& ThreadManager::operator=(const ThreadManager& other) {
 ThreadManager::~ThreadManager() {
     bool remove = decrement();
 
-    if (remove) {
+    if (remove && internal != nullptr) {
         cpyTracker.erase(internal);
         delete internal;
     }

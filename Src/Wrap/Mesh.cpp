@@ -3,10 +3,13 @@
 std::map<PGE::Mesh*, int> Mesh::cpyTracker = std::map<PGE::Mesh*, int>();
 
 void Mesh::increment() const {
-    cpyTracker[internal] = cpyTracker[internal] + 1;
+    if (internal != nullptr) {
+        cpyTracker[internal] = cpyTracker[internal] + 1;
+    }
 }
 
 bool Mesh::decrement() const {
+    if (internal == nullptr) { return false; }
     int newCount = cpyTracker[internal] = cpyTracker[internal] - 1;
     return newCount <= 0;
 }
@@ -46,7 +49,7 @@ Mesh& Mesh::operator=(const Mesh& other) {
 Mesh::~Mesh() {
     bool remove = decrement();
 
-    if (remove) {
+    if (remove && internal != nullptr) {
         cpyTracker.erase(internal);
         delete internal;
     }

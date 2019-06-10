@@ -1,5 +1,5 @@
-#ifndef Mesh_H_INCLUDED
-#define Mesh_H_INCLUDED
+#ifndef MESH_H_INCLUDED
+#define MESH_H_INCLUDED
 
 #include <Mesh/Mesh.h>
 #include <Misc/String.h>
@@ -30,4 +30,4 @@ public:
     PGE::Mesh* getInternal();
 };
 
-#endif // Mesh_H_INCLUDED
+#endif // MESH_H_INCLUDED

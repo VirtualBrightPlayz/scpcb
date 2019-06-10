@@ -1,5 +1,5 @@
-#ifndef Shader_H_INCLUDED
-#define Shader_H_INCLUDED
+#ifndef SHADER_H_INCLUDED
+#define SHADER_H_INCLUDED
 
 #include <Shader/Shader.h>
 #include <Misc/String.h>
@@ -30,4 +30,4 @@ public:
     PGE::Shader* getInternal();
 };
 
-#endif // Shader_H_INCLUDED
+#endif // SHADER_H_INCLUDED

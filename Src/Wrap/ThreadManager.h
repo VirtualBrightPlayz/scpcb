@@ -1,5 +1,5 @@
-#ifndef ThreadManager_H_INCLUDED
-#define ThreadManager_H_INCLUDED
+#ifndef THREADMANAGER_H_INCLUDED
+#define THREADMANAGER_H_INCLUDED
 
 #include <Threading/ThreadManager.h>
 #include <Misc/String.h>
@@ -30,4 +30,4 @@ public:
     PGE::ThreadManager* getInternal();
 };
 
-#endif // ThreadManager_H_INCLUDED
+#endif // THREADMANAGER_H_INCLUDED

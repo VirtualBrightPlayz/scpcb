@@ -3,10 +3,13 @@
 std::map<PGE::Shader*, int> Shader::cpyTracker = std::map<PGE::Shader*, int>();
 
 void Shader::increment() const {
-    cpyTracker[internal] = cpyTracker[internal] + 1;
+    if (internal != nullptr) {
+        cpyTracker[internal] = cpyTracker[internal] + 1;
+    }
 }
 
 bool Shader::decrement() const {
+    if (internal == nullptr) { return false; }
     int newCount = cpyTracker[internal] = cpyTracker[internal] - 1;
     return newCount <= 0;
 }
@@ -46,7 +49,7 @@ Shader& Shader::operator=(const Shader& other) {
 Shader::~Shader() {
     bool remove = decrement();
 
-    if (remove) {
+    if (remove && internal != nullptr) {
         cpyTracker.erase(internal);
         delete internal;
     }

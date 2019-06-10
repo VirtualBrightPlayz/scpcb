@@ -3,10 +3,13 @@
 std::map<PGE::IO*, int> IO::cpyTracker = std::map<PGE::IO*, int>();
 
 void IO::increment() const {
-    cpyTracker[internal] = cpyTracker[internal] + 1;
+    if (internal != nullptr) {
+        cpyTracker[internal] = cpyTracker[internal] + 1;
+    }
 }
 
 bool IO::decrement() const {
+    if (internal == nullptr) { return false; }
     int newCount = cpyTracker[internal] = cpyTracker[internal] - 1;
     return newCount <= 0;
 }
@@ -46,7 +49,7 @@ IO& IO::operator=(const IO& other) {
 IO::~IO() {
     bool remove = decrement();
 
-    if (remove) {
+    if (remove && internal != nullptr) {
         cpyTracker.erase(internal);
         delete internal;
     }

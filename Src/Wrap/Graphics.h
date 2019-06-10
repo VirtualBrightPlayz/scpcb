@@ -1,5 +1,5 @@
-#ifndef Graphics_H_INCLUDED
-#define Graphics_H_INCLUDED
+#ifndef GRAPHICS_H_INCLUDED
+#define GRAPHICS_H_INCLUDED
 
 #include <Graphics/Graphics.h>
 #include <Misc/String.h>
@@ -29,4 +29,4 @@ public:
     PGE::Graphics* getInternal();
 };
 
-#endif // Graphics_H_INCLUDED
+#endif // GRAPHICS_H_INCLUDED
