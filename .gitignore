@@ -1,5 +1,6 @@
 # Containment Breach
 [Ss]aves/*
+exception*.txt
 
 # Visual Studio
 [Dd]ebug
@@ -22,6 +23,7 @@ DerivedData/
 xcuserdata
 *.xccheckout
 *.xcuserstate
+*.xcscheme
 # user settings
 *.pbxuser
 *.mode1v3

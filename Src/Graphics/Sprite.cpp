@@ -1,6 +1,10 @@
 #include "Sprite.h"
 #include "../Wrap/Material.h"
 
+Mesh Sprite::sharedMesh;
+
+Sprite::Sprite() { }
+
 Sprite::Sprite(Graphics gfx, Shader shader, Texture tex) {
     if (sharedMesh.getInternal() == nullptr) { createSpriteMesh(gfx); }
 
@@ -21,6 +25,14 @@ Sprite Sprite::create(Graphics gfx, Shader shader, PGE::String texPath) {
 
 void Sprite::setScale(float scale) {
     this->scale = PGE::Vector2f(scale, scale);
+}
+
+void Sprite::setPosition(const PGE::Vector3f& pos) {
+    position = pos;
+}
+
+void Sprite::setPosition(float x, float y, float z) {
+    position = PGE::Vector3f(x, y, z);
 }
 
 void Sprite::createSpriteMesh(Graphics gfx) {

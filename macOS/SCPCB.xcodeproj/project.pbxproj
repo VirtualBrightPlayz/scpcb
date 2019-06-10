@@ -22,6 +22,7 @@
 		191BDDBD22A854A900270B9D /* SDL2.framework in Copy Bundle Frameworks */ = {isa = PBXBuildFile; fileRef = 191BDDBA22A8547E00270B9D /* SDL2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		191BDDBF22A8551A00270B9D /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDBE22A8551A00270B9D /* Main.cpp */; };
 		1927734122A85D500055EB30 /* Dummy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1927733F22A85D500055EB30 /* Dummy.txt */; };
+		1931B60522AEEFEA00A48B13 /* ShaderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1931B60422AEEFEA00A48B13 /* ShaderManager.cpp */; };
 		194C2F742257874800AB9902 /* Loadingscreens in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F702257874800AB9902 /* Loadingscreens */; };
 		194C2F752257874800AB9902 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F712257874800AB9902 /* Data */; };
 		194C2F762257874800AB9902 /* SFX in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F722257874800AB9902 /* SFX */; };
@@ -88,6 +89,8 @@
 		191BDDBA22A8547E00270B9D /* SDL2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SDL2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		191BDDBE22A8551A00270B9D /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		1927733F22A85D500055EB30 /* Dummy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Dummy.txt; sourceTree = SOURCE_ROOT; };
+		1931B60322AEEFEA00A48B13 /* ShaderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderManager.h; sourceTree = "<group>"; };
+		1931B60422AEEFEA00A48B13 /* ShaderManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderManager.cpp; sourceTree = "<group>"; };
 		194C2F702257874800AB9902 /* Loadingscreens */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Loadingscreens; path = ../../Content/Loadingscreens; sourceTree = "<group>"; };
 		194C2F712257874800AB9902 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Data; path = ../../Content/Data; sourceTree = "<group>"; };
 		194C2F722257874800AB9902 /* SFX */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SFX; path = ../../Content/SFX; sourceTree = "<group>"; };
@@ -260,6 +263,8 @@
 		19646FBD22A9FAA0005E027E /* World */ = {
 			isa = PBXGroup;
 			children = (
+				1931B60422AEEFEA00A48B13 /* ShaderManager.cpp */,
+				1931B60322AEEFEA00A48B13 /* ShaderManager.h */,
 				19646FC222A9FB6D005E027E /* Timing.cpp */,
 				19646FC122A9FB6D005E027E /* Timing.h */,
 				19646FBF22A9FAB4005E027E /* World.cpp */,
@@ -370,6 +375,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1931B60522AEEFEA00A48B13 /* ShaderManager.cpp in Sources */,
 				19E258DF22AED859002933BF /* Material.cpp in Sources */,
 				19F17EAF22AD90830061F643 /* Mesh.cpp in Sources */,
 				191BDDB622A846F600270B9D /* INI.cpp in Sources */,

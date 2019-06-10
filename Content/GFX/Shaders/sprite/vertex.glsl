@@ -5,10 +5,10 @@ uniform mat4 viewMatrix;
 uniform mat4 worldMatrix;
 
 in vec4 position;
-in vec2 texCoords
+in vec2 texCoords;
 
 out vec4 fsTransformedPos;
-out vec3 fsTexCoords;
+out vec2 fsTexCoords;
 
 void main() {
     fsTransformedPos = projectionMatrix * viewMatrix * worldMatrix * position;

@@ -1,3 +1,4 @@
+#include <Math/Rectangle.h>
 #include "Camera.h"
 
 Camera::Camera(Graphics gfx) : gfx(gfx) {
@@ -7,7 +8,7 @@ Camera::Camera(Graphics gfx) : gfx(gfx) {
 
     viewMat = PGE::Matrix4x4f::constructViewMat(position, lookAt, upDir);
 
-    float aspectRatio = (float)gfx->getViewport().width /  gfx->getViewport().height;
+    float aspectRatio = (float)gfx->getViewport().width() /  gfx->getViewport().height();
     float farClippingPlane = 10.f;
     float nearClippingPlane = 0.01f;
 

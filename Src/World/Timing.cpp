@@ -3,8 +3,9 @@
 Timing::Timing(int tickrate) {
     timeStep = 1.0 / tickrate;
     accumulatedSeconds = 0.0;
-    
+
     initialTime = std::chrono::high_resolution_clock::now();
+    prevTime = initialTime;
 }
 
 double Timing::getTimeStep() const {
@@ -22,15 +23,23 @@ bool Timing::tickReady() {
 
 void Timing::subtractTick() {
     if (accumulatedSeconds <= 0.0) { return; }
-    
+
     accumulatedSeconds -= timeStep;
 }
 
 
 double Timing::getElapsedSeconds() {
     std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> timeSpan = std::chrono::duration_cast<std::chrono::duration<double>>(now - prevTime);
+
+    prevTime = now;
+    return timeSpan.count();
+}
+
+
+double Timing::getTotalElapsedTime() {
+    std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> timeSpan = std::chrono::duration_cast<std::chrono::duration<double>>(now - initialTime);
-    
-    initialTime = now;
+
     return timeSpan.count();
 }

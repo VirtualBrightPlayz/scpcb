@@ -3,8 +3,10 @@
 
 #include "../Wrap/Graphics.h"
 #include "../Wrap/IO.h"
+#include "../Graphics/Sprite.h"
 
 class Timing;
+class ShaderManager;
 
 class World {
 private:
@@ -12,6 +14,11 @@ private:
     IO io;
     Timing* timing;
     int ticks;
+
+    // TODO: Remove, this is a test.
+    Sprite poster;
+
+    ShaderManager* shaderMngt;
 
     bool isRoadRollered;
 

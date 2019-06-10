@@ -2,6 +2,7 @@
 #define SPRITE_H_INCLUDED
 
 #include <Mesh/Mesh.h>
+#include <Math/Vector.h>
 #include "../Wrap/Texture.h"
 #include "../Wrap/Shader.h"
 #include "../Wrap/Mesh.h"
@@ -24,10 +25,14 @@ private:
     Sprite(Graphics gfx, Shader shader, Texture tex);
 
 public:
+    Sprite();
+
     static Sprite create(Graphics gfx, Shader shader, Texture tex);
     static Sprite create(Graphics gfx, Shader shader, PGE::String texPath);
 
     void setScale(float scale);
+    void setPosition(const PGE::Vector3f& pos);
+    void setPosition(float x, float y, float z);
 
     void render();
 };
