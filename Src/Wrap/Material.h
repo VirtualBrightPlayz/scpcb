@@ -26,9 +26,9 @@ public:
     Material& operator=(const Material& other);
     ~Material();
 
-    static Material create(Shader sh, const std::vector<Texture> &t);
-    static Material create(Shader sh, Texture t);
-    static Material create(Shader sh);
+    static Material create(Shader& sh, const std::vector<Texture>& t);
+    static Material create(Shader& sh, Texture& t);
+    static Material create(Shader& sh);
 
     PGE::Material* operator->() const;
 

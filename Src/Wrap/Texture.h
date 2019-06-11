@@ -24,9 +24,9 @@ public:
     Texture& operator=(const Texture& other);
     ~Texture();
 
-    static Texture load(Graphics gfx, PGE::String filename);
-    static Texture load(Graphics gfx, PGE::String filename, ThreadManager threadManager);
-    static Texture create(Graphics gfx, int w, int h, bool renderTarget, const void* buffer, PGE::Texture::FORMAT fmt);
+    static Texture load(Graphics& gfx, const PGE::String& filename);
+    static Texture load(Graphics& gfx, const PGE::String& filename, ThreadManager& threadManager);
+    static Texture create(Graphics& gfx, int w, int h, bool renderTarget, const void* buffer, PGE::Texture::FORMAT fmt);
 
     PGE::Texture* operator->() const;
 

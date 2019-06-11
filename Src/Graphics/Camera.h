@@ -6,13 +6,16 @@
 
 class Camera {
 private:
-    PGE::Matrix4x4f viewMat;
-    PGE::Matrix4x4f projectionMat;
+    PGE::Matrix4x4f viewMatrix;
+    PGE::Matrix4x4f projectionMatrix;
 
     Graphics gfx;
 
 public:
-    Camera(Graphics gfx);
+    Camera(Graphics& gfx);
+
+    const PGE::Matrix4x4f& getViewMatrix() const;
+    const PGE::Matrix4x4f& getProjectionMatrix() const;
 };
 
 #endif // Camera_H_INCLUDED

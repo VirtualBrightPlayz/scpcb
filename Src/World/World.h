@@ -5,6 +5,7 @@
 #include "../Wrap/IO.h"
 #include "../Graphics/Sprite.h"
 
+class Camera;
 class Timing;
 class ShaderManager;
 
@@ -12,6 +13,8 @@ class World {
 private:
     Graphics graphics;
     IO io;
+    Camera* camera;
+
     Timing* timing;
     int ticks;
 
@@ -26,7 +29,9 @@ public:
     World();
     ~World();
 
+    // Goes through the update/draw phrase of a single frame.
     bool run();
+    // Goes through the update phase of a single tick.
     void runTick();
 };
 

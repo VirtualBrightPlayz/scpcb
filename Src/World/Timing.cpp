@@ -15,6 +15,10 @@ double Timing::getTimeStep() const {
 void Timing::addSecondsToAccumulator(double seconds) {
     if (seconds <= 0.0) { return; }
     accumulatedSeconds += seconds;
+
+    if (accumulatedSeconds > MAX_ACCUMULATED_SECONDS) {
+        accumulatedSeconds = MAX_ACCUMULATED_SECONDS;
+    }
 }
 
 bool Timing::tickReady() {

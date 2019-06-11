@@ -23,7 +23,7 @@ public:
     Shader& operator=(const Shader& other);
     ~Shader();
 
-    static Shader load(Graphics gfx, const PGE::String& path);
+    static Shader load(Graphics& gfx, const PGE::String& path);
 
     PGE::Shader* operator->() const;
 

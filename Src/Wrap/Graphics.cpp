@@ -14,7 +14,7 @@ bool Graphics::decrement() const {
     return newCount <= 0;
 }
 
-Graphics Graphics::create(PGE::String name,int w, int h, bool fs) {
+Graphics Graphics::create(const PGE::String& name, int w, int h, bool fs) {
     Graphics gfx;
     gfx.internal = PGE::Graphics::create(name, w, h, fs);
     cpyTracker.insert(std::pair<PGE::Graphics*, int>(gfx.internal, 1));

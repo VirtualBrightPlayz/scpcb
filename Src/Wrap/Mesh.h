@@ -23,7 +23,7 @@ public:
     Mesh& operator=(const Mesh& other);
     ~Mesh();
 
-    static Mesh create(Graphics gfx, PGE::Primitive::TYPE pt);
+    static Mesh create(Graphics& gfx, PGE::Primitive::TYPE pt);
 
     PGE::Mesh* operator->() const;
 

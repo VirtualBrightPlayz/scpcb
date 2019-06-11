@@ -14,7 +14,7 @@ bool Material::decrement() const {
     return newCount <= 0;
 }
 
-Material Material::create(Shader shd, const std::vector<Texture> &t) {
+Material Material::create(Shader& shd, const std::vector<Texture>& t) {
     Material mat;
     mat.shader = shd;
     mat.textures = t;
@@ -29,7 +29,7 @@ Material Material::create(Shader shd, const std::vector<Texture> &t) {
     return mat;
 }
 
-Material Material::create(Shader shd, Texture t) {
+Material Material::create(Shader& shd, Texture& t) {
     Material mat;
     mat.shader = shd;
     mat.textures.push_back(t);
@@ -40,7 +40,7 @@ Material Material::create(Shader shd, Texture t) {
     return mat;
 }
 
-Material Material::create(Shader shd) {
+Material Material::create(Shader& shd) {
     Material mat;
     mat.shader = shd;
     mat.internal = new PGE::Material(shd.getInternal());

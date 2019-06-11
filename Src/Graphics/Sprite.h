@@ -10,7 +10,7 @@
 class Sprite {
 private:
     static Mesh sharedMesh;
-    static void createSpriteMesh(Graphics gfx);
+    static void createSpriteMesh(Graphics& gfx);
 
     Texture texture;
     Shader shader;
@@ -22,17 +22,18 @@ private:
 
     Graphics gfx;
 
-    Sprite(Graphics gfx, Shader shader, Texture tex);
+    Sprite(Graphics& gfx, Shader& shader, Texture& tex);
 
 public:
     Sprite();
 
-    static Sprite create(Graphics gfx, Shader shader, Texture tex);
-    static Sprite create(Graphics gfx, Shader shader, PGE::String texPath);
+    static Sprite create(Graphics& gfx, Shader& shader, Texture& tex);
+    static Sprite create(Graphics& gfx, Shader& shader, const PGE::String texPath);
 
     void setScale(float scale);
     void setPosition(const PGE::Vector3f& pos);
     void setPosition(float x, float y, float z);
+    void setRotationY(float rad);
 
     void render();
 };

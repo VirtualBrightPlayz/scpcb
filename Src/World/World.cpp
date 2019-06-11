@@ -8,9 +8,11 @@
 World::World() {
     graphics = Graphics::create("SCP - Containment Breach", 1280, 720, false);
     io = IO::create(graphics->getWindow());
+    camera = new Camera(graphics);
+
     timing = new Timing(60);
-    
-    shaderMngt = new ShaderManager(graphics);
+
+    shaderMngt = new ShaderManager(graphics, camera);
 
     poster = Sprite::create(graphics, shaderMngt->getSpriteShader(), "GFX/079pics/face.jpg");
     poster.setPosition(0, 0, 4.0f);
@@ -21,6 +23,7 @@ World::World() {
 }
 
 World::~World() {
+    delete camera;
     delete timing;
     delete shaderMngt;
 }
@@ -30,6 +33,7 @@ bool World::run() {
         return false;
     }
 
+    // Non tick-based updating.
     SysEvents::update();
     io->update();
     graphics->update();
@@ -43,6 +47,7 @@ bool World::run() {
         timing->subtractTick();
     }
 
+    // Draw code.
     poster.render();
 
     graphics->swap(false);
@@ -56,10 +61,8 @@ void World::runTick() {
         std::cout << "A second has passed." << std::endl;
     }
 
-    if (ticks == 600) {
-        std::cout << "Goodbye.";
-        isRoadRollered = true;
-    }
+    poster.setScale(60.0f * std::sinf((float)timing->getTotalElapsedTime()));
+    poster.setRotationY(1.0f * std::sinf((float)timing->getTotalElapsedTime()));
 
-    poster.setScale(std::sinf((float)timing->getTotalElapsedTime()));
+    shaderMngt->update(camera);
 }

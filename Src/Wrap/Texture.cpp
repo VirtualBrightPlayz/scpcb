@@ -14,7 +14,7 @@ bool Texture::decrement() const {
     return newCount <= 0;
 }
 
-Texture Texture::load(Graphics gfx, PGE::String filename) {
+Texture Texture::load(Graphics& gfx, const PGE::String& filename) {
     Texture tex;
     tex.internal = PGE::Texture::load(gfx.getInternal(), filename.resourcePath());
     cpyTracker.insert(std::pair<PGE::Texture*, int>(tex.internal, 1));
@@ -22,7 +22,7 @@ Texture Texture::load(Graphics gfx, PGE::String filename) {
     return tex;
 }
 
-Texture Texture::load(Graphics gfx, PGE::String filename, ThreadManager threadManager) {
+Texture Texture::load(Graphics& gfx, const PGE::String& filename, ThreadManager& threadManager) {
     Texture tex;
     tex.internal = PGE::Texture::load(gfx.getInternal(), filename.resourcePath(), threadManager.getInternal());
     cpyTracker.insert(std::pair<PGE::Texture*, int>(tex.internal, 1));
@@ -30,7 +30,7 @@ Texture Texture::load(Graphics gfx, PGE::String filename, ThreadManager threadMa
     return tex;
 }
 
-Texture Texture::create(Graphics gfx, int w, int h, bool renderTarget, const void* buffer, PGE::Texture::FORMAT fmt) {
+Texture Texture::create(Graphics& gfx, int w, int h, bool renderTarget, const void* buffer, PGE::Texture::FORMAT fmt) {
     Texture tex;
     tex.internal = PGE::Texture::create(gfx.getInternal(), w, h, renderTarget, buffer, fmt);
     cpyTracker.insert(std::pair<PGE::Texture*, int>(tex.internal, 1));

@@ -22,7 +22,7 @@ public:
     Graphics& operator=(const Graphics& other);
     ~Graphics();
 
-    static Graphics create(PGE::String name,int w, int h, bool fs);
+    static Graphics create(const PGE::String& name, int w, int h, bool fs);
 
     PGE::Graphics* operator->() const;
 

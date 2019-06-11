@@ -5,7 +5,7 @@ Mesh Sprite::sharedMesh;
 
 Sprite::Sprite() { }
 
-Sprite::Sprite(Graphics gfx, Shader shader, Texture tex) {
+Sprite::Sprite(Graphics& gfx, Shader& shader, Texture& tex) {
     if (sharedMesh.getInternal() == nullptr) { createSpriteMesh(gfx); }
 
     color = PGE::Color();
@@ -14,11 +14,11 @@ Sprite::Sprite(Graphics gfx, Shader shader, Texture tex) {
     this->gfx = gfx;
 }
 
-Sprite Sprite::create(Graphics gfx, Shader shader, Texture tex) {
+Sprite Sprite::create(Graphics& gfx, Shader& shader, Texture& tex) {
     return Sprite(gfx, shader, tex);
 }
 
-Sprite Sprite::create(Graphics gfx, Shader shader, PGE::String texPath) {
+Sprite Sprite::create(Graphics& gfx, Shader& shader, const PGE::String texPath) {
     Texture tex = Texture::load(gfx, texPath);
     return Sprite(gfx, shader, tex);
 }
@@ -35,20 +35,30 @@ void Sprite::setPosition(float x, float y, float z) {
     position = PGE::Vector3f(x, y, z);
 }
 
-void Sprite::createSpriteMesh(Graphics gfx) {
+void Sprite::setRotationY(float rad) {
+    rotation.y = rad;
+}
+
+void Sprite::createSpriteMesh(Graphics& gfx) {
     sharedMesh = Mesh::create(gfx, PGE::Primitive::TYPE::TRIANGLE);
 
-    PGE::Vector2f verts[4];
-    verts[0] = PGE::Vector2f(-0.5f, 0.5f);
-    verts[1] = PGE::Vector2f(0.5f, -0.5f);
-    verts[2] = PGE::Vector2f(-0.5f, -0.5f);
-    verts[3] = PGE::Vector2f(0.5f, 0.5f);
+    PGE::Vector4f verts[4];
+    verts[0] = PGE::Vector4f(-0.5f, 0.5f, 0.0f, 1.0f);
+    verts[1] = PGE::Vector4f(0.5f, -0.5f, 0.0f, 1.0f);
+    verts[2] = PGE::Vector4f(-0.5f, -0.5f, 0.0f, 1.0f);
+    verts[3] = PGE::Vector4f(0.5f, 0.5f, 0.0f, 1.0f);
+
+    PGE::Vector2f texCoords[4];
+    texCoords[0] = PGE::Vector2f(0.0f, 1.0f);
+    texCoords[1] = PGE::Vector2f(1.0f, 0.0f);
+    texCoords[2] = PGE::Vector2f(0.0f, 0.0f);
+    texCoords[3] = PGE::Vector2f(1.0f, 1.0f);
 
     std::vector<PGE::Vertex> meshVerts;
     for (int i = 0;  i < 4; i++) {
         meshVerts.push_back(PGE::Vertex());
-        meshVerts[i].setVector4f("position", PGE::Vector4f(verts[i].x, verts[i].y, 0.0f, 1.0f));
-        meshVerts[i].setVector2f("texCoords", verts[i]);
+        meshVerts[i].setVector4f("position", verts[i]);
+        meshVerts[i].setVector2f("texCoords", texCoords[i]);
     }
 
     std::vector<PGE::Primitive> prims;
@@ -63,6 +73,9 @@ void Sprite::render() {
 
     PGE::Shader::Constant* modelMatValue = shader->getVertexShaderConstant("worldMatrix");
     modelMatValue->setValue(modelMat);
+
+    PGE::Shader::Constant* colorValue = shader->getFragmentShaderConstant("spriteColor");
+    colorValue->setValue(color);
 
     Material mat = Material::create(shader, texture);
     sharedMesh->setMaterial(mat.getInternal());
