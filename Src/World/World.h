@@ -31,7 +31,7 @@ public:
     // Goes through the update/draw phrase of a single frame.
     bool run();
     // Goes through the update phase of a single tick.
-    void runTick();
+    void runTick(float timeStep);
 };
 
 #endif // World_H_INCLUDED

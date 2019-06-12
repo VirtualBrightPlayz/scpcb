@@ -17,10 +17,8 @@ private:
     PGE::Color color;
 
     PGE::Vector3f position;
+    PGE::Vector2f scale;
     PGE::Vector3f rotation;
-
-    int width;
-    int height;
 
     Graphics gfx;
 
@@ -33,7 +31,6 @@ public:
     static Sprite create(Graphics& gfx, Shader& shader, const PGE::String texPath);
 
     void setScale(float scale);
-    void resetScaleToTextureSize();
     void setPosition(const PGE::Vector3f& pos);
     void setPosition(float x, float y, float z);
 

@@ -12,7 +12,7 @@ Camera::Camera(Graphics& gfx) : gfx(gfx) {
     float farClippingPlane = 10.f;
     float nearClippingPlane = 0.0f;
 
-//    projectionMatrix = PGE::Matrix4x4f::identity;
+    projectionMatrix = PGE::Matrix4x4f::identity;
 //    projectionMatrix.elements[0][0] = -1.0f / aspectRatio;
 //    projectionMatrix.elements[1][1] = 1.f;
 //    projectionMatrix.elements[2][2] = farClippingPlane / (nearClippingPlane - farClippingPlane);

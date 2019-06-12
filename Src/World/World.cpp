@@ -22,7 +22,6 @@ World::World() {
 
     poster = Sprite::create(graphics, shaderMngt->getSpriteShader(), "GFX/079pics/face.jpg");
 //    poster.setPosition(0, 0, 5.0f);
-    poster.setScale(0.005f);
 
     isRoadRollered = false;
 }
@@ -51,7 +50,7 @@ bool World::run() {
     timing->addSecondsToAccumulator(secondsPassed);
 
     while (timing->tickReady()) {
-        runTick();
+        runTick(timing->getTimeStep());
         timing->subtractTick();
     }
 
@@ -63,8 +62,8 @@ bool World::run() {
     return graphics->getWindow()->isOpen();
 }
 
-void World::runTick() {
-    poster.setPosition(5.0f * std::sinf((float)timing->getTotalElapsedTime()), 5.0f * std::sinf((float)timing->getTotalElapsedTime()), 0.0f);
+void World::runTick(float timeStep) {
+//    poster.setPosition(0.0f, 0.0f, 5.0f * std::sinf((float)timing->getTotalElapsedTime()));
 
     shaderMngt->update(camera);
 }
