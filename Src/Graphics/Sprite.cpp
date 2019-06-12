@@ -12,6 +12,8 @@ Sprite::Sprite(Graphics& gfx, Shader& shader, Texture& tex) {
     this->shader = shader;
     texture = tex;
     this->gfx = gfx;
+
+    resetScaleToTextureSize();
 }
 
 Sprite Sprite::create(Graphics& gfx, Shader& shader, Texture& tex) {
@@ -24,7 +26,13 @@ Sprite Sprite::create(Graphics& gfx, Shader& shader, const PGE::String texPath) 
 }
 
 void Sprite::setScale(float scale) {
-    this->scale = PGE::Vector2f(scale, scale);
+    width *= scale;
+    height *= scale;
+}
+
+void Sprite::resetScaleToTextureSize() {
+    width = texture->getWidth();
+    height = texture->getHeight();
 }
 
 void Sprite::setPosition(const PGE::Vector3f& pos) {
@@ -33,10 +41,6 @@ void Sprite::setPosition(const PGE::Vector3f& pos) {
 
 void Sprite::setPosition(float x, float y, float z) {
     position = PGE::Vector3f(x, y, z);
-}
-
-void Sprite::setRotationY(float rad) {
-    rotation.y = rad;
 }
 
 void Sprite::createSpriteMesh(Graphics& gfx) {
@@ -69,7 +73,7 @@ void Sprite::createSpriteMesh(Graphics& gfx) {
 }
 
 void Sprite::render() {
-    PGE::Matrix4x4f modelMat = PGE::Matrix4x4f::constructWorldMat(position, PGE::Vector3f(scale.x, scale.y, 0.0f), rotation);
+    PGE::Matrix4x4f modelMat = PGE::Matrix4x4f::constructWorldMat(position, PGE::Vector3f(width, height, 1.0f), rotation);
 
     PGE::Shader::Constant* modelMatValue = shader->getVertexShaderConstant("worldMatrix");
     modelMatValue->setValue(modelMat);

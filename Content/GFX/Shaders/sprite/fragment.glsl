@@ -8,6 +8,5 @@ in vec2 fsTexCoords;
 out vec4 outColor;
 
 void main() {
-    outColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
-//    outColor = spriteColor * texture(tex0, fsTexCoords);
+    outColor = spriteColor * texture(tex0, fsTexCoords);
 }

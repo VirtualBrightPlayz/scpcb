@@ -16,7 +16,6 @@ private:
     Camera* camera;
 
     Timing* timing;
-    int ticks;
 
     // TODO: Remove, this is a test.
     Sprite poster;

@@ -18,7 +18,9 @@ private:
 
     PGE::Vector3f position;
     PGE::Vector3f rotation;
-    PGE::Vector2f scale;
+
+    int width;
+    int height;
 
     Graphics gfx;
 
@@ -31,9 +33,9 @@ public:
     static Sprite create(Graphics& gfx, Shader& shader, const PGE::String texPath);
 
     void setScale(float scale);
+    void resetScaleToTextureSize();
     void setPosition(const PGE::Vector3f& pos);
     void setPosition(float x, float y, float z);
-    void setRotationY(float rad);
 
     void render();
 };
