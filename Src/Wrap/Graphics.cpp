@@ -59,6 +59,6 @@ PGE::Graphics* Graphics::operator->() const {
     return internal;
 }
 
-PGE::Graphics* Graphics::getInternal() {
+PGE::Graphics* Graphics::getInternal() const {
     return internal;
 }

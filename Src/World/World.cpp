@@ -14,14 +14,14 @@ World::World() {
     graphics = Graphics::create("SCP - Containment Breach", width, height, false);
     graphics->setViewport(PGE::Rectanglei(0, 0, width * retinaUpscale, height * retinaUpscale));
     io = IO::create(graphics->getWindow());
-    camera = new Camera(graphics);
+    camera = new Camera(graphics, (float)graphics->getWindow()->getWidth() / graphics->getWindow()->getHeight());
 
     timing = new Timing(60);
 
     shaderMngt = new ShaderManager(graphics, camera);
 
     poster = Sprite::create(graphics, shaderMngt->getSpriteShader(), "GFX/079pics/face.jpg");
-//    poster.setPosition(0, 0, 5.0f);
+    poster.setPosition(0, 0, 5.0f);
 
     isRoadRollered = false;
 }

@@ -23,11 +23,11 @@ public:
     Mesh& operator=(const Mesh& other);
     ~Mesh();
 
-    static Mesh create(Graphics& gfx, PGE::Primitive::TYPE pt);
+    static Mesh create(const Graphics& gfx, PGE::Primitive::TYPE pt);
 
     PGE::Mesh* operator->() const;
 
-    PGE::Mesh* getInternal();
+    PGE::Mesh* getInternal() const;
 };
 
 #endif // MESH_H_INCLUDED

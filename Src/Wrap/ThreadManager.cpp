@@ -59,6 +59,6 @@ PGE::ThreadManager* ThreadManager::operator->() const {
     return internal;
 }
 
-PGE::ThreadManager* ThreadManager::getInternal() {
+PGE::ThreadManager* ThreadManager::getInternal() const {
     return internal;
 }

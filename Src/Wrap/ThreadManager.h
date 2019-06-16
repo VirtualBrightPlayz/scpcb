@@ -27,7 +27,7 @@ public:
 
     PGE::ThreadManager* operator->() const;
 
-    PGE::ThreadManager* getInternal();
+    PGE::ThreadManager* getInternal() const;
 };
 
 #endif // THREADMANAGER_H_INCLUDED

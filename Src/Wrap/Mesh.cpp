@@ -14,7 +14,7 @@ bool Mesh::decrement() const {
     return newCount <= 0;
 }
 
-Mesh Mesh::create(Graphics& gfx, PGE::Primitive::TYPE pt) {
+Mesh Mesh::create(const Graphics& gfx, PGE::Primitive::TYPE pt) {
     Mesh mesh;
     mesh.internal = PGE::Mesh::create(gfx.getInternal(), pt);
     cpyTracker.insert(std::pair<PGE::Mesh*, int>(mesh.internal, 1));
@@ -59,6 +59,6 @@ PGE::Mesh* Mesh::operator->() const {
     return internal;
 }
 
-PGE::Mesh* Mesh::getInternal() {
+PGE::Mesh* Mesh::getInternal() const {
     return internal;
 }

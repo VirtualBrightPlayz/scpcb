@@ -26,13 +26,13 @@ public:
     Material& operator=(const Material& other);
     ~Material();
 
-    static Material create(Shader& sh, const std::vector<Texture>& t);
-    static Material create(Shader& sh, Texture& t);
-    static Material create(Shader& sh);
+    static Material create(const Shader& sh, const std::vector<Texture>& t);
+    static Material create(const Shader& sh, const Texture& t);
+    static Material create(const Shader& sh);
 
     PGE::Material* operator->() const;
 
-    PGE::Material* getInternal();
+    PGE::Material* getInternal() const;
 
     std::vector<Texture> getTextures() const;
     Shader getShader() const;

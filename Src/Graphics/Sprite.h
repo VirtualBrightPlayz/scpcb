@@ -6,29 +6,31 @@
 #include "../Wrap/Texture.h"
 #include "../Wrap/Shader.h"
 #include "../Wrap/Mesh.h"
+#include "../Wrap/Material.h"
 
 class Sprite {
 private:
     static Mesh sharedMesh;
-    static void createSpriteMesh(Graphics& gfx);
+    static void createSpriteMesh(const Graphics& gfx);
 
     Texture texture;
+    Material material;
     Shader shader;
     PGE::Color color;
 
     PGE::Vector3f position;
     PGE::Vector2f scale;
-    PGE::Vector3f rotation;
+    float rotation;
 
     Graphics gfx;
 
-    Sprite(Graphics& gfx, Shader& shader, Texture& tex);
+    Sprite(const Graphics& gfx, const Shader& shader, const Texture& tex);
 
 public:
     Sprite();
 
-    static Sprite create(Graphics& gfx, Shader& shader, Texture& tex);
-    static Sprite create(Graphics& gfx, Shader& shader, const PGE::String texPath);
+    static Sprite create(const Graphics& gfx, const Shader& shader, const Texture& tex);
+    static Sprite create(const Graphics& gfx, const Shader& shader, const PGE::String texPath);
 
     void setScale(float scale);
     void setPosition(const PGE::Vector3f& pos);

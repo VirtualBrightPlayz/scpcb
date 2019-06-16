@@ -27,7 +27,7 @@ public:
 
     PGE::IO* operator->() const;
 
-    PGE::IO* getInternal();
+    PGE::IO* getInternal() const;
 };
 
 #endif // IO_H_INCLUDED

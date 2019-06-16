@@ -14,7 +14,7 @@ bool Shader::decrement() const {
     return newCount <= 0;
 }
 
-Shader Shader::load(Graphics& gfx, const PGE::String& path) {
+Shader Shader::load(const Graphics& gfx, const PGE::String& path) {
     Shader shd;
     shd.internal = PGE::Shader::load(gfx.getInternal(), path.resourcePath());
     cpyTracker.insert(std::pair<PGE::Shader*, int>(shd.internal, 1));
@@ -59,6 +59,6 @@ PGE::Shader* Shader::operator->() const {
     return internal;
 }
 
-PGE::Shader* Shader::getInternal() {
+PGE::Shader* Shader::getInternal() const {
     return internal;
 }

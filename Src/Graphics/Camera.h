@@ -12,7 +12,7 @@ private:
     Graphics gfx;
 
 public:
-    Camera(Graphics& gfx);
+    Camera(const Graphics& gfx, float aspectRatio);
 
     const PGE::Matrix4x4f& getViewMatrix() const;
     const PGE::Matrix4x4f& getProjectionMatrix() const;

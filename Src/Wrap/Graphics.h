@@ -26,7 +26,7 @@ public:
 
     PGE::Graphics* operator->() const;
 
-    PGE::Graphics* getInternal();
+    PGE::Graphics* getInternal() const;
 };
 
 #endif // GRAPHICS_H_INCLUDED

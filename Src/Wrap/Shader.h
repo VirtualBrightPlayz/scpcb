@@ -23,11 +23,11 @@ public:
     Shader& operator=(const Shader& other);
     ~Shader();
 
-    static Shader load(Graphics& gfx, const PGE::String& path);
+    static Shader load(const Graphics& gfx, const PGE::String& path);
 
     PGE::Shader* operator->() const;
 
-    PGE::Shader* getInternal();
+    PGE::Shader* getInternal() const;
 };
 
 #endif // SHADER_H_INCLUDED

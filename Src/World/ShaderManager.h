@@ -9,11 +9,11 @@ private:
     Shader spriteShader;
 
 public:
-    ShaderManager(Graphics& gfx, const Camera* cam);
+    ShaderManager(const Graphics& gfx, const Camera* cam);
 
     void update(const Camera* cam);
 
-    Shader& getSpriteShader();
+    const Shader& getSpriteShader();
 };
 
 #endif // ShaderManager_H_INCLUDED

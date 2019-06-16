@@ -59,6 +59,6 @@ PGE::IO* IO::operator->() const {
     return internal;
 }
 
-PGE::IO* IO::getInternal() {
+PGE::IO* IO::getInternal() const {
     return internal;
 }
