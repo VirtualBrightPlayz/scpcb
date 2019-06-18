@@ -9,7 +9,7 @@
 World::World() {
     int width = 1280;
     int height = 720;
-    int retinaUpscale = 2;
+    int retinaUpscale = 1;//2;
     
     graphics = Graphics::create("SCP - Containment Breach", width, height, false);
     graphics->setViewport(PGE::Rectanglei(0, 0, width * retinaUpscale, height * retinaUpscale));
@@ -20,8 +20,8 @@ World::World() {
 
     shaderMngt = new ShaderManager(graphics, camera);
 
-    poster = Sprite::create(graphics, shaderMngt->getSpriteShader(), "GFX/079pics/face.jpg");
-    poster.setPosition(0, 0, 5.0f);
+    poster = Sprite::create(graphics, shaderMngt->getSpriteShader(), "GFX/079pics/angery.jpg");
+    poster.setPosition(0, 0.0f, 2.0f);
 
     isRoadRollered = false;
 }
@@ -42,8 +42,7 @@ bool World::run() {
     io->update();
     graphics->update();
 
-
-    graphics->clear(PGE::Color(0.f, 0.f, 0.f, 1.f));
+    graphics->clear(PGE::Color(0.f, 1.f, 1.f, 1.f));
 
     // Get elapsed seconds since last run.
     double secondsPassed = timing->getElapsedSeconds();

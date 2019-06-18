@@ -16,7 +16,7 @@ Sprite::Sprite(const Graphics& gfx, const Shader& shader, const Texture& tex) {
 
     position = PGE::Vector3f::zero;
     scale = PGE::Vector2f::one;
-    rotation = 0.0f;
+    rotation = 0.5f;
 }
 
 Sprite Sprite::create(const Graphics& gfx, const Shader& shader, const Texture& tex) {
@@ -64,8 +64,10 @@ void Sprite::createSpriteMesh(const Graphics& gfx) {
     }
 
     std::vector<PGE::Primitive> prims;
-    prims.push_back(PGE::Primitive(0, 1, 2));
-    prims.push_back(PGE::Primitive(0, 3, 1));
+    //prims.push_back(PGE::Primitive(0, 1, 2));
+    //prims.push_back(PGE::Primitive(0, 3, 1));
+    prims.push_back(PGE::Primitive(1, 0, 2));
+    prims.push_back(PGE::Primitive(3, 0, 1));
 
     sharedMesh->setGeometry(meshVerts, prims);
 }

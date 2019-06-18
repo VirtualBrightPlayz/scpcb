@@ -73,7 +73,7 @@ Material& Material::operator=(const Material& other) {
     shader = other.shader;
     textures = other.textures;
     internal = other.internal;
-    other.increment();
+    increment();
 
     return *this;
 }
