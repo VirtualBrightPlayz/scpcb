@@ -28,6 +28,8 @@ public:
     PGE::Shader* operator->() const;
 
     PGE::Shader* getInternal() const;
+
+    bool isTracking() const;
 };
 
 #endif // SHADER_H_INCLUDED

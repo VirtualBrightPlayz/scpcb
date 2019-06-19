@@ -24,7 +24,7 @@ ThreadManager ThreadManager::create() {
 
 ThreadManager::ThreadManager(const ThreadManager& cpy) {
     internal = cpy.internal;
-    cpy.increment();
+    increment();
 }
 
 ThreadManager& ThreadManager::operator=(const ThreadManager& other) {
@@ -41,7 +41,7 @@ ThreadManager& ThreadManager::operator=(const ThreadManager& other) {
 
     // Add new reference.
     internal = other.internal;
-    other.increment();
+    increment();
 
     return *this;
 }

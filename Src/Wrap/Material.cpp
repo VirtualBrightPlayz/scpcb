@@ -53,7 +53,7 @@ Material::Material(const Material& cpy) {
     shader = cpy.shader;
     textures = cpy.textures;
     internal = cpy.internal;
-    cpy.increment();
+    increment();
 }
 
 Material& Material::operator=(const Material& other) {
@@ -102,4 +102,8 @@ std::vector<Texture> Material::getTextures() const {
 
 Shader Material::getShader() const {
     return shader;
+}
+
+bool Material::isTracking() const {
+    return internal != nullptr;
 }

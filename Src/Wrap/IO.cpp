@@ -24,7 +24,7 @@ IO IO::create(PGE::Window* window) {
 
 IO::IO(const IO& cpy) {
     internal = cpy.internal;
-    cpy.increment();
+    increment();
 }
 
 IO& IO::operator=(const IO& other) {
@@ -41,7 +41,7 @@ IO& IO::operator=(const IO& other) {
 
     // Add new reference.
     internal = other.internal;
-    other.increment();
+    increment();
 
     return *this;
 }
@@ -61,4 +61,8 @@ PGE::IO* IO::operator->() const {
 
 PGE::IO* IO::getInternal() const {
     return internal;
+}
+
+bool IO::isTracking() const {
+    return internal != nullptr;
 }

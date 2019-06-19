@@ -24,7 +24,7 @@ Shader Shader::load(const Graphics& gfx, const PGE::String& path) {
 
 Shader::Shader(const Shader& cpy) {
     internal = cpy.internal;
-    cpy.increment();
+    increment();
 }
 
 Shader& Shader::operator=(const Shader& other) {
@@ -41,7 +41,7 @@ Shader& Shader::operator=(const Shader& other) {
 
     // Add new reference.
     internal = other.internal;
-    other.increment();
+    increment();
 
     return *this;
 }
@@ -61,4 +61,8 @@ PGE::Shader* Shader::operator->() const {
 
 PGE::Shader* Shader::getInternal() const {
     return internal;
+}
+
+bool Shader::isTracking() const {
+    return internal != nullptr;
 }

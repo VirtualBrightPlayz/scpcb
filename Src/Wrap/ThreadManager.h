@@ -28,6 +28,8 @@ public:
     PGE::ThreadManager* operator->() const;
 
     PGE::ThreadManager* getInternal() const;
+
+    bool isTracking() const;
 };
 
 #endif // THREADMANAGER_H_INCLUDED

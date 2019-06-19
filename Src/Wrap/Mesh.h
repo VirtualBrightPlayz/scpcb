@@ -28,6 +28,8 @@ public:
     PGE::Mesh* operator->() const;
 
     PGE::Mesh* getInternal() const;
+
+    bool isTracking() const;
 };
 
 #endif // MESH_H_INCLUDED

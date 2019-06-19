@@ -35,6 +35,7 @@ public:
     void setScale(float scale);
     void setPosition(const PGE::Vector3f& pos);
     void setPosition(float x, float y, float z);
+    void setRotation(float rad);
 
     void render();
 };

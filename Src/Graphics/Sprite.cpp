@@ -6,7 +6,7 @@ Mesh Sprite::sharedMesh;
 Sprite::Sprite() { }
 
 Sprite::Sprite(const Graphics& gfx, const Shader& shader, const Texture& tex) {
-    if (sharedMesh.getInternal() == nullptr) { createSpriteMesh(gfx); }
+    if (!sharedMesh.isTracking()) { createSpriteMesh(gfx); }
 
     color = PGE::Color();
     this->shader = shader;
@@ -16,7 +16,7 @@ Sprite::Sprite(const Graphics& gfx, const Shader& shader, const Texture& tex) {
 
     position = PGE::Vector3f::zero;
     scale = PGE::Vector2f::one;
-    rotation = 0.5f;
+    rotation = 0.0f;
 }
 
 Sprite Sprite::create(const Graphics& gfx, const Shader& shader, const Texture& tex) {
@@ -39,6 +39,10 @@ void Sprite::setPosition(const PGE::Vector3f& pos) {
 
 void Sprite::setPosition(float x, float y, float z) {
     position = PGE::Vector3f(x, y, z);
+}
+
+void Sprite::setRotation(float rad) {
+    rotation = rad;
 }
 
 void Sprite::createSpriteMesh(const Graphics& gfx) {

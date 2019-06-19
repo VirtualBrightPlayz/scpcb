@@ -40,7 +40,7 @@ Texture Texture::create(const Graphics& gfx, int w, int h, bool renderTarget, co
 
 Texture::Texture(const Texture& cpy) {
     internal = cpy.internal;
-    cpy.increment();
+    increment();
 }
 
 Texture& Texture::operator=(const Texture& other) {
@@ -57,7 +57,7 @@ Texture& Texture::operator=(const Texture& other) {
 
     // Add new reference.
     internal = other.internal;
-    other.increment();
+    increment();
 
     return *this;
 }
@@ -77,4 +77,8 @@ PGE::Texture* Texture::operator->() const {
 
 PGE::Texture* Texture::getInternal() const {
     return internal;
+}
+
+bool Texture::isTracking() const {
+    return internal != nullptr;
 }

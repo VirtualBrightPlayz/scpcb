@@ -23,6 +23,7 @@
 		191BDDBF22A8551A00270B9D /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDBE22A8551A00270B9D /* Main.cpp */; };
 		1927734122A85D500055EB30 /* Dummy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1927733F22A85D500055EB30 /* Dummy.txt */; };
 		1931B60522AEEFEA00A48B13 /* ShaderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1931B60422AEEFEA00A48B13 /* ShaderManager.cpp */; };
+		1934815722B9B9A60039F47E /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1934815622B9B9A60039F47E /* MathUtil.cpp */; };
 		194C2F742257874800AB9902 /* Loadingscreens in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F702257874800AB9902 /* Loadingscreens */; };
 		194C2F752257874800AB9902 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F712257874800AB9902 /* Data */; };
 		194C2F762257874800AB9902 /* SFX in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F722257874800AB9902 /* SFX */; };
@@ -91,6 +92,8 @@
 		1927733F22A85D500055EB30 /* Dummy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Dummy.txt; sourceTree = SOURCE_ROOT; };
 		1931B60322AEEFEA00A48B13 /* ShaderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderManager.h; sourceTree = "<group>"; };
 		1931B60422AEEFEA00A48B13 /* ShaderManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderManager.cpp; sourceTree = "<group>"; };
+		1934815422B9B9A60039F47E /* MathUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathUtil.h; sourceTree = "<group>"; };
+		1934815622B9B9A60039F47E /* MathUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MathUtil.cpp; sourceTree = "<group>"; };
 		194C2F702257874800AB9902 /* Loadingscreens */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Loadingscreens; path = ../../Content/Loadingscreens; sourceTree = "<group>"; };
 		194C2F712257874800AB9902 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Data; path = ../../Content/Data; sourceTree = "<group>"; };
 		194C2F722257874800AB9902 /* SFX */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SFX; path = ../../Content/SFX; sourceTree = "<group>"; };
@@ -201,12 +204,14 @@
 		191BDD9522A844FF00270B9D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				191BDDB422A846F600270B9D /* INI.cpp */,
-				191BDDB522A846F600270B9D /* INI.h */,
-				191BDD9722A844FF00270B9D /* TextMgmt.cpp */,
-				191BDD9622A844FF00270B9D /* TextMgmt.h */,
 				191BDDB822A84F7700270B9D /* FileUtil.cpp */,
 				191BDDB722A84F7700270B9D /* FileUtil.h */,
+				191BDDB422A846F600270B9D /* INI.cpp */,
+				191BDDB522A846F600270B9D /* INI.h */,
+				1934815622B9B9A60039F47E /* MathUtil.cpp */,
+				1934815422B9B9A60039F47E /* MathUtil.h */,
+				191BDD9722A844FF00270B9D /* TextMgmt.cpp */,
+				191BDD9622A844FF00270B9D /* TextMgmt.h */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -390,6 +395,7 @@
 				191BDD9822A844FF00270B9D /* TextMgmt.cpp in Sources */,
 				191BDDB222A846EE00270B9D /* Collision.cpp in Sources */,
 				19646FC822AA082D005E027E /* IO.cpp in Sources */,
+				1934815722B9B9A60039F47E /* MathUtil.cpp in Sources */,
 				19F17EAC22AD82940061F643 /* Camera.cpp in Sources */,
 				19646FC022A9FAB4005E027E /* World.cpp in Sources */,
 				191BDDBF22A8551A00270B9D /* Main.cpp in Sources */,

@@ -31,6 +31,8 @@ public:
     PGE::Texture* operator->() const;
 
     PGE::Texture* getInternal() const;
+
+    bool isTracking() const;
 };
 
 #endif // TEXTURE_H_INCLUDED

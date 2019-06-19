@@ -24,7 +24,7 @@ Mesh Mesh::create(const Graphics& gfx, PGE::Primitive::TYPE pt) {
 
 Mesh::Mesh(const Mesh& cpy) {
     internal = cpy.internal;
-    cpy.increment();
+    increment();
 }
 
 Mesh& Mesh::operator=(const Mesh& other) {
@@ -41,7 +41,7 @@ Mesh& Mesh::operator=(const Mesh& other) {
 
     // Add new reference.
     internal = other.internal;
-    other.increment();
+    increment();
 
     return *this;
 }
@@ -61,4 +61,8 @@ PGE::Mesh* Mesh::operator->() const {
 
 PGE::Mesh* Mesh::getInternal() const {
     return internal;
+}
+
+bool Mesh::isTracking() const {
+    return internal != nullptr;
 }

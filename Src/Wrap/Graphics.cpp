@@ -24,7 +24,7 @@ Graphics Graphics::create(const PGE::String& name, int w, int h, bool fs) {
 
 Graphics::Graphics(const Graphics& cpy) {
     internal = cpy.internal;
-    cpy.increment();
+    increment();
 }
 
 Graphics& Graphics::operator=(const Graphics& other) {
@@ -41,7 +41,7 @@ Graphics& Graphics::operator=(const Graphics& other) {
 
     // Add new reference.
     internal = other.internal;
-    other.increment();
+    increment();
 
     return *this;
 }
@@ -61,4 +61,8 @@ PGE::Graphics* Graphics::operator->() const {
 
 PGE::Graphics* Graphics::getInternal() const {
     return internal;
+}
+
+bool Graphics::isTracking() const {
+    return internal != nullptr;
 }

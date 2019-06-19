@@ -34,6 +34,8 @@ public:
 
     PGE::Material* getInternal() const;
 
+    bool isTracking() const;
+
     std::vector<Texture> getTextures() const;
     Shader getShader() const;
 };

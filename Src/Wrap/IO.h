@@ -28,6 +28,8 @@ public:
     PGE::IO* operator->() const;
 
     PGE::IO* getInternal() const;
+
+    bool isTracking() const;
 };
 
 #endif // IO_H_INCLUDED

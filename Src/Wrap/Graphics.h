@@ -27,6 +27,8 @@ public:
     PGE::Graphics* operator->() const;
 
     PGE::Graphics* getInternal() const;
+
+    bool isTracking() const;
 };
 
 #endif // GRAPHICS_H_INCLUDED
