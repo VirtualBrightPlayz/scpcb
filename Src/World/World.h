@@ -9,6 +9,12 @@ class Camera;
 class Timing;
 class ShaderManager;
 
+enum class GameState {
+    Playing,
+    PauseMenu,
+    Console
+};
+
 class World {
 private:
     Graphics graphics;
@@ -21,6 +27,8 @@ private:
     Sprite poster;
 
     ShaderManager* shaderMngt;
+    
+    GameState currState;
 
     bool isRoadRollered;
 

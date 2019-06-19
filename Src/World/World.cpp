@@ -23,6 +23,8 @@ World::World() {
     poster = Sprite::create(graphics, shaderMngt->getSpriteShader(), "GFX/079pics/angery.jpg");
     poster.setPosition(0, 0.0f, 2.0f);
     poster.setRotation(0.5f);
+    
+    currState = GameState::PauseMenu;
 
     isRoadRollered = false;
 }

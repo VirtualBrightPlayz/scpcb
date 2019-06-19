@@ -12,10 +12,13 @@ class Sprite {
 private:
     static Mesh sharedMesh;
     static void createSpriteMesh(const Graphics& gfx);
+    
+    Shader shader;
+    PGE::Shader::Constant* modelMatrixValue;
+    PGE::Shader::Constant* spriteColorValue;
 
     Texture texture;
     Material material;
-    Shader shader;
     PGE::Color color;
 
     PGE::Vector3f position;
