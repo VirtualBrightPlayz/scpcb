@@ -114,6 +114,9 @@
     <ClInclude Include="..\Src\PlayerController\PlayerController.h">
       <Filter>Header Files\PlayerController</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\Utils\MathUtil.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SCPCB.rc">
@@ -182,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="..\Src\Wrap\ThreadManager.cpp">
       <Filter>Source Files\Wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Utils\MathUtil.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

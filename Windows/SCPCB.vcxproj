@@ -99,6 +99,7 @@
     <ClInclude Include="..\Src\PlayerController\PlayerController.h" />
     <ClInclude Include="..\Src\Utils\FileUtil.h" />
     <ClInclude Include="..\Src\Utils\INI.h" />
+    <ClInclude Include="..\Src\Utils\MathUtil.h" />
     <ClInclude Include="..\Src\Utils\TextMgmt.h" />
     <ClInclude Include="..\Src\World\ShaderManager.h" />
     <ClInclude Include="..\Src\World\Timing.h" />
@@ -127,6 +128,7 @@
     <ClCompile Include="..\Src\PlayerController\PlayerController.cpp" />
     <ClCompile Include="..\Src\Utils\FileUtil.cpp" />
     <ClCompile Include="..\Src\Utils\INI.cpp" />
+    <ClCompile Include="..\Src\Utils\MathUtil.cpp" />
     <ClCompile Include="..\Src\Utils\TextMgmt.cpp" />
     <ClCompile Include="..\Src\World\ShaderManager.cpp" />
     <ClCompile Include="..\Src\World\Timing.cpp" />
