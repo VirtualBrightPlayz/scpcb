@@ -62,3 +62,7 @@ PGE::ThreadManager* ThreadManager::operator->() const {
 PGE::ThreadManager* ThreadManager::getInternal() const {
     return internal;
 }
+
+bool ThreadManager::isTracking() const {
+    return internal != nullptr;
+}
