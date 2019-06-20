@@ -7,11 +7,11 @@ Sprite::Sprite() { }
 
 Sprite::Sprite(const Graphics& gfx, const Shader& shader, const Texture& tex) {
     if (!sharedMesh.isTracking()) { createSpriteMesh(gfx); }
-    
+
     this->shader = shader;
-    modelMatrixValue = shader->getVertexShaderConstant("worldMatrix");
+    modelMatrixValue = shader->getVertexShaderConstant("modelMatrix");
     spriteColorValue = shader->getFragmentShaderConstant("spriteColor");
-    
+
     texture = tex;
     material = Material::create(shader, tex);
     this->gfx = gfx;
@@ -79,10 +79,12 @@ void Sprite::createSpriteMesh(const Graphics& gfx) {
     sharedMesh->setGeometry(meshVerts, prims);
 }
 
-void Sprite::render() {
-    PGE::Matrix4x4f modelMat = PGE::Matrix4x4f::constructWorldMat(position, PGE::Vector3f(scale.x, scale.y, 1.0f), PGE::Vector3f(0.0f, 0.0f, rotation));
+void Sprite::update(float xCameraAngle, float yCameraAngle) {
+    modelMatrix = PGE::Matrix4x4f::constructWorldMat(position, PGE::Vector3f(scale.x, scale.y, 1.0f), PGE::Vector3f(0.f, 0.f, this->rotation));
+}
 
-    modelMatrixValue->setValue(modelMat);
+void Sprite::render() {
+    modelMatrixValue->setValue(modelMatrix);
     spriteColorValue->setValue(color);
 
     sharedMesh->setMaterial(this->material.getInternal());

@@ -112,6 +112,7 @@ void World::updatePlaying() {
     // Reset mouse to center.
     io->setMousePosition(PGE::Vector2i(centerX, centerY));
 
+    poster.update(camera->getXAngle(), camera->getYAngle());
     poster.setRotation((float)timing->getTotalElapsedTime());
 }
 

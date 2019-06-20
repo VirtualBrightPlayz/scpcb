@@ -62,3 +62,11 @@ const PGE::Matrix4x4f& Camera::getProjectionMatrix() const {
 const PGE::Matrix4x4f& Camera::getRotationMatrix() const {
     return rotation;
 }
+
+float Camera::getXAngle() const {
+    return xAngle;
+}
+
+float Camera::getYAngle() const {
+    return yAngle;
+}

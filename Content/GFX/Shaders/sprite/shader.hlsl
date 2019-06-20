@@ -4,7 +4,7 @@ SamplerState smp;
 cbuffer cbMatrices {
     matrix projectionMatrix;
     matrix viewMatrix;
-    matrix worldMatrix;
+    matrix modelMatrix;
 };
 
 cbuffer cbFragment {
@@ -28,7 +28,7 @@ struct PS_OUTPUT {
 PS_INPUT VS(VS_INPUT input) {
     PS_INPUT output = (PS_INPUT)0;
     output.position = float4(input.position.x, input.position.y, 0.0, 1.0);
-    output.position = mul(output.position,worldMatrix);
+    output.position = mul(output.position,modelMatrix);
     output.position = mul(output.position,viewMatrix);
     output.position = mul(output.position,projectionMatrix);
     output.texCoords = input.texCoords;

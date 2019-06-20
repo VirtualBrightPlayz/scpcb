@@ -24,6 +24,7 @@ private:
     PGE::Vector3f position;
     PGE::Vector2f scale;
     float rotation;
+    PGE::Matrix4x4f modelMatrix;
 
     Graphics gfx;
 
@@ -40,6 +41,8 @@ public:
     void setPosition(float x, float y, float z);
     void setRotation(float rad);
 
+    // No more bets.
+    void update(float xCameraAngle, float yCameraAngle);
     void render();
 };
 

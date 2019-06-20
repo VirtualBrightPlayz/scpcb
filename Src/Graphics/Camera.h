@@ -37,6 +37,9 @@ public:
     const PGE::Matrix4x4f& getViewMatrix() const;
     const PGE::Matrix4x4f& getProjectionMatrix() const;
     const PGE::Matrix4x4f& getRotationMatrix() const;
+    
+    float getXAngle() const;
+    float getYAngle() const;
 };
 
 #endif // Camera_H_INCLUDED
