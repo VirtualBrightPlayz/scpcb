@@ -16,7 +16,7 @@ Camera::Camera(const Graphics& gfx, float aspectRatio, float fov) : gfx(gfx) {
     yAngleLimit = 3.14f * 0.5f;
     tilt = 0.f;
 
-    float nearZ = 1.f;
+    float nearZ = 0.01f;
     float farZ = 25.f;
     this->fov = fov;
     projectionMatrix = PGE::Matrix4x4f::constructProjectionMat(fov, aspectRatio, nearZ, farZ);

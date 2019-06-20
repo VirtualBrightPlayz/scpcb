@@ -16,6 +16,8 @@ private:
     Shader shader;
     PGE::Shader::Constant* modelMatrixValue;
     PGE::Shader::Constant* spriteColorValue;
+    PGE::Shader::Constant* scaleValue;
+    PGE::Shader::Constant* rotationMatrixValue;
 
     Texture texture;
     Material material;
@@ -25,6 +27,8 @@ private:
     PGE::Vector2f scale;
     float rotation;
     PGE::Matrix4x4f modelMatrix;
+    // Stores the roll rotations of the sprite.
+    PGE::Matrix4x4f rotationMatrix;
 
     Graphics gfx;
 
@@ -42,7 +46,7 @@ public:
     void setRotation(float rad);
 
     // No more bets.
-    void update(float xCameraAngle, float yCameraAngle);
+    void update();
     void render();
 };
 

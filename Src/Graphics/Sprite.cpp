@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "Sprite.h"
 #include "../Wrap/Material.h"
 
@@ -11,6 +13,8 @@ Sprite::Sprite(const Graphics& gfx, const Shader& shader, const Texture& tex) {
     this->shader = shader;
     modelMatrixValue = shader->getVertexShaderConstant("modelMatrix");
     spriteColorValue = shader->getFragmentShaderConstant("spriteColor");
+    scaleValue = shader->getVertexShaderConstant("scale");
+    rotationMatrixValue = shader->getVertexShaderConstant("rotationMatrix");
 
     texture = tex;
     material = Material::create(shader, tex);
@@ -71,23 +75,31 @@ void Sprite::createSpriteMesh(const Graphics& gfx) {
     }
 
     std::vector<PGE::Primitive> prims;
-    //prims.push_back(PGE::Primitive(0, 1, 2));
-    //prims.push_back(PGE::Primitive(0, 3, 1));
-    prims.push_back(PGE::Primitive(1, 0, 2));
-    prims.push_back(PGE::Primitive(3, 0, 1));
+    prims.push_back(PGE::Primitive(0, 1, 2));
+    prims.push_back(PGE::Primitive(0, 3, 1));
+//    prims.push_back(PGE::Primitive(1, 0, 2));
+//    prims.push_back(PGE::Primitive(3, 0, 1));
 
     sharedMesh->setGeometry(meshVerts, prims);
 }
 
-void Sprite::update(float xCameraAngle, float yCameraAngle) {
-    modelMatrix = PGE::Matrix4x4f::constructWorldMat(position, PGE::Vector3f(scale.x, scale.y, 1.0f), PGE::Vector3f(0.f, 0.f, this->rotation));
+void Sprite::update() {
+    modelMatrix = PGE::Matrix4x4f::constructWorldMat(position, PGE::Vector3f::one, PGE::Vector3f::zero);
+    float sinRoll = sin(rotation);
+    float cosRoll = cos(rotation);
+    rotationMatrix = PGE::Matrix4x4f(cosRoll,-sinRoll,0.f,0.f,
+                                     sinRoll,cosRoll,0.f,0.f,
+                                     0.f,0.f,1.f,0.f,
+                                     0.f,0.f,0.f,1.f);
 }
 
 void Sprite::render() {
     modelMatrixValue->setValue(modelMatrix);
     spriteColorValue->setValue(color);
+    scaleValue->setValue(PGE::Vector3f(scale.x, scale.y, 1.f));
+    rotationMatrixValue->setValue(rotationMatrix);
 
-    sharedMesh->setMaterial(this->material.getInternal());
+    sharedMesh->setMaterial(material.getInternal());
 
     sharedMesh->render();
 }

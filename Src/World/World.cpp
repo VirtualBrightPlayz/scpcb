@@ -23,6 +23,7 @@ World::World() {
     poster = Sprite::create(graphics, shaderMngt->getSpriteShader(), "GFX/079pics/angery.jpg");
     poster.setPosition(0, 0.0f, 2.0f);
     poster.setRotation(0.5f);
+    poster.setScale(2.0f);
 
     setGameState(GameState::Playing);
 
@@ -112,7 +113,7 @@ void World::updatePlaying() {
     // Reset mouse to center.
     io->setMousePosition(PGE::Vector2i(centerX, centerY));
 
-    poster.update(camera->getXAngle(), camera->getYAngle());
+    poster.update();
     poster.setRotation((float)timing->getTotalElapsedTime());
 }
 
