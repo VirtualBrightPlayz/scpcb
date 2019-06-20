@@ -7,6 +7,7 @@
 class ShaderManager {
 private:
     Shader spriteShader;
+    PGE::Shader::Constant* spriteShaderView;
 
 public:
     ShaderManager(const Graphics& gfx, const Camera* cam);

@@ -27,10 +27,26 @@ private:
     Sprite poster;
 
     ShaderManager* shaderMngt;
-    
+
     GameState currState;
+    // Changes the game state and does any initialization for that state.
+    // This should be the only way to modify the current state.
+    void setGameState(GameState gs);
 
     bool isRoadRollered;
+
+    //-- Update/Draw code.
+
+    // Goes through the update phase of a single tick.
+    void runTick(float timeStep);
+
+    // Update code for GameState::Playing game state.
+    void updatePlaying();
+    // Draw code for GameState::Playing game state.
+    void drawPlaying();
+
+    // Goes through the draw phase.
+    void draw();
 
 public:
     World();
@@ -38,8 +54,6 @@ public:
 
     // Goes through the update/draw phrase of a single frame.
     bool run();
-    // Goes through the update phase of a single tick.
-    void runTick(float timeStep);
 };
 
 #endif // World_H_INCLUDED

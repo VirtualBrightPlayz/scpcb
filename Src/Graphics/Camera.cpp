@@ -40,9 +40,9 @@ void Camera::setTilt(float rad) {
     tilt = rad;
 }
 
-void Camera::addAngle(float xAngle, float yAngle) {
-    xAngle += xAngle;
-    yAngle -= yAngle;
+void Camera::addAngle(float x, float y) {
+    xAngle += x;
+    yAngle -= y;
     
     if (yAngle< -yAngleLimit) {
         yAngle = -yAngleLimit;
