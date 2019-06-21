@@ -12,7 +12,7 @@ class Sprite {
 private:
     static Mesh sharedMesh;
     static void createSpriteMesh(const Graphics& gfx);
-    
+
     Shader shader;
     PGE::Shader::Constant* modelMatrixValue;
     PGE::Shader::Constant* spriteColorValue;
@@ -41,9 +41,12 @@ public:
     static Sprite create(const Graphics& gfx, const Shader& shader, const PGE::String texPath);
 
     void setScale(float scale);
+
     void setPosition(const PGE::Vector3f& pos);
     void setPosition(float x, float y, float z);
+
     void setRotation(float rad);
+    void addRotation(float rad);
 
     // No more bets.
     void update();

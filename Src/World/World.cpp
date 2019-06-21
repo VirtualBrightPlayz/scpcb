@@ -5,6 +5,7 @@
 #include "World.h"
 #include "Timing.h"
 #include "ShaderManager.h"
+#include "../Menus/PauseMenu.h"
 
 World::World() {
     int width = 1280;
@@ -20,12 +21,13 @@ World::World() {
 
     shaderMngt = new ShaderManager(graphics, camera);
 
-    poster = Sprite::create(graphics, shaderMngt->getSpriteShader(), "GFX/079pics/angery.jpg");
+    poster = Sprite::create(graphics, shaderMngt->getSpriteShader(), "GFX/Map/Textures/dirtymetal.jpg");
     poster.setPosition(0, 0.0f, 2.0f);
     poster.setRotation(0.5f);
     poster.setScale(2.0f);
 
     setGameState(GameState::Playing);
+    pauseMenu = new PauseMenu();
 
     isRoadRollered = false;
 }
@@ -78,7 +80,11 @@ bool World::run() {
 void World::runTick(float timeStep) {
     switch (currState) {
         case GameState::Playing: {
-            updatePlaying();
+            updatePlaying(timeStep);
+        } break;
+            
+        case GameState::PauseMenu: {
+            pauseMenu->update();
         } break;
     }
 
@@ -86,16 +92,13 @@ void World::runTick(float timeStep) {
 }
 
 void World::draw() {
-    switch (currState) {
-        case GameState::Playing: {
-            drawPlaying();
-        } break;
-    }
+    drawPlaying();
+    pauseMenu->draw(currState);
 
     graphics->swap(false);
 }
 
-void World::updatePlaying() {
+void World::updatePlaying(float timeStep) {
     // TODO: Grab the game's current resolution from the Config class.
     int centerX = graphics->getWindow()->getWidth() / 2;
     int centerY = graphics->getWindow()->getHeight() / 2;
@@ -113,8 +116,8 @@ void World::updatePlaying() {
     // Reset mouse to center.
     io->setMousePosition(PGE::Vector2i(centerX, centerY));
 
+    poster.addRotation(5.f * timeStep);
     poster.update();
-    poster.setRotation((float)timing->getTotalElapsedTime());
 }
 
 void World::drawPlaying() {

@@ -21,6 +21,7 @@
 		191BDDBB22A8547E00270B9D /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 191BDDBA22A8547E00270B9D /* SDL2.framework */; };
 		191BDDBD22A854A900270B9D /* SDL2.framework in Copy Bundle Frameworks */ = {isa = PBXBuildFile; fileRef = 191BDDBA22A8547E00270B9D /* SDL2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		191BDDBF22A8551A00270B9D /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDBE22A8551A00270B9D /* Main.cpp */; };
+		19243C1622BC295C0057054D /* PauseMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19243C1522BC295C0057054D /* PauseMenu.cpp */; };
 		1927734122A85D500055EB30 /* Dummy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1927733F22A85D500055EB30 /* Dummy.txt */; };
 		1931B60522AEEFEA00A48B13 /* ShaderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1931B60422AEEFEA00A48B13 /* ShaderManager.cpp */; };
 		1934815722B9B9A60039F47E /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1934815622B9B9A60039F47E /* MathUtil.cpp */; };
@@ -89,6 +90,8 @@
 		191BDDB822A84F7700270B9D /* FileUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileUtil.cpp; sourceTree = "<group>"; };
 		191BDDBA22A8547E00270B9D /* SDL2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SDL2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		191BDDBE22A8551A00270B9D /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
+		19243C1422BC295C0057054D /* PauseMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PauseMenu.h; sourceTree = "<group>"; };
+		19243C1522BC295C0057054D /* PauseMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PauseMenu.cpp; sourceTree = "<group>"; };
 		1927733F22A85D500055EB30 /* Dummy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Dummy.txt; sourceTree = SOURCE_ROOT; };
 		1931B60322AEEFEA00A48B13 /* ShaderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderManager.h; sourceTree = "<group>"; };
 		1931B60422AEEFEA00A48B13 /* ShaderManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderManager.cpp; sourceTree = "<group>"; };
@@ -192,6 +195,7 @@
 				191BDDBE22A8551A00270B9D /* Main.cpp */,
 				191BDDA922A846EE00270B9D /* Collision */,
 				19F17EA622AD79860061F643 /* Graphics */,
+				19243C1222BC29430057054D /* Menus */,
 				191BDDAE22A846EE00270B9D /* PlayerController */,
 				19646FBD22A9FAA0005E027E /* World */,
 				1910375522A9A090005A1AA0 /* Wrap */,
@@ -251,6 +255,15 @@
 				191BDDB022A846EE00270B9D /* PlayerController.h */,
 			);
 			path = PlayerController;
+			sourceTree = "<group>";
+		};
+		19243C1222BC29430057054D /* Menus */ = {
+			isa = PBXGroup;
+			children = (
+				19243C1522BC295C0057054D /* PauseMenu.cpp */,
+				19243C1422BC295C0057054D /* PauseMenu.h */,
+			);
+			path = Menus;
 			sourceTree = "<group>";
 		};
 		194C2F6F2257872B00AB9902 /* Resources */ = {
@@ -391,6 +404,7 @@
 				19F17EA522AD78F20061F643 /* Shader.cpp in Sources */,
 				19646FC322A9FB6D005E027E /* Timing.cpp in Sources */,
 				191BDDB922A84F7700270B9D /* FileUtil.cpp in Sources */,
+				19243C1622BC295C0057054D /* PauseMenu.cpp in Sources */,
 				19F17E9E22AD71580061F643 /* Texture.cpp in Sources */,
 				191BDD9822A844FF00270B9D /* TextMgmt.cpp in Sources */,
 				191BDDB222A846EE00270B9D /* Collision.cpp in Sources */,

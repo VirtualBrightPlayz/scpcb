@@ -8,6 +8,7 @@
 class Camera;
 class Timing;
 class ShaderManager;
+class PauseMenu;
 
 enum class GameState {
     Playing,
@@ -33,6 +34,8 @@ private:
     // This should be the only way to modify the current state.
     void setGameState(GameState gs);
 
+    PauseMenu* pauseMenu;
+
     bool isRoadRollered;
 
     //-- Update/Draw code.
@@ -41,7 +44,7 @@ private:
     void runTick(float timeStep);
 
     // Update code for GameState::Playing game state.
-    void updatePlaying();
+    void updatePlaying(float timeStep);
     // Draw code for GameState::Playing game state.
     void drawPlaying();
 

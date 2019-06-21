@@ -52,6 +52,10 @@ void Sprite::setRotation(float rad) {
     rotation = rad;
 }
 
+void Sprite::addRotation(float rad) {
+    rotation += rad;
+}
+
 void Sprite::createSpriteMesh(const Graphics& gfx) {
     sharedMesh = Mesh::create(gfx, PGE::Primitive::TYPE::TRIANGLE);
 
