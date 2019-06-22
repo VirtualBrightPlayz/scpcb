@@ -5,8 +5,6 @@
 #include "../Collision/Collision.h"
 #include "../Collision/CollisionMesh.h"
 
-namespace CBN {
-
 class PlayerController {
     public:
         PlayerController(float r,float camHeight);
@@ -58,7 +56,5 @@ class PlayerController {
 
 const PlayerController::INPUT operator&(const PlayerController::INPUT& a,const PlayerController::INPUT& b);
 const PlayerController::INPUT operator|(const PlayerController::INPUT& a,const PlayerController::INPUT& b);
-
-}
 
 #endif

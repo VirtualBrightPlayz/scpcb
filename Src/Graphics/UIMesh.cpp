@@ -1,16 +1,39 @@
 #include "UIMesh.h"
+#include "../Save/Config.h"
 
 Shader UIMesh::shader;
 PGE::Vector2f UIMesh::defaultTexCoords[4];
 
-Image::Image(int x, int y, int width, int height, UIMesh* mesh) : x(x), y(y), width(width), height(height), alignment(Alignment::CenterXY), mesh(mesh) { }
+Image::Image(float x, float y, float width, float height, UIMesh* mesh) : x(x), y(y), width(width), height(height), alignment(Alignment::CenterXY), mesh(mesh) { }
 
 Image::~Image() {
     mesh->removeSlice(this);
 }
 
+void Image::setAlignment(Alignment align) {
+    alignment = align;
+}
+
 void Image::fillVertexPositions(PGE::Vector2f pos[]) const {
-    // TODO:
+    float trueX = x;
+    float trueY = y;
+
+    if ((alignment & Alignment::Left) != Alignment::CenterXY) {
+        trueX += -50.f * config.getAspectRatio();
+    }
+
+    if ((alignment & Alignment::Top) != Alignment::CenterXY) {
+        trueY += -50.f;
+    }
+    
+    if ((alignment & Alignment::Bottom) != Alignment::CenterXY){
+        trueY += 50.f;
+    }
+
+    pos[0] = PGE::Vector2f(trueX, trueY);
+    pos[1] = PGE::Vector2f(trueX + width, trueY + height);
+    pos[2] = PGE::Vector2f(trueX, trueY + height);
+    pos[3] = PGE::Vector2f(trueX + width, trueY);
 }
 
 void UIMesh::initialize(const Shader& shd) {
@@ -22,6 +45,8 @@ void UIMesh::initialize(const Shader& shd) {
     defaultTexCoords[3] = PGE::Vector2f(1.0f, 1.0f);
 }
 
+UIMesh::UIMesh() { }
+
 UIMesh::UIMesh(const Graphics& gfx, const Texture& tex, bool tiles) {
     mesh = Mesh::create(gfx, PGE::Primitive::TYPE::TRIANGLE);
     material = Material::create(shader, tex);
@@ -31,7 +56,7 @@ UIMesh::UIMesh(const Graphics& gfx, const Texture& tex, bool tiles) {
 
 UIMesh::UIMesh(const Graphics& gfx, const PGE::String& path, bool tiles) : UIMesh(gfx, Texture::load(gfx, path), tiles) { }
 
-Image* UIMesh::createSlice(int x, int y, int width, int height) {
+Image* UIMesh::createSlice(float x, float y, float width, float height) {
     slices.push_back(Image(x, y, width, height, this));
     return &slices.back();
 }
@@ -57,9 +82,16 @@ void UIMesh::bake() const {
 
         PGE::Vector2f texCoords[4];
         if (tiled) {
-            for (int i = 0; i < 4; i++) {
-                texCoords[i] = position[i];
-            }
+            // Texture coordinates are relative to the bottom left while our positioning is top left.
+            // So we need to flip it vertically.
+
+            // Also lower the scale from 50 to 3 so there's less frequent tiling.
+            float screenToCoordsScale = 2.f / 50.f;
+
+            texCoords[0] = position[0].multiply(screenToCoordsScale);
+            texCoords[1] = position[1].multiply(screenToCoordsScale);
+            texCoords[2] = position[2].multiply(screenToCoordsScale);
+            texCoords[3] = position[3].multiply(screenToCoordsScale);
         } else {
             for (int i = 0; i < 4; i++) {
                 texCoords[i] = defaultTexCoords[i];
@@ -75,11 +107,23 @@ void UIMesh::bake() const {
             verts.push_back(vertices[i]);
         }
 
-        prims.push_back(PGE::Primitive(quadIndex + 0, quadIndex + 1, quadIndex + 2));
-        prims.push_back(PGE::Primitive(quadIndex + 0, quadIndex + 3, quadIndex + 1));
-//    prims.push_back(PGE::Primitive(quadIndex + 1, quadIndex + 0, quadIndex + 2));
-//    prims.push_back(PGE::Primitive(quadIndex + 3, quadIndex + 0, quadIndex + 1));
+//        prims.push_back(PGE::Primitive(quadIndex + 0, quadIndex + 1, quadIndex + 2));
+//        prims.push_back(PGE::Primitive(quadIndex + 0, quadIndex + 3, quadIndex + 1));
+        prims.push_back(PGE::Primitive(quadIndex + 1, quadIndex + 0, quadIndex + 2));
+        prims.push_back(PGE::Primitive(quadIndex + 3, quadIndex + 0, quadIndex + 1));
     }
 
     mesh->setGeometry(verts, prims);
+}
+
+void UIMesh::render() const {
+    mesh->render();
+}
+
+const Image::Alignment operator&(const Image::Alignment& a, const Image::Alignment& b) {
+    return (Image::Alignment)((int)a & (int)b);
+}
+
+const Image::Alignment operator|(const Image::Alignment& a, const Image::Alignment& b) {
+    return (Image::Alignment)((int)a | (int)b);
 }

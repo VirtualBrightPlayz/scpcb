@@ -29,8 +29,6 @@ Permission is granted to anyone to use this software for any purpose, including 
 #include <Math/Rectangle.h>
 #include <Math/Vector.h>
 
-namespace CBN {
-
 struct Collision {
     bool hit;
     PGE::Line3f line;
@@ -52,7 +50,5 @@ struct Collision {
 
     //void boxCollide(const PGE::Line3f& src_line,float src_radius,const PGE::AABBox& box);
 };
-
-}
 
 #endif

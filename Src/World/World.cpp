@@ -6,7 +6,6 @@
 #include "Timing.h"
 #include "ShaderManager.h"
 #include "../Menus/PauseMenu.h"
-#include "../Graphics/UIMesh.h"
 #include "../Save/Config.h"
 
 World::World() {
@@ -33,6 +32,10 @@ World::World() {
     poster.setPosition(0.f, 0.f, 2.f);
     poster.setRotation(0.5f);
     poster.setScale(2.f);
+    
+    menuwhite = UIMesh(graphics, "GFX/Menu/menuwhite.jpg", true);
+    fake = menuwhite.createSlice(20.f, -20.f, 20.f, 20.f);
+    fake->setAlignment(Image::Alignment::Top | Image::Alignment::Bottom);
 
     setGameState(GameState::Playing);
     pauseMenu = new PauseMenu();
@@ -126,8 +129,11 @@ void World::updatePlaying(float timeStep) {
 
     poster.addRotation(5.f * timeStep);
     poster.update();
+    
+    menuwhite.bake();
 }
 
 void World::drawPlaying() {
-    poster.render();
+    menuwhite.render();
+//    poster.render();
 }

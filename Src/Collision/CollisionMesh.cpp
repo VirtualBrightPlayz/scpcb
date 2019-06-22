@@ -1,10 +1,8 @@
 #include "CollisionMesh.h"
 #include <Math/AABBox.h>
 #include <Math/Plane.h>
-//#include <SDL.h>
 
 using namespace PGE;
-using namespace CBN;
 
 CollisionMesh::CollisionMesh(std::vector<Vector3f> verts,std::vector<int> inds) {
     vertices = verts; indices = inds;

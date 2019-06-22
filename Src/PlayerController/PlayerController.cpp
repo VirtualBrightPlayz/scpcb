@@ -4,7 +4,6 @@
 #include "PlayerController.h"
 
 using namespace PGE;
-using namespace CBN;
 
 PlayerController::PlayerController(float r,float camHeight) {
     radius = r; cameraHeight = camHeight;
@@ -39,7 +38,7 @@ void PlayerController::update(float angle,INPUT input) {
             targetSpeed = SPRINT_SPEED_MAX*getClampedStamina() + WALK_SPEED_MAX*(1.f-getClampedStamina());
         }
         currWalkSpeed = currWalkSpeed*WALK_SPEED_SMOOTHING_FACTOR + targetSpeed*(1.f-WALK_SPEED_SMOOTHING_FACTOR);
-        
+
         Vector2f targetDir = Vector2f::zero;
         if ((input&INPUT::FORWARD) != INPUT::NONE) {
             targetDir = targetDir.add(Vector2f(sinAngle,cosAngle));
@@ -181,10 +180,10 @@ void PlayerController::walk(Vector2f dir) {
     }
 }
 
-const PlayerController::INPUT CBN::operator&(const PlayerController::INPUT& a,const PlayerController::INPUT& b) {
+const PlayerController::INPUT operator&(const PlayerController::INPUT& a,const PlayerController::INPUT& b) {
     return (PlayerController::INPUT)((int)a & (int)b);
 }
 
-const PlayerController::INPUT CBN::operator|(const PlayerController::INPUT& a,const PlayerController::INPUT& b) {
+const PlayerController::INPUT operator|(const PlayerController::INPUT& a,const PlayerController::INPUT& b) {
     return (PlayerController::INPUT)((int)a | (int)b);
 }

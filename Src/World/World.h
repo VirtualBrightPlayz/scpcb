@@ -4,6 +4,7 @@
 #include "../Wrap/Graphics.h"
 #include "../Wrap/IO.h"
 #include "../Graphics/Sprite.h"
+#include "../Graphics/UIMesh.h"
 
 class Camera;
 class Timing;
@@ -27,6 +28,8 @@ private:
 
     // TODO: Remove, this is a test.
     Sprite poster;
+    UIMesh menuwhite;
+    Image* fake;
 
     ShaderManager* shaderMngt;
 

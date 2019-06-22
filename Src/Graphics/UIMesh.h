@@ -21,18 +21,18 @@ public:
 private:
     UIMesh* mesh;
 
-    int x;
-    int y;
-    int width;
-    int height;
+    float x;
+    float y;
+    float width;
+    float height;
+
     Alignment alignment;
 
-    // Whether the X coordinate of the slice scales with the aspect ratio.
-    bool aspectRatioScale;
-
 public:
-    Image(int x, int y, int width, int height, UIMesh* mesh);
+    Image(float x, float y, float width, float height, UIMesh* mesh);
     ~Image();
+    
+    void setAlignment(Alignment align);
 
     // Fills the passed array of vectors with its quad positions.
     void fillVertexPositions(PGE::Vector2f pos[]) const;
@@ -54,16 +54,20 @@ private:
 public:
     static void initialize(const Shader& shd);
 
+    UIMesh();
     UIMesh(const Graphics& gfx, const Texture& tex, bool tiles);
     UIMesh(const Graphics& gfx, const PGE::String& path, bool tiles);
 
     // Generates a new quad for the mesh.
-    Image* createSlice(int x, int y, int width, int height);
+    Image* createSlice(float x, float y, float width, float height);
     void removeSlice(const Image* slice);
 
     // Uploads the vertex data.
     void bake() const;
     void render() const;
 };
+
+const Image::Alignment operator&(const Image::Alignment& a, const Image::Alignment& b);
+const Image::Alignment operator|(const Image::Alignment& a, const Image::Alignment& b);
 
 #endif // UIMESH_H_INCLUDED

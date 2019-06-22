@@ -5,8 +5,6 @@
 #include <Math/Vector.h>
 #include "Collision.h"
 
-namespace CBN {
-
 class CollisionMesh {
     public:
         CollisionMesh(std::vector<PGE::Vector3f> verts,std::vector<int> inds);
@@ -16,7 +14,5 @@ class CollisionMesh {
         std::vector<PGE::Vector3f> vertices;
         std::vector<int> indices;
 };
-
-}
 
 #endif
