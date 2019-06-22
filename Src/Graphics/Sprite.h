@@ -11,9 +11,9 @@
 class Sprite {
 private:
     static Mesh sharedMesh;
+    static Shader shader;
     static void createSpriteMesh(const Graphics& gfx);
 
-    Shader shader;
     PGE::Shader::Constant* modelMatrixValue;
     PGE::Shader::Constant* spriteColorValue;
     PGE::Shader::Constant* scaleValue;
@@ -32,13 +32,15 @@ private:
 
     Graphics gfx;
 
-    Sprite(const Graphics& gfx, const Shader& shader, const Texture& tex);
+    Sprite(const Graphics& gfx, const Texture& tex);
 
 public:
+    static void initialize(const Graphics& gfx, const Shader& shd);
+
     Sprite();
 
-    static Sprite create(const Graphics& gfx, const Shader& shader, const Texture& tex);
-    static Sprite create(const Graphics& gfx, const Shader& shader, const PGE::String texPath);
+    static Sprite create(const Graphics& gfx, const Texture& tex);
+    static Sprite create(const Graphics& gfx, const PGE::String texPath);
 
     void setScale(float scale);
 

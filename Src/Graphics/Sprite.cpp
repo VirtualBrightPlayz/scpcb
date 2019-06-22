@@ -4,13 +4,16 @@
 #include "../Wrap/Material.h"
 
 Mesh Sprite::sharedMesh;
+Shader Sprite::shader;
+
+void Sprite::initialize(const Graphics& gfx, const Shader& shd) {
+    shader = shd;
+    createSpriteMesh(gfx);
+}
 
 Sprite::Sprite() { }
 
-Sprite::Sprite(const Graphics& gfx, const Shader& shader, const Texture& tex) {
-    if (!sharedMesh.isTracking()) { createSpriteMesh(gfx); }
-
-    this->shader = shader;
+Sprite::Sprite(const Graphics& gfx, const Texture& tex) {
     modelMatrixValue = shader->getVertexShaderConstant("modelMatrix");
     spriteColorValue = shader->getFragmentShaderConstant("spriteColor");
     scaleValue = shader->getVertexShaderConstant("scale");
@@ -26,13 +29,13 @@ Sprite::Sprite(const Graphics& gfx, const Shader& shader, const Texture& tex) {
     color = PGE::Color();
 }
 
-Sprite Sprite::create(const Graphics& gfx, const Shader& shader, const Texture& tex) {
-    return Sprite(gfx, shader, tex);
+Sprite Sprite::create(const Graphics& gfx, const Texture& tex) {
+    return Sprite(gfx, tex);
 }
 
-Sprite Sprite::create(const Graphics& gfx, const Shader& shader, const PGE::String texPath) {
+Sprite Sprite::create(const Graphics& gfx, const PGE::String texPath) {
     Texture tex = Texture::load(gfx, texPath);
-    return Sprite(gfx, shader, tex);
+    return Sprite(gfx, tex);
 }
 
 void Sprite::setScale(float scale) {

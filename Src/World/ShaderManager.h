@@ -16,7 +16,8 @@ public:
 
     void update(const Camera* cam);
 
-    const Shader& getSpriteShader();
+    const Shader& getSpriteShader() const;
+    const Shader& getUIShader() const;
 };
 
 #endif // ShaderManager_H_INCLUDED

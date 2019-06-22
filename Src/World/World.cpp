@@ -6,25 +6,33 @@
 #include "Timing.h"
 #include "ShaderManager.h"
 #include "../Menus/PauseMenu.h"
+#include "../Graphics/UIMesh.h"
+#include "../Save/Config.h"
 
 World::World() {
     int width = 1280;
     int height = 720;
     int retinaUpscale = 2;
 
+    Config::initialize();
+    config.setResolution(width * retinaUpscale, height * retinaUpscale);
+
     graphics = Graphics::create("SCP - Containment Breach", width, height, false);
     graphics->setViewport(PGE::Rectanglei(0, 0, width * retinaUpscale, height * retinaUpscale));
     io = IO::create(graphics->getWindow());
-    camera = new Camera(graphics, (float)graphics->getWindow()->getWidth() / graphics->getWindow()->getHeight());
+    camera = new Camera(graphics, config.getAspectRatio());
 
     timing = new Timing(60);
 
     shaderMngt = new ShaderManager(graphics, camera);
 
-    poster = Sprite::create(graphics, shaderMngt->getSpriteShader(), "GFX/Map/Textures/dirtymetal.jpg");
-    poster.setPosition(0, 0.0f, 2.0f);
+    Sprite::initialize(graphics, shaderMngt->getSpriteShader());
+    UIMesh::initialize(shaderMngt->getUIShader());
+
+    poster = Sprite::create(graphics, "GFX/Map/Textures/dirtymetal.jpg");
+    poster.setPosition(0.f, 0.f, 2.f);
     poster.setRotation(0.5f);
-    poster.setScale(2.0f);
+    poster.setScale(2.f);
 
     setGameState(GameState::Playing);
     pauseMenu = new PauseMenu();
