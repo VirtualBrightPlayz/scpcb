@@ -1,5 +1,7 @@
 #include "Config.h"
 
+Config config = Config();
+
 void Config::initialize() {
     // TODO: Find and detect config file, otherwise use the generated default.
 }

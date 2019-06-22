@@ -32,6 +32,8 @@
 		19646FC322A9FB6D005E027E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19646FC222A9FB6D005E027E /* Timing.cpp */; };
 		19646FC822AA082D005E027E /* IO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19646FC722AA082D005E027E /* IO.cpp */; };
 		1971577A22BEB776003AF33E /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1971577922BEB776003AF33E /* Config.cpp */; };
+		1971577C22BEB9CB003AF33E /* AppDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = 1971577B22BEB9CB003AF33E /* AppDelegate.h */; };
+		1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1971577D22BEB9EC003AF33E /* AppDelegate.m */; };
 		19C1965D22BD532F00332C8E /* UIMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19C1965C22BD532F00332C8E /* UIMesh.cpp */; };
 		19E258DF22AED859002933BF /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19E258DE22AED859002933BF /* Material.cpp */; };
 		19F17E9E22AD71580061F643 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17E9D22AD71580061F643 /* Texture.cpp */; };
@@ -108,6 +110,8 @@
 		19646FC722AA082D005E027E /* IO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IO.cpp; sourceTree = "<group>"; };
 		1971577822BEB776003AF33E /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		1971577922BEB776003AF33E /* Config.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
+		1971577B22BEB9CB003AF33E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		1971577D22BEB9EC003AF33E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		19C1965B22BD532F00332C8E /* UIMesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIMesh.h; sourceTree = "<group>"; };
 		19C1965C22BD532F00332C8E /* UIMesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIMesh.cpp; sourceTree = "<group>"; };
 		19E258DD22AED859002933BF /* Material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
@@ -161,6 +165,8 @@
 		190E9C2A2257866300A59243 /* SCPCB */ = {
 			isa = PBXGroup;
 			children = (
+				1971577D22BEB9EC003AF33E /* AppDelegate.m */,
+				1971577B22BEB9CB003AF33E /* AppDelegate.h */,
 				190E9C332257866500A59243 /* Assets.xcassets */,
 				190E9C352257866500A59243 /* Main.storyboard */,
 				190E9C382257866500A59243 /* Info.plist */,
@@ -426,7 +432,9 @@
 				1934815722B9B9A60039F47E /* MathUtil.cpp in Sources */,
 				19F17EAC22AD82940061F643 /* Camera.cpp in Sources */,
 				19646FC022A9FAB4005E027E /* World.cpp in Sources */,
+				1971577C22BEB9CB003AF33E /* AppDelegate.h in Sources */,
 				191BDDBF22A8551A00270B9D /* Main.cpp in Sources */,
+				1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */,
 				1910375C22A9A3B5005A1AA0 /* Graphics.cpp in Sources */,
 				191BDDB122A846EE00270B9D /* CollisionMesh.cpp in Sources */,
 			);

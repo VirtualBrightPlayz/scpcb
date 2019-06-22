@@ -24,6 +24,8 @@ public:
 
     void setResolution(int width, int height);
     float getAspectRatio() const;
-} config;
+};
+
+extern Config config;
 
 #endif // CONFIG_H_INCLUDED
