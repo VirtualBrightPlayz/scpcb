@@ -9,6 +9,8 @@ private:
     Shader spriteShader;
     PGE::Shader::Constant* spriteShaderView;
 
+    Shader uiShader;
+
 public:
     ShaderManager(const Graphics& gfx, const Camera* cam);
 

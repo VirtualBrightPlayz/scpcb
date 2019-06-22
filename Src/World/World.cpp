@@ -82,7 +82,7 @@ void World::runTick(float timeStep) {
         case GameState::Playing: {
             updatePlaying(timeStep);
         } break;
-            
+
         case GameState::PauseMenu: {
             pauseMenu->update();
         } break;

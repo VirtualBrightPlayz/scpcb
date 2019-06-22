@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		190E9C2D2257866300A59243 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 190E9C2C2257866300A59243 /* AppDelegate.m */; };
 		190E9C342257866500A59243 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 190E9C332257866500A59243 /* Assets.xcassets */; };
 		190E9C372257866500A59243 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 190E9C352257866500A59243 /* Main.storyboard */; };
 		1910375C22A9A3B5005A1AA0 /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1910375B22A9A3B5005A1AA0 /* Graphics.cpp */; };
@@ -32,6 +31,7 @@
 		19646FC022A9FAB4005E027E /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19646FBF22A9FAB4005E027E /* World.cpp */; };
 		19646FC322A9FB6D005E027E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19646FC222A9FB6D005E027E /* Timing.cpp */; };
 		19646FC822AA082D005E027E /* IO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19646FC722AA082D005E027E /* IO.cpp */; };
+		19C1965D22BD532F00332C8E /* UIMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19C1965C22BD532F00332C8E /* UIMesh.cpp */; };
 		19E258DF22AED859002933BF /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19E258DE22AED859002933BF /* Material.cpp */; };
 		19F17E9E22AD71580061F643 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17E9D22AD71580061F643 /* Texture.cpp */; };
 		19F17EA222AD73510061F643 /* ThreadManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EA122AD73510061F643 /* ThreadManager.cpp */; };
@@ -67,8 +67,6 @@
 
 /* Begin PBXFileReference section */
 		190E9C282257866300A59243 /* SCPCB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SCPCB.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		190E9C2B2257866300A59243 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		190E9C2C2257866300A59243 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		190E9C332257866500A59243 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		190E9C362257866500A59243 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		190E9C382257866500A59243 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -107,6 +105,8 @@
 		19646FC222A9FB6D005E027E /* Timing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Timing.cpp; sourceTree = "<group>"; };
 		19646FC622AA082D005E027E /* IO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IO.h; sourceTree = "<group>"; };
 		19646FC722AA082D005E027E /* IO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IO.cpp; sourceTree = "<group>"; };
+		19C1965B22BD532F00332C8E /* UIMesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIMesh.h; sourceTree = "<group>"; };
+		19C1965C22BD532F00332C8E /* UIMesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIMesh.cpp; sourceTree = "<group>"; };
 		19E258DD22AED859002933BF /* Material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
 		19E258DE22AED859002933BF /* Material.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
 		19F17E9C22AD71580061F643 /* Texture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
@@ -158,8 +158,6 @@
 		190E9C2A2257866300A59243 /* SCPCB */ = {
 			isa = PBXGroup;
 			children = (
-				190E9C2B2257866300A59243 /* AppDelegate.h */,
-				190E9C2C2257866300A59243 /* AppDelegate.m */,
 				190E9C332257866500A59243 /* Assets.xcassets */,
 				190E9C352257866500A59243 /* Main.storyboard */,
 				190E9C382257866500A59243 /* Info.plist */,
@@ -298,6 +296,8 @@
 				19F17EAA22AD82940061F643 /* Camera.h */,
 				19F17EA822AD79A00061F643 /* Sprite.cpp */,
 				19F17EA722AD79A00061F643 /* Sprite.h */,
+				19C1965C22BD532F00332C8E /* UIMesh.cpp */,
+				19C1965B22BD532F00332C8E /* UIMesh.h */,
 			);
 			path = Graphics;
 			sourceTree = "<group>";
@@ -394,10 +394,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1931B60522AEEFEA00A48B13 /* ShaderManager.cpp in Sources */,
+				19C1965D22BD532F00332C8E /* UIMesh.cpp in Sources */,
 				19E258DF22AED859002933BF /* Material.cpp in Sources */,
 				19F17EAF22AD90830061F643 /* Mesh.cpp in Sources */,
 				191BDDB622A846F600270B9D /* INI.cpp in Sources */,
-				190E9C2D2257866300A59243 /* AppDelegate.m in Sources */,
 				19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */,
 				191BDDB322A846EE00270B9D /* PlayerController.cpp in Sources */,
 				19F17EA222AD73510061F643 /* ThreadManager.cpp in Sources */,

@@ -6,7 +6,7 @@
 class Timing {
 private:
     // The maximum amount of time the accumulator can store.
-    const double MAX_ACCUMULATED_SECONDS = 3.0f;
+    const double MAX_ACCUMULATED_SECONDS = 3.0;
 
     double timeStep;
     double accumulatedSeconds;

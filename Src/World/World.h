@@ -12,6 +12,7 @@ class PauseMenu;
 
 enum class GameState {
     Playing,
+    Inventory,
     PauseMenu,
     Console
 };

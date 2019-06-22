@@ -5,6 +5,10 @@ ShaderManager::ShaderManager(const Graphics& gfx, const Camera* cam) {
     PGE::Shader::Constant* projMatrix = spriteShader->getVertexShaderConstant("projectionMatrix");
     projMatrix->setValue(cam->getProjectionMatrix());
     spriteShaderView = spriteShader->getVertexShaderConstant("viewMatrix");
+
+    uiShader = Shader::load(gfx, "GFX/Shaders/ui/");
+    PGE::Shader::Constant* uiShaderProjection = uiShader->getVertexShaderConstant("projectionMatrix");
+    projMatrix->setValue(PGE::Matrix4x4f::constructOrtho2DMat(-50.f, 50.f, 50.f, -50.f));
 }
 
 void ShaderManager::update(const Camera* cam) {
