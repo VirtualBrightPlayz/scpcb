@@ -100,7 +100,7 @@ void Sprite::update() {
                                      0.f,0.f,0.f,1.f);
 }
 
-void Sprite::render() {
+void Sprite::render() const {
     modelMatrixValue->setValue(modelMatrix);
     spriteColorValue->setValue(color);
     scaleValue->setValue(PGE::Vector3f(scale.x, scale.y, 1.f));

@@ -52,7 +52,7 @@ public:
 
     // No more bets.
     void update();
-    void render();
+    void render() const;
 };
 
 #endif // SPRITE_H_INCLUDED

@@ -17,6 +17,14 @@ void Config::setResolution(int width, int height) {
     aspectRatio = (float)width / height;
 }
 
+int Config::getWidth() const {
+    return width;
+}
+
+int Config::getHeight() const {
+    return height;
+}
+
 float Config::getAspectRatio() const {
     return aspectRatio;
 }

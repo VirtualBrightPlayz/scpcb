@@ -7,6 +7,7 @@
 #include "ShaderManager.h"
 #include "../Menus/PauseMenu.h"
 #include "../Save/Config.h"
+#include "../GUI/GUI.h"
 
 World::World() {
     int width = 1280;
@@ -32,10 +33,10 @@ World::World() {
     poster.setPosition(0.f, 0.f, 2.f);
     poster.setRotation(0.5f);
     poster.setScale(2.f);
-    
+
     menuwhite = UIMesh(graphics, "GFX/Menu/menuwhite.jpg", true);
     fake = menuwhite.createSlice(20.f, -20.f, 20.f, 20.f);
-    fake->setAlignment(Image::Alignment::Top | Image::Alignment::Bottom);
+    fake->setAlignment(Alignment::Top | Alignment::Bottom);
 
     setGameState(GameState::Playing);
     pauseMenu = new PauseMenu();
@@ -54,8 +55,7 @@ void World::setGameState(GameState gs) {
 
     switch (currState) {
         case GameState::Playing: {
-            // TODO: Grab the game's current resolution from the Config class.
-            io->setMousePosition(PGE::Vector2i(graphics->getWindow()->getWidth() / 2, graphics->getWindow()->getHeight() / 2));
+            io->setMousePosition(PGE::Vector2i(config.getWidth() / 2, config.getHeight() / 2));
         } break;
     }
 
@@ -89,6 +89,16 @@ bool World::run() {
 }
 
 void World::runTick(float timeStep) {
+    // Get mouse position and convert it to screen coordinates.
+
+    // Convert it to [0, 100].
+    PGE::Vector2f scale = PGE::Vector2f(100.f / config.getWidth(), 100.f / config.getWidth());
+    PGE::Vector2f mousePosition = PGE::Vector2f(io->getMousePosition().x * scale.x, io->getMousePosition().y * scale.y);
+
+    // Subtract 50 to bring it inline with the [-50, 50] screen coordinates.
+    mousePosition.x -= 50.f;
+    mousePosition.y -= 50.f;
+
     switch (currState) {
         case GameState::Playing: {
             updatePlaying(timeStep);
@@ -100,6 +110,8 @@ void World::runTick(float timeStep) {
     }
 
     shaderMngt->update(camera);
+
+    GUI::reset();
 }
 
 void World::draw() {
@@ -110,9 +122,8 @@ void World::draw() {
 }
 
 void World::updatePlaying(float timeStep) {
-    // TODO: Grab the game's current resolution from the Config class.
-    int centerX = graphics->getWindow()->getWidth() / 2;
-    int centerY = graphics->getWindow()->getHeight() / 2;
+    int centerX = config.getWidth() / 2;
+    int centerY = config.getHeight() / 2;
 
     // TODO: Sensitivity from Config class.
     float mouseXDiff = (float)(io->getMousePosition().x - centerX) / 300.f;
@@ -129,7 +140,7 @@ void World::updatePlaying(float timeStep) {
 
     poster.addRotation(5.f * timeStep);
     poster.update();
-    
+
     menuwhite.bake();
 }
 

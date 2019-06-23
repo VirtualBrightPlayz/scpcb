@@ -25,7 +25,7 @@ void Image::fillVertexPositions(PGE::Vector2f pos[]) const {
     if ((alignment & Alignment::Top) != Alignment::CenterXY) {
         trueY += -50.f;
     }
-    
+
     if ((alignment & Alignment::Bottom) != Alignment::CenterXY){
         trueY += 50.f;
     }
@@ -120,10 +120,10 @@ void UIMesh::render() const {
     mesh->render();
 }
 
-const Image::Alignment operator&(const Image::Alignment& a, const Image::Alignment& b) {
-    return (Image::Alignment)((int)a & (int)b);
+const Alignment operator&(const Alignment& a, const Alignment& b) {
+    return (Alignment)((int)a & (int)b);
 }
 
-const Image::Alignment operator|(const Image::Alignment& a, const Image::Alignment& b) {
-    return (Image::Alignment)((int)a | (int)b);
+const Alignment operator|(const Alignment& a, const Alignment& b) {
+    return (Alignment)((int)a | (int)b);
 }

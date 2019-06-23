@@ -23,6 +23,8 @@ public:
     Config();
 
     void setResolution(int width, int height);
+    int getWidth() const;
+    int getHeight() const;
     float getAspectRatio() const;
 };
 

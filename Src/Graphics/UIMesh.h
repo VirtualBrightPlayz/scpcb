@@ -8,16 +8,15 @@
 
 class UIMesh;
 
+enum class Alignment {
+    CenterXY = 0x0,
+    Left = 0x1,
+    Top = 0x2,
+    Bottom = 0x4
+};
+
 // Creates and stores the information relating to a piece of a UIMesh.
 class Image {
-public:
-    enum class Alignment {
-        CenterXY = 0x0,
-        Left = 0x1,
-        Top = 0x2,
-        Bottom = 0x4
-    };
-
 private:
     UIMesh* mesh;
 
@@ -31,7 +30,7 @@ private:
 public:
     Image(float x, float y, float width, float height, UIMesh* mesh);
     ~Image();
-    
+
     void setAlignment(Alignment align);
 
     // Fills the passed array of vectors with its quad positions.
@@ -67,7 +66,7 @@ public:
     void render() const;
 };
 
-const Image::Alignment operator&(const Image::Alignment& a, const Image::Alignment& b);
-const Image::Alignment operator|(const Image::Alignment& a, const Image::Alignment& b);
+const Alignment operator&(const Alignment& a, const Alignment& b);
+const Alignment operator|(const Alignment& a, const Alignment& b);
 
 #endif // UIMESH_H_INCLUDED
