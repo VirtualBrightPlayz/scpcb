@@ -16,7 +16,7 @@ World::World() {
     int height = 720;
     int retinaUpscale = 2;
 
-    Config::initialize();
+    Config::initialize("options.ini");
     config.setResolution(width * retinaUpscale, height * retinaUpscale);
 
     graphics = Graphics::create("SCP - Containment Breach", width, height, false);
@@ -49,6 +49,12 @@ World::World() {
 }
 
 World::~World() {
+    KeyBinds::cleanup();
+    Binding::cleanup();
+    UIMesh::cleanup();
+    Sprite::cleanup();
+    Config::cleanup();
+
     delete camera;
     delete timing;
     delete shaderMngt;

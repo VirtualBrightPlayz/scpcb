@@ -50,6 +50,10 @@ void UIMesh::initialize(const Shader& shd) {
     defaultTexCoords[3] = PGE::Vector2f(1.0f, 1.0f);
 }
 
+void UIMesh::cleanup() {
+    shader = Shader();
+}
+
 UIMesh::UIMesh() { }
 
 UIMesh::UIMesh(const Graphics& gfx, const Texture& tex, bool tiles) {

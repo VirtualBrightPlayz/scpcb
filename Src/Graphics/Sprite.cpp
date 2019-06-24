@@ -11,6 +11,11 @@ void Sprite::initialize(const Graphics& gfx, const Shader& shd) {
     createSpriteMesh(gfx);
 }
 
+void Sprite::cleanup() {
+    sharedMesh = Mesh();
+    shader = Shader();
+}
+
 Sprite::Sprite() { }
 
 Sprite::Sprite(const Graphics& gfx, const Texture& tex) {

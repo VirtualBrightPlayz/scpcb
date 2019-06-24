@@ -8,6 +8,10 @@ void Binding::initialize(const IO& io) {
     Binding::io = io;
 }
 
+void Binding::cleanup() {
+    io = IO();
+}
+
 void Binding::increment() const {
     if (deviceInput != nullptr) {
         cpyTracker[deviceInput] = cpyTracker[deviceInput] + 1;
@@ -21,9 +25,11 @@ bool Binding::decrement() const {
 }
 
 Binding::Binding(const Binding& cpy) {
-    device = cpy.device;
-    deviceInput = cpy.deviceInput;
-    increment();
+    if (cpy.deviceInput != nullptr) {
+        device = cpy.device;
+        deviceInput = cpy.deviceInput;
+        increment();
+    }
 }
 
 Binding& Binding::operator=(const Binding& other) {
@@ -39,9 +45,11 @@ Binding& Binding::operator=(const Binding& other) {
     deviceInput = nullptr;
 
     // Add new reference.
-    device = other.device;
-    deviceInput = other.deviceInput;
-    increment();
+    if (other.deviceInput != nullptr) {
+        device = other.device;
+        deviceInput = other.deviceInput;
+        increment();
+    }
 
     return *this;
 }

@@ -9,6 +9,7 @@ private:
 
 public:
     static void initialize();
+    static void cleanup();
 
     // -- Definite bindings.
 

@@ -36,6 +36,7 @@ private:
 
 public:
     static void initialize(const Graphics& gfx, const Shader& shd);
+    static void cleanup();
 
     Sprite();
 

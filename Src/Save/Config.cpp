@@ -2,8 +2,12 @@
 
 Config config = Config();
 
-void Config::initialize() {
+void Config::initialize(const PGE::String& fileName) {
     // TODO: Find and detect config file, otherwise use the generated default.
+}
+
+void Config::cleanup() {
+    config = Config();
 }
 
 Config::Config() {

@@ -32,6 +32,7 @@ private:
 
 public:
     static void initialize(const IO& io);
+    static void cleanup();
 
     Binding()=default;
     Binding(const Binding& cpy);

@@ -52,6 +52,7 @@ private:
 
 public:
     static void initialize(const Shader& shd);
+    static void cleanup();
 
     UIMesh();
     UIMesh(const Graphics& gfx, const Texture& tex, bool tiles);

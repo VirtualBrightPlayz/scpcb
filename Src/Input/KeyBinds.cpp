@@ -9,6 +9,10 @@ void KeyBinds::initialize() {
     keyBinds.escape = Binding::createKeyboardBind(PGE::KeyboardInput::SCANCODE::ESCAPE);
 }
 
+void KeyBinds::cleanup() {
+    keyBinds = KeyBinds();
+}
+
 void KeyBinds::update() {
     mouse1.update();
     mouse2.update();

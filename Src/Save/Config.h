@@ -10,8 +10,6 @@ enum class WindowType {
 
 class Config {
 private:
-    const PGE::String file = "options.ini";
-
     WindowType windowType;
     int width;
     int height;
@@ -20,7 +18,8 @@ private:
     bool vsync;
 
 public:
-    static void initialize();
+    static void initialize(const PGE::String& fileName);
+    static void cleanup();
 
     Config();
 
