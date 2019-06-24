@@ -23,8 +23,10 @@ IO IO::create(PGE::Window* window) {
 }
 
 IO::IO(const IO& cpy) {
-    internal = cpy.internal;
-    increment();
+    if (cpy.internal != nullptr) {
+        internal = cpy.internal;
+        increment();
+    }
 }
 
 IO& IO::operator=(const IO& other) {
@@ -40,8 +42,10 @@ IO& IO::operator=(const IO& other) {
     internal = nullptr;
 
     // Add new reference.
-    internal = other.internal;
-    increment();
+    if (other.internal != nullptr) {
+        internal = other.internal;
+        increment();
+    }
 
     return *this;
 }

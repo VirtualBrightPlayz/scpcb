@@ -23,8 +23,10 @@ ThreadManager ThreadManager::create() {
 }
 
 ThreadManager::ThreadManager(const ThreadManager& cpy) {
-    internal = cpy.internal;
-    increment();
+    if (cpy.internal != nullptr) {
+        internal = cpy.internal;
+        increment();
+    }
 }
 
 ThreadManager& ThreadManager::operator=(const ThreadManager& other) {
@@ -40,8 +42,10 @@ ThreadManager& ThreadManager::operator=(const ThreadManager& other) {
     internal = nullptr;
 
     // Add new reference.
-    internal = other.internal;
-    increment();
+    if (other.internal != nullptr) {
+        internal = other.internal;
+        increment();
+    }
 
     return *this;
 }

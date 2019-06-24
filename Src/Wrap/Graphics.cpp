@@ -23,8 +23,10 @@ Graphics Graphics::create(const PGE::String& name, int w, int h, bool fs) {
 }
 
 Graphics::Graphics(const Graphics& cpy) {
-    internal = cpy.internal;
-    increment();
+    if (cpy.internal != nullptr) {
+        internal = cpy.internal;
+        increment();
+    }
 }
 
 Graphics& Graphics::operator=(const Graphics& other) {
@@ -40,8 +42,10 @@ Graphics& Graphics::operator=(const Graphics& other) {
     internal = nullptr;
 
     // Add new reference.
-    internal = other.internal;
-    increment();
+    if (other.internal != nullptr) {
+        internal = other.internal;
+        increment();
+    }
 
     return *this;
 }

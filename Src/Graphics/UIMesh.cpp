@@ -90,7 +90,7 @@ void UIMesh::bake() const {
             // Texture coordinates are relative to the bottom left while our positioning is top left.
             // So we need to flip it vertically.
 
-            // Also lower the scale from 50 to 3 so there's less frequent tiling.
+            // Also lower the scale from 50 to 2 so there's less frequent tiling.
             float screenToCoordsScale = 2.f / 50.f;
 
             texCoords[0] = position[0].multiply(screenToCoordsScale);

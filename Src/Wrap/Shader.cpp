@@ -23,8 +23,10 @@ Shader Shader::load(const Graphics& gfx, const PGE::String& path) {
 }
 
 Shader::Shader(const Shader& cpy) {
-    internal = cpy.internal;
-    increment();
+    if (cpy.internal != nullptr) {
+        internal = cpy.internal;
+        increment();
+    }
 }
 
 Shader& Shader::operator=(const Shader& other) {
@@ -40,8 +42,10 @@ Shader& Shader::operator=(const Shader& other) {
     internal = nullptr;
 
     // Add new reference.
-    internal = other.internal;
-    increment();
+    if (other.internal != nullptr) {
+        internal = other.internal;
+        increment();
+    }
 
     return *this;
 }

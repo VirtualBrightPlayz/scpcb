@@ -50,10 +50,12 @@ Material Material::create(const Shader& shd) {
 }
 
 Material::Material(const Material& cpy) {
-    shader = cpy.shader;
-    textures = cpy.textures;
-    internal = cpy.internal;
-    increment();
+    if (cpy.internal != nullptr) {
+        shader = cpy.shader;
+        textures = cpy.textures;
+        internal = cpy.internal;
+        increment();
+    }
 }
 
 Material& Material::operator=(const Material& other) {
@@ -70,10 +72,12 @@ Material& Material::operator=(const Material& other) {
     internal = nullptr;
 
     // Add new reference.
-    shader = other.shader;
-    textures = other.textures;
-    internal = other.internal;
-    increment();
+    if (other.internal != nullptr) {
+        shader = other.shader;
+        textures = other.textures;
+        internal = other.internal;
+        increment();
+    }
 
     return *this;
 }

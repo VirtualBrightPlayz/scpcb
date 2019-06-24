@@ -23,8 +23,10 @@ Mesh Mesh::create(const Graphics& gfx, PGE::Primitive::TYPE pt) {
 }
 
 Mesh::Mesh(const Mesh& cpy) {
-    internal = cpy.internal;
-    increment();
+    if (cpy.internal != nullptr) {
+        internal = cpy.internal;
+        increment();
+    }
 }
 
 Mesh& Mesh::operator=(const Mesh& other) {
@@ -40,8 +42,10 @@ Mesh& Mesh::operator=(const Mesh& other) {
     internal = nullptr;
 
     // Add new reference.
-    internal = other.internal;
-    increment();
+    if (other.internal != nullptr) {
+        internal = other.internal;
+        increment();
+    }
 
     return *this;
 }

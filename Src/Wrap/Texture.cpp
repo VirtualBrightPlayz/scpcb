@@ -39,8 +39,10 @@ Texture Texture::create(const Graphics& gfx, int w, int h, bool renderTarget, co
 }
 
 Texture::Texture(const Texture& cpy) {
-    internal = cpy.internal;
-    increment();
+    if (cpy.internal != nullptr) {
+        internal = cpy.internal;
+        increment();
+    }
 }
 
 Texture& Texture::operator=(const Texture& other) {
@@ -56,8 +58,10 @@ Texture& Texture::operator=(const Texture& other) {
     internal = nullptr;
 
     // Add new reference.
-    internal = other.internal;
-    increment();
+    if (other.internal != nullptr) {
+        internal = other.internal;
+        increment();
+    }
 
     return *this;
 }
