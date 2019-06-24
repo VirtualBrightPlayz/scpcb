@@ -12,15 +12,14 @@
 #include "../Input/KeyBinds.h"
 
 World::World() {
-    int width = 1280;
-    int height = 720;
-    int retinaUpscale = 2;
+    int width = 1280 * 2;
+    int height = 720 * 2;
 
     Config::initialize("options.ini");
-    config.setResolution(width * retinaUpscale, height * retinaUpscale);
+    config.setResolution(width, height);
 
     graphics = Graphics::create("SCP - Containment Breach", width, height, false);
-    graphics->setViewport(PGE::Rectanglei(0, 0, width * retinaUpscale, height * retinaUpscale));
+    graphics->setViewport(PGE::Rectanglei(0, 0, width, height));
     io = IO::create(graphics->getWindow());
     camera = new Camera(graphics, config.getAspectRatio());
 
