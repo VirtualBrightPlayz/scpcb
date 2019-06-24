@@ -9,6 +9,8 @@ void Config::initialize() {
 Config::Config() {
     windowType = WindowType::Windowed;
     setResolution(800, 600);
+
+    vsync = false;
 }
 
 void Config::setResolution(int width, int height) {
@@ -27,4 +29,8 @@ int Config::getHeight() const {
 
 float Config::getAspectRatio() const {
     return aspectRatio;
+}
+
+float Config::isVsync() const {
+    return vsync;
 }

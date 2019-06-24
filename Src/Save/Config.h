@@ -17,6 +17,8 @@ private:
     int height;
     float aspectRatio;
 
+    bool vsync;
+
 public:
     static void initialize();
 
@@ -26,6 +28,8 @@ public:
     int getWidth() const;
     int getHeight() const;
     float getAspectRatio() const;
+
+    float isVsync() const;
 };
 
 extern Config config;

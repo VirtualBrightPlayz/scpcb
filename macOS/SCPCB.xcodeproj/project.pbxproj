@@ -34,6 +34,7 @@
 		1971577A22BEB776003AF33E /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1971577922BEB776003AF33E /* Config.cpp */; };
 		1971577C22BEB9CB003AF33E /* AppDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = 1971577B22BEB9CB003AF33E /* AppDelegate.h */; };
 		1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1971577D22BEB9EC003AF33E /* AppDelegate.m */; };
+		1989F79822C04A0B00B420A3 /* GUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1989F79622C04A0B00B420A3 /* GUI.cpp */; };
 		19C1965D22BD532F00332C8E /* UIMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19C1965C22BD532F00332C8E /* UIMesh.cpp */; };
 		19E258DF22AED859002933BF /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19E258DE22AED859002933BF /* Material.cpp */; };
 		19F17E9E22AD71580061F643 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17E9D22AD71580061F643 /* Texture.cpp */; };
@@ -42,6 +43,8 @@
 		19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EA822AD79A00061F643 /* Sprite.cpp */; };
 		19F17EAC22AD82940061F643 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EAB22AD82940061F643 /* Camera.cpp */; };
 		19F17EAF22AD90830061F643 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EAE22AD90830061F643 /* Mesh.cpp */; };
+		19FC31C922C0533100AE4011 /* Binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19FC31C822C0533100AE4011 /* Binding.cpp */; };
+		19FC31CC22C0736A00AE4011 /* KeyBinds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19FC31CB22C0736A00AE4011 /* KeyBinds.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +115,8 @@
 		1971577922BEB776003AF33E /* Config.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
 		1971577B22BEB9CB003AF33E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1971577D22BEB9EC003AF33E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		1989F79522C04A0B00B420A3 /* GUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUI.h; sourceTree = "<group>"; };
+		1989F79622C04A0B00B420A3 /* GUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GUI.cpp; sourceTree = "<group>"; };
 		19C1965B22BD532F00332C8E /* UIMesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIMesh.h; sourceTree = "<group>"; };
 		19C1965C22BD532F00332C8E /* UIMesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIMesh.cpp; sourceTree = "<group>"; };
 		19E258DD22AED859002933BF /* Material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
@@ -128,6 +133,10 @@
 		19F17EAB22AD82940061F643 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		19F17EAD22AD90830061F643 /* Mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mesh.h; sourceTree = "<group>"; };
 		19F17EAE22AD90830061F643 /* Mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
+		19FC31C722C0533100AE4011 /* Binding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Binding.h; sourceTree = "<group>"; };
+		19FC31C822C0533100AE4011 /* Binding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Binding.cpp; sourceTree = "<group>"; };
+		19FC31CA22C0736A00AE4011 /* KeyBinds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyBinds.h; sourceTree = "<group>"; };
+		19FC31CB22C0736A00AE4011 /* KeyBinds.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyBinds.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +211,8 @@
 				191BDDBE22A8551A00270B9D /* Main.cpp */,
 				191BDDA922A846EE00270B9D /* Collision */,
 				19F17EA622AD79860061F643 /* Graphics */,
+				1989F79422C04A0B00B420A3 /* GUI */,
+				19FC31C522C0531D00AE4011 /* Input */,
 				19243C1222BC29430057054D /* Menus */,
 				191BDDAE22A846EE00270B9D /* PlayerController */,
 				1971577622BEB764003AF33E /* Save */,
@@ -308,6 +319,15 @@
 			path = Save;
 			sourceTree = "<group>";
 		};
+		1989F79422C04A0B00B420A3 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				1989F79622C04A0B00B420A3 /* GUI.cpp */,
+				1989F79522C04A0B00B420A3 /* GUI.h */,
+			);
+			path = GUI;
+			sourceTree = "<group>";
+		};
 		19F17EA622AD79860061F643 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,6 +339,17 @@
 				19C1965B22BD532F00332C8E /* UIMesh.h */,
 			);
 			path = Graphics;
+			sourceTree = "<group>";
+		};
+		19FC31C522C0531D00AE4011 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				19FC31C822C0533100AE4011 /* Binding.cpp */,
+				19FC31C722C0533100AE4011 /* Binding.h */,
+				19FC31CB22C0736A00AE4011 /* KeyBinds.cpp */,
+				19FC31CA22C0736A00AE4011 /* KeyBinds.h */,
+			);
+			path = Input;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -416,9 +447,11 @@
 				19C1965D22BD532F00332C8E /* UIMesh.cpp in Sources */,
 				1971577A22BEB776003AF33E /* Config.cpp in Sources */,
 				19E258DF22AED859002933BF /* Material.cpp in Sources */,
+				19FC31C922C0533100AE4011 /* Binding.cpp in Sources */,
 				19F17EAF22AD90830061F643 /* Mesh.cpp in Sources */,
 				191BDDB622A846F600270B9D /* INI.cpp in Sources */,
 				19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */,
+				1989F79822C04A0B00B420A3 /* GUI.cpp in Sources */,
 				191BDDB322A846EE00270B9D /* PlayerController.cpp in Sources */,
 				19F17EA222AD73510061F643 /* ThreadManager.cpp in Sources */,
 				19F17EA522AD78F20061F643 /* Shader.cpp in Sources */,
@@ -432,6 +465,7 @@
 				1934815722B9B9A60039F47E /* MathUtil.cpp in Sources */,
 				19F17EAC22AD82940061F643 /* Camera.cpp in Sources */,
 				19646FC022A9FAB4005E027E /* World.cpp in Sources */,
+				19FC31CC22C0736A00AE4011 /* KeyBinds.cpp in Sources */,
 				1971577C22BEB9CB003AF33E /* AppDelegate.h in Sources */,
 				191BDDBF22A8551A00270B9D /* Main.cpp in Sources */,
 				1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */,

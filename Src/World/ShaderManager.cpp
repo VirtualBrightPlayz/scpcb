@@ -2,12 +2,12 @@
 #include "../Save/Config.h"
 
 ShaderManager::ShaderManager(const Graphics& gfx, const Camera* cam) {
-    spriteShader = Shader::load(gfx, "GFX/Shaders/sprite/");
+    spriteShader = Shader::load(gfx, "GFX/Shaders/Sprite/");
     PGE::Shader::Constant* projMatrix = spriteShader->getVertexShaderConstant("projectionMatrix");
     projMatrix->setValue(cam->getProjectionMatrix());
     spriteShaderView = spriteShader->getVertexShaderConstant("viewMatrix");
 
-    uiShader = Shader::load(gfx, "GFX/Shaders/ui/");
+    uiShader = Shader::load(gfx, "GFX/Shaders/UI/");
     PGE::Shader::Constant* uiShaderProjection = uiShader->getVertexShaderConstant("projectionMatrix");
 
     // Define our screen space for UI elements.

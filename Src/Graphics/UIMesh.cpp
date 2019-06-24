@@ -7,7 +7,12 @@ PGE::Vector2f UIMesh::defaultTexCoords[4];
 Image::Image(float x, float y, float width, float height, UIMesh* mesh) : x(x), y(y), width(width), height(height), alignment(Alignment::CenterXY), mesh(mesh) { }
 
 Image::~Image() {
-    mesh->removeSlice(this);
+    // Make its reference to parent null to avoid cyclic destruction.
+    if (mesh != nullptr) {
+        UIMesh* parent = mesh;
+        mesh = nullptr;
+        parent->removeSlice(this);
+    }
 }
 
 void Image::setAlignment(Alignment align) {
