@@ -17,6 +17,9 @@ private:
     virtual void activeUpdate(PGE::Vector2f mousePos) override;
 
 public:
+    // When true prevents the button's clicked field from being true.
+    bool locked;
+    
     GUIButton();
     GUIButton(float x, float y, float width, float height, const UIAssets* assets, Alignment alignment = Alignment::CenterXY);
 

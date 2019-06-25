@@ -1,7 +1,7 @@
 #ifndef GUI_H_INCLUDED
 #define GUI_H_INCLUDED
 
-#include "../Graphics/UIMesh.h"
+#include "../../Graphics/UIMesh.h"
 
 class GUI {
 private:

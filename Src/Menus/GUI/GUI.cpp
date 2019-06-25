@@ -1,5 +1,5 @@
 #include "GUI.h"
-#include "../Input/KeyBinds.h"
+#include "../../Input/KeyBinds.h"
 
 GUI* GUI::active = nullptr;
 GUI* GUI::hover = nullptr;

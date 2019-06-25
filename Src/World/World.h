@@ -5,7 +5,7 @@
 #include "../Wrap/IO.h"
 #include "../Graphics/Sprite.h"
 #include "../Graphics/UIMesh.h"
-#include "../GUI/GUIButton.h"
+#include "../Menus/GUI/GUIButton.h"
 
 class Camera;
 class Timing;

@@ -2,7 +2,7 @@
 
 #include "GUIButton.h"
 #include "UIAssets.h"
-#include "../Graphics/UIMesh.h"
+#include "../../Graphics/UIMesh.h"
 
 GUIButton::GUIButton() : GUI(0.f, 0.f, 0.f, 0.f, Alignment::CenterXY), clicked(false) { }
 

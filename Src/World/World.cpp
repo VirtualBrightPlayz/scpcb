@@ -7,8 +7,8 @@
 #include "ShaderManager.h"
 #include "../Menus/PauseMenu.h"
 #include "../Save/Config.h"
-#include "../GUI/GUI.h"
-#include "../GUI/UIAssets.h"
+#include "../Menus/GUI/GUI.h"
+#include "../Menus/UIAssets.h"
 #include "../Input/Binding.h"
 #include "../Input/KeyBinds.h"
 
