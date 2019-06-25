@@ -5,9 +5,11 @@
 #include "../Wrap/IO.h"
 #include "../Graphics/Sprite.h"
 #include "../Graphics/UIMesh.h"
+#include "../GUI/GUIButton.h"
 
 class Camera;
 class Timing;
+class UIAssets;
 class ShaderManager;
 class PauseMenu;
 
@@ -26,10 +28,10 @@ private:
 
     Timing* timing;
 
-    // TODO: Remove, this is a test.
+    UIAssets* uiAssets;
+    // TODO: Remove, these are a test.
     Sprite poster;
-    UIMesh menuwhite;
-    Image* fake;
+    GUIButton btn;
 
     ShaderManager* shaderMngt;
 

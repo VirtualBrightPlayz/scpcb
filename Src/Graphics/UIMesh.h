@@ -28,6 +28,10 @@ private:
     Alignment alignment;
 
 public:
+    // Whether this slice needs to be drawn.
+    bool visible;
+
+    Image()=default;
     Image(float x, float y, float width, float height, UIMesh* mesh);
     ~Image();
 

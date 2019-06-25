@@ -108,7 +108,7 @@ void Sprite::update() {
 void Sprite::render() const {
     modelMatrixValue->setValue(modelMatrix);
     spriteColorValue->setValue(color);
-    scaleValue->setValue(PGE::Vector3f(scale.x, scale.y, 1.f));
+    scaleValue->setValue(scale);
     rotationMatrixValue->setValue(rotationMatrix);
 
     sharedMesh->setMaterial(material.getInternal());

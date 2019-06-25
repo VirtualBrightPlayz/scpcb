@@ -3,7 +3,7 @@
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
-uniform vec3 scale;
+uniform vec2 scale;
 uniform mat4 rotationMatrix;
 
 in vec2 position;
@@ -25,7 +25,7 @@ void main() {
     viewModel[2][1] = 0.f;
     
     // Restore scaling and roll rotations.
-    vec4 vertexScaleRotation = vec4(scale, 1.0f) * vec4(position.xy, 0.0f, 1.0f);
+    vec4 vertexScaleRotation = vec4(scale, 1.0f, 1.0f) * vec4(position.xy, 0.0f, 1.0f);
     vertexScaleRotation = rotationMatrix * vertexScaleRotation;
     
     gl_Position = projectionMatrix * viewModel * vertexScaleRotation;

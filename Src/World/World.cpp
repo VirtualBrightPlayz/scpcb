@@ -8,6 +8,7 @@
 #include "../Menus/PauseMenu.h"
 #include "../Save/Config.h"
 #include "../GUI/GUI.h"
+#include "../GUI/UIAssets.h"
 #include "../Input/Binding.h"
 #include "../Input/KeyBinds.h"
 
@@ -31,15 +32,16 @@ World::World() {
     UIMesh::initialize(shaderMngt->getUIShader());
     Binding::initialize(io);
     KeyBinds::initialize();
+    
+    uiAssets = new UIAssets(graphics);
 
     poster = Sprite::create(graphics, "GFX/Map/Textures/dirtymetal.jpg");
     poster.setPosition(0.f, 0.f, 2.f);
     poster.setRotation(0.5f);
-    poster.setScale(2.f);
+    poster.setScale(8.f);
 
-    menuwhite = UIMesh(graphics, "GFX/Menu/menuwhite.jpg", true);
-    fake = menuwhite.createSlice(20.f, -20.f, 20.f, 20.f);
-    fake->setAlignment(Alignment::Top | Alignment::Bottom);
+    btn = GUIButton(-20.f, -10.f, 40.f, 20.f, uiAssets);
+    btn.setVisibility(true);
 
     setGameState(GameState::Playing);
     pauseMenu = new PauseMenu();
@@ -56,6 +58,7 @@ World::~World() {
 
     delete camera;
     delete timing;
+    delete uiAssets;
     delete shaderMngt;
 }
 
@@ -77,8 +80,6 @@ bool World::run() {
     }
 
     // Non tick-based updating.
-    SysEvents::update();
-    io->update();
     graphics->update();
 
     graphics->clear(PGE::Color(0.f, 0.71f, 0.76f, 1.f)); // Turquoise.
@@ -98,15 +99,19 @@ bool World::run() {
 }
 
 void World::runTick(float timeStep) {
+    SysEvents::update();
+    io->update();
+
     // Get mouse position and convert it to screen coordinates.
 
     // Convert it to [0, 100].
     PGE::Vector2f scale = PGE::Vector2f(100.f / graphics->getWindow()->getWidth() , 100.f / graphics->getWindow()->getHeight());
     PGE::Vector2f mousePosition = PGE::Vector2f(io->getMousePosition().x * scale.x, io->getMousePosition().y * scale.y);
+    mousePosition.x *= config.getAspectRatio();
 
     // Subtract 50 to bring it inline with the [-50, 50] screen coordinates.
-    mousePosition.x -= 50.f;
-    mousePosition.y -= 50.f * config.getAspectRatio();
+    mousePosition.x -= 50.f * config.getAspectRatio();
+    mousePosition.y -= 50.f;
 
     keyBinds.update();
     if (keyBinds.escape.isHit()) {
@@ -123,7 +128,11 @@ void World::runTick(float timeStep) {
         } break;
     }
 
+    btn.update(mousePosition);
+
     shaderMngt->update(camera);
+
+    uiAssets->update();
 
     GUI::reset();
 }
@@ -131,6 +140,8 @@ void World::runTick(float timeStep) {
 void World::draw() {
     drawPlaying();
     pauseMenu->draw(currState);
+
+    uiAssets->draw();
 
     graphics->swap(config.isVsync());
 }
@@ -154,11 +165,8 @@ void World::updatePlaying(float timeStep) {
 
     poster.addRotation(5.f * timeStep);
     poster.update();
-
-    menuwhite.bake();
 }
 
 void World::drawPlaying() {
-    menuwhite.render();
-//    poster.render();
+   poster.render();
 }

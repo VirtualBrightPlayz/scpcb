@@ -10,6 +10,8 @@
 		190E9C342257866500A59243 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 190E9C332257866500A59243 /* Assets.xcassets */; };
 		190E9C372257866500A59243 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 190E9C352257866500A59243 /* Main.storyboard */; };
 		1910375C22A9A3B5005A1AA0 /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1910375B22A9A3B5005A1AA0 /* Graphics.cpp */; };
+		191A23A822C1CC60009DC558 /* GUIButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191A23A722C1CC60009DC558 /* GUIButton.cpp */; };
+		191A23AB22C1CFFE009DC558 /* UIAssets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191A23AA22C1CFFE009DC558 /* UIAssets.cpp */; };
 		191BDD9822A844FF00270B9D /* TextMgmt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDD9722A844FF00270B9D /* TextMgmt.cpp */; };
 		191BDDA822A8458000270B9D /* libEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 191BDDA722A8457700270B9D /* libEngine.a */; };
 		191BDDB122A846EE00270B9D /* CollisionMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDAA22A846EE00270B9D /* CollisionMesh.cpp */; };
@@ -79,6 +81,10 @@
 		190E9C3B2257866500A59243 /* SCPCB.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SCPCB.entitlements; sourceTree = "<group>"; };
 		1910375A22A9A3B5005A1AA0 /* Graphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Graphics.h; sourceTree = "<group>"; };
 		1910375B22A9A3B5005A1AA0 /* Graphics.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Graphics.cpp; sourceTree = "<group>"; };
+		191A23A622C1CC60009DC558 /* GUIButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GUIButton.h; sourceTree = "<group>"; };
+		191A23A722C1CC60009DC558 /* GUIButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GUIButton.cpp; sourceTree = "<group>"; };
+		191A23A922C1CFFE009DC558 /* UIAssets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIAssets.h; sourceTree = "<group>"; };
+		191A23AA22C1CFFE009DC558 /* UIAssets.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIAssets.cpp; sourceTree = "<group>"; };
 		191BDD9622A844FF00270B9D /* TextMgmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMgmt.h; sourceTree = "<group>"; };
 		191BDD9722A844FF00270B9D /* TextMgmt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextMgmt.cpp; sourceTree = "<group>"; };
 		191BDD9A22A8457700270B9D /* Engine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Engine.xcodeproj; path = ../Engine/macOS/Engine/Engine.xcodeproj; sourceTree = "<group>"; };
@@ -324,6 +330,10 @@
 			children = (
 				1989F79622C04A0B00B420A3 /* GUI.cpp */,
 				1989F79522C04A0B00B420A3 /* GUI.h */,
+				191A23A722C1CC60009DC558 /* GUIButton.cpp */,
+				191A23A622C1CC60009DC558 /* GUIButton.h */,
+				191A23AA22C1CFFE009DC558 /* UIAssets.cpp */,
+				191A23A922C1CFFE009DC558 /* UIAssets.h */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
@@ -457,9 +467,11 @@
 				19F17EA522AD78F20061F643 /* Shader.cpp in Sources */,
 				19646FC322A9FB6D005E027E /* Timing.cpp in Sources */,
 				191BDDB922A84F7700270B9D /* FileUtil.cpp in Sources */,
+				191A23AB22C1CFFE009DC558 /* UIAssets.cpp in Sources */,
 				19243C1622BC295C0057054D /* PauseMenu.cpp in Sources */,
 				19F17E9E22AD71580061F643 /* Texture.cpp in Sources */,
 				191BDD9822A844FF00270B9D /* TextMgmt.cpp in Sources */,
+				191A23A822C1CC60009DC558 /* GUIButton.cpp in Sources */,
 				191BDDB222A846EE00270B9D /* Collision.cpp in Sources */,
 				19646FC822AA082D005E027E /* IO.cpp in Sources */,
 				1934815722B9B9A60039F47E /* MathUtil.cpp in Sources */,

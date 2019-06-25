@@ -4,7 +4,10 @@
 Shader UIMesh::shader;
 PGE::Vector2f UIMesh::defaultTexCoords[4];
 
-Image::Image(float x, float y, float width, float height, UIMesh* mesh) : x(x), y(y), width(width), height(height), alignment(Alignment::CenterXY), mesh(mesh) { }
+Image::Image(float x, float y, float width, float height, UIMesh* mesh)
+: x(x), y(y), width(width), height(height), alignment(Alignment::CenterXY), mesh(mesh) {
+    visible = true;
+}
 
 Image::~Image() {
     // Make its reference to parent null to avoid cyclic destruction.
@@ -86,6 +89,8 @@ void UIMesh::bake() const {
     std::vector<PGE::Primitive> prims;
 
     for (int i = 0; i < (int)slices.size(); i++) {
+        if (!slices[i].visible) { continue; }
+
         PGE::Vector2f position[4];
         slices[i].fillVertexPositions(position);
 

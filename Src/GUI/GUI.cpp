@@ -1,4 +1,5 @@
 #include "GUI.h"
+#include "../Input/KeyBinds.h"
 
 GUI* GUI::active = nullptr;
 GUI* GUI::hover = nullptr;
@@ -6,8 +7,14 @@ GUI* GUI::hover = nullptr;
 void GUI::reset() {
     hover = nullptr;
 
-    // TODO: Check for mouseup to remove active state.
+    // Remove active element when the mouse is up.
+    if (active != nullptr && keyBinds.mouse1.isUp()) {
+        active = nullptr;
+    }
 }
+
+GUI::GUI(float x, float y, float width, float height, Alignment alignment)
+    : x(x), y(y), width(width), height(height), alignment(alignment), visible(true) { }
 
 GUI::~GUI() {
     if (this == active) {
@@ -27,14 +34,17 @@ bool GUI::isHovered() const {
     return hovered;
 }
 
+void GUI::setVisibility(bool vis) {
+    visible = vis;
+    updateVisibility();
+}
+
 void GUI::update(PGE::Vector2f mousePos) {
+    if (!visible) { return; }
+
     // Reset hover state.
     hovered = false;
-
-    // Don't waste time if another element is already in use.
-    if (active != nullptr || hover != nullptr) {
-        return;
-    }
+    mouseDown = keyBinds.mouse1.isDown();
 
     if (mousePos.x >= x && mousePos.x <= getX2()) {
         if (mousePos.y >= y && mousePos.y <= getY2()) {
@@ -43,11 +53,16 @@ void GUI::update(PGE::Vector2f mousePos) {
         }
     }
 
-    if (!hovered) { return; }
-
-    // TODO: Mousedown check for active.
-
-    // TODO: Set mouseDown and mouseUp fields.
-
     internalUpdate(mousePos);
+
+    if (active != this || hover != nullptr || !hovered) {
+        return;
+    }
+
+    // Is the mouse is hit on this element then it becomes the only selected element until mouse1 is up.
+    if (keyBinds.mouse1.isHit()) {
+        active = this;
+    }
+
+    activeUpdate(mousePos);
 }
