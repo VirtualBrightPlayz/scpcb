@@ -11,8 +11,9 @@ class UIMesh;
 enum class Alignment {
     CenterXY = 0x0,
     Left = 0x1,
-    Top = 0x2,
-    Bottom = 0x4
+    Right = 0x2,
+    Top = 0x4,
+    Bottom = 0x8
 };
 
 // Creates and stores the information relating to a piece of a UIMesh.
@@ -48,6 +49,8 @@ private:
 
     Mesh mesh;
     Material material;
+    PGE::Color color;
+    PGE::Shader::Constant* imageColorValue;
 
     std::vector<Image> slices;
 
@@ -61,6 +64,7 @@ public:
     UIMesh();
     UIMesh(const Graphics& gfx, const Texture& tex, bool tiles);
     UIMesh(const Graphics& gfx, const PGE::String& path, bool tiles);
+    UIMesh(const Graphics& gfx, const PGE::Color& color);
 
     // Generates a new quad for the mesh.
     Image* createSlice(float x, float y, float width, float height);

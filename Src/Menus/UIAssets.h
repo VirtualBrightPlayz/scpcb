@@ -10,6 +10,8 @@ class UIAssets {
 public:
     UIMesh* menuWhite = nullptr;
     UIMesh* menuBlack = nullptr;
+    // Partially-opaque grey tint to light up objects that are hovered over.
+    UIMesh* hoverLightUp = nullptr;
 
     UIAssets(const Graphics& gfx);
     ~UIAssets();

@@ -11,15 +11,13 @@ private:
 
     Image* background = nullptr;
     Image* foreground = nullptr;
+    Image* hoverColor = nullptr;
 
-    virtual void updateVisibility() override;
+    virtual void updateVisibility(bool visible) override;
     virtual void internalUpdate(PGE::Vector2f mousePos) override;
     virtual void activeUpdate(PGE::Vector2f mousePos) override;
 
 public:
-    // When true prevents the button's clicked field from being true.
-    bool locked;
-    
     GUIButton();
     GUIButton(float x, float y, float width, float height, const UIAssets* assets, Alignment alignment = Alignment::CenterXY);
 

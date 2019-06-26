@@ -38,20 +38,6 @@ Texture Texture::create(const Graphics& gfx, int w, int h, bool renderTarget, co
     return tex;
 }
 
-Texture Texture::createColorFill(const Graphics& gfx, const PGE::Color& color) {
-    Texture tex;
-    char cColor[4];
-    cColor[0] = color.getRedInt();
-    cColor[1] = color.getGreenInt();
-    cColor[2] = color.getBlueInt();
-    cColor[3] = color.getAlphaInt();
-    
-    tex.internal = PGE::Texture::create(gfx.getInternal(), 1, 1, false, cColor, PGE::Texture::FORMAT::RGBA32);
-    cpyTracker.insert(std::pair<PGE::Texture*, int>(tex.internal, 1));
-    
-    return tex;
-}
-
 Texture::Texture(const Texture& cpy) {
     if (cpy.internal != nullptr) {
         internal = cpy.internal;

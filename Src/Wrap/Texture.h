@@ -29,9 +29,6 @@ public:
     static Texture load(const Graphics& gfx, const PGE::String& filename);
     static Texture load(const Graphics& gfx, const PGE::String& filename, const ThreadManager& threadManager);
     static Texture create(const Graphics& gfx, int w, int h, bool renderTarget, const void* buffer, PGE::Texture::FORMAT fmt);
-    
-    // Generates a 1x1 texture of a particular color.
-    static Texture createColorFill(const Graphics& gfx, const PGE::Color& color);
 
     PGE::Texture* operator->() const;
 

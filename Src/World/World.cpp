@@ -38,7 +38,7 @@ World::World() {
     poster = Sprite::create(graphics, "GFX/Map/Textures/dirtymetal.jpg");
     poster.setPosition(0.f, 0.f, 2.f);
     poster.setRotation(0.5f);
-    poster.setScale(8.f);
+    poster.setScale(1.f);
 
     btn = GUIButton(-20.f, -10.f, 40.f, 20.f, uiAssets);
     btn.setVisibility(true);

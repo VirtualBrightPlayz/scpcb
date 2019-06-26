@@ -36,7 +36,7 @@ bool GUI::isHovered() const {
 
 void GUI::setVisibility(bool vis) {
     visible = vis;
-    updateVisibility();
+    updateVisibility(vis);
 }
 
 void GUI::update(PGE::Vector2f mousePos) {

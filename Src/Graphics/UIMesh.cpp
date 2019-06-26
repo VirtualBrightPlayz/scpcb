@@ -30,6 +30,10 @@ void Image::fillVertexPositions(PGE::Vector2f pos[]) const {
         trueX += -50.f * config.getAspectRatio();
     }
 
+    if ((alignment & Alignment::Right) != Alignment::CenterXY) {
+        trueX += 50.f * config.getAspectRatio();
+    }
+
     if ((alignment & Alignment::Top) != Alignment::CenterXY) {
         trueY += -50.f;
     }
@@ -64,6 +68,17 @@ UIMesh::UIMesh(const Graphics& gfx, const Texture& tex, bool tiles) {
     material = Material::create(shader, tex);
     mesh->setMaterial(material.getInternal());
     tiled = tiles;
+    color = PGE::Color(1.f, 1.f, 1.f, 1.f);
+    imageColorValue = shader->getFragmentShaderConstant("imageColor");
+}
+
+UIMesh::UIMesh(const Graphics& gfx, const PGE::Color& color) {
+    mesh = Mesh::create(gfx, PGE::Primitive::TYPE::TRIANGLE);
+    material = Material::create(shader);
+    mesh->setMaterial(material.getInternal());
+    tiled = false;
+    this->color = color;
+    imageColorValue = shader->getFragmentShaderConstant("imageColor");
 }
 
 UIMesh::UIMesh(const Graphics& gfx, const PGE::String& path, bool tiles) : UIMesh(gfx, Texture::load(gfx, path), tiles) { }
@@ -96,10 +111,7 @@ void UIMesh::bake() const {
 
         PGE::Vector2f texCoords[4];
         if (tiled) {
-            // Texture coordinates are relative to the bottom left while our positioning is top left.
-            // So we need to flip it vertically.
-
-            // Also lower the scale from 50 to 2 so there's less frequent tiling.
+            // Lower the scale from [-50, 50] to [-2, 2] so there's less frequent tiling.
             float screenToCoordsScale = 2.f / 50.f;
 
             texCoords[0] = position[0].multiply(screenToCoordsScale);
@@ -131,6 +143,8 @@ void UIMesh::bake() const {
 }
 
 void UIMesh::render() const {
+    imageColorValue->setValue(color);
+    
     mesh->render();
 }
 

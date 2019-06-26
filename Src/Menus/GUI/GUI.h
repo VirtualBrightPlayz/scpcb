@@ -10,7 +10,8 @@ private:
     // Stores which element is being hovered over.
     static GUI* hover;
 
-    float hovered;
+    bool hovered;
+    bool visible;
 
 protected:
     float x;
@@ -21,8 +22,6 @@ protected:
     Alignment alignment;
 
     bool mouseDown;
-
-    bool visible;
 
     GUI(float x, float y, float width, float height, Alignment alignment);
 
@@ -39,7 +38,7 @@ public:
     bool isHovered() const;
 
     void setVisibility(bool vis);
-    virtual void updateVisibility()=0;
+    virtual void updateVisibility(bool visible)=0;
 
     // This handles setting the active element and hover detection alongside calling internalUpdate().
     void update(PGE::Vector2f mousePos);
