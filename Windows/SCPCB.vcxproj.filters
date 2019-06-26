@@ -55,6 +55,30 @@
     <Filter Include="Header Files\Wrap">
       <UniqueIdentifier>{a4bdfdb0-deb0-4eb0-9856-fb4a075a3f22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{f8787ead-9f3a-4e61-a420-20a3943e1c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{f2f41911-6a9d-45cf-83ef-882bbb8802a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Menus">
+      <UniqueIdentifier>{34a9a24e-1cee-473d-8779-979655a17999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Menus">
+      <UniqueIdentifier>{c9d0fa95-e58f-4b8a-b7cf-b057ea26e75f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Menus\GUI">
+      <UniqueIdentifier>{0df873b2-c730-4359-9eb7-ff769cfbaf5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Menus\GUI">
+      <UniqueIdentifier>{8bad5b84-e59e-4c9c-9598-adcab50e8be3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Save">
+      <UniqueIdentifier>{c10cfe46-a3cb-4005-9f0f-eb962f904fc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Save">
+      <UniqueIdentifier>{b2220310-30d7-4cf6-8618-a12538e27ea3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -116,6 +140,30 @@
     </ClInclude>
     <ClInclude Include="..\Src\Utils\MathUtil.h">
       <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Input\Binding.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Input\KeyBinds.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\PauseMenu.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\UIAssets.h">
+      <Filter>Header Files\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\GUI\GUIButton.h">
+      <Filter>Header Files\Menus\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\GUI\GUI.h">
+      <Filter>Header Files\Menus\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Graphics\UIMesh.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Save\Config.h">
+      <Filter>Header Files\Save</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +236,30 @@
     </ClCompile>
     <ClCompile Include="..\Src\Utils\MathUtil.cpp">
       <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Input\Binding.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Input\KeyBinds.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Menus\PauseMenu.cpp">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Menus\UIAssets.cpp">
+      <Filter>Source Files\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Menus\GUI\GUI.cpp">
+      <Filter>Source Files\Menus\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp">
+      <Filter>Source Files\Menus\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Graphics\UIMesh.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Save\Config.cpp">
+      <Filter>Source Files\Save</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

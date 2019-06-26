@@ -13,8 +13,8 @@
 #include "../Input/KeyBinds.h"
 
 World::World() {
-    int width = 1280 * 2;
-    int height = 720 * 2;
+    int width = 1280;
+    int height = 720;
 
     Config::initialize("options.ini");
     config.setResolution(width, height);
