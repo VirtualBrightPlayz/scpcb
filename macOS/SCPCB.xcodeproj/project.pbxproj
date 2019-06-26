@@ -214,10 +214,10 @@
 		191A23AE22C2C20F009DC558 /* GUI */ = {
 			isa = PBXGroup;
 			children = (
-				191A23AF22C2C20F009DC558 /* GUIButton.h */,
 				191A23B022C2C20F009DC558 /* GUIButton.cpp */,
-				191A23B122C2C20F009DC558 /* GUI.h */,
+				191A23AF22C2C20F009DC558 /* GUIButton.h */,
 				191A23B222C2C20F009DC558 /* GUI.cpp */,
+				191A23B122C2C20F009DC558 /* GUI.h */,
 			);
 			path = GUI;
 			sourceTree = "<group>";

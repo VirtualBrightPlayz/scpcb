@@ -29,10 +29,10 @@ World::World() {
     shaderMngt = new ShaderManager(graphics, camera);
 
     Sprite::initialize(graphics, shaderMngt->getSpriteShader());
-    UIMesh::initialize(shaderMngt->getUIShader());
+    UIMesh::initialize(shaderMngt->getUIShader(), shaderMngt->getUIShaderNoTex());
     Binding::initialize(io);
     KeyBinds::initialize();
-    
+
     uiAssets = new UIAssets(graphics);
 
     poster = Sprite::create(graphics, "GFX/Map/Textures/dirtymetal.jpg");
@@ -168,5 +168,5 @@ void World::updatePlaying(float timeStep) {
 }
 
 void World::drawPlaying() {
-   poster.render();
+//   poster.render();
 }

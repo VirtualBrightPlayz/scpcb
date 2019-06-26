@@ -10,6 +10,7 @@ private:
     PGE::Shader::Constant* spriteShaderView;
 
     Shader uiShader;
+    Shader uiShaderNoTex;
 
 public:
     ShaderManager(const Graphics& gfx, const Camera* cam);
@@ -18,6 +19,7 @@ public:
 
     const Shader& getSpriteShader() const;
     const Shader& getUIShader() const;
+    const Shader& getUIShaderNoTex() const;
 };
 
 #endif // ShaderManager_H_INCLUDED

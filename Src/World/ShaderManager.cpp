@@ -9,6 +9,8 @@ ShaderManager::ShaderManager(const Graphics& gfx, const Camera* cam) {
 
     uiShader = Shader::load(gfx, "GFX/Shaders/UI/");
     PGE::Shader::Constant* uiShaderProjection = uiShader->getVertexShaderConstant("projectionMatrix");
+    uiShaderNoTex = Shader::load(gfx, "GFX/Shaders/UITextureless/");
+    PGE::Shader::Constant* uiShaderNoTexProjection = uiShaderNoTex->getVertexShaderConstant("projectionMatrix");
 
     // Define our screen space for UI elements.
     // Top Left     - [-50, -50]
@@ -16,8 +18,10 @@ ShaderManager::ShaderManager(const Graphics& gfx, const Camera* cam) {
     // Horizontal plane is scaled with the aspect ratio.
     PGE::Vector2f topLeft = PGE::Vector2f(-50.f * config.getAspectRatio(), -50.f);
     PGE::Vector2f bottomRight = PGE::Vector2f(50.f * config.getAspectRatio(), 50.f);
+    PGE::Matrix4x4f orthoMat = PGE::Matrix4x4f::constructOrtho2DMat(topLeft.x, bottomRight.x, bottomRight.y, topLeft.y);
 
-    uiShaderProjection->setValue(PGE::Matrix4x4f::constructOrtho2DMat(topLeft.x, bottomRight.x, bottomRight.y, topLeft.y));
+    uiShaderProjection->setValue(orthoMat);
+    uiShaderNoTexProjection->setValue(orthoMat);
 }
 
 void ShaderManager::update(const Camera* cam) {
@@ -30,4 +34,8 @@ const Shader& ShaderManager::getSpriteShader() const {
 
 const Shader& ShaderManager::getUIShader() const {
     return uiShader;
+}
+
+const Shader& ShaderManager::getUIShaderNoTex() const {
+    return uiShaderNoTex;
 }

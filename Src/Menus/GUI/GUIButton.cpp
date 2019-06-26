@@ -18,12 +18,9 @@ GUIButton::GUIButton(float x, float y, float width, float height, const UIAssets
 void GUIButton::updateVisibility(bool visible) {
     background->visible = visible;
     foreground->visible = visible;
-    hoverColor->visible = visible;
 }
 
 void GUIButton::internalUpdate(PGE::Vector2f mousePos) {
-    // background->visible = false;
-    // foreground->visible = false;
     hoverColor->visible = isHovered();
 
     // Reset clicked state.

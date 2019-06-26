@@ -1,11 +1,15 @@
 #include "UIMesh.h"
 #include "../Save/Config.h"
 
+int Image::totalSliceCount = 0;
 Shader UIMesh::shader;
+Shader UIMesh::shaderTextureless;
 PGE::Vector2f UIMesh::defaultTexCoords[4];
 
 Image::Image(float x, float y, float width, float height, UIMesh* mesh)
 : x(x), y(y), width(width), height(height), alignment(Alignment::CenterXY), mesh(mesh) {
+    depthOrder = totalSliceCount;
+    totalSliceCount++;
     visible = true;
 }
 
@@ -22,7 +26,7 @@ void Image::setAlignment(Alignment align) {
     alignment = align;
 }
 
-void Image::fillVertexPositions(PGE::Vector2f pos[]) const {
+void Image::fillVertexPositions(PGE::Vector3f pos[]) const {
     float trueX = x;
     float trueY = y;
 
@@ -42,14 +46,18 @@ void Image::fillVertexPositions(PGE::Vector2f pos[]) const {
         trueY += 50.f;
     }
 
-    pos[0] = PGE::Vector2f(trueX, trueY);
-    pos[1] = PGE::Vector2f(trueX + width, trueY + height);
-    pos[2] = PGE::Vector2f(trueX, trueY + height);
-    pos[3] = PGE::Vector2f(trueX + width, trueY);
+    // Get the image's depth.
+    float depth = (1.f + depthOrder) / totalSliceCount;
+
+    pos[0] = PGE::Vector3f(trueX, trueY, depth);
+    pos[1] = PGE::Vector3f(trueX + width, trueY + height, depth);
+    pos[2] = PGE::Vector3f(trueX, trueY + height, depth);
+    pos[3] = PGE::Vector3f(trueX + width, trueY, depth);
 }
 
-void UIMesh::initialize(const Shader& shd) {
+void UIMesh::initialize(const Shader& shd, const Shader& shdNoTex) {
     shader = shd;
+    shaderTextureless = shdNoTex;
 
     defaultTexCoords[0] = PGE::Vector2f(0.0f, 1.0f);
     defaultTexCoords[1] = PGE::Vector2f(1.0f, 0.0f);
@@ -59,6 +67,7 @@ void UIMesh::initialize(const Shader& shd) {
 
 void UIMesh::cleanup() {
     shader = Shader();
+    shaderTextureless = Shader();
 }
 
 UIMesh::UIMesh() { }
@@ -68,20 +77,22 @@ UIMesh::UIMesh(const Graphics& gfx, const Texture& tex, bool tiles) {
     material = Material::create(shader, tex);
     mesh->setMaterial(material.getInternal());
     tiled = tiles;
+    textureless = false;
     color = PGE::Color(1.f, 1.f, 1.f, 1.f);
     imageColorValue = shader->getFragmentShaderConstant("imageColor");
 }
 
+UIMesh::UIMesh(const Graphics& gfx, const PGE::String& path, bool tiles) : UIMesh(gfx, Texture::load(gfx, path), tiles) { }
+
 UIMesh::UIMesh(const Graphics& gfx, const PGE::Color& color) {
     mesh = Mesh::create(gfx, PGE::Primitive::TYPE::TRIANGLE);
-    material = Material::create(shader);
+    material = Material::create(shaderTextureless);
     mesh->setMaterial(material.getInternal());
     tiled = false;
+    textureless = true;
     this->color = color;
-    imageColorValue = shader->getFragmentShaderConstant("imageColor");
+    imageColorValue = shaderTextureless->getFragmentShaderConstant("imageColor");
 }
-
-UIMesh::UIMesh(const Graphics& gfx, const PGE::String& path, bool tiles) : UIMesh(gfx, Texture::load(gfx, path), tiles) { }
 
 Image* UIMesh::createSlice(float x, float y, float width, float height) {
     slices.push_back(Image(x, y, width, height, this));
@@ -106,21 +117,23 @@ void UIMesh::bake() const {
     for (int i = 0; i < (int)slices.size(); i++) {
         if (!slices[i].visible) { continue; }
 
-        PGE::Vector2f position[4];
+        PGE::Vector3f position[4];
         slices[i].fillVertexPositions(position);
 
         PGE::Vector2f texCoords[4];
-        if (tiled) {
-            // Lower the scale from [-50, 50] to [-2, 2] so there's less frequent tiling.
-            float screenToCoordsScale = 2.f / 50.f;
+        if (!textureless) {
+            if (tiled) {
+                // Lower the scale from [-50, 50] to [-2, 2] so there's less frequent tiling.
+                float screenToCoordsScale = 2.f / 50.f;
 
-            texCoords[0] = position[0].multiply(screenToCoordsScale);
-            texCoords[1] = position[1].multiply(screenToCoordsScale);
-            texCoords[2] = position[2].multiply(screenToCoordsScale);
-            texCoords[3] = position[3].multiply(screenToCoordsScale);
-        } else {
-            for (int i = 0; i < 4; i++) {
-                texCoords[i] = defaultTexCoords[i];
+                texCoords[0] = PGE::Vector2f(position[0].x * screenToCoordsScale, position[0].y * screenToCoordsScale);
+                texCoords[1] = PGE::Vector2f(position[1].x * screenToCoordsScale, position[1].y * screenToCoordsScale);
+                texCoords[2] = PGE::Vector2f(position[2].x * screenToCoordsScale, position[2].y * screenToCoordsScale);
+                texCoords[3] = PGE::Vector2f(position[3].x * screenToCoordsScale, position[3].y * screenToCoordsScale);
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    texCoords[i] = defaultTexCoords[i];
+                }
             }
         }
 
@@ -128,8 +141,8 @@ void UIMesh::bake() const {
         int quadIndex = (int)verts.size();
 
         for (int i = 0; i < 4; i++) {
-            vertices[i].setVector2f("position", position[i]);
-            vertices[i].setVector2f("texCoords", texCoords[i]);
+            vertices[i].setVector3f("position", position[i]);
+            if (!textureless) { vertices[i].setVector2f("texCoords", texCoords[i]); }
             verts.push_back(vertices[i]);
         }
 
@@ -144,7 +157,7 @@ void UIMesh::bake() const {
 
 void UIMesh::render() const {
     imageColorValue->setValue(color);
-    
+
     mesh->render();
 }
 

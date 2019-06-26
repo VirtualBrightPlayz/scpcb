@@ -22,7 +22,7 @@ void UIAssets::update() {
 }
 
 void UIAssets::draw() const {
-    hoverLightUp->render();
-    menuBlack->render();
     menuWhite->render();
+    menuBlack->render();
+    hoverLightUp->render();
 }
