@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "GUIButton.h"
 #include "../UIAssets.h"
 #include "../../Graphics/UIMesh.h"

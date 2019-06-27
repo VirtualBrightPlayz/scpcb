@@ -25,6 +25,7 @@
 		191BDDBF22A8551A00270B9D /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDBE22A8551A00270B9D /* Main.cpp */; };
 		19243C1622BC295C0057054D /* PauseMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19243C1522BC295C0057054D /* PauseMenu.cpp */; };
 		1927734122A85D500055EB30 /* Dummy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1927733F22A85D500055EB30 /* Dummy.txt */; };
+		192A67A622C43CBA009A6F1E /* GUIFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 192A67A522C43CBA009A6F1E /* GUIFrame.cpp */; };
 		1931B60522AEEFEA00A48B13 /* ShaderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1931B60422AEEFEA00A48B13 /* ShaderManager.cpp */; };
 		1934815722B9B9A60039F47E /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1934815622B9B9A60039F47E /* MathUtil.cpp */; };
 		194C2F742257874800AB9902 /* Loadingscreens in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F702257874800AB9902 /* Loadingscreens */; };
@@ -105,6 +106,8 @@
 		19243C1422BC295C0057054D /* PauseMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PauseMenu.h; sourceTree = "<group>"; };
 		19243C1522BC295C0057054D /* PauseMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PauseMenu.cpp; sourceTree = "<group>"; };
 		1927733F22A85D500055EB30 /* Dummy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Dummy.txt; sourceTree = SOURCE_ROOT; };
+		192A67A422C43CBA009A6F1E /* GUIFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GUIFrame.h; sourceTree = "<group>"; };
+		192A67A522C43CBA009A6F1E /* GUIFrame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GUIFrame.cpp; sourceTree = "<group>"; };
 		1931B60322AEEFEA00A48B13 /* ShaderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderManager.h; sourceTree = "<group>"; };
 		1931B60422AEEFEA00A48B13 /* ShaderManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderManager.cpp; sourceTree = "<group>"; };
 		1934815422B9B9A60039F47E /* MathUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathUtil.h; sourceTree = "<group>"; };
@@ -214,10 +217,12 @@
 		191A23AE22C2C20F009DC558 /* GUI */ = {
 			isa = PBXGroup;
 			children = (
-				191A23B022C2C20F009DC558 /* GUIButton.cpp */,
-				191A23AF22C2C20F009DC558 /* GUIButton.h */,
 				191A23B222C2C20F009DC558 /* GUI.cpp */,
 				191A23B122C2C20F009DC558 /* GUI.h */,
+				191A23B022C2C20F009DC558 /* GUIButton.cpp */,
+				191A23AF22C2C20F009DC558 /* GUIButton.h */,
+				192A67A522C43CBA009A6F1E /* GUIFrame.cpp */,
+				192A67A422C43CBA009A6F1E /* GUIFrame.h */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
@@ -464,6 +469,7 @@
 				19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */,
 				191BDDB322A846EE00270B9D /* PlayerController.cpp in Sources */,
 				19F17EA222AD73510061F643 /* ThreadManager.cpp in Sources */,
+				192A67A622C43CBA009A6F1E /* GUIFrame.cpp in Sources */,
 				19F17EA522AD78F20061F643 /* Shader.cpp in Sources */,
 				19646FC322A9FB6D005E027E /* Timing.cpp in Sources */,
 				191BDDB922A84F7700270B9D /* FileUtil.cpp in Sources */,
