@@ -14,10 +14,10 @@ private:
     static Shader shader;
     static void createSpriteMesh(const Graphics& gfx);
 
-    //PGE::Shader::Constant* modelMatrixValue;
+    PGE::Shader::Constant* modelMatrixValue;
     PGE::Shader::Constant* spriteColorValue;
-    //PGE::Shader::Constant* scaleValue;
-    //PGE::Shader::Constant* rotationMatrixValue;
+    PGE::Shader::Constant* scaleValue;
+    PGE::Shader::Constant* rotationMatrixValue;
 
     Texture texture;
     Material material;

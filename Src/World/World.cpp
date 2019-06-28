@@ -168,5 +168,5 @@ void World::updatePlaying(float timeStep) {
 }
 
 void World::drawPlaying() {
-//   poster.render();
+   poster.render();
 }

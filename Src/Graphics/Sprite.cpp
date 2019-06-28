@@ -19,10 +19,10 @@ void Sprite::cleanup() {
 Sprite::Sprite() { }
 
 Sprite::Sprite(const Graphics& gfx, const Texture& tex) {
-    //modelMatrixValue = shader->getVertexShaderConstant("modelMatrix");
+    modelMatrixValue = shader->getVertexShaderConstant("modelMatrix");
     spriteColorValue = shader->getFragmentShaderConstant("spriteColor");
-    //scaleValue = shader->getVertexShaderConstant("scale");
-    //rotationMatrixValue = shader->getVertexShaderConstant("rotationMatrix");
+    scaleValue = shader->getVertexShaderConstant("scale");
+    rotationMatrixValue = shader->getVertexShaderConstant("rotationMatrix");
 
     texture = tex;
     material = Material::create(shader, tex);
@@ -106,10 +106,10 @@ void Sprite::update() {
 }
 
 void Sprite::render() const {
-    //modelMatrixValue->setValue(modelMatrix);
+    modelMatrixValue->setValue(modelMatrix);
     spriteColorValue->setValue(color);
-    //scaleValue->setValue(scale);
-    //rotationMatrixValue->setValue(rotationMatrix);
+    scaleValue->setValue(scale);
+    rotationMatrixValue->setValue(rotationMatrix);
 
     sharedMesh->setMaterial(material.getInternal());
 
