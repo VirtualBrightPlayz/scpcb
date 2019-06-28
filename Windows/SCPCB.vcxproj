@@ -101,6 +101,7 @@
     <ClInclude Include="..\Src\Input\KeyBinds.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUI.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIButton.h" />
+    <ClInclude Include="..\Src\Menus\GUI\GUIFrame.h" />
     <ClInclude Include="..\Src\Menus\PauseMenu.h" />
     <ClInclude Include="..\Src\Menus\UIAssets.h" />
     <ClInclude Include="..\Src\PlayerController\PlayerController.h" />
@@ -138,6 +139,7 @@
     <ClCompile Include="..\Src\Main.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUI.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp" />
+    <ClCompile Include="..\Src\Menus\GUI\GUIFrame.cpp" />
     <ClCompile Include="..\Src\Menus\PauseMenu.cpp" />
     <ClCompile Include="..\Src\Menus\UIAssets.cpp" />
     <ClCompile Include="..\Src\PlayerController\PlayerController.cpp" />
