@@ -89,7 +89,7 @@ bool World::run() {
     timing->addSecondsToAccumulator(secondsPassed);
 
     while (timing->tickReady()) {
-        runTick(timing->getTimeStep());
+        runTick((float)timing->getTimeStep());
         timing->subtractTick();
     }
 

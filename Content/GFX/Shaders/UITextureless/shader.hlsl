@@ -4,16 +4,14 @@ cbuffer cbMatrices {
 
 cbuffer cbFragment {
     float4 imageColor;
-}
+};
 
 struct VS_INPUT {
-    float3 position  : POSITION0;
-    float2 texCoords : TEXCOORD0;
+    float3 position : POSITION0;
 };
 
 struct PS_INPUT {
-    float4 position  : SV_POSITION;
-    float2 texCoords : TEXCOORD0;
+    float4 position : SV_POSITION;
 };
 
 struct PS_OUTPUT {
@@ -23,8 +21,7 @@ struct PS_OUTPUT {
 PS_INPUT VS(VS_INPUT input) {
     PS_INPUT output = (PS_INPUT)0;
     output.position = float4(input.position.x, input.position.y, input.position.z, 1.0);
-    output.position = mul(output.position,projectionMatrix);
-    output.texCoords = input.texCoords;
+    output.position = mul(output.position, projectionMatrix);
     return output;
 }
 

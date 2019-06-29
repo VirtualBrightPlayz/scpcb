@@ -89,8 +89,8 @@ void Sprite::createSpriteMesh(const Graphics& gfx) {
     std::vector<PGE::Primitive> prims;
     prims.push_back(PGE::Primitive(0, 1, 2));
     prims.push_back(PGE::Primitive(0, 3, 1));
-//    prims.push_back(PGE::Primitive(1, 0, 2));
-//    prims.push_back(PGE::Primitive(3, 0, 1));
+    //prims.push_back(PGE::Primitive(1, 0, 2));
+    //prims.push_back(PGE::Primitive(3, 0, 1));
 
     sharedMesh->setGeometry(meshVerts, prims);
 }

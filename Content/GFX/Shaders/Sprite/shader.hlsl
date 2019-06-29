@@ -14,7 +14,7 @@ cbuffer cbVertex {
 
 cbuffer cbFragment {
     float4 spriteColor;
-}
+};
 
 struct VS_INPUT {
     float2 position  : POSITION0;
@@ -34,7 +34,7 @@ PS_INPUT VS(VS_INPUT input) {
     PS_INPUT output = (PS_INPUT)0;
 
     // Remove rotations (and scale).
-    matrix viewModel = mul(viewMatrix, modelMatrix;)
+    matrix viewModel = mul(modelMatrix, viewMatrix);
     viewModel[0][0] = 1.0;
     viewModel[1][1] = 1.0;
     viewModel[2][2] = 1.0;
@@ -46,7 +46,7 @@ PS_INPUT VS(VS_INPUT input) {
     viewModel[2][1] = 0.0;
 
     // Add in sprite scaling and roll rotations.
-    float4 vertexScaleRotation = mul(float4(scale.x, scale.y, 1.0, 1.0), float4(input.position.x, input.position.y, 0.0, 1.0);
+    float4 vertexScaleRotation = float4(input.position.x * scale.x, input.position.y * scale.y, 0.0, 1.0);
     vertexScaleRotation = mul(vertexScaleRotation, rotationMatrix);
 
     output.position = mul(vertexScaleRotation, viewModel);
@@ -57,7 +57,7 @@ PS_INPUT VS(VS_INPUT input) {
 
 PS_OUTPUT PS(PS_INPUT input) {
     PS_OUTPUT output = (PS_OUTPUT)0;
-    float4 diffColor = diff.Sample(smp,input.texCoords);
+    float4 diffColor = diff.Sample(smp, input.texCoords);
     output.color = spriteColor * diffColor;
     return output;
 }
