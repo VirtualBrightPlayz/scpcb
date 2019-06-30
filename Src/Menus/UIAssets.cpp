@@ -5,7 +5,7 @@ UIAssets::UIAssets(const Graphics& gfx) {
     menuWhite = new UIMesh(gfx, "GFX/Menu/menuwhite.jpg", true);
     menuBlack = new UIMesh(gfx, "GFX/Menu/menublack.jpg", true);
 
-    PGE::Color grey = PGE::Color(30, 30, 30, 127);
+    PGE::Color grey = PGE::Color(70, 70, 70, 157);
     hoverLightUp = new UIMesh(gfx, grey);
 }
 

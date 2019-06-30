@@ -7,8 +7,6 @@ class UIAssets;
 
 class GUIFrame : public GUI {
 private:
-    bool clicked;
-
     Image* background = nullptr;
     Image* foreground = nullptr;
 

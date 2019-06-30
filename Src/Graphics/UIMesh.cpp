@@ -14,12 +14,11 @@ Image::Image(float x, float y, float width, float height, UIMesh* mesh)
 }
 
 Image::~Image() {
-    // Make its reference to parent null to avoid cyclic destruction.
-    if (mesh != nullptr) {
-        UIMesh* parent = mesh;
-        mesh = nullptr;
-        parent->removeSlice(this);
-    }
+//    if (mesh != nullptr) {
+//        UIMesh* parent = mesh;
+//        mesh = nullptr;
+//        parent->removeSlice(this);
+//    }
 }
 
 void Image::setAlignment(Alignment align) {
@@ -47,7 +46,8 @@ void Image::fillVertexPositions(PGE::Vector3f pos[]) const {
     }
 
     // Get the image's depth.
-    float depth = (1.f + depthOrder) / totalSliceCount;
+    // TODO: Figure out why the projection matrix won't accept Z positions higher than 0.0 on DX11.
+    float depth = -1.f + (1.f + depthOrder) / totalSliceCount;
 
     pos[0] = PGE::Vector3f(trueX, trueY, depth);
     pos[1] = PGE::Vector3f(trueX + width, trueY + height, depth);

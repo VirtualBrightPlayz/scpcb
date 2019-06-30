@@ -40,11 +40,8 @@ World::World() {
     poster.setRotation(0.5f);
     poster.setScale(1.f);
 
-    btn = GUIButton(-20.f, -10.f, 40.f, 20.f, uiAssets);
-    btn.setVisibility(true);
-
     setGameState(GameState::Playing);
-    pauseMenu = new PauseMenu();
+    pauseMenu = new PauseMenu(uiAssets);
 
     isRoadRollered = false;
 }
@@ -124,11 +121,9 @@ void World::runTick(float timeStep) {
         } break;
 
         case GameState::PauseMenu: {
-            pauseMenu->update();
+            pauseMenu->update(this, mousePosition);
         } break;
     }
-
-    btn.update(mousePosition);
 
     shaderMngt->update(camera);
 
@@ -139,7 +134,6 @@ void World::runTick(float timeStep) {
 
 void World::draw() {
     drawPlaying();
-    pauseMenu->draw(currState);
 
     uiAssets->draw();
 
@@ -169,4 +163,8 @@ void World::updatePlaying(float timeStep) {
 
 void World::drawPlaying() {
    poster.render();
+}
+
+void World::quit() {
+    isRoadRollered = true;
 }

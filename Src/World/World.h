@@ -5,7 +5,6 @@
 #include "../Wrap/IO.h"
 #include "../Graphics/Sprite.h"
 #include "../Graphics/UIMesh.h"
-#include "../Menus/GUI/GUIButton.h"
 
 class Camera;
 class Timing;
@@ -31,7 +30,6 @@ private:
     UIAssets* uiAssets;
     // TODO: Remove, these are a test.
     Sprite poster;
-    GUIButton btn;
 
     ShaderManager* shaderMngt;
 
@@ -63,6 +61,9 @@ public:
 
     // Goes through the update/draw phrase of a single frame.
     bool run();
+
+    // Prompts the world object to kill itself.
+    void quit();
 };
 
 #endif // World_H_INCLUDED

@@ -22,6 +22,9 @@ public:
     static void cleanup();
 
     Config();
+    Config(const Config& cpy);
+
+    Config& operator=(const Config& other);
 
     void setResolution(int width, int height);
     int getWidth() const;
