@@ -40,12 +40,14 @@ public:
 
     Image()=default;
     Image(float x, float y, float width, float height, UIMesh* mesh);
-    ~Image();
 
     void setAlignment(Alignment align);
 
     // Fills the passed array of vectors with its quad positions.
     void fillVertexPositions(PGE::Vector3f pos[]) const;
+
+    // Uploads the slice data to the parent UIMesh.
+    void upload() const;
 };
 
 class UIMesh {
@@ -59,14 +61,14 @@ private:
     PGE::Color color;
     PGE::Shader::Constant* imageColorValue;
 
-    std::vector<Image> slices;
-
     // Whether or not the texture applied to this mesh is meant to tile.
     bool tiled;
     // Whether the mesh has a texture or just a color fill.
     bool textureless;
 
 public:
+    std::vector<Image> slices;
+
     static void initialize(const Shader& shd, const Shader& shdNoTex);
     static void cleanup();
 
@@ -76,11 +78,10 @@ public:
     UIMesh(const Graphics& gfx, const PGE::Color& color);
 
     // Generates a new quad for the mesh.
-    Image* createSlice(float x, float y, float width, float height);
-    void removeSlice(const Image* slice);
+    Image createSlice(float x, float y, float width, float height) ;
 
-    // Uploads the vertex data.
-    void bake() const;
+    // Uploads the vertex data to the mesh.
+    void bake();
     void render() const;
 };
 

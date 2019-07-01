@@ -114,6 +114,10 @@ void World::runTick(float timeStep) {
     if (keyBinds.escape.isHit()) {
         setGameState(currState == GameState::Playing ? GameState::PauseMenu : GameState::Playing);
     }
+    if (keyBinds.mouse1.isHit()) {
+        std::cout << "MouseX: " << mousePosition.x << std::endl;
+        std::cout << "MouseY: " << mousePosition.y << std::endl;
+    }
 
     switch (currState) {
         case GameState::Playing: {

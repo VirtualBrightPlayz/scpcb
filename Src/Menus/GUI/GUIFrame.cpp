@@ -13,10 +13,13 @@ GUIFrame::GUIFrame(float x, float y, float width, float height, const UIAssets* 
 }
 
 void GUIFrame::updateVisibility(bool visible) {
-    background->visible = visible;
-    foreground->visible = visible;
+    background.visible = visible;
+    foreground.visible = visible;
 }
 
-void GUIFrame::internalUpdate(PGE::Vector2f mousePos) { }
+void GUIFrame::internalUpdate(PGE::Vector2f mousePos) {
+    background.upload();
+    foreground.upload();
+}
 
 void GUIFrame::activeUpdate(PGE::Vector2f mousePos) { }

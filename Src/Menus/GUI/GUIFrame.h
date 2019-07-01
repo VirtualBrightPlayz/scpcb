@@ -7,8 +7,8 @@ class UIAssets;
 
 class GUIFrame : public GUI {
 private:
-    Image* background = nullptr;
-    Image* foreground = nullptr;
+    Image background;
+    Image foreground;
 
     virtual void updateVisibility(bool visible) override;
     virtual void internalUpdate(PGE::Vector2f mousePos) override;

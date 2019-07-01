@@ -13,14 +13,6 @@ Image::Image(float x, float y, float width, float height, UIMesh* mesh)
     visible = true;
 }
 
-Image::~Image() {
-//    if (mesh != nullptr) {
-//        UIMesh* parent = mesh;
-//        mesh = nullptr;
-//        parent->removeSlice(this);
-//    }
-}
-
 void Image::setAlignment(Alignment align) {
     alignment = align;
 }
@@ -53,6 +45,12 @@ void Image::fillVertexPositions(PGE::Vector3f pos[]) const {
     pos[1] = PGE::Vector3f(trueX + width, trueY + height, depth);
     pos[2] = PGE::Vector3f(trueX, trueY + height, depth);
     pos[3] = PGE::Vector3f(trueX + width, trueY, depth);
+}
+
+void Image::upload() const {
+    if (visible) {
+        mesh->slices.push_back(*this);
+    }
 }
 
 void UIMesh::initialize(const Shader& shd, const Shader& shdNoTex) {
@@ -94,29 +92,17 @@ UIMesh::UIMesh(const Graphics& gfx, const PGE::Color& color) {
     imageColorValue = shaderTextureless->getFragmentShaderConstant("imageColor");
 }
 
-Image* UIMesh::createSlice(float x, float y, float width, float height) {
-    slices.push_back(Image(x, y, width, height, this));
-    return &slices.back();
+Image UIMesh::createSlice(float x, float y, float width, float height) {
+    return Image(x, y, width, height, this);
 }
 
-void UIMesh::removeSlice(const Image* slice) {
-    for (int i = 0; i < (int)slices.size(); i++) {
-        if (&slices[i] == slice) {
-            slices.erase(slices.begin() + i);
-            return;
-        }
-    }
-}
-
-void UIMesh::bake() const {
+void UIMesh::bake() {
     mesh->clearGeometry();
 
     std::vector<PGE::Vertex> verts;
     std::vector<PGE::Primitive> prims;
 
     for (int i = 0; i < (int)slices.size(); i++) {
-        if (!slices[i].visible) { continue; }
-
         PGE::Vector3f position[4];
         slices[i].fillVertexPositions(position);
 
@@ -153,6 +139,9 @@ void UIMesh::bake() const {
     }
 
     mesh->setGeometry(verts, prims);
+
+    // Reset slice data.
+    slices.clear();
 }
 
 void UIMesh::render() const {

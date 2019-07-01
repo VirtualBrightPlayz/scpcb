@@ -40,7 +40,7 @@ private:
     GUIButton quit;
 
     // Quitting state.
-    GUIFrame quitPrompt;
+    GUIFrame quitFrame;
     GUIButton quitYes;
     GUIButton quitNo;
 
