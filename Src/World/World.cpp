@@ -64,7 +64,7 @@ void World::setGameState(GameState gs) {
 
     switch (currState) {
         case GameState::Playing: {
-            io->setMousePosition(PGE::Vector2i(graphics->getWindow()->getWidth() / 2, graphics->getWindow()->getHeight() / 2));
+            io->setMousePosition(PGE::Vector2f(config.getWidth() / 2, config.getHeight() / 2));
         } break;
     }
 
@@ -102,7 +102,7 @@ void World::runTick(float timeStep) {
     // Get mouse position and convert it to screen coordinates.
 
     // Convert it to [0, 100].
-    PGE::Vector2f scale = PGE::Vector2f(100.f / graphics->getWindow()->getWidth() , 100.f / graphics->getWindow()->getHeight());
+    PGE::Vector2f scale = PGE::Vector2f(100.f / config.getWidth() , 100.f / config.getHeight());
     PGE::Vector2f mousePosition = PGE::Vector2f(io->getMousePosition().x * scale.x, io->getMousePosition().y * scale.y);
     mousePosition.x *= config.getAspectRatio();
 
@@ -145,8 +145,8 @@ void World::draw() {
 }
 
 void World::updatePlaying(float timeStep) {
-    int centerX = graphics->getWindow()->getWidth() / 2;
-    int centerY = graphics->getWindow()->getHeight()  / 2;
+    int centerX = config.getWidth() / 2;
+    int centerY = config.getHeight()  / 2;
 
     // TODO: Sensitivity from Config class.
     float mouseXDiff = (float)(io->getMousePosition().x - centerX) / 300.f;
@@ -159,7 +159,7 @@ void World::updatePlaying(float timeStep) {
     shaderMngt->update(camera);
 
     // Reset mouse to center.
-    io->setMousePosition(PGE::Vector2i(centerX, centerY));
+    io->setMousePosition(PGE::Vector2f(centerX, centerY));
 
     poster.addRotation(5.f * timeStep);
     poster.update();
