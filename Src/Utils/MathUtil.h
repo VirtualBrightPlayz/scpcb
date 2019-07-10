@@ -3,7 +3,7 @@
 
 class MathUtil {
 public:
-    constexpr static float MARGIN_ERROR = 0.001;
+    constexpr static float MARGIN_ERROR = 0.001f;
 
     static float degToRad(float degrees);
 };
