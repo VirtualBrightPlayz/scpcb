@@ -4,47 +4,49 @@
 #include "../../Graphics/UIMesh.h"
 
 class GUI {
-private:
-    // Stores which element has been activated (I.E. which had a mousedown trigger).
-    static GUI* active;
-    // Stores which element is being hovered over.
-    static GUI* hover;
+	private:
+		// Stores which element has been activated (I.E. which had a mousedown trigger).
+		static GUI* active;
+		// Stores which element is being hovered over.
+		static GUI* hover;
 
-    bool hovered;
-    bool visible;
+		bool hovered;
+		bool visible;
 
-protected:
-    float x;
-    float y;
-    float width;
-    float height;
+		static UIMesh* uiMesh;
 
-    Alignment alignment;
+	protected:
+		float x;
+		float y;
+		float width;
+		float height;
 
-    bool mouseDown;
+		Alignment alignment;
 
-    GUI(float x, float y, float width, float height, Alignment alignment);
+		bool mouseDown;
 
-    float getX2() const;
-    float getY2() const;
+		GUI(float x, float y, float width, float height, Alignment alignment);
 
-    virtual void internalUpdate(PGE::Vector2f mousePos)=0;
-    // Performs updates on the object when it is active.
-    virtual void activeUpdate(PGE::Vector2f mousePos)=0;
+		float getX2() const;
+		float getY2() const;
 
-public:
-    virtual ~GUI();
+		virtual void internalUpdate(PGE::Vector2f mousePos)=0;
+		// Performs updates on the object when it is active.
+		virtual void activeUpdate(PGE::Vector2f mousePos)=0;
 
-    bool isHovered() const;
+	public:
+		virtual ~GUI();
 
-    void setVisibility(bool vis);
-    virtual void updateVisibility(bool visible)=0;
+		bool isHovered() const;
 
-    // This handles setting the active element and hover detection alongside calling internalUpdate().
-    void update(PGE::Vector2f mousePos);
+		void setVisibility(bool vis);
+		virtual void updateVisibility(bool visible)=0;
 
-    // Removes hover element and resets active element when mouse1 is up.
-    static void reset();
+		// This handles setting the active element and hover detection alongside calling internalUpdate().
+		void update(PGE::Vector2f mousePos);
+
+		// Removes hover element and resets active element when mouse1 is up.
+		static void reset();
 };
 
 #endif // GUI_H_INCLUDED

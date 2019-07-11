@@ -113,13 +113,6 @@
     <ClInclude Include="..\Src\World\ShaderManager.h" />
     <ClInclude Include="..\Src\World\Timing.h" />
     <ClInclude Include="..\Src\World\World.h" />
-    <ClInclude Include="..\Src\Wrap\Graphics.h" />
-    <ClInclude Include="..\Src\Wrap\IO.h" />
-    <ClInclude Include="..\Src\Wrap\Material.h" />
-    <ClInclude Include="..\Src\Wrap\Mesh.h" />
-    <ClInclude Include="..\Src\Wrap\Shader.h" />
-    <ClInclude Include="..\Src\Wrap\Texture.h" />
-    <ClInclude Include="..\Src\Wrap\ThreadManager.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -151,13 +144,6 @@
     <ClCompile Include="..\Src\World\ShaderManager.cpp" />
     <ClCompile Include="..\Src\World\Timing.cpp" />
     <ClCompile Include="..\Src\World\World.cpp" />
-    <ClCompile Include="..\Src\Wrap\Graphics.cpp" />
-    <ClCompile Include="..\Src\Wrap\IO.cpp" />
-    <ClCompile Include="..\Src\Wrap\Material.cpp" />
-    <ClCompile Include="..\Src\Wrap\Mesh.cpp" />
-    <ClCompile Include="..\Src\Wrap\Shader.cpp" />
-    <ClCompile Include="..\Src\Wrap\Texture.cpp" />
-    <ClCompile Include="..\Src\Wrap\ThreadManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

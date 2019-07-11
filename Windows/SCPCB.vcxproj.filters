@@ -28,9 +28,6 @@
     <Filter Include="Source Files\World">
       <UniqueIdentifier>{3bd69e8e-5fec-4933-919a-6286a88e2a28}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Wrap">
-      <UniqueIdentifier>{e268426c-d8eb-41e2-83a9-794475aa4fbd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{cc38ef1a-8dd7-481b-98f2-830ee3401e56}</UniqueIdentifier>
     </Filter>
@@ -51,9 +48,6 @@
     </Filter>
     <Filter Include="Header Files\World">
       <UniqueIdentifier>{bd447bc2-4ae6-4225-a7a8-f3bf72dac3b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Wrap">
-      <UniqueIdentifier>{a4bdfdb0-deb0-4eb0-9856-fb4a075a3f22}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{f8787ead-9f3a-4e61-a420-20a3943e1c40}</UniqueIdentifier>
@@ -95,27 +89,6 @@
     </ClInclude>
     <ClInclude Include="..\Src\Graphics\Sprite.h">
       <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Wrap\Graphics.h">
-      <Filter>Header Files\Wrap</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Wrap\IO.h">
-      <Filter>Header Files\Wrap</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Wrap\Material.h">
-      <Filter>Header Files\Wrap</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Wrap\Mesh.h">
-      <Filter>Header Files\Wrap</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Wrap\Shader.h">
-      <Filter>Header Files\Wrap</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Wrap\Texture.h">
-      <Filter>Header Files\Wrap</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Wrap\ThreadManager.h">
-      <Filter>Header Files\Wrap</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\World\ShaderManager.h">
       <Filter>Header Files\World</Filter>
@@ -215,27 +188,6 @@
     </ClCompile>
     <ClCompile Include="..\Src\World\World.cpp">
       <Filter>Source Files\World</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Wrap\Graphics.cpp">
-      <Filter>Source Files\Wrap</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Wrap\IO.cpp">
-      <Filter>Source Files\Wrap</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Wrap\Material.cpp">
-      <Filter>Source Files\Wrap</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Wrap\Mesh.cpp">
-      <Filter>Source Files\Wrap</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Wrap\Shader.cpp">
-      <Filter>Source Files\Wrap</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Wrap\Texture.cpp">
-      <Filter>Source Files\Wrap</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Wrap\ThreadManager.cpp">
-      <Filter>Source Files\Wrap</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Utils\MathUtil.cpp">
       <Filter>Source Files\Utils</Filter>
