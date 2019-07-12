@@ -1,26 +1,20 @@
 #ifndef KEYBINDS_H_INCLUDED
 #define KEYBINDS_H_INCLUDED
 
-#include "Binding.h"
+#include <IO/IO.h>
+#include <UserInput/UserInput.h>
 
 class KeyBinds {
-private:
-    std::vector<Binding> miscBindings;
+    private:
+        std::vector<PGE::UserInput*> miscBindings;
 
-public:
-    static void initialize();
-    static void cleanup();
+    public:
+        PGE::MouseInput* mouse1;
+        PGE::MouseInput* mouse2;
 
-    // -- Definite bindings.
+        PGE::KeyboardInput* escape;
 
-    Binding mouse1;
-    Binding mouse2;
-
-    Binding escape;
-
-    void update();
+        void update();
 };
-
-extern KeyBinds keyBinds;
 
 #endif // KEYBINDS_H_INCLUDED

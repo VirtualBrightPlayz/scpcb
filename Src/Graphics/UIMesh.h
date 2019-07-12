@@ -4,8 +4,8 @@
 #include <vector>
 #include <Math/Rectangle.h>
 
-#include "../Wrap/Mesh.h"
-#include "../Wrap/Material.h"
+#include <Mesh/Mesh.h>
+#include <Material/Material.h>
 
 class UIMesh;
 
@@ -21,14 +21,14 @@ class UIMesh {
     private:
         //TODO: store transformation matrix constants
 
-        Shader shaderTextured;
+        PGE::Shader* shaderTextured;
         PGE::Shader::Constant* shaderTexturedColorConstant;
 
-        Shader shaderTextureless;
+        PGE::Shader* shaderTextureless;
         PGE::Shader::Constant* shaderTexturelessColorConstant;
 
-        Mesh mesh;
-        Material material;
+        PGE::Mesh* mesh;
+        PGE::Material* material;
         PGE::Color color;
 
         // Whether or not the texture applied to this mesh is meant to tile.
@@ -41,7 +41,7 @@ class UIMesh {
         std::vector<PGE::Vertex> vertices;
         std::vector<PGE::Primitive> primitives;
     public:
-        UIMesh(const Graphics& gfx, const Shader& shdTextured, const Shader& shdTextureless);
+        UIMesh(PGE::Graphics* gfx, PGE::Shader* shdTextured, PGE::Shader* shdTextureless);
 
         PGE::Vector2f scaleFactor;
         PGE::Rectanglef uvTilingRectangle;
@@ -49,7 +49,7 @@ class UIMesh {
         void startRender();
 
         void setTextureless();
-        void setTextured(const Texture& texture, bool tile);
+        void setTextured(PGE::Texture* texture, bool tile);
 
         void setColor(PGE::Color col);
 

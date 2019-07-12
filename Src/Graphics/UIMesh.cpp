@@ -1,8 +1,8 @@
 #include "UIMesh.h"
 #include "../Save/Config.h"
 
-UIMesh::UIMesh(const Graphics& gfx, const Shader& shdTextured, const Shader& shdTextureless) {
-    mesh = Mesh::create(gfx, PGE::Primitive::TYPE::TRIANGLE);
+UIMesh::UIMesh(PGE::Graphics* gfx, PGE::Shader* shdTextured, PGE::Shader* shdTextureless) {
+    mesh = PGE::Mesh::create(gfx, PGE::Primitive::TYPE::TRIANGLE);
     
     color = PGE::Color(1.f, 1.f, 1.f, 1.f);
 
@@ -30,14 +30,16 @@ void UIMesh::endRender() {
     vertices.clear(); primitives.clear();
 }
 
-void UIMesh::setTextured(const Texture& texture, bool tile) {
+void UIMesh::setTextured(PGE::Texture* texture, bool tile) {
     endRender();
 
     tiled = tile;
     textureless = false;
 
-    material = Material::create(shaderTextured, texture);
-    mesh->setMaterial(material.getInternal());
+    PGE::Material* prevMaterial = material;
+    material = new PGE::Material(shaderTextured, texture);
+    mesh->setMaterial(material);
+    delete prevMaterial;
 
     startRender();
 }
@@ -47,8 +49,10 @@ void UIMesh::setTextureless() {
 
     textureless = false;
 
-    material = Material::create(shaderTextureless);
-    mesh->setMaterial(material.getInternal());
+    PGE::Material* prevMaterial = material;
+    material = new PGE::Material(shaderTextureless);
+    mesh->setMaterial(material);
+    delete prevMaterial;
 
     startRender();
 }

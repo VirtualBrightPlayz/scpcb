@@ -1,30 +1,25 @@
 #ifndef GUIBUTTON_H_INCLUDED
 #define GUIBUTTON_H_INCLUDED
 
-#include "GUI.h"
+#include "GUIComponent.h"
 
 class UIAssets;
 
-class GUIButton : public GUI {
-private:
-    bool clicked;
+class GUIButton : public GUIComponent {
+    protected:
+        bool clicked;
 
-    Image background;
-    Image foreground;
-    Image hoverColor;
+        void updateInternal(PGE::Vector2f mousePos) override;
+        void renderInternal() override;
 
-    virtual void updateVisibility(bool visible) override;
-    virtual void internalUpdate(PGE::Vector2f mousePos) override;
-    virtual void activeUpdate(PGE::Vector2f mousePos) override;
+        GUIButton() {}
+    public:
+        // Whether this button can be clicked.
+        bool locked;
 
-public:
-    // Whether this button can be clicked.
-    bool locked;
+        GUIButton(UIMesh* um, KeyBinds* kb, float x, float y, float width, float height, const UIAssets* assets, Alignment alignment = Alignment::CenterXY);
 
-    GUIButton();
-    GUIButton(float x, float y, float width, float height, const UIAssets* assets, Alignment alignment = Alignment::CenterXY);
-
-    bool isClicked() const;
+        bool isClicked() const;
 };
 
 #endif // GUIBUTTON_H_INCLUDED
