@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -19,59 +11,35 @@
     <Filter Include="Header Files">
       <UniqueIdentifier>{6d7e7a9f-fde1-4773-96fb-db4db1c22418}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\PlayerController">
-      <UniqueIdentifier>{004b51f4-3bf7-4c8d-a355-c45c28186a07}</UniqueIdentifier>
+    <Filter Include="Src">
+      <UniqueIdentifier>{5e13c208-e88b-437b-877a-cfbcc0db45f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utils">
-      <UniqueIdentifier>{1c1daf71-062f-4efc-883d-9bf5d47cfded}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\World">
-      <UniqueIdentifier>{3bd69e8e-5fec-4933-919a-6286a88e2a28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics">
-      <UniqueIdentifier>{cc38ef1a-8dd7-481b-98f2-830ee3401e56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Collision">
-      <UniqueIdentifier>{3151c6f9-fe3f-4e71-9d7c-6f714edf7b23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Collision">
+    <Filter Include="Src\Collision">
       <UniqueIdentifier>{1fbaeefb-f02b-4d45-ae3a-43c0e05a87cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphics">
+    <Filter Include="Src\Graphics">
       <UniqueIdentifier>{26a1e40a-1df8-4af3-8d63-5e5bf0e6a443}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\PlayerController">
-      <UniqueIdentifier>{4e28020e-0416-4306-8014-578594fcdb5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Utils">
-      <UniqueIdentifier>{2a530fab-6df1-4a03-8dd3-9d0b8fe04792}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\World">
-      <UniqueIdentifier>{bd447bc2-4ae6-4225-a7a8-f3bf72dac3b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Input">
+    <Filter Include="Src\Input">
       <UniqueIdentifier>{f8787ead-9f3a-4e61-a420-20a3943e1c40}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Input">
-      <UniqueIdentifier>{f2f41911-6a9d-45cf-83ef-882bbb8802a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Menus">
+    <Filter Include="Src\Menus">
       <UniqueIdentifier>{34a9a24e-1cee-473d-8779-979655a17999}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Menus">
-      <UniqueIdentifier>{c9d0fa95-e58f-4b8a-b7cf-b057ea26e75f}</UniqueIdentifier>
+    <Filter Include="Src\PlayerController">
+      <UniqueIdentifier>{4e28020e-0416-4306-8014-578594fcdb5f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Menus\GUI">
-      <UniqueIdentifier>{0df873b2-c730-4359-9eb7-ff769cfbaf5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Menus\GUI">
-      <UniqueIdentifier>{8bad5b84-e59e-4c9c-9598-adcab50e8be3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Save">
+    <Filter Include="Src\Save">
       <UniqueIdentifier>{c10cfe46-a3cb-4005-9f0f-eb962f904fc8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Save">
-      <UniqueIdentifier>{b2220310-30d7-4cf6-8618-a12538e27ea3}</UniqueIdentifier>
+    <Filter Include="Src\Utils">
+      <UniqueIdentifier>{2a530fab-6df1-4a03-8dd3-9d0b8fe04792}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\World">
+      <UniqueIdentifier>{bd447bc2-4ae6-4225-a7a8-f3bf72dac3b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Menus\GUI">
+      <UniqueIdentifier>{0df873b2-c730-4359-9eb7-ff769cfbaf5e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -79,67 +47,64 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Collision\Collision.h">
-      <Filter>Header Files\Collision</Filter>
+      <Filter>Src\Collision</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Collision\CollisionMesh.h">
-      <Filter>Header Files\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Graphics\Camera.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Graphics\Sprite.h">
-      <Filter>Header Files\Graphics</Filter>
+      <Filter>Src\Collision</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\World\ShaderManager.h">
-      <Filter>Header Files\World</Filter>
+      <Filter>Src\World</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\World\Timing.h">
-      <Filter>Header Files\World</Filter>
+      <Filter>Src\World</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\World\World.h">
-      <Filter>Header Files\World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Utils\FileUtil.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Utils\INI.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Utils\TextMgmt.h">
-      <Filter>Header Files\Utils</Filter>
+      <Filter>Src\World</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\PlayerController\PlayerController.h">
-      <Filter>Header Files\PlayerController</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Utils\MathUtil.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Input\Binding.h">
-      <Filter>Header Files\Input</Filter>
+      <Filter>Src\PlayerController</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Input\KeyBinds.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\PauseMenu.h">
-      <Filter>Header Files\Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\UIAssets.h">
-      <Filter>Header Files\Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\GUIButton.h">
-      <Filter>Header Files\Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\GUI.h">
-      <Filter>Header Files\Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Graphics\UIMesh.h">
-      <Filter>Header Files\Graphics</Filter>
+      <Filter>Src\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Save\Config.h">
-      <Filter>Header Files\Save</Filter>
+      <Filter>Src\Save</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Graphics\Camera.h">
+      <Filter>Src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Graphics\Sprite.h">
+      <Filter>Src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Graphics\UIMesh.h">
+      <Filter>Src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\PauseMenu.h">
+      <Filter>Src\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\UIAssets.h">
+      <Filter>Src\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\GUI\GUIButton.h">
+      <Filter>Src\Menus\GUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Menus\GUI\GUIFrame.h">
-      <Filter>Header Files\Menus\GUI</Filter>
+      <Filter>Src\Menus\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Utils\FileUtil.h">
+      <Filter>Src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Utils\INI.h">
+      <Filter>Src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Utils\MathUtil.h">
+      <Filter>Src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Utils\TextMgmt.h">
+      <Filter>Src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\GUI\GUIComponent.h">
+      <Filter>Src\Menus\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -154,70 +119,67 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Src\Main.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Collision\Collision.cpp">
-      <Filter>Source Files\Collision</Filter>
+      <Filter>Src\Collision</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Collision\CollisionMesh.cpp">
-      <Filter>Source Files\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Graphics\Camera.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Graphics\Sprite.cpp">
-      <Filter>Source Files\Graphics</Filter>
+      <Filter>Src\Collision</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\PlayerController\PlayerController.cpp">
-      <Filter>Source Files\PlayerController</Filter>
+      <Filter>Src\PlayerController</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Utils\FileUtil.cpp">
-      <Filter>Source Files\Utils</Filter>
+    <ClCompile Include="..\Src\Graphics\Camera.cpp">
+      <Filter>Src\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Utils\INI.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Utils\TextMgmt.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\World\ShaderManager.cpp">
-      <Filter>Source Files\World</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\World\Timing.cpp">
-      <Filter>Source Files\World</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\World\World.cpp">
-      <Filter>Source Files\World</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Utils\MathUtil.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Input\Binding.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Input\KeyBinds.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\PauseMenu.cpp">
-      <Filter>Source Files\Menus</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\UIAssets.cpp">
-      <Filter>Source Files\Menus</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\GUI.cpp">
-      <Filter>Source Files\Menus\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp">
-      <Filter>Source Files\Menus\GUI</Filter>
+    <ClCompile Include="..\Src\Graphics\Sprite.cpp">
+      <Filter>Src\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Graphics\UIMesh.cpp">
-      <Filter>Source Files\Graphics</Filter>
+      <Filter>Src\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Save\Config.cpp">
-      <Filter>Source Files\Save</Filter>
+    <ClCompile Include="..\Src\Input\KeyBinds.cpp">
+      <Filter>Src\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Menus\PauseMenu.cpp">
+      <Filter>Src\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Menus\UIAssets.cpp">
+      <Filter>Src\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp">
+      <Filter>Src\Menus\GUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Menus\GUI\GUIFrame.cpp">
-      <Filter>Source Files\Menus\GUI</Filter>
+      <Filter>Src\Menus\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Save\Config.cpp">
+      <Filter>Src\Save</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Utils\FileUtil.cpp">
+      <Filter>Src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Utils\INI.cpp">
+      <Filter>Src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Utils\MathUtil.cpp">
+      <Filter>Src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Utils\TextMgmt.cpp">
+      <Filter>Src\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\World\ShaderManager.cpp">
+      <Filter>Src\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\World\Timing.cpp">
+      <Filter>Src\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\World\World.cpp">
+      <Filter>Src\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Menus\GUI\GUIComponent.cpp">
+      <Filter>Src\Menus\GUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

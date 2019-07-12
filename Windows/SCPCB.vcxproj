@@ -97,9 +97,8 @@
     <ClInclude Include="..\Src\Graphics\Camera.h" />
     <ClInclude Include="..\Src\Graphics\Sprite.h" />
     <ClInclude Include="..\Src\Graphics\UIMesh.h" />
-    <ClInclude Include="..\Src\Input\Binding.h" />
     <ClInclude Include="..\Src\Input\KeyBinds.h" />
-    <ClInclude Include="..\Src\Menus\GUI\GUI.h" />
+    <ClInclude Include="..\Src\Menus\GUI\GUIComponent.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIButton.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIFrame.h" />
     <ClInclude Include="..\Src\Menus\PauseMenu.h" />
@@ -127,10 +126,9 @@
     <ClCompile Include="..\Src\Graphics\Camera.cpp" />
     <ClCompile Include="..\Src\Graphics\Sprite.cpp" />
     <ClCompile Include="..\Src\Graphics\UIMesh.cpp" />
-    <ClCompile Include="..\Src\Input\Binding.cpp" />
     <ClCompile Include="..\Src\Input\KeyBinds.cpp" />
     <ClCompile Include="..\Src\Main.cpp" />
-    <ClCompile Include="..\Src\Menus\GUI\GUI.cpp" />
+    <ClCompile Include="..\Src\Menus\GUI\GUIComponent.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIFrame.cpp" />
     <ClCompile Include="..\Src\Menus\PauseMenu.cpp" />
