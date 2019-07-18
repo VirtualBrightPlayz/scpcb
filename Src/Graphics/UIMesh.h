@@ -1,6 +1,9 @@
 #ifndef UIMESH_H_INCLUDED
 #define UIMESH_H_INCLUDED
 
+#include <Misc/String.h>
+#include <Misc/FileName.h>
+
 #include <vector>
 #include <Math/Rectangle.h>
 
@@ -19,8 +22,9 @@ enum class Alignment {
 
 class UIMesh {
     private:
-        //TODO: store transformation matrix constants
+        PGE::Graphics* graphics;
 
+        //TODO: store transformation matrix constants
         PGE::Shader* shaderTextured;
         PGE::Shader::Constant* shaderTexturedColorConstant;
 
@@ -40,8 +44,15 @@ class UIMesh {
 
         std::vector<PGE::Vertex> vertices;
         std::vector<PGE::Primitive> primitives;
+
+        struct Texture
+        {
+            PGE::FileName name;
+            PGE::Texture* pgeTexture;
+        };
+        std::vector<Texture> textures;
     public:
-        UIMesh(PGE::Graphics* gfx, PGE::Shader* shdTextured, PGE::Shader* shdTextureless);
+        UIMesh(PGE::Graphics* gfx);
 
         PGE::Vector2f scaleFactor;
         PGE::Rectanglef uvTilingRectangle;
@@ -49,13 +60,15 @@ class UIMesh {
         void startRender();
 
         void setTextureless();
-        void setTextured(PGE::Texture* texture, bool tile);
+        void setTextured(PGE::FileName texture, bool tile);
 
         void setColor(PGE::Color col);
 
         void addRect(const PGE::Rectanglef& rect);
 
         void endRender();
+
+        void loadTexture(PGE::FileName textureName);
 };
 
 const Alignment operator&(const Alignment& a, const Alignment& b);

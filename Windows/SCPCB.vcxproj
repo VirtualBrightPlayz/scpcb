@@ -102,7 +102,6 @@
     <ClInclude Include="..\Src\Menus\GUI\GUIButton.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIFrame.h" />
     <ClInclude Include="..\Src\Menus\PauseMenu.h" />
-    <ClInclude Include="..\Src\Menus\UIAssets.h" />
     <ClInclude Include="..\Src\PlayerController\PlayerController.h" />
     <ClInclude Include="..\Src\Save\Config.h" />
     <ClInclude Include="..\Src\Utils\FileUtil.h" />
@@ -132,7 +131,6 @@
     <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIFrame.cpp" />
     <ClCompile Include="..\Src\Menus\PauseMenu.cpp" />
-    <ClCompile Include="..\Src\Menus\UIAssets.cpp" />
     <ClCompile Include="..\Src\PlayerController\PlayerController.cpp" />
     <ClCompile Include="..\Src\Save\Config.cpp" />
     <ClCompile Include="..\Src\Utils\FileUtil.cpp" />
