@@ -116,6 +116,9 @@ void UIMesh::loadTexture(PGE::FileName textureName) {
 
     if (texture == nullptr) {
         texture = PGE::Texture::load(graphics, textureName.str());
+        Texture cacheEntry;
+        cacheEntry.name = textureName; cacheEntry.pgeTexture = texture;
+        textures.push_back(cacheEntry);
     }
 }
 
