@@ -21,6 +21,7 @@ void UIMesh::startRender() {
 
 void UIMesh::endRender() {
     if (vertices.size() > 0 && primitives.size() > 0) {
+        mesh->setGeometry(vertices, primitives);
         mesh->render();
     }
     startedRender = false;
@@ -64,7 +65,25 @@ void UIMesh::setColor(PGE::Color col) {
 }
 
 void UIMesh::addRect(const PGE::Rectanglef& rect) {
-    //TODO: implement
+    PGE::Rectanglef uvRect = PGE::Rectanglef(rect.topLeftCorner().multiply(2.4f), rect.bottomRightCorner().multiply(2.4f));
+
+    PGE::Vertex vertex;
+
+    vertex.setVector2f("position", rect.topLeftCorner());
+    vertex.setVector2f("uv", uvRect.topLeftCorner());
+    vertices.push_back(vertex);
+
+    vertex.setVector2f("position", rect.topRightCorner());
+    vertex.setVector2f("uv", uvRect.topRightCorner());
+    vertices.push_back(vertex);
+
+    vertex.setVector2f("position", rect.bottomLeftCorner());
+    vertex.setVector2f("uv", uvRect.bottomLeftCorner());
+    vertices.push_back(vertex);
+
+    vertex.setVector2f("position", rect.bottomRightCorner());
+    vertex.setVector2f("uv", uvRect.bottomRightCorner());
+    vertices.push_back(vertex);
 }
 
 const Alignment operator&(const Alignment& a, const Alignment& b) {
