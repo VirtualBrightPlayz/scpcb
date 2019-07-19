@@ -1,5 +1,5 @@
-#ifndef Timing_H_INCLUDED
-#define Timing_H_INCLUDED
+#ifndef TIMING_H_INCLUDED
+#define TIMING_H_INCLUDED
 
 #include <chrono>
 
@@ -33,4 +33,4 @@ public:
     double getTotalElapsedTime();
 };
 
-#endif // Timing_H_INCLUDED
+#endif // TIMING_H_INCLUDED

@@ -10,14 +10,14 @@
 
 class Sprite {
     private:
-        static PGE::Mesh* createSpriteMesh(PGE::Graphics* gfx);
-
         PGE::Shader::Constant* modelMatrixValue;
         PGE::Shader::Constant* spriteColorValue;
         PGE::Shader::Constant* scaleValue;
         PGE::Shader::Constant* rotationMatrixValue;
 
+        PGE::Mesh* mesh;
         PGE::Texture* texture;
+        PGE::Shader* shader;
         PGE::Material* material;
         PGE::Color color;
 
@@ -31,7 +31,10 @@ class Sprite {
         PGE::Graphics* gfx;
 
     public:
-        Sprite(PGE::Graphics* gfx, PGE::Mesh* mesh, PGE::Texture* tex);
+        static PGE::Mesh* createSpriteMesh(PGE::Graphics* gfx);
+
+        Sprite(PGE::Mesh* msh, PGE::Texture* tex, PGE::Shader* shdr);
+        ~Sprite();
 
         void setScale(float scale);
 

@@ -1,14 +1,15 @@
 #ifndef World_H_INCLUDED
 #define World_H_INCLUDED
 
-#include "../Wrap/Graphics.h"
-#include "../Wrap/IO.h"
+#include <Graphics/Graphics.h>
+#include <IO/IO.h>
 #include "../Graphics/Sprite.h"
 #include "../Graphics/UIMesh.h"
+#include "../Input/KeyBinds.h"
+#include "../Save/Config.h"
 
 class Camera;
 class Timing;
-class UIAssets;
 class ShaderManager;
 class PauseMenu;
 
@@ -20,50 +21,56 @@ enum class GameState {
 };
 
 class World {
-private:
-    Graphics graphics;
-    IO io;
-    Camera* camera;
+    private:
+        PGE::Graphics* graphics;
+        PGE::IO* io;
 
-    Timing* timing;
+        Camera* camera;
 
-    UIAssets* uiAssets;
-    // TODO: Remove, these are a test.
-    Sprite poster;
+        KeyBinds* keyBinds;
+        Config* config;
+        Timing* timing;
 
-    ShaderManager* shaderMngt;
+        UIMesh* uiMesh;
+        PGE::Mesh* spriteMesh;
 
-    GameState currState;
-    // Changes the game state and does any initialization for that state.
-    // This should be the only way to modify the current state.
-    void setGameState(GameState gs);
+        // TODO: Remove, these are a test.
+        Sprite* poster;
+        PGE::Texture* dirtymetal;
 
-    PauseMenu* pauseMenu;
+        ShaderManager* shaderMngt;
 
-    bool isRoadRollered;
+        GameState currState;
+        // Changes the game state and does any initialization for that state.
+        // This should be the only way to modify the current state.
+        void setGameState(GameState gs);
 
-    //-- Update/Draw code.
+        PauseMenu* pauseMenu;
 
-    // Goes through the update phase of a single tick.
-    void runTick(float timeStep);
+        bool isRoadRollered;
 
-    // Update code for GameState::Playing game state.
-    void updatePlaying(float timeStep);
-    // Draw code for GameState::Playing game state.
-    void drawPlaying();
+        //-- Update/Draw code.
 
-    // Goes through the draw phase.
-    void draw();
+        // Goes through the update phase of a single tick.
+        void runTick(float timeStep);
 
-public:
-    World();
-    ~World();
+        // Update code for GameState::Playing game state.
+        void updatePlaying(float timeStep);
+        // Draw code for GameState::Playing game state.
+        void drawPlaying();
 
-    // Goes through the update/draw phrase of a single frame.
-    bool run();
+        // Goes through the draw phase.
+        void draw();
 
-    // Prompts the world object to kill itself.
-    void quit();
+    public:
+        World();
+        ~World();
+
+        // Goes through the update/draw phrase of a single frame.
+        bool run();
+
+        // Prompts the world object to kill itself.
+        void quit();
 };
 
 #endif // World_H_INCLUDED

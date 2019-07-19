@@ -1,7 +1,7 @@
 #ifndef CONFIG_H_INCLUDED
 #define CONFIG_H_INCLUDED
 
-#include <Misc/String.h>
+#include <Misc/FileName.h>
 
 enum class WindowType {
     Windowed,
@@ -18,7 +18,7 @@ class Config {
         bool vsync;
 
     public:
-        Config();
+        Config(PGE::FileName optionsFile);
         Config(const Config& cpy);
 
         Config& operator=(const Config& other);

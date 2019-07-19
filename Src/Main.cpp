@@ -3,7 +3,7 @@
 
 #include "World/World.h"
 
-int PGE::Main() {
+int PGEMain::Main() {
     World* world = new World();
     while (world->run()) { }
     

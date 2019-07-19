@@ -3,8 +3,6 @@
 
 #include "GUIComponent.h"
 
-class UIAssets;
-
 class GUIFrame : public GUIComponent {
     private:
         void updateInternal(PGE::Vector2f mousePos) override;
@@ -12,7 +10,7 @@ class GUIFrame : public GUIComponent {
 
         GUIFrame() {}
     public:
-        GUIFrame(UIMesh* um, KeyBinds* kb, float x, float y, float width, float height, const UIAssets* assets, Alignment alignment = Alignment::CenterXY);
+        GUIFrame(UIMesh* um, KeyBinds* kb, float x, float y, float width, float height, Alignment alignment = Alignment::CenterXY);
 };
 
 #endif // GUIFRAME_H_INCLUDED

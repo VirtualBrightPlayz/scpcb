@@ -15,6 +15,18 @@ UIMesh::UIMesh(PGE::Graphics* gfx) {
     shaderTexturelessColorConstant = shaderTextureless->getFragmentShaderConstant("imageColor");
 
     startedRender = false;
+
+    /*TODO: reimplement
+    
+    // Define our screen space for UI elements.
+    // Top Left     - [-50, -50]
+    // Bottom Right - [50, 50]
+    // Horizontal plane is scaled with the aspect ratio.
+    PGE::Vector2f topLeft = PGE::Vector2f(-50.f * config.getAspectRatio(), -50.f);
+    PGE::Vector2f bottomRight = PGE::Vector2f(50.f * config.getAspectRatio(), 50.f);
+    PGE::Matrix4x4f orthoMat = PGE::Matrix4x4f::constructOrtho2DMat(topLeft.x, bottomRight.x, bottomRight.y, topLeft.y);
+    
+    */
 }
 
 void UIMesh::startRender() {

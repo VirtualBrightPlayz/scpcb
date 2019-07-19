@@ -1,8 +1,8 @@
 #include "Config.h"
 
-Config::Config() {
+Config::Config(PGE::FileName optionsFile) {
     windowType = WindowType::Windowed;
-    setResolution(800, 600);
+    setResolution(1280, 720);
 
     vsync = false;
 }

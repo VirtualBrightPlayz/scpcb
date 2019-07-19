@@ -1,31 +1,17 @@
 #include <math.h>
 
 #include "Sprite.h"
-#include "../Wrap/Material.h"
 
-Mesh Sprite::sharedMesh;
-Shader Sprite::shader;
+Sprite::Sprite(PGE::Mesh* msh, PGE::Texture* tex, PGE::Shader* shdr) {
+    mesh = msh; texture = tex; shader = shdr;
 
-void Sprite::initialize(const Graphics& gfx, const Shader& shd) {
-    shader = shd;
-    createSpriteMesh(gfx);
-}
-
-void Sprite::cleanup() {
-    sharedMesh = Mesh();
-    shader = Shader();
-}
-
-Sprite::Sprite() { }
-
-Sprite::Sprite(const Graphics& gfx, const Texture& tex) {
     modelMatrixValue = shader->getVertexShaderConstant("modelMatrix");
     spriteColorValue = shader->getFragmentShaderConstant("spriteColor");
     scaleValue = shader->getVertexShaderConstant("scale");
     rotationMatrixValue = shader->getVertexShaderConstant("rotationMatrix");
 
     texture = tex;
-    material = Material::create(shader, tex);
+    material = new PGE::Material(shader, tex);
     this->gfx = gfx;
 
     position = PGE::Vector3f::zero;
@@ -34,13 +20,8 @@ Sprite::Sprite(const Graphics& gfx, const Texture& tex) {
     color = PGE::Color();
 }
 
-Sprite Sprite::create(const Graphics& gfx, const Texture& tex) {
-    return Sprite(gfx, tex);
-}
-
-Sprite Sprite::create(const Graphics& gfx, const PGE::String texPath) {
-    Texture tex = Texture::load(gfx, texPath);
-    return Sprite(gfx, tex);
+Sprite::~Sprite() {
+    delete material;
 }
 
 void Sprite::setScale(float scale) {
@@ -64,8 +45,8 @@ void Sprite::addRotation(float rad) {
     rotation += rad;
 }
 
-void Sprite::createSpriteMesh(const Graphics& gfx) {
-    sharedMesh = Mesh::create(gfx, PGE::Primitive::TYPE::TRIANGLE);
+PGE::Mesh* Sprite::createSpriteMesh(PGE::Graphics* gfx) {
+    PGE::Mesh* mesh = PGE::Mesh::create(gfx, PGE::Primitive::TYPE::TRIANGLE);
 
     PGE::Vector2f verts[4];
     verts[0] = PGE::Vector2f(-0.5f, 0.5f);
@@ -92,7 +73,9 @@ void Sprite::createSpriteMesh(const Graphics& gfx) {
     //prims.push_back(PGE::Primitive(1, 0, 2));
     //prims.push_back(PGE::Primitive(3, 0, 1));
 
-    sharedMesh->setGeometry(meshVerts, prims);
+    mesh->setGeometry(meshVerts, prims);
+
+    return mesh;
 }
 
 void Sprite::update() {
@@ -111,7 +94,7 @@ void Sprite::render() const {
     scaleValue->setValue(scale);
     rotationMatrixValue->setValue(rotationMatrix);
 
-    sharedMesh->setMaterial(material.getInternal());
+    mesh->setMaterial(material);
 
-    sharedMesh->render();
+    mesh->render();
 }

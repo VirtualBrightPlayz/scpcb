@@ -6,15 +6,15 @@
 
 class KeyBinds {
     private:
-        std::vector<PGE::UserInput*> miscBindings;
-
+        PGE::IO* io;
     public:
+        KeyBinds(PGE::IO* inIo);
+        ~KeyBinds();
+
         PGE::MouseInput* mouse1;
         PGE::MouseInput* mouse2;
 
         PGE::KeyboardInput* escape;
-
-        void update();
 };
 
 #endif // KEYBINDS_H_INCLUDED

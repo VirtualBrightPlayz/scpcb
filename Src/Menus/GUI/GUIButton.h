@@ -3,8 +3,6 @@
 
 #include "GUIComponent.h"
 
-class UIAssets;
-
 class GUIButton : public GUIComponent {
     protected:
         bool clicked;
@@ -17,7 +15,7 @@ class GUIButton : public GUIComponent {
         // Whether this button can be clicked.
         bool locked;
 
-        GUIButton(UIMesh* um, KeyBinds* kb, float x, float y, float width, float height, const UIAssets* assets, Alignment alignment = Alignment::CenterXY);
+        GUIButton(UIMesh* um, KeyBinds* kb, float x, float y, float width, float height, Alignment alignment = Alignment::CenterXY);
 
         bool isClicked() const;
 };
