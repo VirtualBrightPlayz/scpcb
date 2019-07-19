@@ -60,15 +60,22 @@ World::~World() {
 }
 
 void World::setGameState(GameState gs) {
+    GameState prev = currState;
     currState = gs;
 
     switch (currState) {
         case GameState::Playing: {
             io->setMousePosition(PGE::Vector2i(graphics->getWindow()->getWidth() / 2, graphics->getWindow()->getHeight() / 2));
         } break;
+
+        case GameState::PauseMenu: {
+            pauseMenu->setState(PauseMenu::SubState::Main);
+        } break;
     }
 
     io->setMouseVisibility(currState != GameState::Playing);
+
+    if (prev == GameState::PauseMenu) { pauseMenu->setState(PauseMenu::SubState::Hidden); }
 }
 
 bool World::run() {

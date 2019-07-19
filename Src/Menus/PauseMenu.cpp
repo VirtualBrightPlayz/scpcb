@@ -36,7 +36,6 @@ void PauseMenu::setOptionsTab(OptionsTab tab) {
 
 }
 
-
 void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
     switch (currState) {
         case SubState::Main: {

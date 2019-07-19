@@ -6,17 +6,19 @@
 #include "GUI/GUIFrame.h"
 
 class PauseMenu {
-private:
-    // Whether the pause menu is being shown on startup as oppose to in the middle of a game.
-    bool isMainMenu;
-
+public:
     enum class SubState {
         Main,
         NewGame,
         LoadGame,
         Options,
-        Quitting
+        Quitting,
+        Hidden
     };
+
+private:
+    // Whether the pause menu is being shown on startup as oppose to in the middle of a game.
+    bool isMainMenu;
 
     enum class OptionsTab {
         Graphics,
@@ -28,7 +30,6 @@ private:
     SubState currState;
     OptionsTab currOptionsTab;
 
-    void setState(SubState state);
     void setOptionsTab(OptionsTab tab);
 
     // --Buttons.
@@ -46,6 +47,8 @@ private:
 
 public:
     PauseMenu(const UIAssets* assets);
+
+    void setState(SubState state);
 
     void update(World* world, PGE::Vector2f mousePosition);
 };
