@@ -2,7 +2,7 @@
 #include "../Save/Config.h"
 
 ShaderManager::ShaderManager(PGE::Graphics* gfx, const Camera* cam) {
-    spriteShader = PGE::Shader::load(gfx, "GFX/Shaders/Sprite/");
+    spriteShader = PGE::Shader::load(gfx, PGE::FileName("GFX/Shaders/Sprite/").str());
     PGE::Shader::Constant* projMatrix = spriteShader->getVertexShaderConstant("projectionMatrix");
     projMatrix->setValue(cam->getProjectionMatrix());
     spriteShaderView = spriteShader->getVertexShaderConstant("viewMatrix");

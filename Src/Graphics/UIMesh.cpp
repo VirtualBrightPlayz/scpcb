@@ -8,11 +8,12 @@ UIMesh::UIMesh(PGE::Graphics* gfx) {
     shaderTextureless = PGE::Shader::load(graphics, PGE::FileName("GFX/Shaders/UITextureless/").str());
 
     mesh = PGE::Mesh::create(gfx, PGE::Primitive::TYPE::TRIANGLE);
-    
-    color = PGE::Color(1.f, 1.f, 1.f, 1.f);
+    material = nullptr;
 
     shaderTexturedColorConstant = shaderTextured->getFragmentShaderConstant("imageColor");
     shaderTexturelessColorConstant = shaderTextureless->getFragmentShaderConstant("imageColor");
+    
+    setColor(PGE::Color(1.f, 1.f, 1.f, 1.f));
 
     startedRender = false;
 
