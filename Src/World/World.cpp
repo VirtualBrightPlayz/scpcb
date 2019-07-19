@@ -14,7 +14,7 @@ World::World() {
     int width = 1280;
     int height = 720;
 
-    config = new Config(PGE::FileName("options.ini"));
+    config = new Config(PGE::FileName::create("options.ini"));
     config->setResolution(width, height);
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", width, height, false);
@@ -30,14 +30,15 @@ World::World() {
     uiMesh = new UIMesh(graphics, config);
     keyBinds = new KeyBinds(io);
 
-    dirtymetal = PGE::Texture::load(graphics, PGE::FileName("GFX/Map/Textures/dirtymetal.jpg").str());
+    dirtymetal = PGE::Texture::load(graphics, PGE::FileName::create("GFX/Map/Textures/dirtymetal.jpg"));
     poster = new Sprite(spriteMesh, dirtymetal, shaderMngt->getSpriteShader());
     poster->setPosition(0.f, 0.f, 2.f);
     poster->setRotation(0.5f);
     poster->setScale(1.f);
 
     setGameState(GameState::Playing);
-    pauseMenu = new PauseMenu(uiMesh, keyBinds);
+    pauseMenu = new PauseMenu(uiMesh, keyBinds, config);
+    pauseMenu->hide();
 
     isRoadRollered = false;
 }
@@ -67,13 +68,17 @@ void World::setGameState(GameState gs) {
         } break;
 
         case GameState::PauseMenu: {
-            pauseMenu->setState(PauseMenu::SubState::Main);
+            pauseMenu->show();
         } break;
     }
 
     io->setMouseVisibility(currState != GameState::Playing);
 
-    if (prev == GameState::PauseMenu) { pauseMenu->setState(PauseMenu::SubState::Hidden); }
+    if (prev == GameState::PauseMenu) { pauseMenu->hide(); }
+}
+
+GameState World::getGameState() const {
+    return currState;
 }
 
 bool World::run() {
@@ -137,7 +142,12 @@ void World::runTick(float timeStep) {
 void World::draw() {
     drawPlaying();
 
-    pauseMenu->render();
+    // UI.
+    graphics->setDepthTest(false);
+    
+    pauseMenu->render(this);
+    
+    graphics->setDepthTest(true);
 
     graphics->swap(config->isVsync());
 }

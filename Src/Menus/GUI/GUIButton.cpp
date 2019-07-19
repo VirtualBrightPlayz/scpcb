@@ -1,15 +1,22 @@
 #include "GUIButton.h"
 #include "../../Graphics/UIMesh.h"
 
-GUIButton::GUIButton(UIMesh* um, KeyBinds* kb, float x, float y, float width, float height, Alignment alignment)
-: GUIComponent(um, kb, x, y, width, height, alignment), clicked(false), locked(false) { }
+GUIButton::GUIButton(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment)
+: GUIComponent(um, kb, con, x, y, width, height, alignment), clicked(false), locked(false) {
+    menuwhite = "GFX/Menu/menuwhite.jpg";
+    menublack = "GFX/Menu/menublack.jpg";
+    hoverColor = PGE::Color(70, 70, 70, 255);
+    borderThickness = 1.f;
+}
 
 bool GUIButton::isClicked() const {
     return clicked;
 }
 
-void GUIButton::updateInternal(PGE::Vector2f mousePos) { 
-    if (mousePos.x >= x && mousePos.y >= y
+void GUIButton::updateInternal(PGE::Vector2f mousePos) {
+    clicked = false;
+    
+    if (mousePos.x >= getX() && mousePos.y >= getY()
         && mousePos.x <= getX2() && mousePos.y <= getY2()) {
         hovered = true;
 
@@ -20,24 +27,23 @@ void GUIButton::updateInternal(PGE::Vector2f mousePos) {
             active = false;
         }
     } else {
+        hovered = false;
         active = false;
     }
 }
 
 void GUIButton::renderInternal() {
-    float borderThickness = 1.f;
+    uiMesh->setTextured(menuwhite, false);
+    uiMesh->addRect(PGE::Rectanglef(PGE::Vector2f(getX(), getY()), PGE::Vector2f(getX2(), getY2())));
 
-    uiMesh->setTextured(PGE::FileName("GFX/Menu/menuwhite.jpg"), true);
-    uiMesh->addRect(PGE::Rectanglef(PGE::Vector2f(x, y), PGE::Vector2f(getX2(), getY2())));
-
-    PGE::Rectanglef foreground = PGE::Rectanglef(PGE::Vector2f(x + borderThickness, y + borderThickness), PGE::Vector2f(getX2() - borderThickness, getY2() - borderThickness));
-    uiMesh->setTextured(PGE::FileName("GFX/Menu/menublack.jpg"), true);
+    PGE::Rectanglef foreground = PGE::Rectanglef(PGE::Vector2f(getX() + borderThickness, getY() + borderThickness), PGE::Vector2f(getX2() - borderThickness, getY2() - borderThickness));
+    uiMesh->setTextured(menublack, false);
     uiMesh->addRect(foreground);
 
-    // TODO: Figure out hovering.
-    //if (hovered) {
-    //    uiMesh->setTextureless();
-    //    uiMesh->setColor(hoverColor);
-    //    uiMesh->addRect(foreground);
-    //}
+    if (hovered) {
+        uiMesh->setTextureless();
+        uiMesh->setColor(hoverColor);
+        uiMesh->addRect(foreground);
+        uiMesh->setColor(PGE::Color());
+    }
 }

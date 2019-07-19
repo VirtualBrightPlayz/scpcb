@@ -6,7 +6,7 @@
 #include "GUI/GUIFrame.h"
 
 class PauseMenu {
-    public:
+    private:
         enum class SubState {
             Main,
             NewGame,
@@ -16,7 +16,6 @@ class PauseMenu {
             Hidden
         };
 
-    private:
         // Whether the pause menu is being shown on startup as oppose to in the middle of a game.
         bool isMainMenu;
 
@@ -30,6 +29,7 @@ class PauseMenu {
         SubState currState;
         OptionsTab currOptionsTab;
 
+        void setState(SubState state);
         void setOptionsTab(OptionsTab tab);
 
         // --Buttons.
@@ -49,12 +49,13 @@ class PauseMenu {
         KeyBinds* keyBinds;
 
     public:
-        PauseMenu(UIMesh* um, KeyBinds* kb);
-
-        void setState(SubState state);
+        PauseMenu(UIMesh* um, KeyBinds* kb, Config* con);
+    
+        void show();
+        void hide();
 
         void update(World* world, PGE::Vector2f mousePosition);
-        void render();
+        void render(const World* world);
 };
 
 #endif // PAUSEMENU_H_INCLUDED

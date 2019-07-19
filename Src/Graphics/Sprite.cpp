@@ -12,7 +12,6 @@ Sprite::Sprite(PGE::Mesh* msh, PGE::Texture* tex, PGE::Shader* shdr) {
 
     texture = tex;
     material = new PGE::Material(shader, tex);
-    this->gfx = gfx;
 
     position = PGE::Vector3f::zero;
     scale = PGE::Vector2f::one;

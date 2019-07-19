@@ -4,15 +4,26 @@
 #include "../../Graphics/UIMesh.h"
 #include "../../Input/KeyBinds.h"
 
+class Config;
+
+enum class Alignment {
+    CenterXY = 0x0,
+    Left = 0x1,
+    Right = 0x2,
+    Top = 0x4,
+    Bottom = 0x8
+};
+
 class GUIComponent {
+    private:
+        float x;
+        float y;
+    
     protected:
         UIMesh* uiMesh;
         KeyBinds* keyBinds;
+        Config* config;
 
-        bool visible;
-
-        float x;
-        float y;
         float width;
         float height;
 
@@ -20,8 +31,10 @@ class GUIComponent {
 
         bool mouseDown;
 
-        GUIComponent(UIMesh* um, KeyBinds* kb, float x, float y, float width, float height, Alignment alignment);
+        GUIComponent(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment);
 
+        float getX() const;
+        float getY() const;
         float getX2() const;
         float getY2() const;
 
@@ -31,11 +44,12 @@ class GUIComponent {
         GUIComponent() {}
     public:
         virtual ~GUIComponent();
-
-        void setVisibility(bool vis);
         
         void update(PGE::Vector2f mousePos);
         void render();
 };
+
+const Alignment operator&(const Alignment& a, const Alignment& b);
+const Alignment operator|(const Alignment& a, const Alignment& b);
 
 #endif // GUI_H_INCLUDED

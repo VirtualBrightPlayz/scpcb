@@ -4,14 +4,18 @@
 #include "GUIComponent.h"
 
 class GUIButton : public GUIComponent {
+    private:
+        PGE::FileName menuwhite;
+        PGE::FileName menublack;
+        PGE::Color hoverColor;
+        float borderThickness;
+    
     protected:
         // MouseHit.
         bool active;
         // Activated and MouseUP.
         bool clicked;
         bool hovered;
-
-        PGE::Color hoverColor;
 
         void updateInternal(PGE::Vector2f mousePos) override;
         void renderInternal() override;
@@ -21,7 +25,7 @@ class GUIButton : public GUIComponent {
         // Whether this button can be clicked.
         bool locked;
 
-        GUIButton(UIMesh* um, KeyBinds* kb, float x, float y, float width, float height, Alignment alignment = Alignment::CenterXY);
+        GUIButton(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment = Alignment::CenterXY);
 
         bool isClicked() const;
 };

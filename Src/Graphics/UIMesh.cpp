@@ -4,8 +4,8 @@
 UIMesh::UIMesh(PGE::Graphics* gfx, const Config* config) {
     graphics = gfx;
 
-    shaderTextured = PGE::Shader::load(graphics, PGE::FileName("GFX/Shaders/UI/").str());
-    shaderTextureless = PGE::Shader::load(graphics, PGE::FileName("GFX/Shaders/UITextureless/").str());
+    shaderTextured = PGE::Shader::load(graphics, PGE::FileName::create("GFX/Shaders/UI/"));
+    shaderTextureless = PGE::Shader::load(graphics, PGE::FileName::create("GFX/Shaders/UITextureless/"));
 
     mesh = PGE::Mesh::create(gfx, PGE::Primitive::TYPE::TRIANGLE);
     material = nullptr;
@@ -13,7 +13,9 @@ UIMesh::UIMesh(PGE::Graphics* gfx, const Config* config) {
     shaderTexturedColorConstant = shaderTextured->getFragmentShaderConstant("imageColor");
     shaderTexturelessColorConstant = shaderTextureless->getFragmentShaderConstant("imageColor");
     
-    setColor(PGE::Color(1.f, 1.f, 1.f, 1.f));
+    color = PGE::Color(1.f, 1.f, 1.f, 1.f);
+    shaderTexturedColorConstant->setValue(color);
+    shaderTexturelessColorConstant->setValue(color);
 
     startedRender = false;
 
@@ -21,8 +23,9 @@ UIMesh::UIMesh(PGE::Graphics* gfx, const Config* config) {
     // Top Left     - [-50, -50]
     // Bottom Right - [50, 50]
     // Horizontal plane is scaled with the aspect ratio.
-    float width = 50.f * config->getAspectRatio();
-    float height = 50.f;
+    float SCALE_MAGNITUDE = 50.f;
+    float width = SCALE_MAGNITUDE * config->getAspectRatio() * 2.f;
+    float height = SCALE_MAGNITUDE * 2.f;
     float nearZ = 0.01f;
     float farZ = 1.f;
     PGE::Matrix4x4f orthoMat = PGE::Matrix4x4f::constructOrthographicMat(width, height, nearZ, farZ);
@@ -86,38 +89,52 @@ void UIMesh::setTextureless() {
 }
 
 void UIMesh::setColor(PGE::Color col) {
+    endRender();
+    
     color = col;
     shaderTexturedColorConstant->setValue(color);
     shaderTexturelessColorConstant->setValue(color);
+    
+    startRender();
 }
 
 void UIMesh::addRect(const PGE::Rectanglef& rect) {
-    PGE::Rectanglef uvRect = PGE::Rectanglef(rect.topLeftCorner().multiply(0.4f), rect.bottomRightCorner().multiply(0.4f));
+    PGE::Rectanglef uvRect;
+    if (!textureless) {
+        if (tiled) {
+            // Lower the scale from [-50, 50] to [-2, 2] so there's less frequent tiling.
+            float tileScale = 0.04f; // 2.f / 50.f;
+            
+            uvRect = PGE::Rectanglef(rect.topLeftCorner().multiply(tileScale), rect.bottomRightCorner().multiply(tileScale));
+        } else {
+            uvRect = PGE::Rectanglef(PGE::Vector2f(0.f, 0.f), PGE::Vector2f(1.f, 1.f));
+        }
+    }
 
     PGE::Vertex vertex;
 
-    int index0 = vertices.size();
+    int index0 = (int)vertices.size();
     vertex.setVector2f("position", rect.topLeftCorner());
     if (!textureless) { vertex.setVector2f("uv", uvRect.topLeftCorner()); }
     vertices.push_back(vertex);
 
-    int index1 = vertices.size();
+    int index1 = (int)vertices.size();
     vertex.setVector2f("position", rect.topRightCorner());
     if (!textureless) { vertex.setVector2f("uv", uvRect.topRightCorner()); }
     vertices.push_back(vertex);
 
-    int index2 = vertices.size();
+    int index2 = (int)vertices.size();
     vertex.setVector2f("position", rect.bottomLeftCorner());
     if (!textureless) { vertex.setVector2f("uv", uvRect.bottomLeftCorner()); }
     vertices.push_back(vertex);
 
-    int index3 = vertices.size();
+    int index3 = (int)vertices.size();
     vertex.setVector2f("position", rect.bottomRightCorner());
     if (!textureless) { vertex.setVector2f("uv", uvRect.bottomRightCorner()); }
     vertices.push_back(vertex);
 
-    primitives.push_back(PGE::Primitive(index0, index1, index2));
-    primitives.push_back(PGE::Primitive(index1, index2, index3));
+    primitives.push_back(PGE::Primitive(index2, index1, index0));
+    primitives.push_back(PGE::Primitive(index3, index1, index2));
 }
 
 void UIMesh::loadTexture(PGE::FileName textureName) {
@@ -129,17 +146,9 @@ void UIMesh::loadTexture(PGE::FileName textureName) {
     }
 
     if (texture == nullptr) {
-        texture = PGE::Texture::load(graphics, textureName.str());
+        texture = PGE::Texture::load(graphics, textureName);
         Texture cacheEntry;
         cacheEntry.name = textureName; cacheEntry.pgeTexture = texture;
         textures.push_back(cacheEntry);
     }
-}
-
-const Alignment operator&(const Alignment& a, const Alignment& b) {
-    return (Alignment)((int)a & (int)b);
-}
-
-const Alignment operator|(const Alignment& a, const Alignment& b) {
-    return (Alignment)((int)a | (int)b);
 }

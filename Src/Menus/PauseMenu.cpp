@@ -1,28 +1,28 @@
+#include <iostream>
+
 #include "PauseMenu.h"
 
-PauseMenu::PauseMenu(UIMesh* um, KeyBinds* kb) {
-    float btnWidth = 40;
-    float btnHeight = 7;
+PauseMenu::PauseMenu(UIMesh* um, KeyBinds* kb, Config* con) {
+    float btnWidth = 40.f;
+    float btnHeight = 7.f;
 
     float btnSpacing = 7.3f;
     float btnX = -btnWidth / 2.f;
     float btnY = -40.f;
 
-    newgame = new GUIButton(um, kb, btnX, btnY, btnWidth, btnHeight);
+    newgame = new GUIButton(um, kb, con, btnX, btnY, btnWidth, btnHeight);
     btnY += btnSpacing;
-    loadgame = new GUIButton(um, kb, btnX, btnY, btnWidth, btnHeight);
+    loadgame = new GUIButton(um, kb, con, btnX, btnY, btnWidth, btnHeight);
     btnY += btnSpacing;
-    options = new GUIButton(um, kb, btnX, btnY, btnWidth, btnHeight);
+    options = new GUIButton(um, kb, con, btnX, btnY, btnWidth, btnHeight);
     btnY += btnSpacing;
-    quit = new GUIButton(um, kb, btnX, btnY, btnWidth, btnHeight);
+    quit = new GUIButton(um, kb, con, btnX, btnY, btnWidth, btnHeight);
 
     float quitFrameWidth = 60.f;
     float quitFrameHeight = 30.f;
-    quitFrame = new GUIFrame(um, kb, -quitFrameWidth / 2.f, -quitFrameHeight / 2.f, quitFrameWidth, quitFrameHeight);
-    quitYes = new GUIButton(um, kb, -31.f, 10.f, 3.f, 1.f);
-    quitNo = new GUIButton(um, kb, 29.f, 10.f, 3.f, 1.f);
-
-    setState(SubState::Main);
+    quitFrame = new GUIFrame(um, kb, con, -quitFrameWidth / 2.f, -quitFrameHeight / 2.f, quitFrameWidth, quitFrameHeight);
+    quitYes = new GUIButton(um, kb, con, -31.f, 10.f, 3.f, 1.f);
+    quitNo = new GUIButton(um, kb, con, 29.f, 10.f, 3.f, 1.f);
 
     uiMesh = um;
     keyBinds = kb;
@@ -30,24 +30,26 @@ PauseMenu::PauseMenu(UIMesh* um, KeyBinds* kb) {
 
 void PauseMenu::setState(SubState state) {
     currState = state;
-
-    newgame->setVisibility(currState == SubState::Main || currState == SubState::Quitting);
-    loadgame->setVisibility(currState == SubState::Main || currState == SubState::Quitting);
-    options->setVisibility(currState == SubState::Main || currState == SubState::Quitting);
-    quit->setVisibility(currState == SubState::Main || currState == SubState::Quitting);
+    
+    if (currState == SubState::Options) { setOptionsTab(OptionsTab::Graphics); }
+    
     // The menu's still visible when the quit prompt's on screen but it's disabled.
     newgame->locked = currState == SubState::Quitting;
     loadgame->locked = currState == SubState::Quitting;
     options->locked = currState == SubState::Quitting;
     quit->locked = currState == SubState::Quitting;
-
-    quitFrame->setVisibility(currState == SubState::Quitting);
-    quitYes->setVisibility(currState == SubState::Quitting);
-    quitNo->setVisibility(currState == SubState::Quitting);
 }
 
 void PauseMenu::setOptionsTab(OptionsTab tab) {
 
+}
+
+void PauseMenu::show() {
+    setState(PauseMenu::SubState::Main);
+}
+
+void PauseMenu::hide() {
+    setState(PauseMenu::SubState::Hidden);
 }
 
 void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
@@ -55,8 +57,18 @@ void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
         case SubState::Main: {
             newgame->update(mousePosition);
             loadgame->update(mousePosition);
-            newgame->update(mousePosition);
-            newgame->update(mousePosition);
+            options->update(mousePosition);
+            quit->update(mousePosition);
+            
+            if (newgame->isClicked()) {
+                std::cout << "New Game" << std::endl;
+            } else if (loadgame->isClicked()) {
+                std::cout << "Load Game" << std::endl;
+            } else if (options->isClicked()) {
+                std::cout << "Options Game" << std::endl;
+            } else if (quit->isClicked()) {
+                std::cout << "Quit Game" << std::endl;
+            }
         } break;
 
         case SubState::Quitting: {
@@ -74,19 +86,20 @@ void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
 
     if (keyBinds->escape->isHit() && !isMainMenu) {
         world->setGameState(GameState::Playing);
-        setState(PauseMenu::SubState::Hidden);
     }
 }
 
-void PauseMenu::render() {
+void PauseMenu::render(const World* world) {
+    if (world->getGameState() != GameState::PauseMenu) { return; }
+    
     uiMesh->startRender();
 
     switch (currState) {
         case SubState::Main: {
             newgame->render();
             loadgame->render();
-            newgame->render();
-            newgame->render();
+            options->render();
+            quit->render();
         } break;
 
         case SubState::Quitting: {

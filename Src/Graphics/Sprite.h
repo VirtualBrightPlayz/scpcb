@@ -28,8 +28,6 @@ class Sprite {
         // Stores the roll rotations of the sprite.
         PGE::Matrix4x4f rotationMatrix;
 
-        PGE::Graphics* gfx;
-
     public:
         static PGE::Mesh* createSpriteMesh(PGE::Graphics* gfx);
 

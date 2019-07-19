@@ -13,14 +13,6 @@
 class UIMesh;
 class Config;
 
-enum class Alignment {
-    CenterXY = 0x0,
-    Left = 0x1,
-    Right = 0x2,
-    Top = 0x4,
-    Bottom = 0x8
-};
-
 class UIMesh {
     private:
         PGE::Graphics* graphics;
@@ -71,8 +63,5 @@ class UIMesh {
 
         void loadTexture(PGE::FileName textureName);
 };
-
-const Alignment operator&(const Alignment& a, const Alignment& b);
-const Alignment operator|(const Alignment& a, const Alignment& b);
 
 #endif // UIMESH_H_INCLUDED

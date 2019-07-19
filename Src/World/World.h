@@ -72,6 +72,8 @@ class World {
         // Changes the game state and does any initialization for that state.
         // This should be the only way to modify the current state.
         void setGameState(GameState gs);
+    
+        GameState getGameState() const;
 
 };
 
