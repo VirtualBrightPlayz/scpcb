@@ -2,8 +2,8 @@
 
 uniform mat4 projectionMatrix;
 
-in vec3 position;
+in vec2 position;
 
 void main() {
-    gl_Position = projectionMatrix * vec4(position.xyz, 1.0f);
+    gl_Position = projectionMatrix * vec4(position.xy, 0.5f, 1.0f);
 }

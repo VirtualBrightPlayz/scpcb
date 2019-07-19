@@ -35,22 +35,26 @@ private:
     // --Buttons.
 
     // Main state.
-    GUIButton newgame;
-    GUIButton loadgame;
-    GUIButton options;
-    GUIButton quit;
+    GUIButton* newgame;
+    GUIButton* loadgame;
+    GUIButton* options;
+    GUIButton* quit;
 
     // Quitting state.
-    GUIFrame quitPrompt;
-    GUIButton quitYes;
-    GUIButton quitNo;
+    GUIFrame* quitFrame;
+    GUIButton* quitYes;
+    GUIButton* quitNo;
+
+    UIMesh* uiMesh;
+    KeyBinds* keyBinds;
 
 public:
-    PauseMenu(const UIAssets* assets);
+    PauseMenu(UIMesh* um, KeyBinds* kb);
 
     void setState(SubState state);
 
     void update(World* world, PGE::Vector2f mousePosition);
+    void render();
 };
 
 #endif // PAUSEMENU_H_INCLUDED

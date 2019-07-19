@@ -1,7 +1,7 @@
 #include "UIMesh.h"
 #include "../Save/Config.h"
 
-UIMesh::UIMesh(PGE::Graphics* gfx) {
+UIMesh::UIMesh(PGE::Graphics* gfx, const Config* config) {
     graphics = gfx;
 
     shaderTextured = PGE::Shader::load(graphics, PGE::FileName("GFX/Shaders/UI/").str());
@@ -17,17 +17,18 @@ UIMesh::UIMesh(PGE::Graphics* gfx) {
 
     startedRender = false;
 
-    /*TODO: reimplement
-    
     // Define our screen space for UI elements.
     // Top Left     - [-50, -50]
     // Bottom Right - [50, 50]
     // Horizontal plane is scaled with the aspect ratio.
-    PGE::Vector2f topLeft = PGE::Vector2f(-50.f * config.getAspectRatio(), -50.f);
-    PGE::Vector2f bottomRight = PGE::Vector2f(50.f * config.getAspectRatio(), 50.f);
-    PGE::Matrix4x4f orthoMat = PGE::Matrix4x4f::constructOrtho2DMat(topLeft.x, bottomRight.x, bottomRight.y, topLeft.y);
-    
-    */
+    float width = 50.f * config->getAspectRatio();
+    float height = 50.f;
+    float nearZ = 0.01f;
+    float farZ = 1.f;
+    PGE::Matrix4x4f orthoMat = PGE::Matrix4x4f::constructOrthographicMat(width, height, nearZ, farZ);
+
+    shaderTextured->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);
+    shaderTextureless->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);
 }
 
 void UIMesh::startRender() {
@@ -74,7 +75,7 @@ void UIMesh::setTextured(PGE::FileName textureName, bool tile) {
 void UIMesh::setTextureless() {
     endRender();
 
-    textureless = false;
+    textureless = true;
 
     PGE::Material* prevMaterial = material;
     material = new PGE::Material(shaderTextureless);
@@ -97,22 +98,22 @@ void UIMesh::addRect(const PGE::Rectanglef& rect) {
 
     int index0 = vertices.size();
     vertex.setVector2f("position", rect.topLeftCorner());
-    vertex.setVector2f("uv", uvRect.topLeftCorner());
+    if (!textureless) { vertex.setVector2f("uv", uvRect.topLeftCorner()); }
     vertices.push_back(vertex);
 
     int index1 = vertices.size();
     vertex.setVector2f("position", rect.topRightCorner());
-    vertex.setVector2f("uv", uvRect.topRightCorner());
+    if (!textureless) { vertex.setVector2f("uv", uvRect.topRightCorner()); }
     vertices.push_back(vertex);
 
     int index2 = vertices.size();
     vertex.setVector2f("position", rect.bottomLeftCorner());
-    vertex.setVector2f("uv", uvRect.bottomLeftCorner());
+    if (!textureless) { vertex.setVector2f("uv", uvRect.bottomLeftCorner()); }
     vertices.push_back(vertex);
 
     int index3 = vertices.size();
     vertex.setVector2f("position", rect.bottomRightCorner());
-    vertex.setVector2f("uv", uvRect.bottomRightCorner());
+    if (!textureless) { vertex.setVector2f("uv", uvRect.bottomRightCorner()); }
     vertices.push_back(vertex);
 
     primitives.push_back(PGE::Primitive(index0, index1, index2));

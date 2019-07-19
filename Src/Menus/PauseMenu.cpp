@@ -25,6 +25,7 @@ PauseMenu::PauseMenu(UIMesh* um, KeyBinds* kb) {
     setState(SubState::Main);
 
     uiMesh = um;
+    keyBinds = kb;
 }
 
 void PauseMenu::setState(SubState state) {
@@ -69,6 +70,11 @@ void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
                 world->quit();
             }
         } break;
+    }
+
+    if (keyBinds->escape->isHit() && !isMainMenu) {
+        world->setGameState(GameState::Playing);
+        setState(PauseMenu::SubState::Hidden);
     }
 }
 

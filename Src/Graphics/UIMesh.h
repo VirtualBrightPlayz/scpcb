@@ -11,6 +11,7 @@
 #include <Material/Material.h>
 
 class UIMesh;
+class Config;
 
 enum class Alignment {
     CenterXY = 0x0,
@@ -52,7 +53,7 @@ class UIMesh {
         };
         std::vector<Texture> textures;
     public:
-        UIMesh(PGE::Graphics* gfx);
+        UIMesh(PGE::Graphics* gfx, const Config* config);
 
         PGE::Vector2f scaleFactor;
         PGE::Rectanglef uvTilingRectangle;

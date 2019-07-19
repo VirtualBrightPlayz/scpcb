@@ -1,5 +1,5 @@
-#ifndef World_H_INCLUDED
-#define World_H_INCLUDED
+#ifndef WORLD_H_INCLUDED
+#define WORLD_H_INCLUDED
 
 #include <Graphics/Graphics.h>
 #include <IO/IO.h>
@@ -41,9 +41,6 @@ class World {
         ShaderManager* shaderMngt;
 
         GameState currState;
-        // Changes the game state and does any initialization for that state.
-        // This should be the only way to modify the current state.
-        void setGameState(GameState gs);
 
         PauseMenu* pauseMenu;
 
@@ -71,6 +68,11 @@ class World {
 
         // Prompts the world object to kill itself.
         void quit();
+
+        // Changes the game state and does any initialization for that state.
+        // This should be the only way to modify the current state.
+        void setGameState(GameState gs);
+
 };
 
-#endif // World_H_INCLUDED
+#endif // WORLD_H_INCLUDED

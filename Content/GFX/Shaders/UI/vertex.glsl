@@ -2,12 +2,12 @@
 
 uniform mat4 projectionMatrix;
 
-in vec3 position;
-in vec2 texCoords;
+in vec2 position;
+in vec2 uv;
 
-out vec2 fsTexCoords;
+out vec2 fsUV;
 
 void main() {
-    gl_Position = projectionMatrix * vec4(position.xyz, 1.0f);
-    fsTexCoords = texCoords;
+    gl_Position = projectionMatrix * vec4(position.xy, 0.5f, 1.0f);
+    fsUV = uv;
 }

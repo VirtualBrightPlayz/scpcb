@@ -27,7 +27,7 @@ World::World() {
     shaderMngt = new ShaderManager(graphics, camera);
 
     spriteMesh = Sprite::createSpriteMesh(graphics);
-    uiMesh = new UIMesh(graphics);
+    uiMesh = new UIMesh(graphics, config);
     keyBinds = new KeyBinds(io);
 
     dirtymetal = PGE::Texture::load(graphics, PGE::FileName("GFX/Map/Textures/dirtymetal.jpg").str());
@@ -87,14 +87,14 @@ bool World::run() {
         timing->subtractTick();
     }
 
-    //Rendering next, don't use accumulator
+    // Rendering next, don't use accumulator.
     graphics->update();
 
     graphics->clear(PGE::Color(0.f, 0.71f, 0.76f, 1.f)); // Turquoise.
 
     draw();
 
-    //Get elapsed seconds since last run
+    // Get elapsed seconds since last run.
     double secondsPassed = timing->getElapsedSeconds();
     timing->addSecondsToAccumulator(secondsPassed);
 
@@ -116,9 +116,6 @@ void World::runTick(float timeStep) {
     mousePosition.x -= 50.f * config->getAspectRatio();
     mousePosition.y -= 50.f;
 
-    if (keyBinds->escape->isHit()) {
-        setGameState(currState == GameState::Playing ? GameState::PauseMenu : GameState::Playing);
-    }
     if (keyBinds->mouse1->isHit()) {
         std::cout << "MouseX: " << mousePosition.x << std::endl;
         std::cout << "MouseY: " << mousePosition.y << std::endl;
@@ -164,6 +161,10 @@ void World::updatePlaying(float timeStep) {
 
     poster->addRotation(5.f * timeStep);
     poster->update();
+
+    if (keyBinds->escape->isHit()) {
+        setGameState(GameState::PauseMenu);
+    }
 }
 
 void World::drawPlaying() {

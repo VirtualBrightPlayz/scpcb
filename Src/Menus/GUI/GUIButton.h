@@ -5,7 +5,13 @@
 
 class GUIButton : public GUIComponent {
     protected:
+        // MouseHit.
+        bool active;
+        // Activated and MouseUP.
         bool clicked;
+        bool hovered;
+
+        PGE::Color hoverColor;
 
         void updateInternal(PGE::Vector2f mousePos) override;
         void renderInternal() override;
