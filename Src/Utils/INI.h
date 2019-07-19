@@ -8,36 +8,36 @@ namespace CBN {
 
 // Structs.
 class INIFile {
-private:
-    static std::vector<INIFile*> list;
+    private:
+        static std::vector<INIFile*> list;
 
-    struct Section
-    {
-        std::vector<PGE::String> names;
-        std::vector<PGE::String> keys;
-        std::vector<PGE::String> values;
-    };
+        struct Section
+        {
+            std::vector<PGE::String> names;
+            std::vector<PGE::String> keys;
+            std::vector<PGE::String> values;
+        };
 
-    std::vector<Section*> sections;
+        std::vector<Section*> sections;
 
-    PGE::String name;
-public:
-    INIFile(const PGE::String& filename);
-    ~INIFile();
-    static int getListSize();
-    static INIFile* getObject(int index);
+        PGE::String name;
+    public:
+        INIFile(const PGE::String& filename);
+        ~INIFile();
+        static int getListSize();
+        static INIFile* getObject(int index);
 
-    PGE::String getName();
+        PGE::String getName();
 
-    PGE::String getValue(const PGE::String& section, const PGE::String& key, const PGE::String& defaultValue);
-    void setValue(const PGE::String& section, const PGE::String& key, const PGE::String& value);
+        PGE::String getValue(const PGE::String& section, const PGE::String& key, const PGE::String& defaultValue);
+        void setValue(const PGE::String& section, const PGE::String& key, const PGE::String& value);
 
-    std::map<PGE::String, PGE::String> getSection(const PGE::String& section);
+        std::map<PGE::String, PGE::String> getSection(const PGE::String& section);
 
-    void save();
+        void save();
 
-    int bankOffset = 0;
-    int size;
+        int bankOffset = 0;
+        int size;
 };
 
 // Functions.

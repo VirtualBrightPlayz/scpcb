@@ -1,18 +1,8 @@
 #include "Config.h"
 
-Config config = Config();
-
-void Config::initialize(const PGE::String& fileName) {
-    // TODO: Find and detect config file, otherwise use the generated default.
-}
-
-void Config::cleanup() {
-    config = Config();
-}
-
-Config::Config() {
+Config::Config(PGE::FileName optionsFile) {
     windowType = WindowType::Windowed;
-    setResolution(800, 600);
+    setResolution(1280, 720);
 
     vsync = false;
 }

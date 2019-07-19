@@ -1,10 +1,14 @@
 #ifndef UIMESH_H_INCLUDED
 #define UIMESH_H_INCLUDED
 
-#include <vector>
+#include <Misc/String.h>
+#include <Misc/FileName.h>
 
-#include "../Wrap/Mesh.h"
-#include "../Wrap/Material.h"
+#include <vector>
+#include <Math/Rectangle.h>
+
+#include <Mesh/Mesh.h>
+#include <Material/Material.h>
 
 class UIMesh;
 
@@ -16,72 +20,55 @@ enum class Alignment {
     Bottom = 0x8
 };
 
-// Creates and stores the information relating to a piece of a UIMesh.
-class Image {
-private:
-    UIMesh* mesh;
-
-    // Total number of slices created.
-    static int totalSliceCount;
-
-    // The slice's depth relative to the total number of slices created.
-    int depthOrder;
-
-    float x;
-    float y;
-    float width;
-    float height;
-
-    Alignment alignment;
-
-public:
-    // Whether this slice needs to be drawn.
-    bool visible;
-
-    Image()=default;
-    Image(float x, float y, float width, float height, UIMesh* mesh);
-    ~Image();
-
-    void setAlignment(Alignment align);
-
-    // Fills the passed array of vectors with its quad positions.
-    void fillVertexPositions(PGE::Vector3f pos[]) const;
-};
-
 class UIMesh {
-private:
-    static Shader shader;
-    static Shader shaderTextureless;
-    static PGE::Vector2f defaultTexCoords[4];
+    private:
+        PGE::Graphics* graphics;
 
-    Mesh mesh;
-    Material material;
-    PGE::Color color;
-    PGE::Shader::Constant* imageColorValue;
+        //TODO: store transformation matrix constants
+        PGE::Shader* shaderTextured;
+        PGE::Shader::Constant* shaderTexturedColorConstant;
 
-    std::vector<Image> slices;
+        PGE::Shader* shaderTextureless;
+        PGE::Shader::Constant* shaderTexturelessColorConstant;
 
-    // Whether or not the texture applied to this mesh is meant to tile.
-    bool tiled;
-    // Whether the mesh has a texture or just a color fill.
-    bool textureless;
+        PGE::Mesh* mesh;
+        PGE::Material* material;
+        PGE::Color color;
 
-public:
-    static void initialize(const Shader& shd, const Shader& shdNoTex);
-    static void cleanup();
+        // Whether or not the texture applied to this mesh is meant to tile.
+        bool tiled;
+        // Whether the mesh has a texture or just a color fill.
+        bool textureless;
 
-    UIMesh();
-    UIMesh(const Graphics& gfx, const Texture& tex, bool tiles);
-    UIMesh(const Graphics& gfx, const PGE::String& path, bool tiles);
-    UIMesh(const Graphics& gfx, const PGE::Color& color);
+        bool startedRender;
 
-    // Generates a new quad for the mesh.
-    Image* createSlice(float x, float y, float width, float height);
-    void removeSlice(const Image* slice);
+        std::vector<PGE::Vertex> vertices;
+        std::vector<PGE::Primitive> primitives;
 
-    // Uploads the vertex data.
-    void bake() const;
-    void render() const;
+        struct Texture
+        {
+            PGE::FileName name;
+            PGE::Texture* pgeTexture;
+        };
+        std::vector<Texture> textures;
+    public:
+        UIMesh(PGE::Graphics* gfx);
+
+        PGE::Vector2f scaleFactor;
+        PGE::Rectanglef uvTilingRectangle;
+
+        void startRender();
+
+        void setTextureless();
+        void setTextured(PGE::FileName texture, bool tile);
+
+        void setColor(PGE::Color col);
+
+        void addRect(const PGE::Rectanglef& rect);
+
+        void endRender();
+
+        void loadTexture(PGE::FileName textureName);
 };
 
 const Alignment operator&(const Alignment& a, const Alignment& b);

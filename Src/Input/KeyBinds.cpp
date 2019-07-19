@@ -1,21 +1,22 @@
 #include "KeyBinds.h"
 
-KeyBinds keyBinds = KeyBinds();
+KeyBinds::KeyBinds(PGE::IO* inIo) {
+    io = inIo;
 
-void KeyBinds::initialize() {
-    keyBinds.mouse1 = Binding::createMouseBind(PGE::MouseInput::BUTTON::LEFT);
-    keyBinds.mouse2 = Binding::createMouseBind(PGE::MouseInput::BUTTON::RIGHT);
+    mouse1 = new PGE::MouseInput(PGE::MouseInput::BUTTON::LEFT);
+    mouse2 = new PGE::MouseInput(PGE::MouseInput::BUTTON::RIGHT);
 
-    keyBinds.escape = Binding::createKeyboardBind(PGE::KeyboardInput::SCANCODE::ESCAPE);
+    escape = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::ESCAPE);
+
+    io->trackInput(mouse1);
+    io->trackInput(mouse2);
+    io->trackInput(escape);
 }
 
-void KeyBinds::cleanup() {
-    keyBinds = KeyBinds();
-}
+KeyBinds::~KeyBinds() {
+    io->untrackInput(mouse1);
+    io->untrackInput(mouse2);
+    io->untrackInput(escape);
 
-void KeyBinds::update() {
-    mouse1.update();
-    mouse2.update();
-
-    escape.update();
+    delete mouse1; delete mouse2; delete escape;
 }

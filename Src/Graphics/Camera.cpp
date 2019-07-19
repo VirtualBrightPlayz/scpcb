@@ -4,7 +4,7 @@
 #include "Camera.h"
 #include "../Utils/MathUtil.h"
 
-Camera::Camera(const Graphics& gfx, float aspectRatio, float fov) : gfx(gfx) {
+Camera::Camera(PGE::Graphics* gfx, float aspectRatio, float fov) : graphics(gfx) {
     position = PGE::Vector3f(0.0f, 0.0f, 0.0f);
     lookAt = PGE::Vector3f(0.0f, 0.0f, 1.0f);
     upDir = PGE::Vector3f(0.0f, 1.0f, 0.0f);
@@ -19,12 +19,12 @@ Camera::Camera(const Graphics& gfx, float aspectRatio, float fov) : gfx(gfx) {
     float nearZ = 0.01f;
     float farZ = 25.f;
     this->fov = fov;
-    projectionMatrix = PGE::Matrix4x4f::constructProjectionMat(fov, aspectRatio, nearZ, farZ);
+    projectionMatrix = PGE::Matrix4x4f::constructPerspectiveMat(fov, aspectRatio, nearZ, farZ);
     
     rotation = PGE::Matrix4x4f::identity;
 }
 
-Camera::Camera(const Graphics& gfx, float aspectRatio) : Camera(gfx, aspectRatio, MathUtil::degToRad(90.0f)) { }
+Camera::Camera(PGE::Graphics* gfx, float aspectRatio) : Camera(gfx, aspectRatio, MathUtil::degToRad(90.0f)) { }
 
 void Camera::update() {
     rotation = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(0.f, 0.f, 0.f), PGE::Vector3f(1.f, 1.f, 1.f), PGE::Vector3f(-yAngle, xAngle, tilt));
