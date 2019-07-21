@@ -45,12 +45,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>../Engine/Include;$(IncludePath)</IncludePath>
+    <IncludePath>../Engine/Include;../Libraries/freetype-2.10.1/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>../Engine/Include;$(IncludePath)</IncludePath>
+    <IncludePath>../Engine/Include;../Libraries/freetype-2.10.1/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -66,7 +66,7 @@
       </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;$(Platform)/$(Configuration)/Engine.lib;$(Platform)/$(Configuration)/SDL2.lib;../Engine/Libraries/FreeImage3180/x64/Debug/FreeImaged.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;$(Platform)/$(Configuration)/Engine.lib;$(Platform)/$(Configuration)/SDL2.lib;../Libraries/freetype-2.10.1/objs/$(Platform)/$(Configuration)/freetype.lib;../Engine/Libraries/FreeImage3180/x64/Debug/FreeImaged.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -87,7 +87,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;$(Platform)/$(Configuration)/Engine.lib;$(Platform)/$(Configuration)/SDL2.lib;../Engine/Libraries/FreeImage3180/x64/Release/FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;$(Platform)/$(Configuration)/Engine.lib;$(Platform)/$(Configuration)/SDL2.lib;../Libraries/freetype-2.10.1/objs/$(Platform)/$(Configuration)/freetype.lib;../Engine/Libraries/FreeImage3180/x64/Release/FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -95,6 +95,7 @@
     <ClInclude Include="..\Src\Collision\Collision.h" />
     <ClInclude Include="..\Src\Collision\CollisionMesh.h" />
     <ClInclude Include="..\Src\Graphics\Camera.h" />
+    <ClInclude Include="..\Src\Graphics\Font.h" />
     <ClInclude Include="..\Src\Graphics\Sprite.h" />
     <ClInclude Include="..\Src\Graphics\UIMesh.h" />
     <ClInclude Include="..\Src\Input\KeyBinds.h" />
@@ -123,6 +124,7 @@
     <ClCompile Include="..\Src\Collision\Collision.cpp" />
     <ClCompile Include="..\Src\Collision\CollisionMesh.cpp" />
     <ClCompile Include="..\Src\Graphics\Camera.cpp" />
+    <ClCompile Include="..\Src\Graphics\Font.cpp" />
     <ClCompile Include="..\Src\Graphics\Sprite.cpp" />
     <ClCompile Include="..\Src\Graphics\UIMesh.cpp" />
     <ClCompile Include="..\Src\Input\KeyBinds.cpp" />
