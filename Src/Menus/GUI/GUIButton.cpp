@@ -5,8 +5,8 @@ GUIButton::GUIButton(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, fl
 : GUIComponent(um, kb, con, x, y, width, height, alignment), clicked(false), locked(false) {
     menuwhite = "GFX/Menu/menuwhite.jpg";
     menublack = "GFX/Menu/menublack.jpg";
-    hoverColor = PGE::Color(70, 70, 70, 255);
-    borderThickness = 1.f;
+    hoverColor = PGE::Color(70, 70, 150, 200);
+    borderThickness = 1.f/3.f;
 }
 
 bool GUIButton::isClicked() const {
@@ -35,11 +35,11 @@ void GUIButton::updateInternal(PGE::Vector2f mousePos) {
 }
 
 void GUIButton::renderInternal() {
-    uiMesh->setTextured(menuwhite, false);
+    uiMesh->setTextured(menuwhite, true);
     uiMesh->addRect(PGE::Rectanglef(PGE::Vector2f(getX(), getY()), PGE::Vector2f(getX2(), getY2())));
 
     PGE::Rectanglef foreground = PGE::Rectanglef(PGE::Vector2f(getX() + borderThickness, getY() + borderThickness), PGE::Vector2f(getX2() - borderThickness, getY2() - borderThickness));
-    uiMesh->setTextured(menublack, false);
+    uiMesh->setTextured(menublack, true);
     uiMesh->addRect(foreground);
 
     if (hovered && !locked) {
