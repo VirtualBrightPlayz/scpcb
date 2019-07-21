@@ -1,8 +1,8 @@
 #include <iostream>
+#include <Misc/FileUtil.h>
 
 #include "TextMgmt.h"
 #include "INI.h"
-#include "FileUtil.h"
 
 namespace CBN {
 
@@ -53,7 +53,7 @@ void TxtManager::changeLocalization(const PGE::String& langCode) {
     lang.clear();
 
     PGE::String path = "Data/lang/" + langCode + "/text.ini";
-    if (!FileUtil::exists(path.resourcePath())) {
+    if (!PGE::FileUtil::exists(path.resourcePath())) {
         throw "Language file \"" + path + "\" not found!";
     }
 

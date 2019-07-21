@@ -16,7 +16,6 @@
 		191BDDB222A846EE00270B9D /* Collision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDAD22A846EE00270B9D /* Collision.cpp */; };
 		191BDDB322A846EE00270B9D /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDAF22A846EE00270B9D /* PlayerController.cpp */; };
 		191BDDB622A846F600270B9D /* INI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDB422A846F600270B9D /* INI.cpp */; };
-		191BDDB922A84F7700270B9D /* FileUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDB822A84F7700270B9D /* FileUtil.cpp */; };
 		191BDDBB22A8547E00270B9D /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 191BDDBA22A8547E00270B9D /* SDL2.framework */; };
 		191BDDBD22A854A900270B9D /* SDL2.framework in Copy Bundle Frameworks */ = {isa = PBXBuildFile; fileRef = 191BDDBA22A8547E00270B9D /* SDL2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		191BDDBF22A8551A00270B9D /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDBE22A8551A00270B9D /* Main.cpp */; };
@@ -84,8 +83,6 @@
 		191BDDB022A846EE00270B9D /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
 		191BDDB422A846F600270B9D /* INI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = INI.cpp; sourceTree = "<group>"; };
 		191BDDB522A846F600270B9D /* INI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INI.h; sourceTree = "<group>"; };
-		191BDDB722A84F7700270B9D /* FileUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileUtil.h; sourceTree = "<group>"; };
-		191BDDB822A84F7700270B9D /* FileUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileUtil.cpp; sourceTree = "<group>"; };
 		191BDDBA22A8547E00270B9D /* SDL2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SDL2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		191BDDBE22A8551A00270B9D /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		19243C1422BC295C0057054D /* PauseMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PauseMenu.h; sourceTree = "<group>"; };
@@ -199,8 +196,6 @@
 		191BDD9522A844FF00270B9D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				191BDDB822A84F7700270B9D /* FileUtil.cpp */,
-				191BDDB722A84F7700270B9D /* FileUtil.h */,
 				191BDDB422A846F600270B9D /* INI.cpp */,
 				191BDDB522A846F600270B9D /* INI.h */,
 				1934815622B9B9A60039F47E /* MathUtil.cpp */,
@@ -413,7 +408,6 @@
 				191BDDB322A846EE00270B9D /* PlayerController.cpp in Sources */,
 				192A67A622C43CBA009A6F1E /* GUIFrame.cpp in Sources */,
 				19646FC322A9FB6D005E027E /* Timing.cpp in Sources */,
-				191BDDB922A84F7700270B9D /* FileUtil.cpp in Sources */,
 				19243C1622BC295C0057054D /* PauseMenu.cpp in Sources */,
 				191BDD9822A844FF00270B9D /* TextMgmt.cpp in Sources */,
 				191BDDB222A846EE00270B9D /* Collision.cpp in Sources */,

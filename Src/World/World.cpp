@@ -11,14 +11,14 @@
 #include "../Input/KeyBinds.h"
 
 World::World() {
-    int width = 1280;
-    int height = 720;
+//    int width = 1280;
+//    int height = 720;
 
-    config = new Config(PGE::FileName::create("options.ini"));
-    config->setResolution(width, height);
+    config = new Config("options.ini");
+//    config->setResolution(width, height);
 
-    graphics = PGE::Graphics::create("SCP - Containment Breach", width, height, false);
-    graphics->setViewport(PGE::Rectanglei(0, 0, width, height));
+    graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
+    graphics->setViewport(PGE::Rectanglei(0, 0, config->getWidth(), config->getHeight()));
     io = PGE::IO::create(graphics->getWindow());
     camera = new Camera(graphics, config->getAspectRatio());
 

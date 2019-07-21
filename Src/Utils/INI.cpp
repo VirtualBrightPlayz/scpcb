@@ -1,12 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <Misc/String.h>
+#include <Misc/FileUtil.h>
 
 #include "INI.h"
 
-namespace CBN {
-
-// Structs.
 std::vector<INIFile*> INIFile::list;
 INIFile::INIFile(const PGE::String& filename) {
     list.push_back(this);
@@ -15,36 +13,39 @@ INIFile::INIFile(const PGE::String& filename) {
 
     Section* currSection = nullptr;
 
-    std::ifstream file(filename.resourcePath().cstr());
-    PGE::String currLine;
-    while (!file.eof()) {
-        std::string cppStr;
-        getline(file, cppStr);
-        currLine = PGE::String(cppStr);
+    std::ifstream file(filename.cstr());
 
-        if (currLine.charAt(0) == '[') {
-            if (currSection != nullptr) {
-                sections.push_back(currSection);
-            }
-            currSection = new Section();
-            currLine = currLine.substr(1,currLine.size()-2).trim();
-            currSection->names = currLine.split('|', true);
-        } else if (currLine.charAt(0) != ';') {
-            if (currSection != nullptr) {
-                std::vector<PGE::String> split = currLine.split('=', false);
-                if (split.size() >= 2) {
-                    currSection->keys.push_back(split[0].trim());
+    if (file.good()) {
+        PGE::String currLine;
+        while (!file.eof()) {
+            std::string cppStr;
+            getline(file, cppStr);
+            currLine = PGE::String(cppStr);
 
-                    // If the value itself had a '=' in it then recover those.
-                    split.erase(split.begin());
-                    PGE::String value = PGE::String::join(split, '=');
-                    currSection->values.push_back(value.trim());
+            if (currLine.charAt(0) == '[') {
+                if (currSection != nullptr) {
+                    sections.push_back(currSection);
+                }
+                currSection = new Section();
+                currLine = currLine.substr(1,currLine.size()-2).trim();
+                currSection->names = currLine.split('|', true);
+            } else if (currLine.charAt(0) != ';') {
+                if (currSection != nullptr) {
+                    std::vector<PGE::String> split = currLine.split('=', false);
+                    if (split.size() >= 2) {
+                        currSection->keys.push_back(split[0].trim());
+
+                        // If the value itself had a '=' in it then recover those.
+                        split.erase(split.begin());
+                        PGE::String value = PGE::String::join(split, '=');
+                        currSection->values.push_back(value.trim());
+                    }
                 }
             }
         }
-    }
-    if (currSection != nullptr) {
-        sections.push_back(currSection);
+        if (currSection != nullptr) {
+            sections.push_back(currSection);
+        }
     }
     file.close();
 }
@@ -96,10 +97,22 @@ void INIFile::setValue(const PGE::String& section, const PGE::String& key, const
                         return;
                     }
                 }
+                
+                // Key doesn't exist, make it.
+                sections[i]->keys.push_back(key.toLower());
+                sections[i]->values.push_back(value);
                 return;
             }
         }
     }
+
+    // Section doesn't exist, make one.
+    Section* sec = new Section();
+    sec->names.push_back(section);
+    sec->keys.push_back(key.toLower());
+    sec->values.push_back(value);
+
+    sections.push_back(sec);
 }
 
 std::map<PGE::String, PGE::String> INIFile::getSection(const PGE::String& section) {
@@ -123,6 +136,7 @@ std::map<PGE::String, PGE::String> INIFile::getSection(const PGE::String& sectio
 
 void INIFile::save() {
     std::ofstream f(name.cstr());
+
     for (int i = 0; i < (int)sections.size(); i++) {
         PGE::String secName = sections[i]->names[0];
         for (int j = 1; j < (int)sections[i]->names.size(); j++) {
@@ -137,7 +151,6 @@ void INIFile::save() {
     f.close();
 }
 
-// Functions.
 PGE::String getINIString(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, const PGE::String& defaultValue) {
     for (int i = 0; i < INIFile::getListSize(); i++) {
         INIFile* iniFile = INIFile::getObject(i);
@@ -152,13 +165,12 @@ PGE::String getINIString(const PGE::String& file, const PGE::String& section, co
 
 int getINIInt(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, int defaultvalue) {
     PGE::String txt = getINIString(file, section, parameter, PGE::String(defaultvalue));
-    if (txt.toLower().equals("true")) {
-        return 1;
-    } else if (txt.toLower().equals("false")) {
-        return 0;
-    } else {
-        return txt.toInt();
-    }
+    return txt.toInt();
+}
+
+bool getINIBool(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, bool defaultvalue) {
+    int val = getINIInt(file, section, parameter, (int)defaultvalue);
+    return !!val;
 }
 
 float getINIFloat(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, float defaultvalue) {
@@ -193,6 +205,4 @@ std::map<PGE::String, PGE::String> getINISection(const PGE::String& file, const 
     }
     INIFile* newFile = new INIFile(file);
     return newFile->getSection(section);
-}
-
 }

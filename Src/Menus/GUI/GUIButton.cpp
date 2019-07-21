@@ -15,7 +15,9 @@ bool GUIButton::isClicked() const {
 
 void GUIButton::updateInternal(PGE::Vector2f mousePos) {
     clicked = false;
-    
+
+    if (locked) { return; }
+
     if (mousePos.x >= getX() && mousePos.y >= getY()
         && mousePos.x <= getX2() && mousePos.y <= getY2()) {
         hovered = true;
@@ -40,7 +42,7 @@ void GUIButton::renderInternal() {
     uiMesh->setTextured(menublack, false);
     uiMesh->addRect(foreground);
 
-    if (hovered) {
+    if (hovered && !locked) {
         uiMesh->setTextureless();
         uiMesh->setColor(hoverColor);
         uiMesh->addRect(foreground);

@@ -8,7 +8,7 @@ PauseMenu::PauseMenu(UIMesh* um, KeyBinds* kb, Config* con) {
 
     float btnSpacing = 7.3f;
     float btnX = -btnWidth / 2.f;
-    float btnY = -40.f;
+    float btnY = -35.f;
 
     newgame = new GUIButton(um, kb, con, btnX, btnY, btnWidth, btnHeight);
     btnY += btnSpacing;
@@ -30,9 +30,9 @@ PauseMenu::PauseMenu(UIMesh* um, KeyBinds* kb, Config* con) {
 
 void PauseMenu::setState(SubState state) {
     currState = state;
-    
+
     if (currState == SubState::Options) { setOptionsTab(OptionsTab::Graphics); }
-    
+
     // The menu's still visible when the quit prompt's on screen but it's disabled.
     newgame->locked = currState == SubState::Quitting;
     loadgame->locked = currState == SubState::Quitting;
@@ -59,7 +59,7 @@ void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
             loadgame->update(mousePosition);
             options->update(mousePosition);
             quit->update(mousePosition);
-            
+
             if (newgame->isClicked()) {
                 std::cout << "New Game" << std::endl;
             } else if (loadgame->isClicked()) {
@@ -67,7 +67,7 @@ void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
             } else if (options->isClicked()) {
                 std::cout << "Options Game" << std::endl;
             } else if (quit->isClicked()) {
-                std::cout << "Quit Game" << std::endl;
+                setState(SubState::Quitting);
             }
         } break;
 
@@ -91,17 +91,17 @@ void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
 
 void PauseMenu::render(const World* world) {
     if (world->getGameState() != GameState::PauseMenu) { return; }
-    
+
     uiMesh->startRender();
 
-    switch (currState) {
-        case SubState::Main: {
-            newgame->render();
-            loadgame->render();
-            options->render();
-            quit->render();
-        } break;
+    if (currState == SubState::Main || currState == SubState::Quitting) {
+        newgame->render();
+        loadgame->render();
+        options->render();
+        quit->render();
+    }
 
+    switch (currState) {
         case SubState::Quitting: {
             quitFrame->render();
             quitYes->render();

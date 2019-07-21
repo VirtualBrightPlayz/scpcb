@@ -10,6 +10,9 @@ enum class WindowType {
 
 class Config {
     private:
+        PGE::String filename;
+        PGE::String secGFX = "graphics";
+    
         WindowType windowType;
         int width;
         int height;
@@ -18,10 +21,13 @@ class Config {
         bool vsync;
 
     public:
-        Config(PGE::FileName optionsFile);
+        Config(const PGE::String& optionsFile);
         Config(const Config& cpy);
 
         Config& operator=(const Config& other);
+    
+        void loadFile();
+        void saveFile() const;
 
         void setResolution(int width, int height);
         int getWidth() const;

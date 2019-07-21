@@ -4,9 +4,6 @@
 #include <vector>
 #include <map>
 
-namespace CBN {
-
-// Structs.
 class INIFile {
     private:
         static std::vector<INIFile*> list;
@@ -40,10 +37,11 @@ class INIFile {
         int size;
 };
 
-// Functions.
 PGE::String getINIString(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, const PGE::String& defaultValue = "");
 
 int getINIInt(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, int defaultvalue = 0);
+
+bool getINIBool(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, bool defaultvalue = false);
 
 float getINIFloat(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, float defaultvalue = 0.0);
 
@@ -51,5 +49,4 @@ void putINIValue(const PGE::String& file, const PGE::String& INI_sSection, const
 
 std::map<PGE::String, PGE::String> getINISection(const PGE::String& file, const PGE::String& section);
 
-}
 #endif // INI_H_INCLUDED
