@@ -11,11 +11,7 @@
 #include "../Input/KeyBinds.h"
 
 World::World() {
-//    int width = 1280;
-//    int height = 720;
-
     config = new Config("options.ini");
-//    config->setResolution(width, height);
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
     graphics->setViewport(PGE::Rectanglei(0, 0, config->getWidth(), config->getHeight()));
@@ -24,13 +20,12 @@ World::World() {
 
     timing = new Timing(60);
 
-    shaderMngt = new ShaderManager(graphics, camera);
+    shaderMngt = new ShaderManager(graphics, config, camera);
 
     FT_Init_FreeType(&ftLibrary);
-    fontShader = PGE::Shader::load(graphics, PGE::FileName::create("GFX/Shaders/Text/"));
-    largeFont = new Font(ftLibrary, graphics, config, PGE::FileName::create("GFX/Font/cour.ttf"), 20, fontShader);
+    largeFont = new Font(ftLibrary, graphics, shaderMngt, PGE::FileName::create("GFX/Font/cour.ttf"), 20, shaderMngt->getFontShader());
     spriteMesh = Sprite::createSpriteMesh(graphics);
-    uiMesh = new UIMesh(graphics, config);
+    uiMesh = new UIMesh(graphics, shaderMngt);
     keyBinds = new KeyBinds(io);
 
     dirtymetal = PGE::Texture::load(graphics, PGE::FileName::create("GFX/Map/Textures/dirtymetal.jpg"));

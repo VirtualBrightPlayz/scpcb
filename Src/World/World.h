@@ -36,7 +36,6 @@ class World {
 
         FT_Library ftLibrary;
         Font* largeFont;
-        PGE::Shader* fontShader;
         UIMesh* uiMesh;
 
         PGE::Mesh* spriteMesh;

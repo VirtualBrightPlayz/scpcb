@@ -1,7 +1,7 @@
 #include "UIMesh.h"
-#include "../Save/Config.h"
+#include "../World/ShaderManager.h"
 
-UIMesh::UIMesh(PGE::Graphics* gfx, const Config* config) {
+UIMesh::UIMesh(PGE::Graphics* gfx, const ShaderManager* sm) {
     graphics = gfx;
 
     shaderTextured = PGE::Shader::load(graphics, PGE::FileName::create("GFX/Shaders/UI/"));
@@ -19,7 +19,7 @@ UIMesh::UIMesh(PGE::Graphics* gfx, const Config* config) {
 
     startedRender = false;
 
-    PGE::Matrix4x4f orthoMat = config->getOrthoMat();
+    PGE::Matrix4x4f orthoMat = sm->getOrthoMat();
 
     shaderTextured->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);
     shaderTextureless->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);

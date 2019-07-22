@@ -11,7 +11,7 @@
 #include <Material/Material.h>
 
 class UIMesh;
-class Config;
+class ShaderManager;
 
 class UIMesh {
     private:
@@ -45,7 +45,7 @@ class UIMesh {
         };
         std::vector<Texture> textures;
     public:
-        UIMesh(PGE::Graphics* gfx, const Config* config);
+        UIMesh(PGE::Graphics* gfx, const ShaderManager* sm);
 
         void startRender();
 

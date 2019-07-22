@@ -4,6 +4,8 @@
 #include <Misc/FileName.h>
 #include <Math/Matrix.h>
 
+class ShaderManager;
+
 enum class WindowType {
     Windowed,
     Fullscreen
@@ -11,6 +13,8 @@ enum class WindowType {
 
 class Config {
     private:
+        ShaderManager* shaderMgmt = nullptr;
+    
         PGE::String filename;
         PGE::String secGFX = "graphics";
     
@@ -21,14 +25,13 @@ class Config {
 
         bool vsync;
 
-        PGE::Matrix4x4f orthoMat;
-        void updateOrthoMat();
-
     public:
         Config(const PGE::String& optionsFile);
         Config(const Config& cpy);
 
         Config& operator=(const Config& other);
+    
+        void setShaderManager(ShaderManager* sm);
     
         void loadFile();
         void saveFile() const;
@@ -37,8 +40,6 @@ class Config {
         int getWidth() const;
         int getHeight() const;
         float getAspectRatio() const;
-
-        PGE::Matrix4x4f getOrthoMat() const;
 
         float isVsync() const;
 };

@@ -3,6 +3,7 @@
 
 #include "Config.h"
 #include "../Utils/INI.h"
+#include "../World/ShaderManager.h"
 
 PGE::String corpFolder = "Undertow Games";
 PGE::String gameFolder = "SCP - Containment Breach";
@@ -52,6 +53,10 @@ Config& Config::operator=(const Config& other) {
     return *this;
 }
 
+void Config::setShaderManager(ShaderManager* sm) {
+    shaderMgmt = sm;
+}
+
 void Config::loadFile() {
     int widthINI = getINIInt(filename, secGFX, "width");
     int heightINI = getINIInt(filename, secGFX, "height");
@@ -65,23 +70,6 @@ void Config::saveFile() const {
     putINIValue(filename, secGFX, "vsync", vsync);
 }
 
-PGE::Matrix4x4f Config::getOrthoMat() const {
-    return orthoMat;
-}
-
-void Config::updateOrthoMat() {
-    // Define our screen space for UI elements.
-    // Top Left     - [-50, -50]
-    // Bottom Right - [50, 50]
-    // Horizontal plane is scaled with the aspect ratio.
-    float SCALE_MAGNITUDE = 50.f;
-    float w = SCALE_MAGNITUDE * getAspectRatio() * 2.f;
-    float h = SCALE_MAGNITUDE * 2.f;
-    float nearZ = 0.01f;
-    float farZ = 1.f;
-    orthoMat = PGE::Matrix4x4f::constructOrthographicMat(w, h, nearZ, farZ);
-}
-
 void Config::setResolution(int width, int height) {
     if (width <= 0 || height <= 0) {
         PGE::String errorStr = PGE::String("Invalid display resolution. (width: ") + width + ", height: " + height + ")";
@@ -91,7 +79,8 @@ void Config::setResolution(int width, int height) {
     this->width = width;
     this->height = height;
     aspectRatio = (float)width / height;
-    updateOrthoMat();
+    
+    if (shaderMgmt != nullptr) { shaderMgmt->updateOrthoMat(getAspectRatio()); }
 }
 
 int Config::getWidth() const {

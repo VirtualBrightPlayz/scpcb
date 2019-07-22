@@ -6,7 +6,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-Font::Font(FT_Library ftLibrary, PGE::Graphics* gfx, const Config* config, const PGE::FileName& fn, int h, PGE::Shader* s) {
+#include "../World/ShaderManager.h"
+
+Font::Font(FT_Library ftLibrary, PGE::Graphics* gfx, const ShaderManager* sm, const PGE::FileName& fn, int h, PGE::Shader* s) {
     graphics = gfx;
     filename = fn;
     height = h;
@@ -29,7 +31,7 @@ Font::Font(FT_Library ftLibrary, PGE::Graphics* gfx, const Config* config, const
     modelMatrixConstant = s->getVertexShaderConstant("modelMatrix");
     colorConstant = s->getFragmentShaderConstant("imageColor");
 
-    PGE::Matrix4x4f orthoMat = config->getOrthoMat();
+    PGE::Matrix4x4f orthoMat = sm->getOrthoMat();
 
     s->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);
 }
