@@ -19,16 +19,7 @@ UIMesh::UIMesh(PGE::Graphics* gfx, const Config* config) {
 
     startedRender = false;
 
-    // Define our screen space for UI elements.
-    // Top Left     - [-50, -50]
-    // Bottom Right - [50, 50]
-    // Horizontal plane is scaled with the aspect ratio.
-    float SCALE_MAGNITUDE = 50.f;
-    float width = SCALE_MAGNITUDE * config->getAspectRatio() * 2.f;
-    float height = SCALE_MAGNITUDE * 2.f;
-    float nearZ = 0.01f;
-    float farZ = 1.f;
-    PGE::Matrix4x4f orthoMat = PGE::Matrix4x4f::constructOrthographicMat(width, height, nearZ, farZ);
+    PGE::Matrix4x4f orthoMat = config->getOrthoMat();
 
     shaderTextured->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);
     shaderTextureless->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);

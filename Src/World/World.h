@@ -1,10 +1,13 @@
 #ifndef WORLD_H_INCLUDED
 #define WORLD_H_INCLUDED
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
 #include <Graphics/Graphics.h>
 #include <IO/IO.h>
 #include "../Graphics/Sprite.h"
 #include "../Graphics/UIMesh.h"
+#include "../Graphics/Font.h"
 #include "../Input/KeyBinds.h"
 #include "../Save/Config.h"
 
@@ -31,7 +34,11 @@ class World {
         Config* config;
         Timing* timing;
 
+        FT_Library ftLibrary;
+        Font* largeFont;
+        PGE::Shader* fontShader;
         UIMesh* uiMesh;
+
         PGE::Mesh* spriteMesh;
 
         // TODO: Remove, these are a test.

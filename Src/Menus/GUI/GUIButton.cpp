@@ -1,12 +1,13 @@
 #include "GUIButton.h"
 #include "../../Graphics/UIMesh.h"
 
-GUIButton::GUIButton(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment)
+GUIButton::GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment), clicked(false), locked(false) {
     menuwhite = "GFX/Menu/menuwhite.jpg";
     menublack = "GFX/Menu/menublack.jpg";
     hoverColor = PGE::Color(70, 70, 150, 200);
     borderThickness = 1.f/3.f;
+    font = fnt;
 }
 
 bool GUIButton::isClicked() const {
@@ -35,6 +36,8 @@ void GUIButton::updateInternal(PGE::Vector2f mousePos) {
 }
 
 void GUIButton::renderInternal() {
+    uiMesh->startRender();
+    
     uiMesh->setTextured(menuwhite, true);
     uiMesh->addRect(PGE::Rectanglef(PGE::Vector2f(getX(), getY()), PGE::Vector2f(getX2(), getY2())));
 
@@ -48,4 +51,8 @@ void GUIButton::renderInternal() {
         uiMesh->addRect(foreground);
         uiMesh->setColor(PGE::Color());
     }
+
+    uiMesh->endRender();
+
+    font->draw("Button", PGE::Vector2f(getX(), getY()), PGE::Vector2f(100.f / 720.f));
 }

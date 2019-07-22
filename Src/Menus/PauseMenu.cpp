@@ -2,7 +2,7 @@
 
 #include "PauseMenu.h"
 
-PauseMenu::PauseMenu(UIMesh* um, KeyBinds* kb, Config* con) {
+PauseMenu::PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con) {
     float btnWidth = 40.f;
     float btnHeight = 7.f;
 
@@ -10,21 +10,22 @@ PauseMenu::PauseMenu(UIMesh* um, KeyBinds* kb, Config* con) {
     float btnX = -btnWidth / 2.f;
     float btnY = -35.f;
 
-    newgame = new GUIButton(um, kb, con, btnX, btnY, btnWidth, btnHeight);
+    newgame = new GUIButton(um, largeFnt, kb, con, btnX, btnY, btnWidth, btnHeight);
     btnY += btnSpacing;
-    loadgame = new GUIButton(um, kb, con, btnX, btnY, btnWidth, btnHeight);
+    loadgame = new GUIButton(um, largeFnt, kb, con, btnX, btnY, btnWidth, btnHeight);
     btnY += btnSpacing;
-    options = new GUIButton(um, kb, con, btnX, btnY, btnWidth, btnHeight);
+    options = new GUIButton(um, largeFnt, kb, con, btnX, btnY, btnWidth, btnHeight);
     btnY += btnSpacing;
-    quit = new GUIButton(um, kb, con, btnX, btnY, btnWidth, btnHeight);
+    quit = new GUIButton(um, largeFnt, kb, con, btnX, btnY, btnWidth, btnHeight);
 
     float quitFrameWidth = 60.f;
     float quitFrameHeight = 30.f;
     quitFrame = new GUIFrame(um, kb, con, -quitFrameWidth / 2.f, -quitFrameHeight / 2.f, quitFrameWidth, quitFrameHeight);
-    quitYes = new GUIButton(um, kb, con, -31.f, 10.f, 3.f, 1.f);
-    quitNo = new GUIButton(um, kb, con, 29.f, 10.f, 3.f, 1.f);
+    quitYes = new GUIButton(um, largeFnt, kb, con, -31.f, 10.f, 3.f, 1.f);
+    quitNo = new GUIButton(um, largeFnt, kb, con, 29.f, 10.f, 3.f, 1.f);
 
     uiMesh = um;
+    largeFont = largeFnt;
     keyBinds = kb;
 }
 

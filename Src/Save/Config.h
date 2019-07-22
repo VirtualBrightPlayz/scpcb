@@ -2,6 +2,7 @@
 #define CONFIG_H_INCLUDED
 
 #include <Misc/FileName.h>
+#include <Math/Matrix.h>
 
 enum class WindowType {
     Windowed,
@@ -20,6 +21,9 @@ class Config {
 
         bool vsync;
 
+        PGE::Matrix4x4f orthoMat;
+        void updateOrthoMat();
+
     public:
         Config(const PGE::String& optionsFile);
         Config(const Config& cpy);
@@ -33,6 +37,8 @@ class Config {
         int getWidth() const;
         int getHeight() const;
         float getAspectRatio() const;
+
+        PGE::Matrix4x4f getOrthoMat() const;
 
         float isVsync() const;
 };

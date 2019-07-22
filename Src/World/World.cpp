@@ -26,6 +26,9 @@ World::World() {
 
     shaderMngt = new ShaderManager(graphics, camera);
 
+    FT_Init_FreeType(&ftLibrary);
+    fontShader = PGE::Shader::load(graphics, PGE::FileName::create("GFX/Shaders/Text/"));
+    largeFont = new Font(ftLibrary, graphics, config, PGE::FileName::create("GFX/Font/cour.ttf"), 20, fontShader);
     spriteMesh = Sprite::createSpriteMesh(graphics);
     uiMesh = new UIMesh(graphics, config);
     keyBinds = new KeyBinds(io);
@@ -37,7 +40,7 @@ World::World() {
     poster->setScale(1.f);
 
     setGameState(GameState::Playing);
-    pauseMenu = new PauseMenu(uiMesh, keyBinds, config);
+    pauseMenu = new PauseMenu(uiMesh, largeFont, keyBinds, config);
     pauseMenu->hide();
 
     isRoadRollered = false;

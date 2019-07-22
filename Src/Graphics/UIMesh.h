@@ -47,9 +47,6 @@ class UIMesh {
     public:
         UIMesh(PGE::Graphics* gfx, const Config* config);
 
-        PGE::Vector2f scaleFactor;
-        PGE::Rectanglef uvTilingRectangle;
-
         void startRender();
 
         void setTextureless();

@@ -4,6 +4,7 @@
 #include "../World/World.h"
 #include "GUI/GUIButton.h"
 #include "GUI/GUIFrame.h"
+#include "../Graphics/Font.h"
 
 class PauseMenu {
     private:
@@ -46,10 +47,11 @@ class PauseMenu {
         GUIButton* quitNo;
 
         UIMesh* uiMesh;
+        Font* largeFont;
         KeyBinds* keyBinds;
 
     public:
-        PauseMenu(UIMesh* um, KeyBinds* kb, Config* con);
+        PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con);
     
         void show();
         void hide();

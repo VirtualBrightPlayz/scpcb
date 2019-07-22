@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-Font::Font(FT_Library ftLibrary, PGE::Graphics* gfx,const PGE::FileName& fn,int h, PGE::Shader* s) {
+Font::Font(FT_Library ftLibrary, PGE::Graphics* gfx, const Config* config, const PGE::FileName& fn, int h, PGE::Shader* s) {
     graphics = gfx;
     filename = fn;
     height = h;
@@ -25,6 +25,13 @@ Font::Font(FT_Library ftLibrary, PGE::Graphics* gfx,const PGE::FileName& fn,int 
     atlases.clear();
 
     renderAtlas(0);
+
+    modelMatrixConstant = s->getVertexShaderConstant("modelMatrix");
+    colorConstant = s->getFragmentShaderConstant("imageColor");
+
+    PGE::Matrix4x4f orthoMat = config->getOrthoMat();
+
+    s->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);
 }
 
 Font::~Font() {

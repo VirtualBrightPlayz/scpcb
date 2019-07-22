@@ -18,9 +18,11 @@
 #include <Math/Vector.h>
 #include <Math/Rectangle.h>
 
+#include "../Save/Config.h"
+
 class Font {
     public:
-        Font(FT_Library ftLibrary,PGE::Graphics* gfx,const PGE::FileName& fn,int h, PGE::Shader* s);
+        Font(FT_Library ftLibrary, PGE::Graphics* gfx, const Config* config, const PGE::FileName& fn, int h, PGE::Shader* s);
         ~Font();
 
         void draw(PGE::String text, PGE::Vector3f pos, PGE::Vector2f scale=PGE::Vector2f::one, PGE::Vector3f rotation=PGE::Vector3f::zero, PGE::Color color=PGE::Color(1.f,1.f,1.f,1.f));
@@ -50,7 +52,7 @@ class Font {
         PGE::Shader::Constant* modelMatrixConstant;
         PGE::Shader::Constant* colorConstant;
 
-        const int atlasDims = 32;
+        const int atlasDims = 1024;
 
         void renderAtlas(long chr);
 
