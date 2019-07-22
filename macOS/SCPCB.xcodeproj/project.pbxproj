@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1907E42B22E500CF00FC1870 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1907E42A22E500CF00FC1870 /* Font.cpp */; };
 		190E9C342257866500A59243 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 190E9C332257866500A59243 /* Assets.xcassets */; };
 		190E9C372257866500A59243 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 190E9C352257866500A59243 /* Main.storyboard */; };
 		191A23B422C2C20F009DC558 /* GUIButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191A23B022C2C20F009DC558 /* GUIButton.cpp */; };
@@ -23,6 +24,7 @@
 		1927734122A85D500055EB30 /* Dummy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1927733F22A85D500055EB30 /* Dummy.txt */; };
 		192A67A622C43CBA009A6F1E /* GUIFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 192A67A522C43CBA009A6F1E /* GUIFrame.cpp */; };
 		1931B60522AEEFEA00A48B13 /* ShaderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1931B60422AEEFEA00A48B13 /* ShaderManager.cpp */; };
+		1932743222E543D1005F3528 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1932733322E53616005F3528 /* libfreetype.a */; };
 		193385FA22E157E900439AA9 /* GUIComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 193385F922E157E900439AA9 /* GUIComponent.cpp */; };
 		1934815722B9B9A60039F47E /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1934815622B9B9A60039F47E /* MathUtil.cpp */; };
 		194C2F742257874800AB9902 /* Loadingscreens in Resources */ = {isa = PBXBuildFile; fileRef = 194C2F702257874800AB9902 /* Loadingscreens */; };
@@ -48,6 +50,13 @@
 			remoteGlobalIDString = 194AA01E2209FF3800837F38;
 			remoteInfo = Engine;
 		};
+		1932733222E53616005F3528 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1932732D22E53616005F3528 /* freetype.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1907E43522E5012E00FC1870;
+			remoteInfo = freetype;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -65,6 +74,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1907E42822E500CF00FC1870 /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
+		1907E42A22E500CF00FC1870 /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
 		190E9C282257866300A59243 /* SCPCB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SCPCB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		190E9C332257866500A59243 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		190E9C362257866500A59243 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -92,6 +103,8 @@
 		192A67A522C43CBA009A6F1E /* GUIFrame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GUIFrame.cpp; sourceTree = "<group>"; };
 		1931B60322AEEFEA00A48B13 /* ShaderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderManager.h; sourceTree = "<group>"; };
 		1931B60422AEEFEA00A48B13 /* ShaderManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderManager.cpp; sourceTree = "<group>"; };
+		1932732D22E53616005F3528 /* freetype.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = freetype.xcodeproj; path = Libraries/freetype.xcodeproj; sourceTree = "<group>"; };
+		1932742E22E5424F005F3528 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = Libraries/DerivedData/freetype/Build/Products/Debug/libfreetype.a; sourceTree = "<group>"; };
 		193385F822E157E900439AA9 /* GUIComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GUIComponent.h; sourceTree = "<group>"; };
 		193385F922E157E900439AA9 /* GUIComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GUIComponent.cpp; sourceTree = "<group>"; };
 		1934815422B9B9A60039F47E /* MathUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathUtil.h; sourceTree = "<group>"; };
@@ -123,6 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1932743222E543D1005F3528 /* libfreetype.a in Frameworks */,
 				191BDDBB22A8547E00270B9D /* SDL2.framework in Frameworks */,
 				191BDDA822A8458000270B9D /* libEngine.a in Frameworks */,
 			);
@@ -209,8 +223,10 @@
 		191BDD9922A8457600270B9D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1932742E22E5424F005F3528 /* libfreetype.a */,
 				191BDDBA22A8547E00270B9D /* SDL2.framework */,
 				191BDD9A22A8457700270B9D /* Engine.xcodeproj */,
+				1932732D22E53616005F3528 /* freetype.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -253,6 +269,14 @@
 			path = Menus;
 			sourceTree = "<group>";
 		};
+		1932732E22E53616005F3528 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1932733322E53616005F3528 /* libfreetype.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		194C2F6F2257872B00AB9902 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -292,6 +316,8 @@
 			children = (
 				19F17EAB22AD82940061F643 /* Camera.cpp */,
 				19F17EAA22AD82940061F643 /* Camera.h */,
+				1907E42A22E500CF00FC1870 /* Font.cpp */,
+				1907E42822E500CF00FC1870 /* Font.h */,
 				19F17EA822AD79A00061F643 /* Sprite.cpp */,
 				19F17EA722AD79A00061F643 /* Sprite.h */,
 				19C1965C22BD532F00332C8E /* UIMesh.cpp */,
@@ -360,6 +386,10 @@
 					ProductGroup = 191BDD9B22A8457700270B9D /* Products */;
 					ProjectRef = 191BDD9A22A8457700270B9D /* Engine.xcodeproj */;
 				},
+				{
+					ProductGroup = 1932732E22E53616005F3528 /* Products */;
+					ProjectRef = 1932732D22E53616005F3528 /* freetype.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -374,6 +404,13 @@
 			fileType = archive.ar;
 			path = libEngine.a;
 			remoteRef = 191BDDA622A8457700270B9D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1932733322E53616005F3528 /* libfreetype.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libfreetype.a;
+			remoteRef = 1932733222E53616005F3528 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -406,6 +443,7 @@
 				191BDDB622A846F600270B9D /* INI.cpp in Sources */,
 				19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */,
 				191BDDB322A846EE00270B9D /* PlayerController.cpp in Sources */,
+				1907E42B22E500CF00FC1870 /* Font.cpp in Sources */,
 				192A67A622C43CBA009A6F1E /* GUIFrame.cpp in Sources */,
 				19646FC322A9FB6D005E027E /* Timing.cpp in Sources */,
 				19243C1622BC295C0057054D /* PauseMenu.cpp in Sources */,
@@ -489,6 +527,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../Engine/Include/,
+					"../Libraries/freetype-2.10.1/include/",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -542,6 +584,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../Engine/Include/,
+					"../Libraries/freetype-2.10.1/include/",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -556,11 +602,23 @@
 				CODE_SIGN_ENTITLEMENTS = SCPCB/SCPCB.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				HEADER_SEARCH_PATHS = ../Engine/Include/;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = (
+					../Engine/Include/,
+					"../Libraries/freetype-2.10.1/include/",
+					"../Libraries/freetype-2.10.1/src/",
+				);
 				INFOPLIST_FILE = SCPCB/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libraries/DerivedData/freetype/Build/Products/Debug",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = todo.SCPCB;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -574,11 +632,19 @@
 				CODE_SIGN_ENTITLEMENTS = SCPCB/SCPCB.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				HEADER_SEARCH_PATHS = ../Engine/Include/;
+				HEADER_SEARCH_PATHS = (
+					../Engine/Include/,
+					"../Libraries/freetype-2.10.1/include/",
+					"../Libraries/freetype-2.10.1/src/",
+				);
 				INFOPLIST_FILE = SCPCB/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libraries/DerivedData/freetype/Build/Products/Debug",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = todo.SCPCB;
 				PRODUCT_NAME = "$(TARGET_NAME)";
