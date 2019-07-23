@@ -6,6 +6,8 @@
 #include "GUI/GUIFrame.h"
 #include "../Graphics/Font.h"
 
+class TxtManager;
+
 class PauseMenu {
     private:
         enum class SubState {
@@ -51,8 +53,8 @@ class PauseMenu {
         KeyBinds* keyBinds;
 
     public:
-        PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con);
-    
+        PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtManager* tm);
+
         void show();
         void hide();
 

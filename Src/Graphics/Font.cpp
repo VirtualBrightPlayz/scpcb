@@ -7,9 +7,11 @@
 #include <stdio.h>
 
 #include "../World/ShaderManager.h"
+#include "../Save/Config.h"
 
-Font::Font(FT_Library ftLibrary, PGE::Graphics* gfx, const ShaderManager* sm, const PGE::FileName& fn, int h, PGE::Shader* s) {
+Font::Font(FT_Library ftLibrary, PGE::Graphics* gfx, const ShaderManager* sm, Config* con, const PGE::FileName& fn, int h, PGE::Shader* s) {
     graphics = gfx;
+    config = con;
     filename = fn;
     height = h;
     shader = s;
@@ -139,11 +141,11 @@ void Font::renderAtlas(long chr) {
     }
 }
 
-void Font::draw(PGE::String text, PGE::Vector2f pos, PGE::Vector2f scale,float rotation, PGE::Color color) {
+void Font::draw(const PGE::String& text, PGE::Vector2f pos, PGE::Vector2f scale,float rotation, PGE::Color color) {
     draw(text, PGE::Vector3f(pos.x,pos.y,0.1f),scale, PGE::Vector3f(0.f,0.f,rotation),color);
 }
 
-void Font::draw(PGE::String text, PGE::Vector3f pos, PGE::Vector2f scale, PGE::Vector3f rotation, PGE::Color color) {
+void Font::draw(const PGE::String& text, PGE::Vector3f pos, PGE::Vector2f scale, PGE::Vector3f rotation, PGE::Color color) {
     PGE::Matrix4x4f modelMatrix = PGE::Matrix4x4f::constructWorldMat(pos, PGE::Vector3f(scale.x,scale.y,1.f),rotation);
 
     PGE::Vector3f currPos = PGE::Vector3f::zero;
@@ -209,4 +211,29 @@ void Font::draw(PGE::String text, PGE::Vector3f pos, PGE::Vector2f scale, PGE::V
             atlases[i].mesh->render();
         }
     }
+}
+
+float Font::stringWidth(const PGE::String& text, PGE::Vector2f scale) {
+    float width = 0.f;
+
+    for (int i = 0; i < text.size(); i++) {
+        long chr = (long)text.wstr()[i];
+        std::map<long, GlyphData>::iterator it = glyphData.find(chr);
+        if (it == glyphData.end()) {
+            renderAtlas(chr);
+            it = glyphData.find(chr);
+        }
+
+        width += it->second.horizontalAdvance;
+    }
+
+    return width * scale.x;
+}
+
+void Font::centerTextCoords(float& txtX, float& txtY, const PGE::String& text, float x, float y, float w, float h, PGE::Vector2f scale) {
+    float txtWidth = stringWidth(text, scale);
+    float txtHeight = height * scale.y;
+
+    txtX = (x + w / 2.f) - txtWidth / 2.f;
+    txtY = (y + h / 2.f) - txtHeight / 2.f;
 }

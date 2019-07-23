@@ -19,14 +19,19 @@
 #include <Math/Rectangle.h>
 
 class ShaderManager;
+class Config;
 
 class Font {
     public:
-        Font(FT_Library ftLibrary, PGE::Graphics* gfx, const ShaderManager* sm, const PGE::FileName& fn, int h, PGE::Shader* s);
+        Font(FT_Library ftLibrary, PGE::Graphics* gfx, const ShaderManager* sm, Config* con, const PGE::FileName& fn, int h, PGE::Shader* s);
         ~Font();
 
-        void draw(PGE::String text, PGE::Vector3f pos, PGE::Vector2f scale=PGE::Vector2f::one, PGE::Vector3f rotation=PGE::Vector3f::zero, PGE::Color color=PGE::Color(1.f,1.f,1.f,1.f));
-        void draw(PGE::String text, PGE::Vector2f pos, PGE::Vector2f scale=PGE::Vector2f::one,float rotation=0.f, PGE::Color color=PGE::Color(1.f,1.f,1.f,1.f));
+        void draw(const PGE::String& text, PGE::Vector3f pos, PGE::Vector2f scale=PGE::Vector2f::one, PGE::Vector3f rotation=PGE::Vector3f::zero, PGE::Color color=PGE::Color(1.f,1.f,1.f,1.f));
+        void draw(const PGE::String& text, PGE::Vector2f pos, PGE::Vector2f scale=PGE::Vector2f::one,float rotation=0.f, PGE::Color color=PGE::Color(1.f,1.f,1.f,1.f));
+
+        float stringWidth(const PGE::String& text, PGE::Vector2f scale = PGE::Vector2f::one);
+        // Returns the coordinates to center this text inside the given rectangle.
+        void centerTextCoords(float& txtX, float& txtY, const PGE::String& text, float x, float y, float w, float h, PGE::Vector2f scale = PGE::Vector2f::one);
 
         struct Atlas {
             PGE::Texture* texture;
@@ -62,6 +67,7 @@ class Font {
         std::map<long,GlyphData> glyphData;
 
         PGE::Graphics* graphics;
+        Config* config;
 
         PGE::FileName filename;
 };

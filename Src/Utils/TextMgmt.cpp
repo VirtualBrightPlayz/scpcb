@@ -1,12 +1,9 @@
 #include <iostream>
 #include <Misc/FileUtil.h>
+#include <Misc/FileName.h>
 
 #include "TextMgmt.h"
 #include "INI.h"
-
-namespace CBN {
-
-TxtManager* txtMgmt;
 
 TxtManager::TxtManager(const PGE::String& langCode) {
     displayMsg = "";
@@ -52,12 +49,10 @@ PGE::String TxtManager::getLocalTxt(const PGE::String& key) {
 void TxtManager::changeLocalization(const PGE::String& langCode) {
     lang.clear();
 
-    PGE::String path = "Data/lang/" + langCode + "/text.ini";
-    if (!PGE::FileUtil::exists(path.resourcePath())) {
-        throw "Language file \"" + path + "\" not found!";
+    PGE::FileName path = PGE::FileName::create("Data/lang/" + langCode + "/text.ini");
+    if (!PGE::FileUtil::exists(path.str())) {
+        throw "Language file \"" + path.str() + "\" not found!";
     }
 
-    lang = getINISection(path, "text");
-}
-
+    lang = getINISection(path.str(), "text");
 }

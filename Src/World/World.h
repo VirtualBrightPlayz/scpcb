@@ -14,6 +14,7 @@
 class Camera;
 class Timing;
 class ShaderManager;
+class TxtManager;
 class PauseMenu;
 
 enum class GameState {
@@ -45,6 +46,7 @@ class World {
         PGE::Texture* dirtymetal;
 
         ShaderManager* shaderMngt;
+        TxtManager* txtMngt;
 
         GameState currState;
 

@@ -9,6 +9,7 @@
 #include "../Save/Config.h"
 #include "../Menus/GUI/GUIComponent.h"
 #include "../Input/KeyBinds.h"
+#include "../Utils/TextMgmt.h"
 
 World::World() {
     config = new Config("options.ini");
@@ -21,9 +22,10 @@ World::World() {
     timing = new Timing(60);
 
     shaderMngt = new ShaderManager(graphics, config, camera);
+    txtMngt = new TxtManager(config->getLangCode());
 
     FT_Init_FreeType(&ftLibrary);
-    largeFont = new Font(ftLibrary, graphics, shaderMngt, PGE::FileName::create("GFX/Font/cour.ttf"), 20, shaderMngt->getFontShader());
+    largeFont = new Font(ftLibrary, graphics, shaderMngt, config, PGE::FileName::create("GFX/Font/cour.ttf"), 20, shaderMngt->getFontShader());
     spriteMesh = Sprite::createSpriteMesh(graphics);
     uiMesh = new UIMesh(graphics, shaderMngt);
     keyBinds = new KeyBinds(io);
@@ -35,7 +37,7 @@ World::World() {
     poster->setScale(1.f);
 
     setGameState(GameState::Playing);
-    pauseMenu = new PauseMenu(uiMesh, largeFont, keyBinds, config);
+    pauseMenu = new PauseMenu(uiMesh, largeFont, keyBinds, config, txtMngt);
     pauseMenu->hide();
 
     isRoadRollered = false;
@@ -51,6 +53,7 @@ World::~World() {
     delete camera;
     delete timing;
     delete shaderMngt;
+    delete txtMngt;
 
     delete io;
     delete graphics;

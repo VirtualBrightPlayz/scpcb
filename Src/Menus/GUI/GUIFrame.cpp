@@ -3,8 +3,8 @@
 
 GUIFrame::GUIFrame(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment) {
-    menuwhite = "GFX/Menu/menuwhite.jpg";
-    menublack = "GFX/Menu/menublack.jpg";
+    menuwhite = PGE::FileName::create("GFX/Menu/menuwhite.jpg");
+    menublack = PGE::FileName::create("GFX/Menu/menublack.jpg");
     borderThickness = 1.f;
 }
 

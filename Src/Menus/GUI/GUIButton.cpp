@@ -1,13 +1,17 @@
 #include "GUIButton.h"
 #include "../../Graphics/UIMesh.h"
+#include "../../Utils/TextMgmt.h"
 
-GUIButton::GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment)
+GUIButton::GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, TxtManager* tm, float x, float y, float width, float height, const PGE::String& txt, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment), clicked(false), locked(false) {
-    menuwhite = "GFX/Menu/menuwhite.jpg";
-    menublack = "GFX/Menu/menublack.jpg";
+    menuwhite = PGE::FileName::create("GFX/Menu/menuwhite.jpg");
+    menublack = PGE::FileName::create("GFX/Menu/menublack.jpg");
     hoverColor = PGE::Color(70, 70, 150, 200);
-    borderThickness = 1.f/3.f;
+    borderThickness = 0.33f;
+
     font = fnt;
+    text = txt;
+    txtMng = tm;
 }
 
 bool GUIButton::isClicked() const {
@@ -36,8 +40,8 @@ void GUIButton::updateInternal(PGE::Vector2f mousePos) {
 }
 
 void GUIButton::renderInternal() {
-    uiMesh->startRender();
-    
+    // uiMesh->startRender();
+
     uiMesh->setTextured(menuwhite, true);
     uiMesh->addRect(PGE::Rectanglef(PGE::Vector2f(getX(), getY()), PGE::Vector2f(getX2(), getY2())));
 
@@ -52,7 +56,18 @@ void GUIButton::renderInternal() {
         uiMesh->setColor(PGE::Color());
     }
 
-    uiMesh->endRender();
+    // uiMesh->endRender();
 
-    font->draw("Button", PGE::Vector2f(getX(), getY()), PGE::Vector2f(100.f / 720.f));
+    if (!text.isEmpty()) {
+        // Render anything buffered so the text doesn't get overlapped.
+        uiMesh->endRender();
+        uiMesh->startRender();
+        
+        PGE::String local = txtMng->getLocalTxt(text);
+        PGE::Vector2f txtScale = PGE::Vector2f(100.f / 720.f);
+        float txtX; float txtY;
+        font->centerTextCoords(txtX, txtY, local, getX(), getY(), width, height, txtScale);
+
+        font->draw(txtMng->getLocalTxt(text), PGE::Vector2f(txtX, txtY), txtScale);
+    }
 }

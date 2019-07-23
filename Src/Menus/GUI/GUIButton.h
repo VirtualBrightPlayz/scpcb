@@ -4,14 +4,19 @@
 #include "GUIComponent.h"
 #include "../../Graphics/Font.h"
 
+class TxtManager;
+
 class GUIButton : public GUIComponent {
     private:
         PGE::FileName menuwhite;
         PGE::FileName menublack;
         PGE::Color hoverColor;
         float borderThickness;
+
         Font* font;
-    
+        PGE::String text;
+        TxtManager* txtMng;
+
     protected:
         // MouseHit.
         bool active;
@@ -27,7 +32,7 @@ class GUIButton : public GUIComponent {
         // Whether this button can be clicked.
         bool locked;
 
-        GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment = Alignment::CenterXY);
+        GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, TxtManager* tm, float x, float y, float width, float height, const PGE::String& txt, Alignment alignment = Alignment::CenterXY);
 
         bool isClicked() const;
 };

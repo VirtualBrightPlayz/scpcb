@@ -4,8 +4,6 @@
 #include <Misc/String.h>
 #include <map>
 
-namespace CBN {
-
 // TODO: Localization stuff here. Also DeathMSG.
 class TxtManager {
 private:
@@ -28,7 +26,5 @@ public:
     PGE::String getLocalTxt(const PGE::String& key);
     void changeLocalization(const PGE::String& langCode);
 };
-extern TxtManager* txtMgmt;
 
-}
 #endif // TEXTMGMT_H_INCLUDED

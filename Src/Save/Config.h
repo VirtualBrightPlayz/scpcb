@@ -16,7 +16,10 @@ class Config {
         ShaderManager* shaderMgmt = nullptr;
     
         PGE::String filename;
+        PGE::String secGen = "general";
         PGE::String secGFX = "graphics";
+    
+        PGE::String languageCode;
     
         WindowType windowType;
         int width;
@@ -35,6 +38,8 @@ class Config {
     
         void loadFile();
         void saveFile() const;
+    
+        PGE::String getLangCode() const;
 
         void setResolution(int width, int height);
         int getWidth() const;
