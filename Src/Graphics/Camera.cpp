@@ -10,17 +10,17 @@ Camera::Camera(PGE::Graphics* gfx, float aspectRatio, float fov) : graphics(gfx)
     upDir = PGE::Vector3f(0.0f, 1.0f, 0.0f);
 
     viewMatrix = PGE::Matrix4x4f::constructViewMat(position, lookAt, upDir);
-    
+
     xAngle = 0.f;
     yAngle = 0.f;
-    yAngleLimit = 3.14f * 0.5f;
+    yAngleLimit = M_PI_2;
     tilt = 0.f;
 
     float nearZ = 0.01f;
     float farZ = 25.f;
     this->fov = fov;
     projectionMatrix = PGE::Matrix4x4f::constructPerspectiveMat(fov, aspectRatio, nearZ, farZ);
-    
+
     rotation = PGE::Matrix4x4f::identity;
 }
 
@@ -28,7 +28,7 @@ Camera::Camera(PGE::Graphics* gfx, float aspectRatio) : Camera(gfx, aspectRatio,
 
 void Camera::update() {
     rotation = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(0.f, 0.f, 0.f), PGE::Vector3f(1.f, 1.f, 1.f), PGE::Vector3f(-yAngle, xAngle, tilt));
-    
+
     viewMatrix = PGE::Matrix4x4f::constructViewMat(position, rotation.transform(lookAt), rotation.transform(upDir));
 }
 
@@ -43,11 +43,17 @@ void Camera::setTilt(float rad) {
 void Camera::addAngle(float x, float y) {
     xAngle += x;
     yAngle -= y;
-    
-    if (yAngle< -yAngleLimit) {
+
+    if (yAngle < -yAngleLimit) {
         yAngle = -yAngleLimit;
     } else if (yAngle > yAngleLimit) {
         yAngle = yAngleLimit;
+    }
+
+    if (xAngle > M_PI * 2.f) {
+        xAngle -= M_PI * 2.f;
+    } else if (xAngle < M_PI * -2.f) {
+        xAngle += M_PI * 2.f;
     }
 }
 

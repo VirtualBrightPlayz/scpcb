@@ -62,12 +62,12 @@ void GUIButton::renderInternal() {
         // Render anything buffered so the text doesn't get overlapped.
         uiMesh->endRender();
         uiMesh->startRender();
-        
+
         PGE::String local = txtMng->getLocalTxt(text);
         PGE::Vector2f txtScale = PGE::Vector2f(100.f / 720.f);
         float txtX; float txtY;
         font->centerTextCoords(txtX, txtY, local, getX(), getY(), width, height, txtScale);
 
-        font->draw(txtMng->getLocalTxt(text), PGE::Vector2f(txtX, txtY), txtScale);
+        font->draw(local, PGE::Vector2f(txtX, txtY), txtScale);
     }
 }
