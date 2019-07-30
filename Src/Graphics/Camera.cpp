@@ -1,4 +1,3 @@
-#include <math.h>
 #include <Math/Rectangle.h>
 
 #include "Camera.h"
@@ -13,7 +12,7 @@ Camera::Camera(PGE::Graphics* gfx, float aspectRatio, float fov) : graphics(gfx)
 
     xAngle = 0.f;
     yAngle = 0.f;
-    yAngleLimit = M_PI_2;
+    yAngleLimit = MathUtil::PI / 2.f;
     tilt = 0.f;
 
     float nearZ = 0.01f;
@@ -50,10 +49,12 @@ void Camera::addAngle(float x, float y) {
         yAngle = yAngleLimit;
     }
 
-    if (xAngle > M_PI * 2.f) {
-        xAngle -= M_PI * 2.f;
-    } else if (xAngle < M_PI * -2.f) {
-        xAngle += M_PI * 2.f;
+    float PI_MUL_2 = MathUtil::PI * 2.f;
+
+    if (xAngle > PI_MUL_2) {
+        xAngle -= PI_MUL_2;
+    } else if (xAngle < -PI_MUL_2) {
+        xAngle += PI_MUL_2;
     }
 }
 
