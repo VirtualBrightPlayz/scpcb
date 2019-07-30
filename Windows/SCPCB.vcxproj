@@ -64,6 +64,7 @@
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d11.lib;dxgi.lib;$(Platform)/$(Configuration)/Engine.lib;$(Platform)/$(Configuration)/SDL2.lib;../Libraries/freetype-2.10.1/objs/$(Platform)/$(Configuration)/freetype.lib;../Engine/Libraries/FreeImage3180/x64/Debug/FreeImaged.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -103,12 +104,13 @@
     <ClInclude Include="..\Src\Menus\GUI\GUIButton.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIFrame.h" />
     <ClInclude Include="..\Src\Menus\PauseMenu.h" />
+    <ClInclude Include="..\Src\Models\RM2.h" />
     <ClInclude Include="..\Src\PlayerController\PlayerController.h" />
     <ClInclude Include="..\Src\Save\Config.h" />
     <ClInclude Include="..\Src\Utils\INI.h" />
     <ClInclude Include="..\Src\Utils\MathUtil.h" />
     <ClInclude Include="..\Src\Utils\TextMgmt.h" />
-    <ClInclude Include="..\Src\World\ShaderManager.h" />
+    <ClInclude Include="..\Src\World\GfxResManager.h" />
     <ClInclude Include="..\Src\World\Timing.h" />
     <ClInclude Include="..\Src\World\World.h" />
     <ClInclude Include="resource.h" />
@@ -132,12 +134,13 @@
     <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIFrame.cpp" />
     <ClCompile Include="..\Src\Menus\PauseMenu.cpp" />
+    <ClCompile Include="..\Src\Models\RM2.cpp" />
     <ClCompile Include="..\Src\PlayerController\PlayerController.cpp" />
     <ClCompile Include="..\Src\Save\Config.cpp" />
     <ClCompile Include="..\Src\Utils\INI.cpp" />
     <ClCompile Include="..\Src\Utils\MathUtil.cpp" />
     <ClCompile Include="..\Src\Utils\TextMgmt.cpp" />
-    <ClCompile Include="..\Src\World\ShaderManager.cpp" />
+    <ClCompile Include="..\Src\World\GfxResManager.cpp" />
     <ClCompile Include="..\Src\World\Timing.cpp" />
     <ClCompile Include="..\Src\World\World.cpp" />
   </ItemGroup>

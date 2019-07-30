@@ -3,7 +3,7 @@
 
 #include "Config.h"
 #include "../Utils/INI.h"
-#include "../World/ShaderManager.h"
+#include "../Graphics/GfxResManager.h"
 
 PGE::String corpFolder = "Undertow Games";
 PGE::String gameFolder = "SCP - Containment Breach";
@@ -59,8 +59,8 @@ Config& Config::operator=(const Config& other) {
     return *this;
 }
 
-void Config::setShaderManager(ShaderManager* sm) {
-    shaderMgmt = sm;
+void Config::setGfxResManager(GfxResManager* grm) {
+    gfxResMgr = grm;
 }
 
 void Config::loadFile() {

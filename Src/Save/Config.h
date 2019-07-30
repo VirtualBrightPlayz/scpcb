@@ -4,7 +4,7 @@
 #include <Misc/FileName.h>
 #include <Math/Matrix.h>
 
-class ShaderManager;
+class GfxResManager;
 
 enum class WindowType {
     Windowed,
@@ -13,7 +13,7 @@ enum class WindowType {
 
 class Config {
     private:
-        ShaderManager* shaderMgmt = nullptr;
+        GfxResManager* gfxResMgr = nullptr;
     
         PGE::String filename;
         PGE::String secGen = "general";
@@ -34,7 +34,7 @@ class Config {
 
         Config& operator=(const Config& other);
     
-        void setShaderManager(ShaderManager* sm);
+        void setGfxResManager(GfxResManager* grm);
     
         void loadFile();
         void saveFile() const;

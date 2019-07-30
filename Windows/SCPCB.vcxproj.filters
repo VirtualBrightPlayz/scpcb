@@ -38,6 +38,9 @@
     <Filter Include="Src\Menus\GUI">
       <UniqueIdentifier>{0df873b2-c730-4359-9eb7-ff769cfbaf5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Models">
+      <UniqueIdentifier>{c46dcb69-887c-4267-a6c5-bb5d6929d76d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -48,9 +51,6 @@
     </ClInclude>
     <ClInclude Include="..\Src\Collision\CollisionMesh.h">
       <Filter>Src\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\World\ShaderManager.h">
-      <Filter>Src\World</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\World\Timing.h">
       <Filter>Src\World</Filter>
@@ -98,6 +98,12 @@
       <Filter>Src\Menus\GUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Graphics\Font.h">
+      <Filter>Src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Models\RM2.h">
+      <Filter>Src\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\World\GfxResManager.h">
       <Filter>Src\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -157,9 +163,6 @@
     <ClCompile Include="..\Src\Utils\TextMgmt.cpp">
       <Filter>Src\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\World\ShaderManager.cpp">
-      <Filter>Src\World</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\World\Timing.cpp">
       <Filter>Src\World</Filter>
     </ClCompile>
@@ -170,6 +173,12 @@
       <Filter>Src\Menus\GUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Graphics\Font.cpp">
+      <Filter>Src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Models\RM2.cpp">
+      <Filter>Src\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\World\GfxResManager.cpp">
       <Filter>Src\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
