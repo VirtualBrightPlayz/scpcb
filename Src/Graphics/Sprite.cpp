@@ -1,9 +1,11 @@
 #include <math.h>
 
 #include "Sprite.h"
+#include "GraphicsResources.h"
 
-Sprite::Sprite(PGE::Mesh* msh, PGE::Texture* tex, PGE::Shader* shdr) {
-    mesh = msh; texture = tex; shader = shdr;
+Sprite::Sprite(GraphicsResources* gr, PGE::Mesh* msh, PGE::Texture* tex) {
+    mesh = msh; texture = tex; gfxRes = gr;
+    shader = gr->getShader(shaderPath);
 
     modelMatrixValue = shader->getVertexShaderConstant("modelMatrix");
     spriteColorValue = shader->getFragmentShaderConstant("spriteColor");
@@ -21,6 +23,7 @@ Sprite::Sprite(PGE::Mesh* msh, PGE::Texture* tex, PGE::Shader* shdr) {
 
 Sprite::~Sprite() {
     delete material;
+    gfxRes->dropShader(shader);
 }
 
 void Sprite::setScale(float scale) {

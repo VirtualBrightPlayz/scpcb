@@ -1,13 +1,13 @@
 #include "UIMesh.h"
-#include "../World/ShaderManager.h"
+#include "../Graphics/GraphicsResources.h"
 
-UIMesh::UIMesh(PGE::Graphics* gfx, const ShaderManager* sm) {
-    graphics = gfx;
+UIMesh::UIMesh(GraphicsResources* gr) {
+    gfxRes = gr;
 
-    shaderTextured = PGE::Shader::load(graphics, PGE::FileName::create("GFX/Shaders/UI/"));
-    shaderTextureless = PGE::Shader::load(graphics, PGE::FileName::create("GFX/Shaders/UITextureless/"));
+    shaderTextured = gr->getShader(PGE::FileName::create("GFX/Shaders/UI/"));
+    shaderTextureless = gr->getShader(PGE::FileName::create("GFX/Shaders/UITextureless/"));
 
-    mesh = PGE::Mesh::create(gfx, PGE::Primitive::TYPE::TRIANGLE);
+    mesh = PGE::Mesh::create(gfxRes->getGraphics(), PGE::Primitive::TYPE::TRIANGLE);
     material = nullptr;
 
     shaderTexturedColorConstant = shaderTextured->getFragmentShaderConstant("imageColor");
@@ -19,10 +19,15 @@ UIMesh::UIMesh(PGE::Graphics* gfx, const ShaderManager* sm) {
 
     startedRender = false;
 
-    PGE::Matrix4x4f orthoMat = sm->getOrthoMat();
+    PGE::Matrix4x4f orthoMat = gr->getOrthoMat();
 
     shaderTextured->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);
     shaderTextureless->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);
+}
+
+UIMesh::~UIMesh() {
+    gfxRes->dropShader(shaderTextured);
+    gfxRes->dropShader(shaderTextureless);
 }
 
 void UIMesh::startRender() {
@@ -137,7 +142,7 @@ void UIMesh::loadTexture(PGE::FileName textureName) {
     }
 
     if (texture == nullptr) {
-        texture = PGE::Texture::load(graphics, textureName);
+        texture = PGE::Texture::load(gfxRes->getGraphics(), textureName);
         Texture cacheEntry;
         cacheEntry.name = textureName; cacheEntry.pgeTexture = texture;
         textures.push_back(cacheEntry);

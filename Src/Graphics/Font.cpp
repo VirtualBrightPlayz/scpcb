@@ -6,15 +6,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../World/ShaderManager.h"
+#include "../Graphics/GraphicsResources.h"
 #include "../Save/Config.h"
 
-Font::Font(FT_Library ftLibrary, PGE::Graphics* gfx, const ShaderManager* sm, Config* con, const PGE::FileName& fn, int h, PGE::Shader* s) {
-    graphics = gfx;
+Font::Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::FileName& fn, int h) {
+    graphicsRes = gr;
     config = con;
     filename = fn;
     height = h;
-    shader = s;
+
+    shader = gr->getShader(shaderPath);
 
     FT_New_Face(ftLibrary,
                 filename.cstr(),
@@ -30,12 +31,10 @@ Font::Font(FT_Library ftLibrary, PGE::Graphics* gfx, const ShaderManager* sm, Co
 
     renderAtlas(0);
 
-    modelMatrixConstant = s->getVertexShaderConstant("modelMatrix");
-    colorConstant = s->getFragmentShaderConstant("imageColor");
+    modelMatrixConstant = shader->getVertexShaderConstant("modelMatrix");
+    colorConstant = shader->getFragmentShaderConstant("imageColor");
 
-    PGE::Matrix4x4f orthoMat = sm->getOrthoMat();
-
-    s->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);
+    shader->getVertexShaderConstant("projectionMatrix")->setValue(gr->getOrthoMat());
 }
 
 Font::~Font() {
@@ -45,7 +44,7 @@ Font::~Font() {
         delete atlases[i].texture;
     }
 
-    delete shader;
+    graphicsRes->dropShader(shader);
 
     FT_Done_Face(freeTypeFace);
 }
@@ -128,9 +127,9 @@ void Font::renderAtlas(long chr) {
 
     if (buffer!=nullptr) {
         Atlas newAtlas;
-        newAtlas.texture = PGE::Texture::create(graphics,atlasDims,atlasDims,false,buffer,PGE::Texture::FORMAT::RGBA32);
+        newAtlas.texture = PGE::Texture::create(graphicsRes->getGraphics(),atlasDims,atlasDims,false,buffer,PGE::Texture::FORMAT::RGBA32);
         newAtlas.material = new PGE::Material(shader,newAtlas.texture);
-        newAtlas.mesh = PGE::Mesh::create(graphics,PGE::Primitive::TYPE::TRIANGLE);
+        newAtlas.mesh = PGE::Mesh::create(graphicsRes->getGraphics(),PGE::Primitive::TYPE::TRIANGLE);
         newAtlas.mesh->setMaterial(newAtlas.material);
         atlases.push_back(newAtlas);
         delete[] buffer;

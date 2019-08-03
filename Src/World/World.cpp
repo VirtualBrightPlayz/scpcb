@@ -4,7 +4,8 @@
 
 #include "World.h"
 #include "Timing.h"
-#include "ShaderManager.h"
+#include "../Graphics/Camera.h"
+#include "../Graphics/GraphicsResources.h"
 #include "../Menus/PauseMenu.h"
 #include "../Save/Config.h"
 #include "../Menus/GUI/GUIComponent.h"
@@ -17,24 +18,26 @@ World::World() {
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
     graphics->setViewport(PGE::Rectanglei(0, 0, config->getWidth(), config->getHeight()));
     io = PGE::IO::create(graphics->getWindow());
-    camera = new Camera(graphics, config->getAspectRatio());
 
     timing = new Timing(60);
 
-    shaderMngt = new ShaderManager(graphics, config, camera);
+    gfxRes = new GraphicsResources(graphics, config);
     txtMngt = new TxtManager(config->getLangCode());
 
     FT_Init_FreeType(&ftLibrary);
-    largeFont = new Font(ftLibrary, graphics, shaderMngt, config, PGE::FileName::create("GFX/Font/cour.ttf"), 20, shaderMngt->getFontShader());
+    largeFont = new Font(ftLibrary, gfxRes, config, PGE::FileName::create("GFX/Font/cour.ttf"), 20);
     spriteMesh = Sprite::createSpriteMesh(graphics);
-    uiMesh = new UIMesh(graphics, shaderMngt);
+    uiMesh = new UIMesh(gfxRes);
     keyBinds = new KeyBinds(io);
 
     dirtymetal = PGE::Texture::load(graphics, PGE::FileName::create("GFX/Map/Textures/dirtymetal.jpg"));
-    poster = new Sprite(spriteMesh, dirtymetal, shaderMngt->getSpriteShader());
+    poster = new Sprite(gfxRes, spriteMesh, dirtymetal);
     poster->setPosition(0.f, 0.f, 2.f);
     poster->setRotation(0.5f);
     poster->setScale(1.f);
+    
+    camera = new Camera(gfxRes, config->getAspectRatio());
+    camera->addShader(PGE::FileName::create("GFX/Shaders/Sprite/"));
 
     setGameState(GameState::Playing);
     pauseMenu = new PauseMenu(uiMesh, largeFont, keyBinds, config, txtMngt);
@@ -52,7 +55,7 @@ World::~World() {
 
     delete camera;
     delete timing;
-    delete shaderMngt;
+    delete gfxRes;
     delete txtMngt;
 
     delete io;
@@ -87,7 +90,7 @@ bool World::run() {
         return false;
     }
 
-    //Game logic updates first, use accumulator
+    // Game logic updates first, use accumulator.
     while (timing->tickReady()) {
         runTick((float)timing->getTimeStep());
         timing->subtractTick();
@@ -136,8 +139,6 @@ void World::runTick(float timeStep) {
             pauseMenu->update(this, mousePosition);
         } break;
     }
-
-    shaderMngt->update(camera);
 }
 
 void World::draw() {
@@ -145,9 +146,9 @@ void World::draw() {
 
     // UI.
     graphics->setDepthTest(false);
-    
+
     pauseMenu->render(this);
-    
+
     graphics->setDepthTest(true);
 
     graphics->swap(config->isVsync());
@@ -162,10 +163,6 @@ void World::updatePlaying(float timeStep) {
     float mouseYDiff = (float)(io->getMousePosition().y - centerY) / 300.f;
 
     camera->addAngle(mouseXDiff, mouseYDiff);
-    camera->update();
-
-    // Update the view matrix for the shaders.
-    shaderMngt->update(camera);
 
     // Reset mouse to center.
     io->setMousePosition(PGE::Vector2f(centerX, centerY));
@@ -179,7 +176,10 @@ void World::updatePlaying(float timeStep) {
 }
 
 void World::drawPlaying() {
-   poster->render();
+    // View/Projection matrix.
+    camera->update();
+    
+    poster->render();
 }
 
 void World::quit() {

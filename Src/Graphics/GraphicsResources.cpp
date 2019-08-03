@@ -1,14 +1,15 @@
-#include "GfxResManager.h"
+#include "GraphicsResources.h"
 #include "../Save/Config.h"
+#include "../Menus/GUI/GUIComponent.h"
 
-GfxResManager::GfxResManager(PGE::Graphics* gfx, Config* con) {
-    con->setGfxResManager(this);
+GraphicsResources::GraphicsResources(PGE::Graphics* gfx, Config* con) {
+    con->setGraphicsResources(this);
     updateOrthoMat(con->getAspectRatio());
     graphics = gfx;
 }
 
-PGE::Shader* GfxResManager::getShader(PGE::FileName filename) {
-    for (int i = 0; i < shaders.size(); i++) {
+PGE::Shader* GraphicsResources::getShader(PGE::FileName filename) {
+    for (int i = 0; i < (int)shaders.size(); i++) {
         if (shaders[i].filename.equals(filename)) {
             shaders[i].refCount++;
             return shaders[i].shader;
@@ -23,8 +24,8 @@ PGE::Shader* GfxResManager::getShader(PGE::FileName filename) {
     return newShader.shader;
 }
 
-void GfxResManager::dropShader(PGE::Shader* shader) {
-    for (int i = 0; i < shaders.size(); i++) {
+void GraphicsResources::dropShader(PGE::Shader* shader) {
+    for (int i = 0; i < (int)shaders.size(); i++) {
         if (shaders[i].shader == shader) {
             shaders[i].refCount--;
             if (shaders[i].refCount <= 0) {
@@ -36,8 +37,8 @@ void GfxResManager::dropShader(PGE::Shader* shader) {
     }
 }
 
-PGE::Texture* GfxResManager::getTexture(PGE::FileName filename) {
-    for (int i = 0; i < textures.size(); i++) {
+PGE::Texture* GraphicsResources::getTexture(PGE::FileName filename) {
+    for (int i = 0; i < (int)textures.size(); i++) {
         if (textures[i].filename.equals(filename)) {
             textures[i].refCount++;
             return textures[i].texture;
@@ -52,8 +53,8 @@ PGE::Texture* GfxResManager::getTexture(PGE::FileName filename) {
     return newTexture.texture;
 }
 
-void GfxResManager::dropTexture(PGE::Texture* texture) {
-    for (int i = 0; i < textures.size(); i++) {
+void GraphicsResources::dropTexture(PGE::Texture* texture) {
+    for (int i = 0; i < (int)textures.size(); i++) {
         if (textures[i].texture == texture) {
             textures[i].refCount--;
             if (textures[i].refCount <= 0) {
@@ -65,23 +66,37 @@ void GfxResManager::dropTexture(PGE::Texture* texture) {
     }
 }
 
-void GfxResManager::updateOrthoMat(float aspectRatio) {
+void GraphicsResources::updateOrthoMat(float aspectRatio) {
     // Define our screen space for UI elements.
     // Top Left     - [-50, -50]
     // Bottom Right - [50, 50]
     // Horizontal plane is scaled with the aspect ratio.
-    float SCALE_MAGNITUDE = 50.f;
-    float w = SCALE_MAGNITUDE * aspectRatio * 2.f;
-    float h = SCALE_MAGNITUDE * 2.f;
+    float w = GUIComponent::SCALE_MAGNITUDE * aspectRatio * 2.f;
+    float h = GUIComponent::SCALE_MAGNITUDE * 2.f;
     float nearZ = 0.01f;
     float farZ = 1.f;
     orthoMat = PGE::Matrix4x4f::constructOrthographicMat(w, h, nearZ, farZ);
+    
+    // Update existing shaders.
+    updateShaderConstant(uiShaderPath, "projectionMatrix", orthoMat);
+    updateShaderConstant(uiTexturelessShaderPath, "projectionMatrix", orthoMat);
+    updateShaderConstant(fontShaderPath, "projectionMatrix", orthoMat);
 }
 
-PGE::Matrix4x4f GfxResManager::getOrthoMat() const {
+PGE::Matrix4x4f GraphicsResources::getOrthoMat() const {
     return orthoMat;
 }
 
-PGE::Graphics* GfxResManager::getGraphics() const {
+PGE::Graphics* GraphicsResources::getGraphics() const {
     return graphics;
+}
+
+void GraphicsResources::updateShaderConstant(PGE::FileName shd, PGE::String name, PGE::Matrix4x4f val) {
+    for (int i = 0; i < (int)shaders.size(); i++) {
+        if (shaders[i].filename.equals(shd)) {
+            PGE::Shader::Constant* constant = shaders[i].shader->getVertexShaderConstant(name);
+            constant->setValue(val);
+            return;
+        }
+    }
 }

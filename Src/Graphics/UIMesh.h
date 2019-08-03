@@ -11,11 +11,11 @@
 #include <Material/Material.h>
 
 class UIMesh;
-class ShaderManager;
+class GraphicsResources;
 
 class UIMesh {
     private:
-        PGE::Graphics* graphics;
+        GraphicsResources* gfxRes;
 
         //TODO: store transformation matrix constants
         PGE::Shader* shaderTextured;
@@ -45,7 +45,8 @@ class UIMesh {
         };
         std::vector<Texture> textures;
     public:
-        UIMesh(PGE::Graphics* gfx, const ShaderManager* sm);
+        UIMesh(GraphicsResources* gr);
+        ~UIMesh();
 
         void startRender();
 

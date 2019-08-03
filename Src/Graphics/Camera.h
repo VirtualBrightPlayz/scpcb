@@ -3,9 +3,14 @@
 
 #include <Math/Matrix.h>
 #include <Graphics/Graphics.h>
+#include <Shader/Shader.h>
+
+class GraphicsResources;
 
 class Camera {
     private:
+        GraphicsResources* gfxRes;
+    
         float xAngle;
         float yAngle;
         // The range of the the yAngle field before it is clamped.
@@ -14,6 +19,8 @@ class Camera {
     
         float fov;
     
+        bool needsMatrixUpdate;
+    
         PGE::Vector3f position;
         PGE::Vector3f lookAt;
         PGE::Vector3f upDir;
@@ -21,12 +28,15 @@ class Camera {
         PGE::Matrix4x4f viewMatrix;
         PGE::Matrix4x4f projectionMatrix;
         PGE::Matrix4x4f rotation;
-
-        PGE::Graphics* graphics;
+    
+        std::vector<PGE::Shader*> shaders;
 
     public:
-        Camera(PGE::Graphics* gfx, float aspectRatio, float fov);
-        Camera(PGE::Graphics* gfx, float aspectRatio);
+        Camera(GraphicsResources* gr, float aspectRatio, float fov);
+        Camera(GraphicsResources* gr, float aspectRatio);
+        ~Camera();
+    
+        void addShader(PGE::FileName fn);
     
         void update();
     

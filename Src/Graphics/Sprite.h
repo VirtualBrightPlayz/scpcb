@@ -8,8 +8,12 @@
 #include <Mesh/Mesh.h>
 #include <Material/Material.h>
 
+class GraphicsResources;
+
 class Sprite {
     private:
+        GraphicsResources* gfxRes;
+    
         PGE::Shader::Constant* modelMatrixValue;
         PGE::Shader::Constant* spriteColorValue;
         PGE::Shader::Constant* scaleValue;
@@ -17,6 +21,7 @@ class Sprite {
 
         PGE::Mesh* mesh;
         PGE::Texture* texture;
+        PGE::FileName shaderPath = PGE::FileName::create("GFX/Shaders/Sprite/");
         PGE::Shader* shader;
         PGE::Material* material;
         PGE::Color color;
@@ -31,7 +36,7 @@ class Sprite {
     public:
         static PGE::Mesh* createSpriteMesh(PGE::Graphics* gfx);
 
-        Sprite(PGE::Mesh* msh, PGE::Texture* tex, PGE::Shader* shdr);
+        Sprite(GraphicsResources* gr, PGE::Mesh* msh, PGE::Texture* tex);
         ~Sprite();
 
         void setScale(float scale);

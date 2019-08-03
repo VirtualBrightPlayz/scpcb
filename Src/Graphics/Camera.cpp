@@ -2,11 +2,14 @@
 
 #include "Camera.h"
 #include "../Utils/MathUtil.h"
+#include "GraphicsResources.h"
 
-Camera::Camera(PGE::Graphics* gfx, float aspectRatio, float fov) : graphics(gfx) {
-    position = PGE::Vector3f(0.0f, 0.0f, 0.0f);
-    lookAt = PGE::Vector3f(0.0f, 0.0f, 1.0f);
-    upDir = PGE::Vector3f(0.0f, 1.0f, 0.0f);
+Camera::Camera(GraphicsResources* gr, float aspectRatio, float fov) {
+    gfxRes = gr;
+    
+    position = PGE::Vector3f(0.f, 0.f, 0.f);
+    lookAt = PGE::Vector3f(0.f, 0.f, 1.f);
+    upDir = PGE::Vector3f(0.f, 1.f, 0.f);
 
     viewMatrix = PGE::Matrix4x4f::constructViewMat(position, lookAt, upDir);
 
@@ -21,25 +24,51 @@ Camera::Camera(PGE::Graphics* gfx, float aspectRatio, float fov) : graphics(gfx)
     projectionMatrix = PGE::Matrix4x4f::constructPerspectiveMat(fov, aspectRatio, nearZ, farZ);
 
     rotation = PGE::Matrix4x4f::identity;
+    
+    needsMatrixUpdate = true;
 }
 
-Camera::Camera(PGE::Graphics* gfx, float aspectRatio) : Camera(gfx, aspectRatio, MathUtil::degToRad(90.0f)) { }
+Camera::Camera(GraphicsResources* gr, float aspectRatio) : Camera(gr, aspectRatio, MathUtil::degToRad(90.0f)) { }
+
+Camera::~Camera() {
+    for (int i = 0; i < (int)shaders.size(); i++) {
+        gfxRes->dropShader(shaders[i]);
+    }
+}
+
+void Camera::addShader(PGE::FileName fn) {
+    shaders.push_back(gfxRes->getShader(fn));
+}
 
 void Camera::update() {
-    rotation = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(0.f, 0.f, 0.f), PGE::Vector3f(1.f, 1.f, 1.f), PGE::Vector3f(-yAngle, xAngle, tilt));
-
-    viewMatrix = PGE::Matrix4x4f::constructViewMat(position, rotation.transform(lookAt), rotation.transform(upDir));
+    if (needsMatrixUpdate) {
+        rotation = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(0.f, 0.f, 0.f), PGE::Vector3f(1.f, 1.f, 1.f), PGE::Vector3f(-yAngle, xAngle, tilt));
+        
+        viewMatrix = PGE::Matrix4x4f::constructViewMat(position, rotation.transform(lookAt), rotation.transform(upDir));
+        
+        // Update shaders.
+        for (int i = 0; i < (int)shaders.size(); i++) {
+            shaders[i]->getVertexShaderConstant("viewMatrix")->setValue(viewMatrix);
+            shaders[i]->getVertexShaderConstant("projectionMatrix")->setValue(projectionMatrix);
+        }
+    }
 }
 
 void Camera::setPosition(const PGE::Vector3f pos) {
+    needsMatrixUpdate = true;
     position = pos;
 }
 
 void Camera::setTilt(float rad) {
+    needsMatrixUpdate = !MathUtil::eqFloats(rad, tilt);
     tilt = rad;
 }
 
 void Camera::addAngle(float x, float y) {
+    if (MathUtil::eqFloats(x, 0.f) && MathUtil::eqFloats(y, 0.f)) {
+        return;
+    }
+    
     xAngle += x;
     yAngle -= y;
 
@@ -56,6 +85,8 @@ void Camera::addAngle(float x, float y) {
     } else if (xAngle < -PI_MUL_2) {
         xAngle += PI_MUL_2;
     }
+        
+    needsMatrixUpdate = true;
 }
 
 const PGE::Matrix4x4f& Camera::getViewMatrix() const {

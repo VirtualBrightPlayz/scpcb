@@ -4,7 +4,7 @@
 #include <Misc/FileName.h>
 #include <Math/Matrix.h>
 
-class GfxResManager;
+class GraphicsResources;
 
 enum class WindowType {
     Windowed,
@@ -13,14 +13,14 @@ enum class WindowType {
 
 class Config {
     private:
-        GfxResManager* gfxResMgr = nullptr;
-    
+        GraphicsResources* gfxResMgr = nullptr;
+
         PGE::String filename;
         PGE::String secGen = "general";
         PGE::String secGFX = "graphics";
-    
+
         PGE::String languageCode;
-    
+
         WindowType windowType;
         int width;
         int height;
@@ -33,12 +33,12 @@ class Config {
         Config(const Config& cpy);
 
         Config& operator=(const Config& other);
-    
-        void setGfxResManager(GfxResManager* grm);
-    
+
+        void setGraphicsResources(GraphicsResources* grm);
+
         void loadFile();
         void saveFile() const;
-    
+
         PGE::String getLangCode() const;
 
         void setResolution(int width, int height);

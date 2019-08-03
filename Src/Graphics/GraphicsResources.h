@@ -1,5 +1,5 @@
-#ifndef GFXRESMANAGER_H_INCLUDED
-#define GFXRESMANAGER_H_INCLUDED
+#ifndef GRAPHICSRESOURCES_H_INCLUDED
+#define GRAPHICSRESOURCES_H_INCLUDED
 
 #include <Graphics/Graphics.h>
 #include <Shader/Shader.h>
@@ -7,7 +7,7 @@
 
 class Config;
 
-class GfxResManager {
+class GraphicsResources {
     private:
         struct Shader {
             PGE::FileName filename;
@@ -22,15 +22,20 @@ class GfxResManager {
             int refCount;
         };
         std::vector<Texture> textures;
-    
+
         PGE::Matrix4x4f orthoMat;
+        PGE::FileName uiShaderPath = PGE::FileName::create("GFX/Shaders/UI/");
+        PGE::FileName uiTexturelessShaderPath = PGE::FileName::create("GFX/Shaders/UITextureless/");
+        PGE::FileName fontShaderPath = PGE::FileName::create("GFX/Shaders/Font/");
 
         PGE::Graphics* graphics;
+
     public:
-        GfxResManager(PGE::Graphics* gfx, Config* con);
+        GraphicsResources(PGE::Graphics* gfx, Config* con);
 
         PGE::Shader* getShader(PGE::FileName filename);
         void dropShader(PGE::Shader* shader);
+        void updateShaderConstant(PGE::FileName shd, PGE::String constant, PGE::Matrix4x4f val);
 
         PGE::Texture* getTexture(PGE::FileName filename);
         void dropTexture(PGE::Texture* texture);
@@ -41,4 +46,4 @@ class GfxResManager {
         PGE::Graphics* getGraphics() const;
 };
 
-#endif // ShaderManager_H_INCLUDED
+#endif // GRAPHICSRESOURCES_H_INCLUDED

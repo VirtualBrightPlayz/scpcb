@@ -8,6 +8,8 @@ class MathUtil {
         constexpr static float PI = 3.1415926535897932f;
 
         static float degToRad(float degrees);
+    
+        static bool eqFloats(float p1, float p2);
 };
 
 #endif // MATH_H_INCLUDED

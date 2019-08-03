@@ -5,6 +5,7 @@
 #include FT_FREETYPE_H
 #include <Graphics/Graphics.h>
 #include <IO/IO.h>
+
 #include "../Graphics/Sprite.h"
 #include "../Graphics/UIMesh.h"
 #include "../Graphics/Font.h"
@@ -13,7 +14,7 @@
 
 class Camera;
 class Timing;
-class ShaderManager;
+class GraphicsResources;
 class TxtManager;
 class PauseMenu;
 
@@ -45,7 +46,7 @@ class World {
         Sprite* poster;
         PGE::Texture* dirtymetal;
 
-        ShaderManager* shaderMngt;
+        GraphicsResources* gfxRes;
         TxtManager* txtMngt;
 
         GameState currState;

@@ -3,7 +3,7 @@
 
 #include "Config.h"
 #include "../Utils/INI.h"
-#include "../Graphics/GfxResManager.h"
+#include "../Graphics/GraphicsResources.h"
 
 PGE::String corpFolder = "Undertow Games";
 PGE::String gameFolder = "SCP - Containment Breach";
@@ -14,7 +14,7 @@ PGE::String getConfigDir() {
 
 Config::Config(const PGE::String& optionsFile) {
     filename = getConfigDir() + optionsFile;
-    
+
     languageCode = "en";
 
     windowType = WindowType::Windowed;
@@ -39,7 +39,7 @@ Config::Config(const PGE::String& optionsFile) {
 
 Config::Config(const Config& cpy) {
     languageCode = cpy.languageCode;
-    
+
     windowType = cpy.windowType;
     setResolution(cpy.width, cpy.height);
 
@@ -49,7 +49,7 @@ Config::Config(const Config& cpy) {
 Config& Config::operator=(const Config& other) {
     if (this != &other) {
         languageCode = other.languageCode;
-        
+
         windowType = other.windowType;
         setResolution(other.width, other.height);
 
@@ -59,13 +59,13 @@ Config& Config::operator=(const Config& other) {
     return *this;
 }
 
-void Config::setGfxResManager(GfxResManager* grm) {
+void Config::setGraphicsResources(GraphicsResources* grm) {
     gfxResMgr = grm;
 }
 
 void Config::loadFile() {
     languageCode = getINIString(filename, secGen, "language", "en");
-    
+
     int widthINI = getINIInt(filename, secGFX, "width");
     int heightINI = getINIInt(filename, secGFX, "height");
     setResolution(widthINI, heightINI);
@@ -74,7 +74,7 @@ void Config::loadFile() {
 
 void Config::saveFile() const {
     putINIValue(filename, secGen, "language", languageCode);
-    
+
     putINIValue(filename, secGFX, "width", width);
     putINIValue(filename, secGFX, "height", height);
     putINIValue(filename, secGFX, "vsync", vsync);
@@ -89,8 +89,8 @@ void Config::setResolution(int width, int height) {
     this->width = width;
     this->height = height;
     aspectRatio = (float)width / height;
-    
-    if (shaderMgmt != nullptr) { shaderMgmt->updateOrthoMat(getAspectRatio()); }
+
+    if (gfxResMgr != nullptr) { gfxResMgr->updateOrthoMat(aspectRatio); }
 }
 
 PGE::String Config::getLangCode() const {

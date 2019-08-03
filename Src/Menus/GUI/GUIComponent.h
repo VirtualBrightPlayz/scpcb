@@ -18,7 +18,7 @@ class GUIComponent {
     private:
         float x;
         float y;
-    
+
     protected:
         UIMesh* uiMesh;
         KeyBinds* keyBinds;
@@ -44,7 +44,9 @@ class GUIComponent {
         GUIComponent() {}
     public:
         virtual ~GUIComponent();
-        
+
+        constexpr static float SCALE_MAGNITUDE = 50.f;
+
         void update(PGE::Vector2f mousePos);
         void render();
 };

@@ -9,29 +9,29 @@ GUIComponent::~GUIComponent() { }
 
 float GUIComponent::getX() const {
     float trueX = x;
-    
+
     if ((alignment & Alignment::Left) != Alignment::CenterXY) {
-        trueX += -50.f * config->getAspectRatio();
+        trueX -= SCALE_MAGNITUDE * config->getAspectRatio();
     }
-    
+
     if ((alignment & Alignment::Right) != Alignment::CenterXY) {
-        trueX += 50.f * config->getAspectRatio();
+        trueX += SCALE_MAGNITUDE * config->getAspectRatio();
     }
-    
+
     return trueX;
 }
 
 float GUIComponent::getY() const {
     float trueY = y;
-    
+
     if ((alignment & Alignment::Top) != Alignment::CenterXY) {
-        trueY += -50.f;
+        trueY -= SCALE_MAGNITUDE;
     }
-    
+
     if ((alignment & Alignment::Bottom) != Alignment::CenterXY){
-        trueY += 50.f;
+        trueY += SCALE_MAGNITUDE;
     }
-    
+
     return trueY;
 }
 

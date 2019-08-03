@@ -6,8 +6,6 @@
 #include <vector>
 #include <map>
 
-#include <Graphics/Graphics.h>
-
 #include <Texture/Texture.h>
 #include <Shader/Shader.h>
 #include <Material/Material.h>
@@ -18,12 +16,12 @@
 #include <Math/Vector.h>
 #include <Math/Rectangle.h>
 
-class ShaderManager;
+class GraphicsResources;
 class Config;
 
 class Font {
     public:
-        Font(FT_Library ftLibrary, PGE::Graphics* gfx, const ShaderManager* sm, Config* con, const PGE::FileName& fn, int h, PGE::Shader* s);
+        Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::FileName& fn, int h);
         ~Font();
 
         void draw(const PGE::String& text, PGE::Vector3f pos, PGE::Vector2f scale=PGE::Vector2f::one, PGE::Vector3f rotation=PGE::Vector3f::zero, PGE::Color color=PGE::Color(1.f,1.f,1.f,1.f));
@@ -53,6 +51,7 @@ class Font {
             PGE::Rectanglef srcRect;
         };
 
+        PGE::FileName shaderPath = PGE::FileName::create("GFX/Shaders/Text/");
         PGE::Shader* shader;
         PGE::Shader::Constant* modelMatrixConstant;
         PGE::Shader::Constant* colorConstant;
@@ -66,7 +65,7 @@ class Font {
 
         std::map<long,GlyphData> glyphData;
 
-        PGE::Graphics* graphics;
+        GraphicsResources* graphicsRes;
         Config* config;
 
         PGE::FileName filename;
