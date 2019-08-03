@@ -19,7 +19,8 @@ class Camera {
     
         float fov;
     
-        bool needsMatrixUpdate;
+        bool needsViewUpdate;
+        bool needsProjUpdate;
     
         PGE::Vector3f position;
         PGE::Vector3f lookAt;
