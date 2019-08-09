@@ -1,0 +1,8 @@
+This game is licensed under Creative Commons Attribution-ShareAlike 3.0 License (CC-BY-SA 3.0).
+
+http://creativecommons.org/licenses/by-sa/3.0/
+
+The following content however, is NOT licensed under CC-BY-SA 3.0:
+ - The PGE engine developed by Juan Pablo Arce is licensed under zlib (https://github.com/juanjp600/pge). See PGEL.txt for license notice.
+ - The Open-Asset-Importer-Lib developed by the AssImp team is licensed under 3-clause BSD license (http://www.assimp.org/). See AIL.txt for license notice.
+ - The FreeType library developed by the FreeType project is licensed under the FreeType License (https://www.freetype.org/). See FTL.txt for license notice.

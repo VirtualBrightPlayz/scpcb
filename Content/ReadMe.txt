@@ -9,33 +9,14 @@
                                  www.scpcbgame.com
 
                                   VERSION 1.4.0.0
-                                                                
+
 
 
 The game is based on the works of the SCP Foundation community (http://www.scp-wiki.net/).
 See "Credits.txt" for further details.
-
-
-This game is licensed under Creative Commons Attribution-ShareAlike 3.0 License.
-
-http://creativecommons.org/licenses/by-sa/3.0/
-
+See "License.txt" for licensing terms.
 
 The source code of the game is available on GitHub: https://github.com/Regalis11/scpcb
-
-
-
-**** HOW TO RUN IT **************************************
-
-        Run SCP - Containment Breach.exe in the game folder. 
-        Select which resolution you want to use and click the LAUNCH-button.
-        If you're getting an error when launching the game, try the following:
-
-        - Run the game as administrator
-        - Make sure your graphics card drivers are up-to-date
-        - Try different resolutions and running the game in full screen
-        - Try running the game in different compatibility modes 
-
 
 **** DEFAULT CONTROLS ***********************************
 
@@ -54,12 +35,3 @@ The source code of the game is available on GitHub: https://github.com/Regalis11
         You can drop items by clicking and dragging them out of their inventory slot.
 
         You can combine certain items by dragging an item into the another inventory slot.
-
-
-
-
-
-
-
-
-
