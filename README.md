@@ -4,9 +4,13 @@ The original game's source code can be found here: https://github.com/Regalis11/
 
 The game is based on the works of the [SCP Foundation community][scp-wiki].
 
-Requirements:
-* [Visual Studio 2017][vs2017] for Windows.
-* Xcode 10.3 on macOS.
+# Requirements:
+Windows:
+* [Visual Studio 2017][vs2017].
+
+macOS:
+* Mojave (10.14) or higher.
+* Xcode 10.3 or higher.
 
 # License
 Licensing terms can be found in [License.txt](Content/License.txt).
