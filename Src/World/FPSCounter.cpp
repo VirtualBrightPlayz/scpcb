@@ -2,13 +2,16 @@
 
 #include "../Graphics/Font.h"
 #include "../Save/Config.h"
+#include "../Menus/GUI/GUIText.h"
 
-FPSCounter::FPSCounter(Font* font, Config* con) {
+FPSCounter::FPSCounter(UIMesh* um, KeyBinds* kb, Config* con, Font* font) {
     avgFPS = 0.0;
     currFPS = 0.0;
     visible = false;
-    this->font = font;
     this->config = con;
+
+    display = new GUIText(um, kb, con, font, 0.f, 0.f, Alignment::Left | Alignment::Top);
+    display->text = "FPS: -1";
 }
 
 void FPSCounter::update(double elapsedSeconds) {
@@ -23,11 +26,13 @@ void FPSCounter::update(double elapsedSeconds) {
     for (int i = 0; i < (int)sampleBuffer.size(); i++) {
         sum += sampleBuffer[i];
     }
+
     avgFPS = sum / sampleBuffer.size();
+    display->text = PGE::String("FPS: ", (int)avgFPS);
 }
 
 void FPSCounter::draw() {
     if (!visible) { return; }
 
-    float x = -50.f;
+    display->render();
 }

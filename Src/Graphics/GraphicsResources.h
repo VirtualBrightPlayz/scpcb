@@ -26,7 +26,7 @@ class GraphicsResources {
         PGE::Matrix4x4f orthoMat;
         PGE::FileName uiShaderPath = PGE::FileName::create("GFX/Shaders/UI/");
         PGE::FileName uiTexturelessShaderPath = PGE::FileName::create("GFX/Shaders/UITextureless/");
-        PGE::FileName fontShaderPath = PGE::FileName::create("GFX/Shaders/Font/");
+        PGE::FileName fontShaderPath = PGE::FileName::create("GFX/Shaders/Text/");
 
         PGE::Graphics* graphics;
 
