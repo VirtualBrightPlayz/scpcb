@@ -38,6 +38,7 @@
 		1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1971577D22BEB9EC003AF33E /* AppDelegate.m */; };
 		1987FF1C22F48DCB0023029A /* GUIText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1987FF1B22F48DCB0023029A /* GUIText.cpp */; };
 		19C1965D22BD532F00332C8E /* UIMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19C1965C22BD532F00332C8E /* UIMesh.cpp */; };
+		19DA6E0B230F6A3200F07961 /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19DA6E0A230F6A3200F07961 /* Input.cpp */; };
 		19F15BF522F52DA90044E284 /* GraphicsResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F15BF122F52DA90044E284 /* GraphicsResources.cpp */; };
 		19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EA822AD79A00061F643 /* Sprite.cpp */; };
 		19F17EAC22AD82940061F643 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EAB22AD82940061F643 /* Camera.cpp */; };
@@ -127,6 +128,8 @@
 		1987FF1B22F48DCB0023029A /* GUIText.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GUIText.cpp; sourceTree = "<group>"; };
 		19C1965B22BD532F00332C8E /* UIMesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIMesh.h; sourceTree = "<group>"; };
 		19C1965C22BD532F00332C8E /* UIMesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIMesh.cpp; sourceTree = "<group>"; };
+		19DA6E09230F6A3200F07961 /* Input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
+		19DA6E0A230F6A3200F07961 /* Input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
 		19F15BF122F52DA90044E284 /* GraphicsResources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsResources.cpp; sourceTree = "<group>"; };
 		19F15BF422F52DA90044E284 /* GraphicsResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsResources.h; sourceTree = "<group>"; };
 		19F17EA722AD79A00061F643 /* Sprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sprite.h; sourceTree = "<group>"; };
@@ -339,6 +342,8 @@
 		19FC31C522C0531D00AE4011 /* Input */ = {
 			isa = PBXGroup;
 			children = (
+				19DA6E0A230F6A3200F07961 /* Input.cpp */,
+				19DA6E09230F6A3200F07961 /* Input.h */,
 				19FC31CB22C0736A00AE4011 /* KeyBinds.cpp */,
 				19FC31CA22C0736A00AE4011 /* KeyBinds.h */,
 			);
@@ -451,6 +456,7 @@
 				1971577A22BEB776003AF33E /* Config.cpp in Sources */,
 				191BDDB622A846F600270B9D /* INI.cpp in Sources */,
 				19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */,
+				19DA6E0B230F6A3200F07961 /* Input.cpp in Sources */,
 				191BDDB322A846EE00270B9D /* PlayerController.cpp in Sources */,
 				1987FF1C22F48DCB0023029A /* GUIText.cpp in Sources */,
 				1907E42B22E500CF00FC1870 /* Font.cpp in Sources */,

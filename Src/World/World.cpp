@@ -10,7 +10,9 @@
 #include "../Menus/PauseMenu.h"
 #include "../Save/Config.h"
 #include "../Menus/GUI/GUIComponent.h"
+#include "../Menus/GUI/GUIText.h"
 #include "../Input/KeyBinds.h"
+#include "../Input/Input.h"
 #include "../Utils/TextMgmt.h"
 
 World::World() {
@@ -46,6 +48,9 @@ World::World() {
 
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
+    
+    mouseTxtX =  new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -5.f, Alignment::Bottom | Alignment::Left);
+    mouseTxtY =  new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -2.5f, Alignment::Bottom | Alignment::Left);
 
     isRoadRollered = false;
 }
@@ -56,6 +61,8 @@ World::~World() {
     delete keyBinds;
     delete poster;
     delete spriteMesh;
+    delete mouseTxtX;
+    delete mouseTxtY;
 
     delete camera;
     delete timing;
@@ -67,6 +74,8 @@ World::~World() {
 }
 
 void World::setGameState(GameState gs) {
+    if (gs == currState) { return; }
+    
     GameState prev = currState;
     currState = gs;
 
@@ -130,10 +139,8 @@ void World::runTick(float timeStep) {
     mousePosition.x -= 50.f * config->getAspectRatio();
     mousePosition.y -= 50.f;
 
-    if (keyBinds->mouse1->isHit()) {
-        std::cout << "MouseX: " << mousePosition.x << std::endl;
-        std::cout << "MouseY: " << mousePosition.y << std::endl;
-    }
+    mouseTxtX->text = PGE::String("MouseX: ", PGE::String(mousePosition.x));
+    mouseTxtY->text = PGE::String("MouseY: ", PGE::String(mousePosition.y));
 
     switch (currState) {
         case GameState::Playing: {
@@ -154,6 +161,8 @@ void World::draw() {
 
     pauseMenu->render(this);
     fps->draw();
+    mouseTxtX->render();
+    mouseTxtY->render();
 
     graphics->setDepthTest(true);
 
@@ -162,7 +171,7 @@ void World::draw() {
 
 void World::updatePlaying(float timeStep) {
     int centerX = config->getWidth() / 2;
-    int centerY = config->getHeight()  / 2;
+    int centerY = config->getHeight() / 2;
 
     // TODO: Sensitivity from Config class.
     float mouseXDiff = (float)(io->getMousePosition().x - centerX) / 300.f;
@@ -172,6 +181,8 @@ void World::updatePlaying(float timeStep) {
 
     // Reset mouse to center.
     io->setMousePosition(PGE::Vector2f(centerX, centerY));
+    
+    Input input = keyBinds->update();
 
     poster->addRotation(5.f * timeStep);
     poster->update();

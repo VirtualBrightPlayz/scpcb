@@ -27,29 +27,29 @@ void PlayerController::setPosition(Vector3f pos) {
     position = pos;
 }
 
-void PlayerController::update(float angle,INPUT input) {
-    if ((input&(INPUT::FORWARD|INPUT::BACKWARD|INPUT::LEFT|INPUT::RIGHT)) == INPUT::NONE) {
+void PlayerController::update(float angle, Input input) {
+    if ((input&(Input::Forward|Input::Backward|Input::Left|Input::Right)) == Input::None) {
         stand(); //not pressing any movement keys: we're standing still
     } else {
         float sinAngle = std::sin(angle);
         float cosAngle = std::cos(angle);
         float targetSpeed = WALK_SPEED_MAX;
-        if ((input&INPUT::SPRINT) != INPUT::NONE) {
+        if ((input&Input::Sprint) != Input::None) {
             targetSpeed = SPRINT_SPEED_MAX*getClampedStamina() + WALK_SPEED_MAX*(1.f-getClampedStamina());
         }
         currWalkSpeed = currWalkSpeed*WALK_SPEED_SMOOTHING_FACTOR + targetSpeed*(1.f-WALK_SPEED_SMOOTHING_FACTOR);
 
         Vector2f targetDir = Vector2f::zero;
-        if ((input&INPUT::FORWARD) != INPUT::NONE) {
+        if ((input&Input::Forward) != Input::None) {
             targetDir = targetDir.add(Vector2f(sinAngle,cosAngle));
         }
-        if ((input&INPUT::BACKWARD) != INPUT::NONE) {
+        if ((input&Input::Backward) != Input::None) {
             targetDir = targetDir.add(Vector2f(-sinAngle,-cosAngle));
         }
-        if ((input&INPUT::LEFT) != INPUT::NONE) {
+        if ((input&Input::Left) != Input::None) {
             targetDir = targetDir.add(Vector2f(-cosAngle,sinAngle));
         }
-        if ((input&INPUT::RIGHT) != INPUT::NONE) {
+        if ((input&Input::Right) != Input::None) {
             targetDir = targetDir.add(Vector2f(cosAngle,-sinAngle));
         }
         if (targetDir.lengthSquared() < 0.01f) {
@@ -178,12 +178,4 @@ void PlayerController::walk(Vector2f dir) {
             break;
         }
     }
-}
-
-const PlayerController::INPUT operator&(const PlayerController::INPUT& a,const PlayerController::INPUT& b) {
-    return (PlayerController::INPUT)((int)a & (int)b);
-}
-
-const PlayerController::INPUT operator|(const PlayerController::INPUT& a,const PlayerController::INPUT& b) {
-    return (PlayerController::INPUT)((int)a | (int)b);
 }

@@ -140,8 +140,8 @@ void Font::renderAtlas(long chr) {
     }
 }
 
-void Font::draw(const PGE::String& text, PGE::Vector2f pos, PGE::Vector2f scale,float rotation, PGE::Color color) {
-    draw(text, PGE::Vector3f(pos.x,pos.y,0.1f),scale, PGE::Vector3f(0.f,0.f,rotation),color);
+void Font::draw(const PGE::String& text, PGE::Vector2f pos, PGE::Vector2f scale, float rotation, PGE::Color color) {
+    draw(text, PGE::Vector3f(pos.x,pos.y,0.1f), scale, PGE::Vector3f(0.f,0.f,rotation), color);
 }
 
 void Font::draw(const PGE::String& text, PGE::Vector3f pos, PGE::Vector2f scale, PGE::Vector3f rotation, PGE::Color color) {

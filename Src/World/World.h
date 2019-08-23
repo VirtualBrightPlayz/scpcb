@@ -18,8 +18,10 @@ class GraphicsResources;
 class TxtManager;
 class PauseMenu;
 class FPSCounter;
+class GUIText;
 
 enum class GameState {
+    Invalid = 0,
     Playing,
     Inventory,
     PauseMenu,
@@ -46,6 +48,8 @@ class World {
         // TODO: Remove, these are a test.
         Sprite* poster;
         PGE::Texture* dirtymetal;
+        GUIText* mouseTxtX;
+        GUIText* mouseTxtY;
 
         GraphicsResources* gfxRes;
         TxtManager* txtMngt;

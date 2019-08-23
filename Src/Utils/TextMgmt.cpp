@@ -1,4 +1,5 @@
 #include <iostream>
+#include <exception>
 #include <Misc/FileUtil.h>
 #include <Misc/FileName.h>
 
@@ -37,7 +38,7 @@ void TxtManager::drawMsg() {
 
 PGE::String TxtManager::getLocalTxt(const PGE::String& key) {
     // TODO: Throw a console error (or some other kind) if an invalid key is requested.
-    std::map<PGE::String, PGE::String>::iterator it = lang.find(key);
+    std::map<PGE::String, PGE::String>::const_iterator it = lang.find(key);
     PGE::String retVal;
     if (it != lang.end()) {
         return it->second;
@@ -51,7 +52,7 @@ void TxtManager::changeLocalization(const PGE::String& langCode) {
 
     PGE::FileName path = PGE::FileName::create("Data/lang/" + langCode + "/text.ini");
     if (!PGE::FileUtil::exists(path.str())) {
-        throw "Language file \"" + path.str() + "\" not found!";
+        throw std::runtime_error(PGE::String("Language file \"" + path.str() + "\" not found!").cstr());
     }
 
     lang = getINISection(path.str(), "text");
