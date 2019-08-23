@@ -14,19 +14,19 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{EBF63DF4-1D71-45A2-9B88-D5005F6E30DF}</ProjectGuid>
     <RootNamespace>SCPCB</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -97,6 +97,7 @@
     <ClInclude Include="..\Src\Collision\CollisionMesh.h" />
     <ClInclude Include="..\Src\Graphics\Camera.h" />
     <ClInclude Include="..\Src\Graphics\Font.h" />
+    <ClInclude Include="..\Src\Graphics\GraphicsResources.h" />
     <ClInclude Include="..\Src\Graphics\Sprite.h" />
     <ClInclude Include="..\Src\Graphics\UIMesh.h" />
     <ClInclude Include="..\Src\Input\KeyBinds.h" />
@@ -110,7 +111,6 @@
     <ClInclude Include="..\Src\Utils\INI.h" />
     <ClInclude Include="..\Src\Utils\MathUtil.h" />
     <ClInclude Include="..\Src\Utils\TextMgmt.h" />
-    <ClInclude Include="..\Src\World\GfxResManager.h" />
     <ClInclude Include="..\Src\World\Timing.h" />
     <ClInclude Include="..\Src\World\World.h" />
     <ClInclude Include="resource.h" />
@@ -126,6 +126,7 @@
     <ClCompile Include="..\Src\Collision\CollisionMesh.cpp" />
     <ClCompile Include="..\Src\Graphics\Camera.cpp" />
     <ClCompile Include="..\Src\Graphics\Font.cpp" />
+    <ClCompile Include="..\Src\Graphics\GraphicsResources.cpp" />
     <ClCompile Include="..\Src\Graphics\Sprite.cpp" />
     <ClCompile Include="..\Src\Graphics\UIMesh.cpp" />
     <ClCompile Include="..\Src\Input\KeyBinds.cpp" />
@@ -140,7 +141,6 @@
     <ClCompile Include="..\Src\Utils\INI.cpp" />
     <ClCompile Include="..\Src\Utils\MathUtil.cpp" />
     <ClCompile Include="..\Src\Utils\TextMgmt.cpp" />
-    <ClCompile Include="..\Src\World\GfxResManager.cpp" />
     <ClCompile Include="..\Src\World\Timing.cpp" />
     <ClCompile Include="..\Src\World\World.cpp" />
   </ItemGroup>
