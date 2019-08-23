@@ -103,7 +103,7 @@
     <ClInclude Include="..\Src\Models\RM2.h">
       <Filter>Src\Models</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\World\GfxResManager.h">
+    <ClInclude Include="..\Src\Graphics\GraphicsResources.h">
       <Filter>Src\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -178,7 +178,7 @@
     <ClCompile Include="..\Src\Models\RM2.cpp">
       <Filter>Src\Models</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\World\GfxResManager.cpp">
+    <ClCompile Include="..\Src\Graphics\GraphicsResources.cpp">
       <Filter>Src\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
