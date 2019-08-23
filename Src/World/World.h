@@ -17,6 +17,7 @@ class Timing;
 class GraphicsResources;
 class TxtManager;
 class PauseMenu;
+class FPSCounter;
 
 enum class GameState {
     Playing,
@@ -53,6 +54,8 @@ class World {
 
         PauseMenu* pauseMenu;
 
+        FPSCounter* fps;
+
         bool isRoadRollered;
 
         //-- Update/Draw code.
@@ -81,7 +84,7 @@ class World {
         // Changes the game state and does any initialization for that state.
         // This should be the only way to modify the current state.
         void setGameState(GameState gs);
-    
+
         GameState getGameState() const;
 
 };

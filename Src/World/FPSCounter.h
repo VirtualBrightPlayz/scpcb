@@ -3,24 +3,28 @@
 
 #include <queue>
 
-class Font;
+class UIMesh;
+class KeyBinds;
 class Config;
+class Font;
+class GUIText;
 
 class FPSCounter {
     private:
         std::deque<double> sampleBuffer;
-        const int SAMPLE_COUNT = 100;
+        const int SAMPLE_COUNT = 20;
 
         double avgFPS;
         double currFPS;
 
-        Font* font;
         Config* config;
+
+        GUIText* display;
 
     public:
         bool visible;
 
-        FPSCounter(Font* font, Config* con);
+        FPSCounter(UIMesh* um, KeyBinds* kb, Config* con, Font* font);
 
         void update(double elapsedSeconds);
         void draw();

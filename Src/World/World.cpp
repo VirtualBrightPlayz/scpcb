@@ -4,6 +4,7 @@
 
 #include "World.h"
 #include "Timing.h"
+#include "FPSCounter.h"
 #include "../Graphics/Camera.h"
 #include "../Graphics/GraphicsResources.h"
 #include "../Menus/PauseMenu.h"
@@ -35,13 +36,16 @@ World::World() {
     poster->setPosition(0.f, 0.f, 2.f);
     poster->setRotation(0.5f);
     poster->setScale(1.f);
-    
+
     camera = new Camera(gfxRes, config->getAspectRatio());
     camera->addShader(PGE::FileName::create("GFX/Shaders/Sprite/"));
 
     setGameState(GameState::Playing);
     pauseMenu = new PauseMenu(uiMesh, largeFont, keyBinds, config, txtMngt);
     pauseMenu->hide();
+
+    fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
+    fps->visible = true;
 
     isRoadRollered = false;
 }
@@ -106,6 +110,7 @@ bool World::run() {
     // Get elapsed seconds since last run.
     double secondsPassed = timing->getElapsedSeconds();
     timing->addSecondsToAccumulator(secondsPassed);
+    fps->update(secondsPassed);
 
     return graphics->getWindow()->isOpen();
 }
@@ -148,6 +153,7 @@ void World::draw() {
     graphics->setDepthTest(false);
 
     pauseMenu->render(this);
+    fps->draw();
 
     graphics->setDepthTest(true);
 
@@ -178,7 +184,7 @@ void World::updatePlaying(float timeStep) {
 void World::drawPlaying() {
     // View/Projection matrix.
     camera->update();
-    
+
     poster->render();
 }
 

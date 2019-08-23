@@ -7,6 +7,8 @@ class Font;
 
 class GUIText : public GUIComponent {
     private:
+        Font* font;
+
         void updateInternal(PGE::Vector2f mousePos) override;
         void renderInternal() override;
 

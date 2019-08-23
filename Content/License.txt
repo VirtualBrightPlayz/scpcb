@@ -1,0 +1,8 @@
+Except where otherwise noted, SCP - Containment Breach is licensed under Creative Commons Attribution-ShareAlike 3.0 License (CC-BY-SA 3.0):
+
+http://creativecommons.org/licenses/by-sa/3.0/
+
+The following content is NOT licensed under CC-BY-SA 3.0:
+ - The PGE engine developed by Juan Pablo Arce is licensed under the zlib License (https://github.com/juanjp600/pge). See Additional Licenses/PGEL.txt for license notice.
+ - The Open-Asset-Importer-Lib developed by the AssImp team is licensed under the 3-Clause BSD License (http://www.assimp.org/). See Additional Licenses/AIL.txt for license notice.
+ - The FreeType library developed by the FreeType project is licensed under the FreeType License (https://www.freetype.org/). See Additional Licenses/FTL.txt for license notice.
