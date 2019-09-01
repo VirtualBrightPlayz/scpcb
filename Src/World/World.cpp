@@ -48,7 +48,7 @@ World::World() {
 
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
-    
+
     mouseTxtX =  new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -5.f, Alignment::Bottom | Alignment::Left);
     mouseTxtY =  new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -2.5f, Alignment::Bottom | Alignment::Left);
 
@@ -75,7 +75,7 @@ World::~World() {
 
 void World::setGameState(GameState gs) {
     if (gs == currState) { return; }
-    
+
     GameState prev = currState;
     currState = gs;
 
@@ -142,9 +142,26 @@ void World::runTick(float timeStep) {
     mouseTxtX->text = PGE::String("MouseX: ", PGE::String(mousePosition.x));
     mouseTxtY->text = PGE::String("MouseY: ", PGE::String(mousePosition.y));
 
+    keyBinds->update();
+    Input input = keyBinds->getFiredInputs();
+
+    if (keyBinds->escape->isHit()) {
+        switch (currState) {
+            case GameState::Playing: {
+                setGameState(GameState::PauseMenu);
+            } break;
+
+            case GameState::PauseMenu: {
+                if (!pauseMenu->isMainMenu() && !pauseMenu->inSubMenu()) {
+                    setGameState(GameState::Playing);
+                }
+            } break;
+        }
+    }
+
     switch (currState) {
         case GameState::Playing: {
-            updatePlaying(timeStep);
+            updatePlaying(timeStep, input);
         } break;
 
         case GameState::PauseMenu: {
@@ -169,7 +186,7 @@ void World::draw() {
     graphics->swap(config->isVsync());
 }
 
-void World::updatePlaying(float timeStep) {
+void World::updatePlaying(float timeStep, Input input) {
     int centerX = config->getWidth() / 2;
     int centerY = config->getHeight() / 2;
 
@@ -181,15 +198,9 @@ void World::updatePlaying(float timeStep) {
 
     // Reset mouse to center.
     io->setMousePosition(PGE::Vector2f(centerX, centerY));
-    
-    Input input = keyBinds->update();
 
     poster->addRotation(5.f * timeStep);
     poster->update();
-
-    if (keyBinds->escape->isHit()) {
-        setGameState(GameState::PauseMenu);
-    }
 }
 
 void World::drawPlaying() {

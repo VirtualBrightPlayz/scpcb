@@ -19,7 +19,7 @@ KeyBinds::~KeyBinds() {
     io->untrackInput(escape);
 
     delete mouse1; delete mouse2; delete escape;
-    
+
     // Untrack and delete bindings map.
     std::map<Input, std::vector<UserInput>>::iterator it;
     for (it = bindings.begin(); it != bindings.end(); it++) {
@@ -31,27 +31,29 @@ KeyBinds::~KeyBinds() {
     }
 }
 
-Input KeyBinds::update() {
-    Input retval = Input::None;
-    
+void KeyBinds::update() {
+    currInputs = Input::None;
+
     std::map<Input, std::vector<UserInput>>::const_iterator it;
     for (it = bindings.begin(); it != bindings.end(); it++) {
         // Check if any of the assigned inputs are down.
         for (int i = 0; i < (int)it->second.size(); i++) {
             // If one of them is down then the input is active.
             if (it->second[i].input->isDown()) {
-                retval = retval | it->first;
+                currInputs = currInputs | it->first;
                 break;
             }
         }
     }
-    
-    return retval;
+}
+
+Input KeyBinds::getFiredInputs() const {
+    return currInputs;
 }
 
 void KeyBinds::bindInput(Input input, UserInput key) {
     io->trackInput(key.input);
-    
+
     // Does the key exist already?
     std::map<Input, std::vector<UserInput>>::iterator it = bindings.find(input);
     if (it != bindings.end()) {
@@ -68,7 +70,7 @@ void KeyBinds::bindInput(Input input, PGE::MouseInput::BUTTON key) {
     UserInput wrapKey;
     wrapKey.input = new PGE::MouseInput(key);
     wrapKey.mouseButton = key;
-    
+
     bindInput(input, wrapKey);
 }
 
@@ -76,7 +78,7 @@ void KeyBinds::bindInput(Input input, PGE::KeyboardInput::SCANCODE key) {
     UserInput wrapKey;
     wrapKey.input = new PGE::KeyboardInput(key);
     wrapKey.scancode = key;
-    
+
     bindInput(input, wrapKey);
 }
 
@@ -84,7 +86,7 @@ void KeyBinds::bindInput(Input input, PGE::GamepadInput::CONTROLLER_BUTTON key) 
     UserInput wrapKey;
     wrapKey.input = new PGE::GamepadInput(key);
     wrapKey.controllerButton = key;
-    
+
     bindInput(input, wrapKey);
 }
 

@@ -54,6 +54,14 @@ void PauseMenu::hide() {
     setState(PauseMenu::SubState::Hidden);
 }
 
+bool PauseMenu::isMainMenu() const {
+    return mainMenu;
+}
+
+bool PauseMenu::inSubMenu() const {
+    return currState != PauseMenu::SubState::Main;
+}
+
 void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
     switch (currState) {
         case SubState::Main: {
@@ -84,10 +92,6 @@ void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
                 world->quit();
             }
         } break;
-    }
-
-    if (keyBinds->escape->isHit() && !isMainMenu) {
-        world->setGameState(GameState::Playing);
     }
 }
 

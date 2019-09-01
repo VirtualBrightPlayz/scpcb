@@ -8,6 +8,26 @@
 PGE::String corpFolder = "Undertow Games";
 PGE::String gameFolder = "SCP - Containment Breach";
 
+// Defaults.
+PGE::String defaultLanguage = "en";
+
+WindowType defaultWindow = WindowType::Windowed;
+int defaultWidth = 1280;
+int defaultHeight = 720;
+bool defaultVsync = false;
+
+void Config::genDefaultKeyboardBindings() {
+    kbBinds[Input::Forward] = { PGE::KeyboardInput::SCANCODE::W };
+    kbBinds[Input::Backward] = { PGE::KeyboardInput::SCANCODE::S };
+    kbBinds[Input::Left] = { PGE::KeyboardInput::SCANCODE::A };
+    kbBinds[Input::Right] = { PGE::KeyboardInput::SCANCODE::S };
+    kbBinds[Input::Sprint] = { PGE::KeyboardInput::SCANCODE::LSHIFT };
+    kbBinds[Input::Crouch] = { PGE::KeyboardInput::SCANCODE::LCTRL };
+    kbBinds[Input::Blink] = { PGE::KeyboardInput::SCANCODE::SPACE };
+    kbBinds[Input::Interact] = { PGE::KeyboardInput::SCANCODE::E };
+    kbBinds[Input::Inventory] = { PGE::KeyboardInput::SCANCODE::TAB };
+}
+
 PGE::String getConfigDir() {
     return PGE::FileUtil::getDataFolder() + corpFolder + "/" + gameFolder + "/";
 }
@@ -15,12 +35,13 @@ PGE::String getConfigDir() {
 Config::Config(const PGE::String& optionsFile) {
     filename = getConfigDir() + optionsFile;
 
-    languageCode = "en";
+    languageCode = defaultLanguage;
 
-    windowType = WindowType::Windowed;
-    setResolution(1280, 720);
+    windowType = defaultWindow;
+    setResolution(defaultWidth, defaultHeight);
+    vsync = defaultVsync;
 
-    vsync = false;
+    genDefaultKeyboardBindings();
 
     if (PGE::FileUtil::exists(filename)) {
         loadFile();
@@ -42,8 +63,10 @@ Config::Config(const Config& cpy) {
 
     windowType = cpy.windowType;
     setResolution(cpy.width, cpy.height);
-
     vsync = cpy.vsync;
+
+    kbBinds = cpy.kbBinds;
+    msBinds = cpy.msBinds;
 }
 
 Config& Config::operator=(const Config& other) {
@@ -52,8 +75,10 @@ Config& Config::operator=(const Config& other) {
 
         windowType = other.windowType;
         setResolution(other.width, other.height);
-
         vsync = other.vsync;
+
+        kbBinds = other.kbBinds;
+        msBinds = other.msBinds;
     }
 
     return *this;
@@ -64,12 +89,38 @@ void Config::setGraphicsResources(GraphicsResources* grm) {
 }
 
 void Config::loadFile() {
-    languageCode = getINIString(filename, secGen, "language", "en");
+    languageCode = getINIString(filename, secGen, "language", defaultLanguage);
 
-    int widthINI = getINIInt(filename, secGFX, "width");
-    int heightINI = getINIInt(filename, secGFX, "height");
+    windowType = (WindowType)getINIInt(filename, secGFX, "fullscreen");
+    int widthINI = getINIInt(filename, secGFX, "width", defaultWidth);
+    int heightINI = getINIInt(filename, secGFX, "height", defaultHeight);
     setResolution(widthINI, heightINI);
-    vsync = getINIBool(filename, secGFX, "vsync");
+    vsync = getINIBool(filename, secGFX, "vsync", defaultVsync);
+
+    loadKeyboardInput(Input::Forward);
+    loadKeyboardInput(Input::Backward);
+    loadKeyboardInput(Input::Left);
+    loadKeyboardInput(Input::Right);
+    loadKeyboardInput(Input::Sprint);
+    loadKeyboardInput(Input::Crouch);
+    loadKeyboardInput(Input::Blink);
+    loadKeyboardInput(Input::Interact);
+    loadKeyboardInput(Input::Inventory);
+}
+
+void Config::loadKeyboardInput(Input input) {
+    PGE::String name = getBindingName(input) + "_keyboard";
+    PGE::String bindings = getINIString(filename, secCon, name, "");
+    if (bindings.isEmpty()) {
+        return;
+    }
+
+    kbBinds[input] = std::vector<PGE::KeyboardInput::SCANCODE>();
+
+    std::vector<PGE::String> bindVect = bindings.split(",", true);
+    for (int i = 0; i < (int)bindVect.size(); i++) {
+        kbBinds[input].push_back((PGE::KeyboardInput::SCANCODE)bindVect[i].toInt());
+    }
 }
 
 void Config::saveFile() const {
@@ -78,6 +129,19 @@ void Config::saveFile() const {
     putINIValue(filename, secGFX, "width", width);
     putINIValue(filename, secGFX, "height", height);
     putINIValue(filename, secGFX, "vsync", vsync);
+
+    std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>>::const_iterator it;
+    for (it = kbBinds.begin(); it != kbBinds.end(); it++) {
+        PGE::String bindName = getBindingName(it->first) + "_keyboard";
+
+        std::vector<PGE::String> strToJoin;
+        for (int i = 0; i < (int)it->second.size(); i++) {
+            strToJoin.push_back(PGE::String((int)it->second[i]));
+        }
+        PGE::String finalSave = PGE::String::join(strToJoin, ",");
+
+        putINIValue(filename, secCon, bindName, finalSave);
+    }
 }
 
 void Config::setResolution(int width, int height) {

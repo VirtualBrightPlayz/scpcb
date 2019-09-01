@@ -1,6 +1,8 @@
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
 
+#include <Misc/String.h>
+
 enum class Input {
     None = 0x0,
     Forward = 0x1,
@@ -11,11 +13,14 @@ enum class Input {
     Crouch = 0x20,
     Blink = 0x40,
     Interact = 0x80,
-    
+
     // Inventory Hotkeys.
-    ToggleSiteNavigator = 0x100,
-    ToggleRadio = 0x200
+    Inventory = 0x100,
+    ToggleSiteNavigator = 0x200,
+    ToggleRadio = 0x400
 };
+
+PGE::String getBindingName(const Input& input);
 
 const Input operator&(const Input& a, const Input& b);
 const Input operator|(const Input& a, const Input& b);

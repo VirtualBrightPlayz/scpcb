@@ -1,8 +1,13 @@
 #ifndef CONFIG_H_INCLUDED
 #define CONFIG_H_INCLUDED
 
+#include <map>
+
 #include <Misc/FileName.h>
 #include <Math/Matrix.h>
+ #include <UserInput/UserInput.h>
+
+#include "../Input/Input.h"
 
 class GraphicsResources;
 
@@ -18,6 +23,7 @@ class Config {
         PGE::String filename;
         PGE::String secGen = "general";
         PGE::String secGFX = "graphics";
+        PGE::String secCon = "controls";
 
         PGE::String languageCode;
 
@@ -28,6 +34,16 @@ class Config {
 
         bool vsync;
 
+        std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>> kbBinds;
+        void loadKeyboardInput(Input input);
+        std::map<Input, std::vector<PGE::MouseInput::BUTTON>> msBinds;
+
+        void genDefaultKeyboardBindings();
+
+        void loadFile();
+        void saveFile() const;
+        void saveBindings(Input input) const;
+
     public:
         Config(const PGE::String& optionsFile);
         Config(const Config& cpy);
@@ -35,9 +51,6 @@ class Config {
         Config& operator=(const Config& other);
 
         void setGraphicsResources(GraphicsResources* grm);
-
-        void loadFile();
-        void saveFile() const;
 
         PGE::String getLangCode() const;
 

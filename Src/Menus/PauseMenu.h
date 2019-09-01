@@ -20,7 +20,7 @@ class PauseMenu {
         };
 
         // Whether the pause menu is being shown on startup as oppose to in the middle of a game.
-        bool isMainMenu;
+        bool mainMenu;
 
         enum class OptionsTab {
             Graphics,
@@ -57,6 +57,8 @@ class PauseMenu {
 
         void show();
         void hide();
+        bool isMainMenu() const;
+        bool inSubMenu() const;
 
         void update(World* world, PGE::Vector2f mousePosition);
         void render(const World* world);

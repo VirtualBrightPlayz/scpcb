@@ -68,7 +68,7 @@ class World {
         void runTick(float timeStep);
 
         // Update code for GameState::Playing game state.
-        void updatePlaying(float timeStep);
+        void updatePlaying(float timeStep, Input input);
         // Draw code for GameState::Playing game state.
         void drawPlaying();
 
