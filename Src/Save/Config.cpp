@@ -20,7 +20,7 @@ void Config::genDefaultKeyboardBindings() {
     kbBinds[Input::Forward] = { PGE::KeyboardInput::SCANCODE::W };
     kbBinds[Input::Backward] = { PGE::KeyboardInput::SCANCODE::S };
     kbBinds[Input::Left] = { PGE::KeyboardInput::SCANCODE::A };
-    kbBinds[Input::Right] = { PGE::KeyboardInput::SCANCODE::S };
+    kbBinds[Input::Right] = { PGE::KeyboardInput::SCANCODE::D };
     kbBinds[Input::Sprint] = { PGE::KeyboardInput::SCANCODE::LSHIFT };
     kbBinds[Input::Crouch] = { PGE::KeyboardInput::SCANCODE::LCTRL };
     kbBinds[Input::Blink] = { PGE::KeyboardInput::SCANCODE::SPACE };

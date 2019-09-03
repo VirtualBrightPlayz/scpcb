@@ -48,8 +48,11 @@ class World {
         // TODO: Remove, these are a test.
         Sprite* poster;
         PGE::Texture* dirtymetal;
+
+#ifdef DEBUG
         GUIText* mouseTxtX;
         GUIText* mouseTxtY;
+#endif
 
         GraphicsResources* gfxRes;
         TxtManager* txtMngt;
@@ -71,6 +74,8 @@ class World {
         void updatePlaying(float timeStep, Input input);
         // Draw code for GameState::Playing game state.
         void drawPlaying();
+        void loadPlaying();
+        void destroyPlaying();
 
         // Goes through the draw phase.
         void draw();

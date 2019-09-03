@@ -38,6 +38,8 @@
 		1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1971577D22BEB9EC003AF33E /* AppDelegate.m */; };
 		1987FF1C22F48DCB0023029A /* GUIText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1987FF1B22F48DCB0023029A /* GUIText.cpp */; };
 		19C1965D22BD532F00332C8E /* UIMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19C1965C22BD532F00332C8E /* UIMesh.cpp */; };
+		19C521FB231EABD500255476 /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19C521FA231EABD500255476 /* Item.cpp */; };
+		19C521FE231EB2F500255476 /* InvSlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19C521FD231EB2F500255476 /* InvSlot.cpp */; };
 		19DA6E0B230F6A3200F07961 /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19DA6E0A230F6A3200F07961 /* Input.cpp */; };
 		19F15BF522F52DA90044E284 /* GraphicsResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F15BF122F52DA90044E284 /* GraphicsResources.cpp */; };
 		19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EA822AD79A00061F643 /* Sprite.cpp */; };
@@ -128,6 +130,10 @@
 		1987FF1B22F48DCB0023029A /* GUIText.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GUIText.cpp; sourceTree = "<group>"; };
 		19C1965B22BD532F00332C8E /* UIMesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIMesh.h; sourceTree = "<group>"; };
 		19C1965C22BD532F00332C8E /* UIMesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIMesh.cpp; sourceTree = "<group>"; };
+		19C521F9231EABD500255476 /* Item.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
+		19C521FA231EABD500255476 /* Item.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cpp; sourceTree = "<group>"; };
+		19C521FC231EB2F500255476 /* InvSlot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvSlot.h; sourceTree = "<group>"; };
+		19C521FD231EB2F500255476 /* InvSlot.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InvSlot.cpp; sourceTree = "<group>"; };
 		19DA6E09230F6A3200F07961 /* Input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
 		19DA6E0A230F6A3200F07961 /* Input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
 		19F15BF122F52DA90044E284 /* GraphicsResources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsResources.cpp; sourceTree = "<group>"; };
@@ -208,6 +214,7 @@
 				191BDDA922A846EE00270B9D /* Collision */,
 				19F17EA622AD79860061F643 /* Graphics */,
 				19FC31C522C0531D00AE4011 /* Input */,
+				19C521F6231EABAE00255476 /* Items */,
 				19243C1222BC29430057054D /* Menus */,
 				191BDDAE22A846EE00270B9D /* PlayerController */,
 				1971577622BEB764003AF33E /* Save */,
@@ -320,6 +327,17 @@
 				1971577822BEB776003AF33E /* Config.h */,
 			);
 			path = Save;
+			sourceTree = "<group>";
+		};
+		19C521F6231EABAE00255476 /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				19C521FA231EABD500255476 /* Item.cpp */,
+				19C521F9231EABD500255476 /* Item.h */,
+				19C521FD231EB2F500255476 /* InvSlot.cpp */,
+				19C521FC231EB2F500255476 /* InvSlot.h */,
+			);
+			path = Items;
 			sourceTree = "<group>";
 		};
 		19F17EA622AD79860061F643 /* Graphics */ = {
@@ -458,6 +476,7 @@
 				19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */,
 				19DA6E0B230F6A3200F07961 /* Input.cpp in Sources */,
 				191BDDB322A846EE00270B9D /* PlayerController.cpp in Sources */,
+				19C521FE231EB2F500255476 /* InvSlot.cpp in Sources */,
 				1987FF1C22F48DCB0023029A /* GUIText.cpp in Sources */,
 				1907E42B22E500CF00FC1870 /* Font.cpp in Sources */,
 				192A67A622C43CBA009A6F1E /* GUIFrame.cpp in Sources */,
@@ -476,6 +495,7 @@
 				193385FA22E157E900439AA9 /* GUIComponent.cpp in Sources */,
 				191BDDBF22A8551A00270B9D /* Main.cpp in Sources */,
 				1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */,
+				19C521FB231EABD500255476 /* Item.cpp in Sources */,
 				191BDDB122A846EE00270B9D /* CollisionMesh.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

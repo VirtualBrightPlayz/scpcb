@@ -33,12 +33,6 @@ World::World() {
     uiMesh = new UIMesh(gfxRes);
     keyBinds = new KeyBinds(io);
 
-    dirtymetal = PGE::Texture::load(graphics, PGE::FileName::create("GFX/Map/Textures/dirtymetal.jpg"));
-    poster = new Sprite(gfxRes, spriteMesh, dirtymetal);
-    poster->setPosition(0.f, 0.f, 2.f);
-    poster->setRotation(0.5f);
-    poster->setScale(1.f);
-
     camera = new Camera(gfxRes, config->getAspectRatio());
     camera->addShader(PGE::FileName::create("GFX/Shaders/Sprite/"));
 
@@ -49,8 +43,10 @@ World::World() {
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
 
+#ifdef DEBUG
     mouseTxtX =  new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -5.f, Alignment::Bottom | Alignment::Left);
     mouseTxtY =  new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -2.5f, Alignment::Bottom | Alignment::Left);
+#endif
 
     isRoadRollered = false;
 }
@@ -61,8 +57,10 @@ World::~World() {
     delete keyBinds;
     delete poster;
     delete spriteMesh;
+#ifdef DEBUG
     delete mouseTxtX;
     delete mouseTxtY;
+#endif
 
     delete camera;
     delete timing;
@@ -139,8 +137,10 @@ void World::runTick(float timeStep) {
     mousePosition.x -= 50.f * config->getAspectRatio();
     mousePosition.y -= 50.f;
 
+#ifdef DEBUG
     mouseTxtX->text = PGE::String("MouseX: ", PGE::String(mousePosition.x));
     mouseTxtY->text = PGE::String("MouseY: ", PGE::String(mousePosition.y));
+#endif
 
     keyBinds->update();
     Input input = keyBinds->getFiredInputs();
@@ -178,8 +178,10 @@ void World::draw() {
 
     pauseMenu->render(this);
     fps->draw();
+#ifdef DEBUG
     mouseTxtX->render();
     mouseTxtY->render();
+#endif
 
     graphics->setDepthTest(true);
 
@@ -208,6 +210,19 @@ void World::drawPlaying() {
     camera->update();
 
     poster->render();
+}
+
+void World::loadPlaying() {
+    dirtymetal = gfxRes->getTexture(PGE::FileName::create("GFX/Map/Textures/dirtymetal.jpg"));
+    poster = new Sprite(gfxRes, spriteMesh, dirtymetal);
+    poster->setPosition(0.f, 0.f, 2.f);
+    poster->setRotation(0.5f);
+    poster->setScale(1.f);
+}
+
+void World::destroyPlaying() {
+    gfxRes->dropTexture(dirtymetal); dirtymetal = nullptr;
+    delete poster; poster = nullptr;
 }
 
 void World::quit() {

@@ -8,10 +8,12 @@
 
 class PlayerController {
     public:
-        PlayerController(float r,float camHeight);
+        PlayerController(float r, float camHeight);
+    
+        bool noclip;
     
         void setCollisionMeshes(std::vector<CollisionMesh*> meshes);
-        void update(float angle, Input input);
+        void update(float angle, float angleY, Input input);
 
         PGE::Vector3f getPosition() const;
         void setPosition(PGE::Vector3f pos);
@@ -32,6 +34,8 @@ class PlayerController {
         float stamina;
 
         float getClampedStamina() const;
+    
+        void updateMovement(float angle, float angleY, Input input);
 
         void applyGravity();
         void stand();

@@ -5,7 +5,7 @@
 
 using namespace PGE;
 
-PlayerController::PlayerController(float r,float camHeight) {
+PlayerController::PlayerController(float r, float camHeight) {
     radius = r; cameraHeight = camHeight;
 
     position = Vector3f::zero;
@@ -13,6 +13,8 @@ PlayerController::PlayerController(float r,float camHeight) {
     currWalkSpeed = 0.f;
     blinkTimer = 0.f;
     stamina = 1.f;
+    
+    noclip = false;
 }
 
 void PlayerController::setCollisionMeshes(std::vector<CollisionMesh*> meshes) {
@@ -27,7 +29,11 @@ void PlayerController::setPosition(Vector3f pos) {
     position = pos;
 }
 
-void PlayerController::update(float angle, Input input) {
+void PlayerController::update(float angleX, float angleY, Input input) {
+    updateMovement(angle, input);
+}
+
+void PlayerController::updateMovement(float angle, float angleY, Input input) {
     if ((input&(Input::Forward|Input::Backward|Input::Left|Input::Right)) == Input::None) {
         stand(); //not pressing any movement keys: we're standing still
     } else {
@@ -38,7 +44,7 @@ void PlayerController::update(float angle, Input input) {
             targetSpeed = SPRINT_SPEED_MAX*getClampedStamina() + WALK_SPEED_MAX*(1.f-getClampedStamina());
         }
         currWalkSpeed = currWalkSpeed*WALK_SPEED_SMOOTHING_FACTOR + targetSpeed*(1.f-WALK_SPEED_SMOOTHING_FACTOR);
-
+        
         Vector2f targetDir = Vector2f::zero;
         if ((input&Input::Forward) != Input::None) {
             targetDir = targetDir.add(Vector2f(sinAngle,cosAngle));
