@@ -82,9 +82,9 @@ void KeyBinds::bindInput(Input input, PGE::KeyboardInput::SCANCODE key) {
     bindInput(input, wrapKey);
 }
 
-void KeyBinds::bindInput(Input input, PGE::GamepadInput::CONTROLLER_BUTTON key) {
+void KeyBinds::bindInput(Input input, PGE::ControllerInput::BUTTON key) {
     UserInput wrapKey;
-    wrapKey.input = new PGE::GamepadInput(key);
+    wrapKey.input = new PGE::ControllerInput(key);
     wrapKey.controllerButton = key;
 
     bindInput(input, wrapKey);
@@ -118,11 +118,11 @@ void KeyBinds::unbindInput(Input input, PGE::KeyboardInput::SCANCODE key) {
     }
 }
 
-void KeyBinds::unbindInput(Input input, PGE::GamepadInput::CONTROLLER_BUTTON key) {
+void KeyBinds::unbindInput(Input input, PGE::ControllerInput::BUTTON key) {
     std::map<Input, std::vector<UserInput>>::iterator it = bindings.find(input);
     if (it != bindings.end()) {
         for (int i = 0; i < (int)it->second.size(); i++) {
-            if (it->second[i].input->getDevice() == PGE::UserInput::DEVICE::GAMEPAD && it->second[i].controllerButton == key) {
+            if (it->second[i].input->getDevice() == PGE::UserInput::DEVICE::CONTROLLER && it->second[i].controllerButton == key) {
                 io->untrackInput(it->second[i].input);
                 delete it->second[i].input;
                 it->second.erase(it->second.begin() + i);

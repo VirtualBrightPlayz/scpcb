@@ -30,7 +30,7 @@ void PlayerController::setPosition(Vector3f pos) {
 }
 
 void PlayerController::update(float angleX, float angleY, Input input) {
-    updateMovement(angle, input);
+    updateMovement(angleX, angleY, input);
 }
 
 void PlayerController::updateMovement(float angle, float angleY, Input input) {

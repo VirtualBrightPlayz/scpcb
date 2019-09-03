@@ -18,7 +18,7 @@ class KeyBinds {
                 PGE::UserInput* input;
                 PGE::MouseInput::BUTTON mouseButton;
                 PGE::KeyboardInput::SCANCODE scancode;
-                PGE::GamepadInput::CONTROLLER_BUTTON controllerButton;
+                PGE::ControllerInput::BUTTON controllerButton;
         };
 
         PGE::IO* io;
@@ -37,10 +37,10 @@ class KeyBinds {
 
         void bindInput(Input input, PGE::MouseInput::BUTTON key);
         void bindInput(Input input, PGE::KeyboardInput::SCANCODE key);
-        void bindInput(Input input, PGE::GamepadInput::CONTROLLER_BUTTON key);
+        void bindInput(Input input, PGE::ControllerInput::BUTTON key);
         void unbindInput(Input input, PGE::MouseInput::BUTTON key);
         void unbindInput(Input input, PGE::KeyboardInput::SCANCODE key);
-        void unbindInput(Input input, PGE::GamepadInput::CONTROLLER_BUTTON key);
+        void unbindInput(Input input, PGE::ControllerInput::BUTTON key);
 
         // Iterate through the keybinds and find out which ones fired this tick.
         void update();

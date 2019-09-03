@@ -49,6 +49,9 @@ World::World() {
 #endif
 
     isRoadRollered = false;
+    
+    // TODO: Remove.
+    loadPlaying();
 }
 
 World::~World() {
