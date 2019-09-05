@@ -19,7 +19,6 @@ class InvSlot : public GUIComponent {
 
         bool doubleClicked;
         bool hovered;
-        bool active;
 
     public:
         InvSlot(UIMesh* um, KeyBinds* kb, Config* con, float x, float y);

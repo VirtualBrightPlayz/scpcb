@@ -45,6 +45,7 @@
 		19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EA822AD79A00061F643 /* Sprite.cpp */; };
 		19F17EAC22AD82940061F643 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EAB22AD82940061F643 /* Camera.cpp */; };
 		19FC31CC22C0736A00AE4011 /* KeyBinds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19FC31CB22C0736A00AE4011 /* KeyBinds.cpp */; };
+		19FD92E523213B5C0030BC9C /* GUITextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19FD92E423213B5C0030BC9C /* GUITextInput.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +145,8 @@
 		19F17EAB22AD82940061F643 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		19FC31CA22C0736A00AE4011 /* KeyBinds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyBinds.h; sourceTree = "<group>"; };
 		19FC31CB22C0736A00AE4011 /* KeyBinds.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyBinds.cpp; sourceTree = "<group>"; };
+		19FD92E323213B5C0030BC9C /* GUITextInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GUITextInput.h; sourceTree = "<group>"; };
+		19FD92E423213B5C0030BC9C /* GUITextInput.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GUITextInput.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +206,8 @@
 				192A67A422C43CBA009A6F1E /* GUIFrame.h */,
 				1987FF1B22F48DCB0023029A /* GUIText.cpp */,
 				1987FF1A22F48DCB0023029A /* GUIText.h */,
+				19FD92E423213B5C0030BC9C /* GUITextInput.cpp */,
+				19FD92E323213B5C0030BC9C /* GUITextInput.h */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
@@ -493,6 +498,7 @@
 				19F15BF522F52DA90044E284 /* GraphicsResources.cpp in Sources */,
 				1971577C22BEB9CB003AF33E /* AppDelegate.h in Sources */,
 				193385FA22E157E900439AA9 /* GUIComponent.cpp in Sources */,
+				19FD92E523213B5C0030BC9C /* GUITextInput.cpp in Sources */,
 				191BDDBF22A8551A00270B9D /* Main.cpp in Sources */,
 				1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */,
 				19C521FB231EABD500255476 /* Item.cpp in Sources */,

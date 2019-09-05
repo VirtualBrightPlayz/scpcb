@@ -3,7 +3,7 @@
 #include "PauseMenu.h"
 #include "../Utils/TextMgmt.h"
 
-PauseMenu::PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtManager* tm) {
+PauseMenu::PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io) {
     float btnWidth = 40.f;
     float btnHeight = 7.f;
 
@@ -18,6 +18,8 @@ PauseMenu::PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtM
     options = new GUIButton(um, largeFnt, kb, con, tm, btnX, btnY, btnWidth, btnHeight, "mnu_opt");
     btnY += btnSpacing;
     quit = new GUIButton(um, largeFnt, kb, con, tm, btnX, btnY, btnWidth, btnHeight, "mnu_quit");
+    btnY += btnSpacing;
+    inputTest = new GUITextInput(um, largeFnt, kb, con, tm, io, btnX, btnY, btnWidth, btnHeight, "mnu_quit");
 
     float quitFrameWidth = 60.f;
     float quitFrameHeight = 30.f;
@@ -69,6 +71,7 @@ void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
             loadgame->update(mousePosition);
             options->update(mousePosition);
             quit->update(mousePosition);
+            inputTest->update(mousePosition);
 
             if (newgame->isClicked()) {
                 std::cout << "New Game" << std::endl;
@@ -105,6 +108,7 @@ void PauseMenu::render(const World* world) {
         loadgame->render();
         options->render();
         quit->render();
+        inputTest->render();
     }
 
     switch (currState) {

@@ -39,6 +39,9 @@ Camera::~Camera() {
 
 void Camera::addShader(PGE::FileName fn) {
     shaders.push_back(gfxRes->getShader(fn));
+    
+    needsViewUpdate = true;
+    needsProjUpdate = true;
 }
 
 void Camera::update() {

@@ -7,18 +7,48 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     mouse2 = new PGE::MouseInput(PGE::MouseInput::BUTTON::RIGHT);
 
     escape = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::ESCAPE);
+    leftArrow = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LEFT);
+    rightArrow = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RIGHT);
+    leftShift = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LSHIFT);
+    rightShift = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RSHIFT);
+    backspace = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::BACKSPACE);
+    del = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::DELETE);
+    copy = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::COPY);
+    cut = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::CUT);
+    paste = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::PASTE);
 
     io->trackInput(mouse1);
     io->trackInput(mouse2);
     io->trackInput(escape);
+    io->trackInput(leftArrow);
+    io->trackInput(rightArrow);
+    io->trackInput(leftShift);
+    io->trackInput(rightShift);
+    io->trackInput(backspace);
+    io->trackInput(del);
+    io->trackInput(copy);
+    io->trackInput(cut);
+    io->trackInput(paste);
 }
 
 KeyBinds::~KeyBinds() {
     io->untrackInput(mouse1);
     io->untrackInput(mouse2);
     io->untrackInput(escape);
+    io->untrackInput(leftArrow);
+    io->untrackInput(rightArrow);
+    io->untrackInput(leftShift);
+    io->untrackInput(rightShift);
+    io->untrackInput(backspace);
+    io->untrackInput(del);
+    io->untrackInput(copy);
+    io->untrackInput(cut);
+    io->untrackInput(paste);
 
     delete mouse1; delete mouse2; delete escape;
+    delete leftArrow; delete rightArrow; delete leftShift; delete rightShift;
+    delete backspace; delete del;
+    delete copy; delete cut; delete paste;
 
     // Untrack and delete bindings map.
     std::map<Input, std::vector<UserInput>>::iterator it;
@@ -29,6 +59,10 @@ KeyBinds::~KeyBinds() {
         }
         it->second.clear();
     }
+}
+
+bool KeyBinds::anyShiftDown() const {
+    return leftShift->isDown() || rightShift->isDown();
 }
 
 void KeyBinds::update() {

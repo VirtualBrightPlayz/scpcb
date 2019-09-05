@@ -34,6 +34,19 @@ class KeyBinds {
         PGE::MouseInput* mouse1;
         PGE::MouseInput* mouse2;
         PGE::KeyboardInput* escape;
+    
+        // Text input keys.
+        PGE::KeyboardInput* leftArrow;
+        PGE::KeyboardInput* rightArrow;
+        PGE::KeyboardInput* leftShift;
+        PGE::KeyboardInput* rightShift;
+        // Checks if any of the shift keys are held down.
+        bool anyShiftDown() const;
+        PGE::KeyboardInput* backspace;
+        PGE::KeyboardInput* del;
+        PGE::KeyboardInput* copy;
+        PGE::KeyboardInput* cut;
+        PGE::KeyboardInput* paste;
 
         void bindInput(Input input, PGE::MouseInput::BUTTON key);
         void bindInput(Input input, PGE::KeyboardInput::SCANCODE key);

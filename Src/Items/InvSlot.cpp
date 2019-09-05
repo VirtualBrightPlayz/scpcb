@@ -18,10 +18,8 @@ void InvSlot::updateInternal(PGE::Vector2f mousePos) {
     if (mousePos.x >= getX() && mousePos.y >= getY()
         && mousePos.x <= getX2() && mousePos.y <= getY2()) {
         hovered = true;
-
-        if (keyBinds->mouse1->isHit()) {
-            active = true;
-        } else if (active && /* TODO: Double click check. */hasItem()) {
+        
+        if (keyBinds->mouse1->doubleClicked() && hasItem()) {
             // TODO: Use/de-use item.
         }
     } else {

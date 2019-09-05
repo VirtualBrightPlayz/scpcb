@@ -37,7 +37,7 @@ World::World() {
     camera->addShader(PGE::FileName::create("GFX/Shaders/Sprite/"));
 
     setGameState(GameState::Playing);
-    pauseMenu = new PauseMenu(uiMesh, largeFont, keyBinds, config, txtMngt);
+    pauseMenu = new PauseMenu(uiMesh, largeFont, keyBinds, config, txtMngt, io);
     pauseMenu->hide();
 
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);

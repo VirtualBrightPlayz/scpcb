@@ -4,6 +4,7 @@
 #include "../World/World.h"
 #include "GUI/GUIButton.h"
 #include "GUI/GUIFrame.h"
+#include "GUI/GUITextInput.h"
 #include "../Graphics/Font.h"
 
 class TxtManager;
@@ -47,13 +48,15 @@ class PauseMenu {
         GUIFrame* quitFrame;
         GUIButton* quitYes;
         GUIButton* quitNo;
+    
+        GUITextInput* inputTest;
 
         UIMesh* uiMesh;
         Font* largeFont;
         KeyBinds* keyBinds;
 
     public:
-        PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtManager* tm);
+        PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io);
 
         void show();
         void hide();
