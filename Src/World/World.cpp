@@ -149,16 +149,22 @@ void World::runTick(float timeStep) {
     Input input = keyBinds->getFiredInputs();
 
     if (keyBinds->escape->isHit()) {
-        switch (currState) {
-            case GameState::Playing: {
-                setGameState(GameState::PauseMenu);
-            } break;
+        // If a text input is active then escape de-selects it.
+        // Unless it's the console's input.
+        if (GUITextInput::hasSubscriber() && currState != GameState::Console) {
+            GUITextInput::deselectSubscribed();
+        } else {
+            switch (currState) {
+                case GameState::Playing: {
+                    setGameState(GameState::PauseMenu);
+                } break;
 
-            case GameState::PauseMenu: {
-                if (!pauseMenu->isMainMenu() && !pauseMenu->inSubMenu()) {
-                    setGameState(GameState::Playing);
-                }
-            } break;
+                case GameState::PauseMenu: {
+                    if (!pauseMenu->isMainMenu() && !pauseMenu->inSubMenu()) {
+                        setGameState(GameState::Playing);
+                    }
+                } break;
+            }
         }
     }
 

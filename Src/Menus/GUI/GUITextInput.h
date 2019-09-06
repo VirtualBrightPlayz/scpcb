@@ -20,6 +20,8 @@ private:
     PGE::IO* io;
     PGE::String text;
     
+    bool pressed;
+    
     // Current position of the caret relative to the text.
     int caretPosition;
     // X coordinate of the caret.
@@ -30,7 +32,11 @@ private:
     int selectionEndPosition;
     bool anyTextSelected() const;
     
+    // Returns an index corresponding to where the caret should be based on the provided X coordinate.
+    int getCaretPosition(float mouseX);
     void setCaretPositionFromMouse(float mouseX);
+    // Update caret's X position.
+    void updateCaretX();
     // Updates the caret position and resets selection.
     void updateText(PGE::String newText, int oldCaretPosition);
     void undo();
@@ -48,6 +54,8 @@ public:
     void select();
     // Deselect this textbox;
     void deselect();
+    
+    static bool hasSubscriber();
     static void deselectSubscribed();
 };
 

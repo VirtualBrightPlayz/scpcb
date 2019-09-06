@@ -64,7 +64,7 @@ void Font::renderAtlas(long chr) {
         if (it==glyphData.end()) {
             long glyphIndex = FT_Get_Char_Index(freeTypeFace,i);
             FT_Load_Glyph(freeTypeFace,
-                          glyphIndex,
+                          (FT_UInt)glyphIndex,
                           FT_LOAD_DEFAULT);
             if (glyphIndex != 0) {
                 FT_Render_Glyph(freeTypeFace->glyph,
@@ -102,7 +102,7 @@ void Font::renderAtlas(long chr) {
                     }
 
                     GlyphData gd;
-                    gd.atlasIndex = atlases.size();
+                    gd.atlasIndex = (int)atlases.size();
                     gd.horizontalAdvance = freeTypeFace->glyph->metrics.horiAdvance>>6;
                     gd.drawOffset = PGE::Vector2f(-freeTypeFace->glyph->bitmap_left,freeTypeFace->glyph->bitmap_top-height*10/14);
                     gd.srcRect = PGE::Rectanglef((float)x/(float)atlasDims,(float)y/(float)atlasDims,(float)(x+glyphWidth)/(float)atlasDims,(float)(y+glyphHeight)/(float)atlasDims);
@@ -169,17 +169,15 @@ void Font::draw(const PGE::String& text, PGE::Vector3f pos, PGE::Vector2f scale,
 
         if (it!=glyphData.end()) {
             if (it->second.atlasIndex>=0) {
-                GlyphData gd = it->second;
-                Atlas atlas = atlases[gd.atlasIndex];
+                const GlyphData& gd = it->second;
                 PGE::Vector3f glyphPos = PGE::Vector3f(currPos.x-gd.drawOffset.x,
                                                        currPos.y-gd.drawOffset.y,
                                                        currPos.z);
                 PGE::Vector3f glyphPos2 = glyphPos.add(PGE::Vector3f(gd.srcRect.width()*atlasDims,gd.srcRect.height()*atlasDims,0.f));
-                PGE::Vector3f glyphNormal = PGE::Vector3f(0.f,0.f,-1.f);
                 PGE::Vector2f glyphUv = PGE::Vector2f(gd.srcRect.topLeftCorner().x,gd.srcRect.topLeftCorner().y);
                 PGE::Vector2f glyphUv2 = PGE::Vector2f(gd.srcRect.bottomRightCorner().x,gd.srcRect.bottomRightCorner().y);
 
-                int vertCount = atlases[it->second.atlasIndex].vertices.size();
+                int vertCount = (int)atlases[it->second.atlasIndex].vertices.size();
 
                 vertex.setVector3f("position", glyphPos);
                 vertex.setVector2f("uv", glyphUv);
