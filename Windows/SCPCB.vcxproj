@@ -100,10 +100,13 @@
     <ClInclude Include="..\Src\Graphics\GraphicsResources.h" />
     <ClInclude Include="..\Src\Graphics\Sprite.h" />
     <ClInclude Include="..\Src\Graphics\UIMesh.h" />
+    <ClInclude Include="..\Src\Input\Input.h" />
     <ClInclude Include="..\Src\Input\KeyBinds.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIComponent.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIButton.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIFrame.h" />
+    <ClInclude Include="..\Src\Menus\GUI\GUIText.h" />
+    <ClInclude Include="..\Src\Menus\GUI\GUITextInput.h" />
     <ClInclude Include="..\Src\Menus\PauseMenu.h" />
     <ClInclude Include="..\Src\Models\RM2.h" />
     <ClInclude Include="..\Src\PlayerController\PlayerController.h" />
@@ -111,6 +114,7 @@
     <ClInclude Include="..\Src\Utils\INI.h" />
     <ClInclude Include="..\Src\Utils\MathUtil.h" />
     <ClInclude Include="..\Src\Utils\TextMgmt.h" />
+    <ClInclude Include="..\Src\World\FPSCounter.h" />
     <ClInclude Include="..\Src\World\Timing.h" />
     <ClInclude Include="..\Src\World\World.h" />
     <ClInclude Include="resource.h" />
@@ -129,11 +133,14 @@
     <ClCompile Include="..\Src\Graphics\GraphicsResources.cpp" />
     <ClCompile Include="..\Src\Graphics\Sprite.cpp" />
     <ClCompile Include="..\Src\Graphics\UIMesh.cpp" />
+    <ClCompile Include="..\Src\Input\Input.cpp" />
     <ClCompile Include="..\Src\Input\KeyBinds.cpp" />
     <ClCompile Include="..\Src\Main.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIComponent.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIFrame.cpp" />
+    <ClCompile Include="..\Src\Menus\GUI\GUIText.cpp" />
+    <ClCompile Include="..\Src\Menus\GUI\GUITextInput.cpp" />
     <ClCompile Include="..\Src\Menus\PauseMenu.cpp" />
     <ClCompile Include="..\Src\Models\RM2.cpp" />
     <ClCompile Include="..\Src\PlayerController\PlayerController.cpp" />
@@ -141,6 +148,7 @@
     <ClCompile Include="..\Src\Utils\INI.cpp" />
     <ClCompile Include="..\Src\Utils\MathUtil.cpp" />
     <ClCompile Include="..\Src\Utils\TextMgmt.cpp" />
+    <ClCompile Include="..\Src\World\FPSCounter.cpp" />
     <ClCompile Include="..\Src\World\Timing.cpp" />
     <ClCompile Include="..\Src\World\World.cpp" />
   </ItemGroup>
