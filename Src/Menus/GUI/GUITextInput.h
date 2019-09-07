@@ -20,7 +20,12 @@ private:
     PGE::IO* io;
     PGE::String text;
     
-    bool pressed;
+#if DEBUG
+    PGE::String selectTxt;
+#endif
+    
+    // Determines if the box should track the mouse's movement as a drag action for selecting text.
+    bool draggable;
     
     // Current position of the caret relative to the text.
     int caretPosition;
@@ -37,10 +42,19 @@ private:
     void setCaretPositionFromMouse(float mouseX);
     // Update caret's X position.
     void updateCaretX();
-    // Updates the caret position and resets selection.
+    // Updates the display text and stores momentos.
     void updateText(PGE::String newText, int oldCaretPosition);
-    void undo();
-    void redo();
+    
+    // Split up updateInternal() into these.
+    
+    // Update input text with any new characters that were inputted.
+    void updateTextActions();
+    // Deletion actions.
+    void updateDeleleKeyActions();
+    // Arrow keys actions.
+    void updateArrowActions();
+    // Mouse click/drag actions.
+    void updateMouseActions(PGE::Vector2f mousePos);
     
     void updateInternal(PGE::Vector2f mousePos) override;
     void renderInternal() override;
