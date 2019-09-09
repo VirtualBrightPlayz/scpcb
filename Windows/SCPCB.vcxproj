@@ -70,6 +70,25 @@
       <AdditionalDependencies>d3d11.lib;dxgi.lib;$(Platform)/$(Configuration)/Engine.lib;$(Platform)/$(Configuration)/SDL2.lib;../Libraries/freetype-2.10.1/objs/$(Platform)/$(Configuration)/freetype.lib;../Engine/Libraries/FreeImage3180/x64/Debug/FreeImaged.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>
+      </Message>
+    </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>xcopy /d /s /y $(ProjectDir)..\Content\*  $(TargetDir)
+xcopy /d /y  $(ProjectDir)$(Platform)\$(Configuration)\SDL2.dll $(TargetDir)
+if $(ConfigurationName) == Debug xcopy /d /s /y $(ProjectDir)..\Engine\Libraries\FreeImage3180\$(Platform)\$(Configuration)\FreeImaged.dll $(TargetDir)
+if $(ConfigurationName) == Release xcopy /d /s /y $(ProjectDir)..\Engine\Libraries\FreeImage3180\$(Platform)\$(Configuration)\FreeImage.dll $(TargetDir)
+xcopy /d /s /y $(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Configuration)\freetype.dll $(TargetDir)
+$(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildShaders.exe  $(TargetDir)GFX\Shaders</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy Contents and DLLs files to output directory and run BuildShaders.</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

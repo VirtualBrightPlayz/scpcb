@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{E6AA772D-C9EF-47CE-9314-9A1860D2373A}"
 EndProject
@@ -11,6 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SCPCB", "SCPCB.vcxproj", "{
 	ProjectSection(ProjectDependencies) = postProject
 		{86FA7807-97DD-432B-BAFD-4B8304762DEA} = {86FA7807-97DD-432B-BAFD-4B8304762DEA}
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B} = {78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}
+		{2D5343E1-C4C3-43FB-AB12-234001B3F5DD} = {2D5343E1-C4C3-43FB-AB12-234001B3F5DD}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "assimp", "..\Libraries\assimp-4.1.0\VS2017\assimp\assimp.vcxproj", "{7A9E4F5A-3E9C-4D71-8ABC-63A760CE08D4}"
@@ -43,6 +44,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZLib", "..\Engine\Libraries\FreeImage3180\Source\ZLib\ZLib.2017.vcxproj", "{33134F61-C1AD-4B6F-9CEA-503A9F140C52}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "..\Libraries\freetype-2.10.1\builds\windows\vc2010\freetype.vcxproj", "{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuildShaders", "..\Engine\Windows\BuildShaders\BuildShaders.vcxproj", "{2D5343E1-C4C3-43FB-AB12-234001B3F5DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,6 +147,12 @@ Global
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Release|x64.Build.0 = Release|x64
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Release|x86.ActiveCfg = Release|Win32
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Release|x86.Build.0 = Release|Win32
+		{2D5343E1-C4C3-43FB-AB12-234001B3F5DD}.Debug|x64.ActiveCfg = Debug|x64
+		{2D5343E1-C4C3-43FB-AB12-234001B3F5DD}.Debug|x64.Build.0 = Debug|x64
+		{2D5343E1-C4C3-43FB-AB12-234001B3F5DD}.Debug|x86.ActiveCfg = Debug|x64
+		{2D5343E1-C4C3-43FB-AB12-234001B3F5DD}.Release|x64.ActiveCfg = Release|x64
+		{2D5343E1-C4C3-43FB-AB12-234001B3F5DD}.Release|x64.Build.0 = Release|x64
+		{2D5343E1-C4C3-43FB-AB12-234001B3F5DD}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -161,6 +170,7 @@ Global
 		{7DB10B50-CE00-4D7A-B322-6824F05D2FCB} = {17F7A9E1-A58A-40A7-AA18-B7761ACBAF7E}
 		{33134F61-C1AD-4B6F-9CEA-503A9F140C52} = {17F7A9E1-A58A-40A7-AA18-B7761ACBAF7E}
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B} = {E6AA772D-C9EF-47CE-9314-9A1860D2373A}
+		{2D5343E1-C4C3-43FB-AB12-234001B3F5DD} = {E6AA772D-C9EF-47CE-9314-9A1860D2373A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {91E3F8F3-F6D5-41CC-A691-3CDFFDF21DD9}
