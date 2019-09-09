@@ -103,7 +103,6 @@ void GUITextInput::updateText(PGE::String newText, int oldCaretPosition) {
 
 void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
     // TODO: Deck the hell out of this textbox.
-    // Arrow while shift after drag snaps to moving at the start and end.
     // Copy, cut, paste.
     // Undo, redo.
 
@@ -166,6 +165,10 @@ void GUITextInput::updateTextActions() {
         selectionStartPosition = caretPosition;
         selectionEndPosition = caretPosition;
         updateText(newText, oldCaret);
+
+#ifdef __APPLE__
+    selectionWasDraggedOrClicked = false;
+#endif
     }
 }
 
@@ -201,6 +204,9 @@ void GUITextInput::updateDeleleKeyActions() {
                 updateText(newText, oldCaret);
             }
         }
+#ifdef __APPLE__
+        selectionWasDraggedOrClicked = false;
+#endif
     }
 }
 
@@ -217,7 +223,16 @@ void GUITextInput::updateArrowActions() {
             }
             selectionStartPosition = caretPosition;
             selectionEndPosition = caretPosition;
+#ifdef __APPLE__
+            selectionWasDraggedOrClicked = false;
+#endif
         } else {
+#ifdef __APPLE__
+            if (selectionWasDraggedOrClicked) {
+                caretPosition = right ? selectionStartPosition : selectionEndPosition;
+                selectionWasDraggedOrClicked = false;
+            }
+#endif
             // Shift the selection index.
             if (right) {
                 if (selectionStartPosition != caretPosition) {
@@ -264,6 +279,9 @@ void GUITextInput::updateMouseActions(PGE::Vector2f mousePos) {
             // Mouse click outside of textbox.
             deselect();
         }
+#ifdef __APPLE__
+        selectionWasDraggedOrClicked = false;
+#endif
     } else if (draggable && keyBinds->mouse1->isDown()) {
         // If we're dragging then select any text between the cursor and the caret.
         int mouseSnap = getCaretPosition(mousePos.x);
@@ -275,6 +293,9 @@ void GUITextInput::updateMouseActions(PGE::Vector2f mousePos) {
                 selectionStartPosition = mouseSnap;
                 selectionEndPosition = caretPosition;
             }
+#ifdef __APPLE__
+            selectionWasDraggedOrClicked = true;
+#endif
         } else {
             selectionStartPosition = caretPosition;
             selectionEndPosition = caretPosition;
@@ -318,7 +339,9 @@ void GUITextInput::updateMouseActions(PGE::Vector2f mousePos) {
         }
         draggable = false; // Prevents a double click from being registered as a drag action.
 
-#ifdef WINDOWS
+#ifdef __APPLE__
+        selectionWasDraggedOrClicked = true;
+#elif defined(WINDOWS)
         // If you shift+arrow after a click selection on Windows, it defaults to manipulating the right-hand side.
         // So move the caret to the left to replicate that behavior.
         caretPosition = selectionStartPosition;
@@ -330,7 +353,9 @@ void GUITextInput::updateMouseActions(PGE::Vector2f mousePos) {
         caretPosition = 0;
         draggable = false; // Prevents a triple click from being registered as a drag action.
 
-#ifdef WINDOWS
+#ifdef __APPLE__
+        selectionWasDraggedOrClicked = true;
+#elif defined(WINDOWS)
         // If you shift+arrow after a click selection on Windows, it defaults to manipulating the right-hand side.
         // So move the caret to the left to replicate that behavior.
         caretPosition = selectionStartPosition;
