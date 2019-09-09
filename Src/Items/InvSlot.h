@@ -8,7 +8,7 @@ class Config;
 
 class InvSlot : public GUIComponent {
     private:
-        const int SIZE = 5;
+        static const int SIZE = 5;
 
         Item* item;
 

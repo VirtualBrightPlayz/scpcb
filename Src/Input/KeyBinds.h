@@ -34,7 +34,7 @@ class KeyBinds {
         PGE::MouseInput* mouse1;
         PGE::MouseInput* mouse2;
         PGE::KeyboardInput* escape;
-    
+
         // Text input keys.
         PGE::KeyboardInput* leftArrow;
         PGE::KeyboardInput* rightArrow;
@@ -44,9 +44,17 @@ class KeyBinds {
         bool anyShiftDown() const;
         PGE::KeyboardInput* backspace;
         PGE::KeyboardInput* del;
-        PGE::KeyboardInput* copy;
-        PGE::KeyboardInput* cut;
-        PGE::KeyboardInput* paste;
+
+        // Shortcuts.
+        PGE::KeyboardInput* leftShortcutKey;
+        PGE::KeyboardInput* rightShortcutKey;
+        PGE::KeyboardInput* c;
+        PGE::KeyboardInput* x;
+        PGE::KeyboardInput* v;
+
+        bool copyIsHit() const;
+        bool cutIsHit() const;
+        bool pasteIsHit() const;
 
         void bindInput(Input input, PGE::MouseInput::BUTTON key);
         void bindInput(Input input, PGE::KeyboardInput::SCANCODE key);

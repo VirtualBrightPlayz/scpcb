@@ -1,14 +1,12 @@
 #include <iostream>
-#include <regex>
 #include <string>
 
 #include "GUITextInput.h"
-#include "../../Utils/TextMgmt.h"
 #include "../../Utils/MathUtil.h"
 
 GUITextInput* GUITextInput::subscriber = nullptr;
 
-GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* inIo, float x, float y, float width, float height, const PGE::String& defaultText, Alignment alignment)
+GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, const PGE::String& defaultText, int limit, const PGE::String& pattern, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment) {
     menuwhite = PGE::FileName::create("GFX/Menu/menuwhite.jpg");
     menublack = PGE::FileName::create("GFX/Menu/menublack.jpg");
@@ -17,9 +15,17 @@ GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, Txt
 
     font = fnt;
     io = inIo;
-    text = tm->getLocalTxt(defaultText);
+    text = defaultText;
     txtScale = PGE::Vector2f(100.f / 720.f);
 
+    if (!pattern.isEmpty()) {
+        patternMatching = true;
+        rgxPattern = std::regex(pattern.cstr());
+    } else {
+        patternMatching = false;
+    }
+
+    characterLimit = limit;
     draggable = false;
 
     caretPosition = 0;
@@ -96,9 +102,46 @@ void GUITextInput::updateCaretX() {
     }
 }
 
-void GUITextInput::updateText(PGE::String newText, int oldCaretPosition) {
+void GUITextInput::updateText(const PGE::String& newText, int oldCaretPosition) {
     // TODO: Momentos.
     text = newText;
+}
+
+void GUITextInput::deleteSelectedText() {
+    PGE::String newText = text;
+    int oldCaret = caretPosition;
+    
+    if (selectionEndPosition >= text.size()) {
+        newText = text.substr(0, selectionStartPosition);
+    } else {
+        newText = text.substr(0, selectionStartPosition) + text.substr(selectionEndPosition);
+    }
+    caretPosition = selectionStartPosition;
+    selectionStartPosition = caretPosition;
+    selectionEndPosition = caretPosition;
+    updateText(newText, oldCaret);
+}
+
+void GUITextInput::addText(PGE::String& append) {
+    // Truncate the string if it's over the capacity.
+    int newSize = text.size() + append.size();
+    if (newSize > characterLimit) {
+        append = append.substr(0, characterLimit - text.size());
+    }
+    
+    PGE::String newText = text;
+    int oldCaret = caretPosition;
+    
+    // If any text was selected then delete it.
+    if (selectionEndPosition >= text.size()) {
+        newText = text.substr(0, selectionStartPosition) + append;
+    } else {
+        newText = text.substr(0, selectionStartPosition) + append + text.substr(selectionEndPosition);
+    }
+    caretPosition = selectionStartPosition + append.size();
+    selectionStartPosition = caretPosition;
+    selectionEndPosition = caretPosition;
+    updateText(newText, oldCaret);
 }
 
 void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
@@ -124,6 +167,7 @@ void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
         updateDeleleKeyActions();
         updateArrowActions();
         updateMouseActions(mousePos);
+        updateShortcutActions();
 
         updateCaretX();
 
@@ -151,23 +195,10 @@ void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
 
 void GUITextInput::updateTextActions() {
     PGE::String append = io->getTextInput();
-    if (!append.isEmpty()) {
-        PGE::String newText = text;
-        int oldCaret = caretPosition;
-
-        // If any text was selected then delete it.
-        if (selectionEndPosition >= text.size()) {
-            newText = text.substr(0, selectionStartPosition) + append;
-        } else {
-            newText = text.substr(0, selectionStartPosition) + append + text.substr(selectionEndPosition);
-        }
-        caretPosition = selectionStartPosition + append.size();
-        selectionStartPosition = caretPosition;
-        selectionEndPosition = caretPosition;
-        updateText(newText, oldCaret);
-
+    if (!append.isEmpty() && text.size() < characterLimit) {
+        addText(append);
 #ifdef __APPLE__
-    selectionWasDraggedOrClicked = false;
+        selectionWasDraggedOrClicked = false;
 #endif
     }
 }
@@ -176,18 +207,7 @@ void GUITextInput::updateDeleleKeyActions() {
     if (keyBinds->backspace->isHit() || keyBinds->del->isHit()) {
         // Delete selected text.
         if (anyTextSelected()) {
-            PGE::String newText = text;
-            int oldCaret = caretPosition;
-
-            if (selectionEndPosition >= text.size()) {
-                newText = text.substr(0, selectionStartPosition);
-            } else {
-                newText = text.substr(0, selectionStartPosition) + text.substr(selectionEndPosition);
-            }
-            caretPosition = selectionStartPosition;
-            selectionStartPosition = caretPosition;
-            selectionEndPosition = caretPosition;
-            updateText(newText, oldCaret);
+            deleteSelectedText();
         } else {
             // Remove preceeding character if backspace, suceeding if delete.
             if (keyBinds->backspace->isHit() && caretPosition > 0) {
@@ -360,6 +380,29 @@ void GUITextInput::updateMouseActions(PGE::Vector2f mousePos) {
         // So move the caret to the left to replicate that behavior.
         caretPosition = selectionStartPosition;
 #endif
+    }
+}
+
+void GUITextInput::updateShortcutActions() {
+    if (keyBinds->copyIsHit() && anyTextSelected()) {
+        io->setClipboardText(text.substr(selectionStartPosition, selectionEndPosition - selectionStartPosition));
+    } else if (keyBinds->cutIsHit() && anyTextSelected()) {
+        io->setClipboardText(text.substr(selectionStartPosition, selectionEndPosition - selectionStartPosition));
+        deleteSelectedText();
+#ifdef __APPLE__
+        selectionWasDraggedOrClicked = false;
+#endif
+    } else if (keyBinds->pasteIsHit()) {
+        PGE::String append = io->getClipboardText();
+        if (!append.isEmpty() && text.size() < characterLimit) {
+            if (anyTextSelected()) {
+                deleteSelectedText();
+            }
+            addText(append);
+#ifdef __APPLE__
+            selectionWasDraggedOrClicked = false;
+#endif
+        }
     }
 }
 

@@ -13,9 +13,17 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     rightShift = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RSHIFT);
     backspace = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::BACKSPACE);
     del = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::DELETE);
-    copy = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::COPY);
-    cut = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::CUT);
-    paste = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::PASTE);
+
+#ifdef __APPLE__
+    leftShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LGUI);
+    rightShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RGUI);
+#else
+    leftShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LCTRL);
+    rightShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RCTRL);
+#endif
+    c = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::C);
+    x = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::X);
+    v = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::V);
 
     io->trackInput(mouse1);
     io->trackInput(mouse2);
@@ -26,9 +34,11 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     io->trackInput(rightShift);
     io->trackInput(backspace);
     io->trackInput(del);
-    io->trackInput(copy);
-    io->trackInput(cut);
-    io->trackInput(paste);
+    io->trackInput(leftShortcutKey);
+    io->trackInput(rightShortcutKey);
+    io->trackInput(c);
+    io->trackInput(x);
+    io->trackInput(v);
 }
 
 KeyBinds::~KeyBinds() {
@@ -41,14 +51,17 @@ KeyBinds::~KeyBinds() {
     io->untrackInput(rightShift);
     io->untrackInput(backspace);
     io->untrackInput(del);
-    io->untrackInput(copy);
-    io->untrackInput(cut);
-    io->untrackInput(paste);
+    io->untrackInput(leftShortcutKey);
+    io->untrackInput(rightShortcutKey);
+    io->untrackInput(c);
+    io->untrackInput(x);
+    io->untrackInput(v);
 
     delete mouse1; delete mouse2; delete escape;
     delete leftArrow; delete rightArrow; delete leftShift; delete rightShift;
     delete backspace; delete del;
-    delete copy; delete cut; delete paste;
+    delete leftShortcutKey; delete rightShortcutKey;
+    delete c; delete x; delete v;
 
     // Untrack and delete bindings map.
     std::map<Input, std::vector<UserInput>>::iterator it;
@@ -63,6 +76,16 @@ KeyBinds::~KeyBinds() {
 
 bool KeyBinds::anyShiftDown() const {
     return leftShift->isDown() || rightShift->isDown();
+}
+
+bool KeyBinds::copyIsHit() const {
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && c->isHit();
+}
+bool KeyBinds::cutIsHit() const {
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && x->isHit();
+}
+bool KeyBinds::pasteIsHit() const {
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && v->isHit();
 }
 
 void KeyBinds::update() {

@@ -1,10 +1,10 @@
 #ifndef GUITextInput_H_INCLUDED
 #define GUITextInput_H_INCLUDED
 
+#include <regex>
+
 #include "GUIComponent.h"
 #include "../../Graphics/Font.h"
-
-class TxtManager;
 
 class GUITextInput : public GUIComponent {
 private:
@@ -19,6 +19,12 @@ private:
     Font* font;
     PGE::IO* io;
     PGE::String text;
+
+    // If this pattern is defined, text will only be accepted if it matches it.
+    std::regex rgxPattern;
+    bool patternMatching;
+    // Max amount of characters the input box can have.
+    int characterLimit;
 
 #if DEBUG
     PGE::String selectTxt;
@@ -50,7 +56,9 @@ private:
     // Update caret's X position.
     void updateCaretX();
     // Updates the display text and stores momentos.
-    void updateText(PGE::String newText, int oldCaretPosition);
+    void updateText(const PGE::String& newText, int oldCaretPosition);
+    void deleteSelectedText();
+    void addText(PGE::String& append);
 
     // Split up updateInternal() into these.
 
@@ -62,12 +70,14 @@ private:
     void updateArrowActions();
     // Mouse click/drag actions.
     void updateMouseActions(PGE::Vector2f mousePos);
+    // Copy/Undo actions.
+    void updateShortcutActions();
 
     void updateInternal(PGE::Vector2f mousePos) override;
     void renderInternal() override;
 
 public:
-    GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* inIo, float x, float y, float width, float height, const PGE::String& defaultText, Alignment alignment = Alignment::CenterXY);
+    GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, const PGE::String& defaultText = "", int limit = INT_MAX, const PGE::String& pattern = "", Alignment alignment = Alignment::CenterXY);
 
     PGE::String getText() const;
 
