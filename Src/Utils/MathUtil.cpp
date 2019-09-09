@@ -9,3 +9,9 @@ float MathUtil::degToRad(float degree) {
 bool MathUtil::eqFloats(float p1, float p2) {
     return fabs(p1 - p2) < MARGIN_ERROR;
 }
+
+int MathUtil::clamp(int val, int min, int max) {
+    if (val <= min) { return min; }
+    if (val >= max) { return max; }
+    return val;
+}
