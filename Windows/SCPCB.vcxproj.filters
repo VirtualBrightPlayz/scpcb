@@ -5,9 +5,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{6d7e7a9f-fde1-4773-96fb-db4db1c22418}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src">
       <UniqueIdentifier>{5e13c208-e88b-437b-877a-cfbcc0db45f4}</UniqueIdentifier>
     </Filter>
