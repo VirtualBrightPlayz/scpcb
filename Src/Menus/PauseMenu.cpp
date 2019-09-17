@@ -2,6 +2,7 @@
 
 #include "PauseMenu.h"
 #include "../Utils/TextMgmt.h"
+#include "../World/World.h"
 
 PauseMenu::PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io) {
     float btnWidth = 40.f;
@@ -98,8 +99,8 @@ void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
     }
 }
 
-void PauseMenu::render(const World* world) {
-    if (world->getGameState() != GameState::PauseMenu) { return; }
+void PauseMenu::render() {
+    if (currState == SubState::Hidden) { return; }
 
     uiMesh->startRender();
 

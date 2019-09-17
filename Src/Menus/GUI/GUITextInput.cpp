@@ -36,6 +36,13 @@ GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE
 // Regex stuff.
 std::regex word("\\w");
 
+void GUITextInput::setText(const PGE::String& txt) {
+    text = txt;
+    caretPosition = text.size();
+    selectionStartPosition = caretPosition;
+    selectionEndPosition = caretPosition;
+}
+
 PGE::String GUITextInput::getText() const {
     return text;
 }
@@ -102,24 +109,25 @@ void GUITextInput::updateCaretX() {
     }
 }
 
-void GUITextInput::updateText(const PGE::String& newText, int oldCaretPosition) {
+void GUITextInput::updateText(const PGE::String& newText) {
     // TODO: Momentos.
+
     text = newText;
 }
 
 void GUITextInput::deleteSelectedText() {
     PGE::String newText = text;
-    int oldCaret = caretPosition;
-    
+
     if (selectionEndPosition >= text.size()) {
         newText = text.substr(0, selectionStartPosition);
     } else {
         newText = text.substr(0, selectionStartPosition) + text.substr(selectionEndPosition);
     }
+    updateText(newText);
+
     caretPosition = selectionStartPosition;
     selectionStartPosition = caretPosition;
     selectionEndPosition = caretPosition;
-    updateText(newText, oldCaret);
 }
 
 void GUITextInput::addText(PGE::String& append) {
@@ -128,26 +136,24 @@ void GUITextInput::addText(PGE::String& append) {
     if (newSize > characterLimit) {
         append = append.substr(0, characterLimit - text.size());
     }
-    
+
     PGE::String newText = text;
-    int oldCaret = caretPosition;
-    
+
     // If any text was selected then delete it.
     if (selectionEndPosition >= text.size()) {
         newText = text.substr(0, selectionStartPosition) + append;
     } else {
         newText = text.substr(0, selectionStartPosition) + append + text.substr(selectionEndPosition);
     }
+
+    updateText(newText);
     caretPosition = selectionStartPosition + append.size();
     selectionStartPosition = caretPosition;
     selectionEndPosition = caretPosition;
-    updateText(newText, oldCaret);
 }
 
 void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
-    // TODO: Deck the hell out of this textbox.
-    // Copy, cut, paste.
-    // Undo, redo.
+    // TODO: Undo, redo.
 
     // Are we selected?
     if (subscriber != this) {
@@ -212,16 +218,14 @@ void GUITextInput::updateDeleleKeyActions() {
             // Remove preceeding character if backspace, suceeding if delete.
             if (keyBinds->backspace->isHit() && caretPosition > 0) {
                 PGE::String newText = text.substr(0, caretPosition - 1) + text.substr(caretPosition);
-                int oldCaret = caretPosition;
-                updateText(newText, oldCaret);
+                updateText(newText);
 
                 caretPosition--;
                 selectionStartPosition = caretPosition;
                 selectionEndPosition = caretPosition;
             } else if (keyBinds->del->isHit() && caretPosition < text.size()) {
                 PGE::String newText = text.substr(0, caretPosition) + text.substr(caretPosition + 1);
-                int oldCaret = caretPosition;
-                updateText(newText, oldCaret);
+                updateText(newText);
             }
         }
 #ifdef __APPLE__
@@ -403,6 +407,18 @@ void GUITextInput::updateShortcutActions() {
             selectionWasDraggedOrClicked = false;
 #endif
         }
+    } else if (keyBinds->undoIsHit()) {
+//        InputState is = memento.undo();
+//        text = is.text;
+//        caretPosition = is.caretPosition;
+//        selectionStartPosition = is.selectionStartPosition;
+//        selectionEndPosition = is.selectionEndPosition;
+    } else if (keyBinds->redoIsHit()) {
+//        InputState is = memento.redo();
+//        text = is.text;
+//        caretPosition = is.caretPosition;
+//        selectionStartPosition = is.selectionStartPosition;
+//        selectionEndPosition = is.selectionEndPosition;
     }
 }
 

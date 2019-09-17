@@ -24,6 +24,10 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     c = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::C);
     x = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::X);
     v = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::V);
+    z = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::Z);
+#ifdef WINDOWS
+    y = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::Y);
+#endif
 
     io->trackInput(mouse1);
     io->trackInput(mouse2);
@@ -39,6 +43,10 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     io->trackInput(c);
     io->trackInput(x);
     io->trackInput(v);
+    io->trackInput(z);
+#ifdef WINDOWS
+    io->trackInput(y);
+#endif
 }
 
 KeyBinds::~KeyBinds() {
@@ -56,12 +64,19 @@ KeyBinds::~KeyBinds() {
     io->untrackInput(c);
     io->untrackInput(x);
     io->untrackInput(v);
+    io->untrackInput(z);
+#ifdef WINDOWS
+    io->untrackInput(y);
+#endif
 
     delete mouse1; delete mouse2; delete escape;
     delete leftArrow; delete rightArrow; delete leftShift; delete rightShift;
     delete backspace; delete del;
     delete leftShortcutKey; delete rightShortcutKey;
-    delete c; delete x; delete v;
+    delete c; delete x; delete v; delete z;
+#ifdef WINDOWS
+    delete y;
+#endif
 
     // Untrack and delete bindings map.
     std::map<Input, std::vector<UserInput>>::iterator it;
@@ -86,6 +101,20 @@ bool KeyBinds::cutIsHit() const {
 }
 bool KeyBinds::pasteIsHit() const {
     return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && v->isHit();
+}
+bool KeyBinds::undoIsHit() const {
+#ifdef __APPLE__
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && !anyShiftDown() && z->isHit();
+#else
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && z->isHit();
+#endif
+}
+bool KeyBinds::redoIsHit() const {
+#ifdef __APPLE__
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && anyShiftDown() && z->isHit();
+#else
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && y->isHit();
+#endif
 }
 
 void KeyBinds::update() {

@@ -29,16 +29,16 @@ void PlayerController::setPosition(Vector3f pos) {
     position = pos;
 }
 
-void PlayerController::update(float angleX, float angleY, Input input) {
-    updateMovement(angleX, angleY, input);
+void PlayerController::update(float yaw, float pitch, Input input) {
+    updateMovement(yaw, pitch, input);
 }
 
-void PlayerController::updateMovement(float angle, float angleY, Input input) {
+void PlayerController::updateMovement(float yaw, float pitch, Input input) {
     if ((input&(Input::Forward|Input::Backward|Input::Left|Input::Right)) == Input::None) {
         stand(); //not pressing any movement keys: we're standing still
     } else {
-        float sinAngle = std::sin(angle);
-        float cosAngle = std::cos(angle);
+        float sinAngle = std::sin(yaw);
+        float cosAngle = std::cos(yaw);
         float targetSpeed = WALK_SPEED_MAX;
         if ((input&Input::Sprint) != Input::None) {
             targetSpeed = SPRINT_SPEED_MAX*getClampedStamina() + WALK_SPEED_MAX*(1.f-getClampedStamina());

@@ -56,7 +56,7 @@ private:
     // Update caret's X position.
     void updateCaretX();
     // Updates the display text and stores momentos.
-    void updateText(const PGE::String& newText, int oldCaretPosition);
+    void updateText(const PGE::String& newText);
     void deleteSelectedText();
     void addText(PGE::String& append);
 
@@ -79,6 +79,7 @@ private:
 public:
     GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, const PGE::String& defaultText = "", int limit = INT_MAX, const PGE::String& pattern = "", Alignment alignment = Alignment::CenterXY);
 
+    void setText(const PGE::String& txt);
     PGE::String getText() const;
 
     // Select this textbox.

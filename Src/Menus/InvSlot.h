@@ -1,14 +1,13 @@
 #ifndef INVSLOT_H_INCLUDED
 #define INVSLOT_H_INCLUDED
 
-#include "../Menus/GUI/GUIComponent.h"
+#include "GUI/GUIComponent.h"
 
 class Item;
 class Config;
 
 class InvSlot : public GUIComponent {
     private:
-        static const int SIZE = 5;
 
         Item* item;
 
@@ -19,14 +18,16 @@ class InvSlot : public GUIComponent {
 
         bool doubleClicked;
         bool hovered;
+    
+        void updateInternal(PGE::Vector2f mousePos) override;
+        void renderInternal() override;
 
     public:
         InvSlot(UIMesh* um, KeyBinds* kb, Config* con, float x, float y);
+    
+        static const int SIZE = 5;
 
         bool hasItem() const;
-
-        void updateInternal(PGE::Vector2f mousePos) override;
-        void renderInternal() override;
 };
 
 #endif // INVSLOT_H_INCLUDED

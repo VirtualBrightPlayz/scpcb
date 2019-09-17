@@ -1,13 +1,13 @@
 #ifndef PAUSEMENU_H_INCLUDED
 #define PAUSEMENU_H_INCLUDED
 
-#include "../World/World.h"
 #include "GUI/GUIButton.h"
 #include "GUI/GUIFrame.h"
 #include "GUI/GUITextInput.h"
 #include "../Graphics/Font.h"
 
 class TxtManager;
+class World;
 
 class PauseMenu {
     private:
@@ -64,7 +64,7 @@ class PauseMenu {
         bool inSubMenu() const;
 
         void update(World* world, PGE::Vector2f mousePosition);
-        void render(const World* world);
+        void render();
 };
 
 #endif // PAUSEMENU_H_INCLUDED

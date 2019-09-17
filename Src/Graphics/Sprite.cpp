@@ -75,7 +75,7 @@ PGE::Mesh* Sprite::createSpriteMesh(PGE::Graphics* gfx) {
     //prims.push_back(PGE::Primitive(1, 0, 2));
     //prims.push_back(PGE::Primitive(3, 0, 1));
 
-    mesh->setGeometry(meshVerts.size(), meshVerts, prims.size(), prims);
+    mesh->setGeometry((int)meshVerts.size(), meshVerts, (int)prims.size(), prims);
 
     return mesh;
 }

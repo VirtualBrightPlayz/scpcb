@@ -51,10 +51,16 @@ class KeyBinds {
         PGE::KeyboardInput* c;
         PGE::KeyboardInput* x;
         PGE::KeyboardInput* v;
+        PGE::KeyboardInput* z;
+#ifdef WINDOWS
+        PGE::KeyboardInput* y;
+#endif
 
         bool copyIsHit() const;
         bool cutIsHit() const;
         bool pasteIsHit() const;
+        bool undoIsHit() const;
+        bool redoIsHit() const;
 
         void bindInput(Input input, PGE::MouseInput::BUTTON key);
         void bindInput(Input input, PGE::KeyboardInput::SCANCODE key);

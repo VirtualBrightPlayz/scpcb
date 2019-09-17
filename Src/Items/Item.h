@@ -3,6 +3,10 @@
 
 #include <Math/Vector.h>
 #include <Misc/String.h>
+#include <Texture/Texture.h>
+
+class GraphicsResources;
+class TxtManager;
 
 enum class ItemPickSound {
     Tiny = 0,
@@ -16,27 +20,44 @@ class Item {
         const float hideDistance = 16.f;
 
         PGE::Vector3f position;
+        PGE::Vector3f rotation;
+        float scale;
 
         // Whether the item was selected in the inventory.
         bool selected;
+        float dropSpeed;
+        bool needsInventoryIcon;
 
         ItemPickSound pickSound;
+    
+        PGE::Texture* inventoryIcon;
+    
+        GraphicsResources* gfxRes;
+    
+        void generateInventoryIcon();
+    
+    protected:
+        Item(GraphicsResources* gfx, TxtManager* tm, const PGE::FileName& path, float scale, ItemPickSound ips);
+        virtual ~Item();
+    
+        TxtManager* txtM;
 
     public:
-        virtual PGE::String getInvName()=0;
+        bool markedForRemoval;
+    
+        virtual PGE::String getType() const=0;
+        virtual PGE::String getInvName() const=0;
+    
+        void setPosition(float x, float y, float z);
 
         // Called when the player picks up the item.
         virtual void onPick();
         // Called when the player selects the item in the inventory.
         virtual void onUse();
 
-        // Called while the item is selected in the inventory.
-        virtual void updateUse();
-        virtual void renderUse();
-
         void update();
         virtual void updateInternal();
-        virtual void render()=0;
+        virtual void render() const;
 };
 
 #endif // ITEM_H_INCLUDED

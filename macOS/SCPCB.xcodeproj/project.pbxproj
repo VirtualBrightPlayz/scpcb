@@ -39,7 +39,9 @@
 		1987FF1C22F48DCB0023029A /* GUIText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1987FF1B22F48DCB0023029A /* GUIText.cpp */; };
 		19C1965D22BD532F00332C8E /* UIMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19C1965C22BD532F00332C8E /* UIMesh.cpp */; };
 		19C521FB231EABD500255476 /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19C521FA231EABD500255476 /* Item.cpp */; };
-		19C521FE231EB2F500255476 /* InvSlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19C521FD231EB2F500255476 /* InvSlot.cpp */; };
+		19CFE3212329A378009B37C6 /* GasMask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19CFE3202329A378009B37C6 /* GasMask.cpp */; };
+		19CFE3292329ACD0009B37C6 /* Inventory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19CFE3282329ACD0009B37C6 /* Inventory.cpp */; };
+		19CFE32C2329AE03009B37C6 /* InvSlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19CFE32B2329AE03009B37C6 /* InvSlot.cpp */; };
 		19DA6E0B230F6A3200F07961 /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19DA6E0A230F6A3200F07961 /* Input.cpp */; };
 		19F15BF522F52DA90044E284 /* GraphicsResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F15BF122F52DA90044E284 /* GraphicsResources.cpp */; };
 		19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EA822AD79A00061F643 /* Sprite.cpp */; };
@@ -133,8 +135,12 @@
 		19C1965C22BD532F00332C8E /* UIMesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIMesh.cpp; sourceTree = "<group>"; };
 		19C521F9231EABD500255476 /* Item.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
 		19C521FA231EABD500255476 /* Item.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cpp; sourceTree = "<group>"; };
-		19C521FC231EB2F500255476 /* InvSlot.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvSlot.h; sourceTree = "<group>"; };
-		19C521FD231EB2F500255476 /* InvSlot.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InvSlot.cpp; sourceTree = "<group>"; };
+		19CFE31F2329A378009B37C6 /* GasMask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GasMask.h; sourceTree = "<group>"; };
+		19CFE3202329A378009B37C6 /* GasMask.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GasMask.cpp; sourceTree = "<group>"; };
+		19CFE3272329ACD0009B37C6 /* Inventory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Inventory.h; sourceTree = "<group>"; };
+		19CFE3282329ACD0009B37C6 /* Inventory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Inventory.cpp; sourceTree = "<group>"; };
+		19CFE32A2329AE03009B37C6 /* InvSlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvSlot.h; sourceTree = "<group>"; };
+		19CFE32B2329AE03009B37C6 /* InvSlot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InvSlot.cpp; sourceTree = "<group>"; };
 		19DA6E09230F6A3200F07961 /* Input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
 		19DA6E0A230F6A3200F07961 /* Input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
 		19F15BF122F52DA90044E284 /* GraphicsResources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsResources.cpp; sourceTree = "<group>"; };
@@ -286,6 +292,10 @@
 			isa = PBXGroup;
 			children = (
 				191A23AE22C2C20F009DC558 /* GUI */,
+				19CFE3282329ACD0009B37C6 /* Inventory.cpp */,
+				19CFE3272329ACD0009B37C6 /* Inventory.h */,
+				19CFE32B2329AE03009B37C6 /* InvSlot.cpp */,
+				19CFE32A2329AE03009B37C6 /* InvSlot.h */,
 				19243C1522BC295C0057054D /* PauseMenu.cpp */,
 				19243C1422BC295C0057054D /* PauseMenu.h */,
 			);
@@ -337,10 +347,10 @@
 		19C521F6231EABAE00255476 /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				19CFE3202329A378009B37C6 /* GasMask.cpp */,
+				19CFE31F2329A378009B37C6 /* GasMask.h */,
 				19C521FA231EABD500255476 /* Item.cpp */,
 				19C521F9231EABD500255476 /* Item.h */,
-				19C521FD231EB2F500255476 /* InvSlot.cpp */,
-				19C521FC231EB2F500255476 /* InvSlot.h */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -481,7 +491,6 @@
 				19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */,
 				19DA6E0B230F6A3200F07961 /* Input.cpp in Sources */,
 				191BDDB322A846EE00270B9D /* PlayerController.cpp in Sources */,
-				19C521FE231EB2F500255476 /* InvSlot.cpp in Sources */,
 				1987FF1C22F48DCB0023029A /* GUIText.cpp in Sources */,
 				1907E42B22E500CF00FC1870 /* Font.cpp in Sources */,
 				192A67A622C43CBA009A6F1E /* GUIFrame.cpp in Sources */,
@@ -494,14 +503,17 @@
 				1934815722B9B9A60039F47E /* MathUtil.cpp in Sources */,
 				19F17EAC22AD82940061F643 /* Camera.cpp in Sources */,
 				19646FC022A9FAB4005E027E /* World.cpp in Sources */,
+				19CFE3212329A378009B37C6 /* GasMask.cpp in Sources */,
 				19FC31CC22C0736A00AE4011 /* KeyBinds.cpp in Sources */,
 				19F15BF522F52DA90044E284 /* GraphicsResources.cpp in Sources */,
+				19CFE32C2329AE03009B37C6 /* InvSlot.cpp in Sources */,
 				1971577C22BEB9CB003AF33E /* AppDelegate.h in Sources */,
 				193385FA22E157E900439AA9 /* GUIComponent.cpp in Sources */,
 				19FD92E523213B5C0030BC9C /* GUITextInput.cpp in Sources */,
 				191BDDBF22A8551A00270B9D /* Main.cpp in Sources */,
 				1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */,
 				19C521FB231EABD500255476 /* Item.cpp in Sources */,
+				19CFE3292329ACD0009B37C6 /* Inventory.cpp in Sources */,
 				191BDDB122A846EE00270B9D /* CollisionMesh.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

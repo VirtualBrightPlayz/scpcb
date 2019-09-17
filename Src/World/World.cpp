@@ -132,13 +132,13 @@ void World::runTick(float timeStep) {
     // Get mouse position and convert it to screen coordinates.
 
     // Convert it to [0, 100].
-    PGE::Vector2f scale = PGE::Vector2f(100.f / config->getWidth() , 100.f / config->getHeight());
+    PGE::Vector2f scale = PGE::Vector2f(GUIComponent::SCALE_MAGNITUDE * 2 / config->getWidth(), GUIComponent::SCALE_MAGNITUDE * 2 / config->getHeight());
     PGE::Vector2f mousePosition = PGE::Vector2f(io->getMousePosition().x * scale.x, io->getMousePosition().y * scale.y);
     mousePosition.x *= config->getAspectRatio();
 
     // Subtract 50 to bring it inline with the [-50, 50] screen coordinates.
-    mousePosition.x -= 50.f * config->getAspectRatio();
-    mousePosition.y -= 50.f;
+    mousePosition.x -= GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio();
+    mousePosition.y -= GUIComponent::SCALE_MAGNITUDE;
 
 #ifdef DEBUG
     mouseTxtX->text = PGE::String("MouseX: ", PGE::String(mousePosition.x));
@@ -160,6 +160,7 @@ void World::runTick(float timeStep) {
                 } break;
 
                 case GameState::PauseMenu: {
+                    // TODO: Move this to a dedicated function in PauseMenu.
                     if (!pauseMenu->isMainMenu() && !pauseMenu->inSubMenu()) {
                         setGameState(GameState::Playing);
                     }
@@ -185,7 +186,7 @@ void World::draw() {
     // UI.
     graphics->setDepthTest(false);
 
-    pauseMenu->render(this);
+    pauseMenu->render();
     fps->draw();
 #ifdef DEBUG
     mouseTxtX->render();
