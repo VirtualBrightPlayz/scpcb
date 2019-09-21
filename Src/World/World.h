@@ -37,13 +37,13 @@ class World {
         UIMesh* uiMesh;
 
         PGE::Mesh* spriteMesh;
-    
+
         Menu* currMenu;
         // When a menu is markedForRemoval it's moved here where it'll be deleted in the update loop.
         Menu* menuGraveyard;
 
         // TODO: Remove, these are a test.
-        Sprite* poster;
+        Sprite* testSquare;
         PGE::Texture* dirtymetal;
 
 #ifdef DEBUG
@@ -78,7 +78,7 @@ class World {
     public:
         World();
         ~World();
-    
+
         void activateMenu(Menu* mu);
         void deactivateMenu(Menu* mu);
 

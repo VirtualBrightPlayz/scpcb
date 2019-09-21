@@ -52,7 +52,7 @@ World::World() {
 #endif
 
     isRoadRollered = false;
-    
+
     // TODO: Remove.
     loadPlaying();
 }
@@ -61,7 +61,7 @@ World::~World() {
     delete pauseMenu;
     delete uiMesh;
     delete keyBinds;
-    delete poster;
+    delete testSquare;
     delete spriteMesh;
 #ifdef DEBUG
     delete mouseTxtX;
@@ -81,7 +81,7 @@ void World::activateMenu(Menu *mu) {
     if (currMenu != nullptr) {
         throw std::runtime_error("Attempted to activate a menu while another was active.");
     }
-    
+
     currMenu = mu;
 }
 
@@ -89,7 +89,7 @@ void World::deactivateMenu(Menu *mu) {
     if (mu != currMenu) {
         throw std::runtime_error("Attempted to deactivate a menu that wasn't active.");
     }
-    
+
     if (mu->isMarkedForDeath()) {
         menuGraveyard = mu;
     }
@@ -144,7 +144,7 @@ void World::runTick(float timeStep) {
 
     keyBinds->update();
     Input input = keyBinds->getFiredInputs();
-    
+
     // If a menu is in the graveyard then remove it.
     if (menuGraveyard != nullptr) {
         delete menuGraveyard;
@@ -167,14 +167,14 @@ void World::runTick(float timeStep) {
             io->setMouseVisibility(true);
         }
     }
-    
+
     bool prevMenu = currMenu != nullptr;
     if (!prevMenu) {
         updatePlaying(timeStep, input);
     } else {
         currMenu->update(mousePosition);
     }
-    
+
     // If a menu was closed this tick then reset the mouse position.
     if (prevMenu && currMenu == nullptr) {
         io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
@@ -189,7 +189,7 @@ void World::draw() {
 
     // UI.
     graphics->setDepthTest(false);
-    
+
     if (currMenu != nullptr) {
         currMenu->render();
     }
@@ -218,28 +218,28 @@ void World::updatePlaying(float timeStep, Input input) {
     // Reset mouse to center.
     io->setMousePosition(PGE::Vector2f(centerX, centerY));
 
-    poster->addRotation(5.f * timeStep);
-    poster->update();
+    testSquare->addRotation(5.f * timeStep);
+    testSquare->update();
 }
 
 void World::drawPlaying() {
     // View/Projection matrix.
     camera->update();
 
-    poster->render();
+    testSquare->render();
 }
 
 void World::loadPlaying() {
     dirtymetal = gfxRes->getTexture(PGE::FileName::create("GFX/Map/Textures/dirtymetal.jpg"));
-    poster = new Sprite(gfxRes, spriteMesh, dirtymetal);
-    poster->setPosition(0.f, 0.f, 2.f);
-    poster->setRotation(0.5f);
-    poster->setScale(1.f);
+    testSquare = new Sprite(gfxRes, spriteMesh, dirtymetal);
+    testSquare->setPosition(0.f, 0.f, 2.f);
+    testSquare->setRotation(0.5f);
+    testSquare->setScale(1.f);
 }
 
 void World::destroyPlaying() {
     gfxRes->dropTexture(dirtymetal); dirtymetal = nullptr;
-    delete poster; poster = nullptr;
+    delete testSquare; testSquare = nullptr;
 }
 
 void World::quit() {
