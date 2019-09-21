@@ -15,6 +15,14 @@
 #endif
 #endif
 
+// Adding this to compile on macOS.
+#ifdef __APPLE__
+#if !defined(_WIN32)
+#include <unistd.h>
+#endif
+#include <sys/types.h>
+#endif
+
 /* Local functions */
 local void gz_reset OF((gz_statep));
 local gzFile gz_open OF((const void *, int, const char *));

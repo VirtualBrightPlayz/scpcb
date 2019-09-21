@@ -33,10 +33,13 @@
 		19646FC022A9FAB4005E027E /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19646FBF22A9FAB4005E027E /* World.cpp */; };
 		19646FC322A9FB6D005E027E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19646FC222A9FB6D005E027E /* Timing.cpp */; };
 		1968E82222F63E5400355243 /* FPSCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1968E82122F63E5400355243 /* FPSCounter.cpp */; };
+		196B3F2423357CF000F15A5A /* Menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 196B3F2323357CF000F15A5A /* Menu.cpp */; };
 		1971577A22BEB776003AF33E /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1971577922BEB776003AF33E /* Config.cpp */; };
 		1971577C22BEB9CB003AF33E /* AppDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = 1971577B22BEB9CB003AF33E /* AppDelegate.h */; };
 		1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1971577D22BEB9EC003AF33E /* AppDelegate.m */; };
 		1987FF1C22F48DCB0023029A /* GUIText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1987FF1B22F48DCB0023029A /* GUIText.cpp */; };
+		198F57F52335284800376771 /* Model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 198F57F12335284800376771 /* Model.cpp */; };
+		198F5BC423352C2300376771 /* libAssImp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 198F5BC323352C0F00376771 /* libAssImp.a */; };
 		19C1965D22BD532F00332C8E /* UIMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19C1965C22BD532F00332C8E /* UIMesh.cpp */; };
 		19C521FB231EABD500255476 /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19C521FA231EABD500255476 /* Item.cpp */; };
 		19CFE3212329A378009B37C6 /* GasMask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19CFE3202329A378009B37C6 /* GasMask.cpp */; };
@@ -64,6 +67,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 1907E43522E5012E00FC1870;
 			remoteInfo = freetype;
+		};
+		198F5BC223352C0F00376771 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 198F5BBE23352C0F00376771 /* AssImp.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 193A5C18224D8B5C000C5AC9;
+			remoteInfo = AssImp;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -125,12 +135,17 @@
 		19646FC222A9FB6D005E027E /* Timing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Timing.cpp; sourceTree = "<group>"; };
 		1968E81E22F63E5400355243 /* FPSCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPSCounter.h; sourceTree = "<group>"; };
 		1968E82122F63E5400355243 /* FPSCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FPSCounter.cpp; sourceTree = "<group>"; };
+		196B3F2223357CF000F15A5A /* Menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
+		196B3F2323357CF000F15A5A /* Menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
 		1971577822BEB776003AF33E /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		1971577922BEB776003AF33E /* Config.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
 		1971577B22BEB9CB003AF33E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1971577D22BEB9EC003AF33E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1987FF1A22F48DCB0023029A /* GUIText.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GUIText.h; sourceTree = "<group>"; };
 		1987FF1B22F48DCB0023029A /* GUIText.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GUIText.cpp; sourceTree = "<group>"; };
+		198F57F12335284800376771 /* Model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Model.cpp; sourceTree = "<group>"; };
+		198F57F42335284800376771 /* Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
+		198F5BBE23352C0F00376771 /* AssImp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AssImp.xcodeproj; path = "../Libraries/assimp-4.1.0/Xcode/AssImp.xcodeproj"; sourceTree = "<group>"; };
 		19C1965B22BD532F00332C8E /* UIMesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIMesh.h; sourceTree = "<group>"; };
 		19C1965C22BD532F00332C8E /* UIMesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIMesh.cpp; sourceTree = "<group>"; };
 		19C521F9231EABD500255476 /* Item.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
@@ -160,9 +175,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1932743222E543D1005F3528 /* libfreetype.a in Frameworks */,
 				191BDDBB22A8547E00270B9D /* SDL2.framework in Frameworks */,
 				191BDDA822A8458000270B9D /* libEngine.a in Frameworks */,
+				1932743222E543D1005F3528 /* libfreetype.a in Frameworks */,
+				198F5BC423352C2300376771 /* libAssImp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +272,7 @@
 				191BDDBA22A8547E00270B9D /* SDL2.framework */,
 				191BDD9A22A8457700270B9D /* Engine.xcodeproj */,
 				1932732D22E53616005F3528 /* freetype.xcodeproj */,
+				198F5BBE23352C0F00376771 /* AssImp.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -296,6 +313,8 @@
 				19CFE3272329ACD0009B37C6 /* Inventory.h */,
 				19CFE32B2329AE03009B37C6 /* InvSlot.cpp */,
 				19CFE32A2329AE03009B37C6 /* InvSlot.h */,
+				196B3F2323357CF000F15A5A /* Menu.cpp */,
+				196B3F2223357CF000F15A5A /* Menu.h */,
 				19243C1522BC295C0057054D /* PauseMenu.cpp */,
 				19243C1422BC295C0057054D /* PauseMenu.h */,
 			);
@@ -344,6 +363,14 @@
 			path = Save;
 			sourceTree = "<group>";
 		};
+		198F5BBF23352C0F00376771 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				198F5BC323352C0F00376771 /* libAssImp.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		19C521F6231EABAE00255476 /* Items */ = {
 			isa = PBXGroup;
 			children = (
@@ -364,6 +391,8 @@
 				1907E42822E500CF00FC1870 /* Font.h */,
 				19F15BF122F52DA90044E284 /* GraphicsResources.cpp */,
 				19F15BF422F52DA90044E284 /* GraphicsResources.h */,
+				198F57F12335284800376771 /* Model.cpp */,
+				198F57F42335284800376771 /* Model.h */,
 				19F17EA822AD79A00061F643 /* Sprite.cpp */,
 				19F17EA722AD79A00061F643 /* Sprite.h */,
 				19C1965C22BD532F00332C8E /* UIMesh.cpp */,
@@ -431,6 +460,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 198F5BBF23352C0F00376771 /* Products */;
+					ProjectRef = 198F5BBE23352C0F00376771 /* AssImp.xcodeproj */;
+				},
+				{
 					ProductGroup = 191BDD9B22A8457700270B9D /* Products */;
 					ProjectRef = 191BDD9A22A8457700270B9D /* Engine.xcodeproj */;
 				},
@@ -459,6 +492,13 @@
 			fileType = archive.ar;
 			path = libfreetype.a;
 			remoteRef = 1932733222E53616005F3528 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		198F5BC323352C0F00376771 /* libAssImp.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAssImp.a;
+			remoteRef = 198F5BC223352C0F00376771 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -499,6 +539,7 @@
 				19243C1622BC295C0057054D /* PauseMenu.cpp in Sources */,
 				191BDD9822A844FF00270B9D /* TextMgmt.cpp in Sources */,
 				191BDDB222A846EE00270B9D /* Collision.cpp in Sources */,
+				196B3F2423357CF000F15A5A /* Menu.cpp in Sources */,
 				191A23B422C2C20F009DC558 /* GUIButton.cpp in Sources */,
 				1934815722B9B9A60039F47E /* MathUtil.cpp in Sources */,
 				19F17EAC22AD82940061F643 /* Camera.cpp in Sources */,
@@ -506,6 +547,7 @@
 				19CFE3212329A378009B37C6 /* GasMask.cpp in Sources */,
 				19FC31CC22C0736A00AE4011 /* KeyBinds.cpp in Sources */,
 				19F15BF522F52DA90044E284 /* GraphicsResources.cpp in Sources */,
+				198F57F52335284800376771 /* Model.cpp in Sources */,
 				19CFE32C2329AE03009B37C6 /* InvSlot.cpp in Sources */,
 				1971577C22BEB9CB003AF33E /* AppDelegate.h in Sources */,
 				193385FA22E157E900439AA9 /* GUIComponent.cpp in Sources */,
@@ -666,6 +708,7 @@
 					../Engine/Include/,
 					"../Libraries/freetype-2.10.1/include/",
 					"../Libraries/freetype-2.10.1/src/",
+					"../Libraries/assimp-4.1.0/include/",
 				);
 				INFOPLIST_FILE = SCPCB/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -678,6 +721,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = todo.SCPCB;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
 			};
 			name = Debug;
 		};
@@ -692,6 +736,7 @@
 					../Engine/Include/,
 					"../Libraries/freetype-2.10.1/include/",
 					"../Libraries/freetype-2.10.1/src/",
+					"../Libraries/assimp-4.1.0/include/",
 				);
 				INFOPLIST_FILE = SCPCB/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -704,6 +749,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = todo.SCPCB;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
 			};
 			name = Release;
 		};

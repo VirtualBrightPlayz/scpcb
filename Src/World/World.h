@@ -19,14 +19,7 @@ class TxtManager;
 class PauseMenu;
 class FPSCounter;
 class GUIText;
-
-enum class GameState {
-    Invalid = 0,
-    Playing,
-    Inventory,
-    PauseMenu,
-    Console
-};
+class Menu;
 
 class World {
     private:
@@ -44,6 +37,10 @@ class World {
         UIMesh* uiMesh;
 
         PGE::Mesh* spriteMesh;
+    
+        Menu* currMenu;
+        // When a menu is markedForRemoval it's moved here where it'll be deleted in the update loop.
+        Menu* menuGraveyard;
 
         // TODO: Remove, these are a test.
         Sprite* poster;
@@ -56,8 +53,6 @@ class World {
 
         GraphicsResources* gfxRes;
         TxtManager* txtMngt;
-
-        GameState currState;
 
         PauseMenu* pauseMenu;
 
@@ -83,18 +78,15 @@ class World {
     public:
         World();
         ~World();
+    
+        void activateMenu(Menu* mu);
+        void deactivateMenu(Menu* mu);
 
         // Goes through the update/draw phrase of a single frame.
         bool run();
 
         // Prompts the world object to kill itself.
         void quit();
-
-        // Changes the game state and does any initialization for that state.
-        // This should be the only way to modify the current state.
-        void setGameState(GameState gs);
-
-        GameState getGameState() const;
 
 };
 

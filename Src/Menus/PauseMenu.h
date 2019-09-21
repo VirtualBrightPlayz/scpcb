@@ -1,6 +1,7 @@
 #ifndef PAUSEMENU_H_INCLUDED
 #define PAUSEMENU_H_INCLUDED
 
+#include "Menu.h"
 #include "GUI/GUIButton.h"
 #include "GUI/GUIFrame.h"
 #include "GUI/GUITextInput.h"
@@ -9,15 +10,14 @@
 class TxtManager;
 class World;
 
-class PauseMenu {
+class PauseMenu : public Menu {
     private:
         enum class SubState {
             Main,
             NewGame,
             LoadGame,
             Options,
-            Quitting,
-            Hidden
+            Quitting
         };
 
         // Whether the pause menu is being shown on startup as oppose to in the middle of a game.
@@ -56,15 +56,12 @@ class PauseMenu {
         KeyBinds* keyBinds;
 
     public:
-        PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io);
+        PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io);
 
-        void show();
-        void hide();
-        bool isMainMenu() const;
-        bool inSubMenu() const;
+        void onEscapeHit() override;
 
-        void update(World* world, PGE::Vector2f mousePosition);
-        void render();
+        void update(const PGE::Vector2f& mousePosition) override;
+        void render() const override;
 };
 
 #endif // PAUSEMENU_H_INCLUDED

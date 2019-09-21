@@ -8,6 +8,7 @@
 #include "../Graphics/Camera.h"
 #include "../Graphics/GraphicsResources.h"
 #include "../Menus/PauseMenu.h"
+#include "../Menus/Menu.h"
 #include "../Save/Config.h"
 #include "../Menus/GUI/GUIComponent.h"
 #include "../Menus/GUI/GUIText.h"
@@ -36,9 +37,11 @@ World::World() {
     camera = new Camera(gfxRes, config->getAspectRatio());
     camera->addShader(PGE::FileName::create("GFX/Shaders/Sprite/"));
 
-    setGameState(GameState::Playing);
-    pauseMenu = new PauseMenu(uiMesh, largeFont, keyBinds, config, txtMngt, io);
-    pauseMenu->hide();
+    currMenu = nullptr;
+    menuGraveyard = nullptr;
+    io->setMouseVisibility(false);
+    io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
+    pauseMenu = new PauseMenu(this, uiMesh, largeFont, keyBinds, config, txtMngt, io);
 
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
@@ -74,29 +77,23 @@ World::~World() {
     delete graphics;
 }
 
-void World::setGameState(GameState gs) {
-    if (gs == currState) { return; }
-
-    GameState prev = currState;
-    currState = gs;
-
-    switch (currState) {
-        case GameState::Playing: {
-            io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
-        } break;
-
-        case GameState::PauseMenu: {
-            pauseMenu->show();
-        } break;
+void World::activateMenu(Menu *mu) {
+    if (currMenu != nullptr) {
+        throw std::runtime_error("Attempted to activate a menu while another was active.");
     }
-
-    io->setMouseVisibility(currState != GameState::Playing);
-
-    if (prev == GameState::PauseMenu) { pauseMenu->hide(); }
+    
+    currMenu = mu;
 }
 
-GameState World::getGameState() const {
-    return currState;
+void World::deactivateMenu(Menu *mu) {
+    if (mu != currMenu) {
+        throw std::runtime_error("Attempted to deactivate a menu that wasn't active.");
+    }
+    
+    if (mu->isMarkedForDeath()) {
+        menuGraveyard = mu;
+    }
+    currMenu = nullptr;
 }
 
 bool World::run() {
@@ -147,36 +144,43 @@ void World::runTick(float timeStep) {
 
     keyBinds->update();
     Input input = keyBinds->getFiredInputs();
+    
+    // If a menu is in the graveyard then remove it.
+    if (menuGraveyard != nullptr) {
+        delete menuGraveyard;
+        menuGraveyard = nullptr;
+    }
 
     if (keyBinds->escape->isHit()) {
         // If a text input is active then escape de-selects it.
         // Unless it's the console's input.
-        if (GUITextInput::hasSubscriber() && currState != GameState::Console) {
+        if (GUITextInput::hasSubscriber() && !currMenu->getType().equals("console")) {
             GUITextInput::deselectSubscribed();
-        } else {
-            switch (currState) {
-                case GameState::Playing: {
-                    setGameState(GameState::PauseMenu);
-                } break;
-
-                case GameState::PauseMenu: {
-                    // TODO: Move this to a dedicated function in PauseMenu.
-                    if (!pauseMenu->isMainMenu() && !pauseMenu->inSubMenu()) {
-                        setGameState(GameState::Playing);
-                    }
-                } break;
+        } else if (currMenu != nullptr) {
+            currMenu->onEscapeHit();
+            if (currMenu == nullptr) {
+                io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
+                io->setMouseVisibility(false);
             }
+        } else {
+            activateMenu(pauseMenu);
+            io->setMouseVisibility(true);
         }
     }
-
-    switch (currState) {
-        case GameState::Playing: {
-            updatePlaying(timeStep, input);
-        } break;
-
-        case GameState::PauseMenu: {
-            pauseMenu->update(this, mousePosition);
-        } break;
+    
+    bool prevMenu = currMenu != nullptr;
+    if (!prevMenu) {
+        updatePlaying(timeStep, input);
+    } else {
+        currMenu->update(mousePosition);
+    }
+    
+    // If a menu was closed this tick then reset the mouse position.
+    if (prevMenu && currMenu == nullptr) {
+        io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
+        io->setMouseVisibility(false);
+    } else if (!prevMenu && currMenu != nullptr) {
+        io->setMouseVisibility(true);
     }
 }
 
@@ -185,8 +189,11 @@ void World::draw() {
 
     // UI.
     graphics->setDepthTest(false);
+    
+    if (currMenu != nullptr) {
+        currMenu->render();
+    }
 
-    pauseMenu->render();
     fps->draw();
 #ifdef DEBUG
     mouseTxtX->render();

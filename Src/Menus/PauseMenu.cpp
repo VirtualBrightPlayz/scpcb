@@ -4,7 +4,7 @@
 #include "../Utils/TextMgmt.h"
 #include "../World/World.h"
 
-PauseMenu::PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io) {
+PauseMenu::PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io) : Menu(wrld, "pausemenu") {
     float btnWidth = 40.f;
     float btnHeight = 7.f;
 
@@ -31,6 +31,9 @@ PauseMenu::PauseMenu(UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtM
     uiMesh = um;
     largeFont = largeFnt;
     keyBinds = kb;
+    
+    setState(SubState::Main);
+    mainMenu = false;
 }
 
 void PauseMenu::setState(SubState state) {
@@ -49,23 +52,14 @@ void PauseMenu::setOptionsTab(OptionsTab tab) {
 
 }
 
-void PauseMenu::show() {
-    setState(PauseMenu::SubState::Main);
+void PauseMenu::onEscapeHit() {
+    if (mainMenu) { return; }
+    if (currState == SubState::Main) {
+        detach();
+    }
 }
 
-void PauseMenu::hide() {
-    setState(PauseMenu::SubState::Hidden);
-}
-
-bool PauseMenu::isMainMenu() const {
-    return mainMenu;
-}
-
-bool PauseMenu::inSubMenu() const {
-    return currState != PauseMenu::SubState::Main;
-}
-
-void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
+void PauseMenu::update(const PGE::Vector2f& mousePosition) {
     switch (currState) {
         case SubState::Main: {
             newgame->update(mousePosition);
@@ -99,9 +93,7 @@ void PauseMenu::update(World* world, PGE::Vector2f mousePosition) {
     }
 }
 
-void PauseMenu::render() {
-    if (currState == SubState::Hidden) { return; }
-
+void PauseMenu::render() const {
     uiMesh->startRender();
 
     if (currState == SubState::Main || currState == SubState::Quitting) {
