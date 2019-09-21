@@ -21,12 +21,12 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     leftShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LCTRL);
     rightShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RCTRL);
 #endif
-    c = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::C);
-    x = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::X);
-    v = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::V);
-    z = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::Z);
-#ifdef WINDOWS
-    y = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::Y);
+    keyC = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::C);
+    keyX = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::X);
+    keyV = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::V);
+    keyZ = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::Z);
+#ifndef __APPLE__
+    keyY = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::Y);
 #endif
 
     io->trackInput(mouse1);
@@ -40,12 +40,12 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     io->trackInput(del);
     io->trackInput(leftShortcutKey);
     io->trackInput(rightShortcutKey);
-    io->trackInput(c);
-    io->trackInput(x);
-    io->trackInput(v);
-    io->trackInput(z);
-#ifdef WINDOWS
-    io->trackInput(y);
+    io->trackInput(keyC);
+    io->trackInput(keyX);
+    io->trackInput(keyV);
+    io->trackInput(keyZ);
+#ifndef __APPLE__
+    io->trackInput(keyY);
 #endif
 }
 
@@ -61,21 +61,21 @@ KeyBinds::~KeyBinds() {
     io->untrackInput(del);
     io->untrackInput(leftShortcutKey);
     io->untrackInput(rightShortcutKey);
-    io->untrackInput(c);
-    io->untrackInput(x);
-    io->untrackInput(v);
-    io->untrackInput(z);
-#ifdef WINDOWS
-    io->untrackInput(y);
+    io->untrackInput(keyC);
+    io->untrackInput(keyX);
+    io->untrackInput(keyV);
+    io->untrackInput(keyZ);
+#ifndef __APPLE__
+    io->untrackInput(keyY);
 #endif
 
     delete mouse1; delete mouse2; delete escape;
     delete leftArrow; delete rightArrow; delete leftShift; delete rightShift;
     delete backspace; delete del;
     delete leftShortcutKey; delete rightShortcutKey;
-    delete c; delete x; delete v; delete z;
-#ifdef WINDOWS
-    delete y;
+    delete keyC; delete keyX; delete keyV; delete keyZ;
+#ifndef __APPLE__
+    delete keyY;
 #endif
 
     // Untrack and delete bindings map.
@@ -94,26 +94,26 @@ bool KeyBinds::anyShiftDown() const {
 }
 
 bool KeyBinds::copyIsHit() const {
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && c->isHit();
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && keyC->isHit();
 }
 bool KeyBinds::cutIsHit() const {
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && x->isHit();
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && keyX->isHit();
 }
 bool KeyBinds::pasteIsHit() const {
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && v->isHit();
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && keyV->isHit();
 }
 bool KeyBinds::undoIsHit() const {
 #ifdef __APPLE__
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && !anyShiftDown() && z->isHit();
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && !anyShiftDown() && keyZ->isHit();
 #else
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && z->isHit();
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && keyZ->isHit();
 #endif
 }
 bool KeyBinds::redoIsHit() const {
 #ifdef __APPLE__
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && anyShiftDown() && z->isHit();
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && anyShiftDown() && keyZ->isHit();
 #else
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && y->isHit();
+    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && keyY->isHit();
 #endif
 }
 

@@ -115,6 +115,15 @@
     <ClInclude Include="..\Src\World\FPSCounter.h">
       <Filter>Src\World</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\Menus\Inventory.h">
+      <Filter>Src\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\InvSlot.h">
+      <Filter>Src\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\Menu.h">
+      <Filter>Src\Menus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SCPCB.rc">
@@ -201,6 +210,15 @@
     </ClCompile>
     <ClCompile Include="..\Src\World\FPSCounter.cpp">
       <Filter>Src\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Menus\Inventory.cpp">
+      <Filter>Src\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Menus\InvSlot.cpp">
+      <Filter>Src\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Menus\Menu.cpp">
+      <Filter>Src\Menus</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

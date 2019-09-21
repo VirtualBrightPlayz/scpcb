@@ -48,12 +48,12 @@ class KeyBinds {
         // Shortcuts.
         PGE::KeyboardInput* leftShortcutKey;
         PGE::KeyboardInput* rightShortcutKey;
-        PGE::KeyboardInput* c;
-        PGE::KeyboardInput* x;
-        PGE::KeyboardInput* v;
-        PGE::KeyboardInput* z;
-#ifdef WINDOWS
-        PGE::KeyboardInput* y;
+        PGE::KeyboardInput* keyC;
+        PGE::KeyboardInput* keyX;
+        PGE::KeyboardInput* keyV;
+        PGE::KeyboardInput* keyZ;
+#ifndef __APPLE__
+        PGE::KeyboardInput* keyY;
 #endif
 
         bool copyIsHit() const;

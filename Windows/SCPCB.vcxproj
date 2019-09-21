@@ -135,6 +135,9 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
     <ClInclude Include="..\Src\Menus\GUI\GUIFrame.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIText.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUITextInput.h" />
+    <ClInclude Include="..\Src\Menus\Inventory.h" />
+    <ClInclude Include="..\Src\Menus\InvSlot.h" />
+    <ClInclude Include="..\Src\Menus\Menu.h" />
     <ClInclude Include="..\Src\Menus\PauseMenu.h" />
     <ClInclude Include="..\Src\Models\RM2.h" />
     <ClInclude Include="..\Src\PlayerController\PlayerController.h" />
@@ -169,6 +172,9 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
     <ClCompile Include="..\Src\Menus\GUI\GUIFrame.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIText.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUITextInput.cpp" />
+    <ClCompile Include="..\Src\Menus\Inventory.cpp" />
+    <ClCompile Include="..\Src\Menus\InvSlot.cpp" />
+    <ClCompile Include="..\Src\Menus\Menu.cpp" />
     <ClCompile Include="..\Src\Menus\PauseMenu.cpp" />
     <ClCompile Include="..\Src\Models\RM2.cpp" />
     <ClCompile Include="..\Src\PlayerController\PlayerController.cpp" />
