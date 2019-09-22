@@ -77,17 +77,19 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
     UCharByte textureCount;
     inFile.read(&textureCount.c, 1);
 
-    struct TextureData {
-        PGE::Texture* texture;
-        TextureLoadFlag loadFlag;
+    const PGE::String extension = ".rm2";
 
-        TextureData(PGE::Texture* tex, TextureLoadFlag flag) {
-            texture = tex;
-            loadFlag = flag;
-        }
-    };
+    PGE::Texture* lightmapTextures[3];
+    std::vector<PGE::Texture*> materialTextures;
+    for (int i = 0; i < 3; i++) {
+        const PGE::String lightmapSuffix = "_lm" + PGE::String(i) + ".png";
+        PGE::String lightmapName = filename.str().substr(0, filename.size() - extension.size()) + lightmapSuffix;
+        lightmapTextures[i] = gfxRes->getTexture(PGE::FileName::create(lightmapName));
+        materialTextures.push_back(lightmapTextures[i]);
+    }
+    materialTextures.push_back(nullptr);
 
-    std::vector<TextureData> textureData;
+
     for (int i = 0; i < (int)textureCount.u; i++) {
         PGE::String textureName = readByteString(inFile);
 
@@ -96,16 +98,11 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
         char flag = 0;
         inFile.read(&flag, 1);
 
-        textureData.push_back(TextureData(texture, (TextureLoadFlag)flag));
-    }
+        materialTextures[3] = texture;
 
-    const PGE::String extension = ".rm2";
+        PGE::Material* material = new PGE::Material(shader, materialTextures, (TextureLoadFlag)flag == TextureLoadFlag::Opaque);
 
-    PGE::Texture* lightmapTextures[3];
-    for (int i = 0; i < 3; i++) {
-        const PGE::String lightmapSuffix = "_lm" + PGE::String(i) + ".png";
-        PGE::String lightmapName = filename.str().substr(0, filename.size() - extension.size()) + lightmapSuffix;
-        lightmapTextures[i] = gfxRes->getTexture(PGE::FileName::create(lightmapName));
+        materials.push_back(material);
     }
 
     //everything else
@@ -124,6 +121,12 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
 
                 UShortBytes vertexCount;
                 inFile.read(vertexCount.c, 2);
+
+                std::vector<PGE::Vector3f> vertexPositions;
+                std::vector<int> indices;
+
+                std::vector<PGE::Vertex> vertices;
+                PGE::Vertex tempVertex;
 
                 for (int i = 0; i < vertexCount.i; i++) {
                     FloatBytes inX;
@@ -148,11 +151,19 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
 
                     PGE::Vector2f diffUv = PGE::Vector2f(inDiffU.f, inDiffV.f);
                     PGE::Vector2f lmUv = PGE::Vector2f(inLmU.f, inLmV.f);
+
+                    tempVertex.setVector3f("position", position);
+                    tempVertex.setVector2f("diffUv", diffUv);
+                    tempVertex.setVector2f("lmUv", lmUv);
+                    vertices.push_back(tempVertex);
+
+                    vertexPositions.push_back(position);
                 }
 
                 UShortBytes triangleCount;
                 inFile.read(triangleCount.c, 2);
 
+                std::vector<PGE::Primitive> primitives;
                 for (int i = 0; i < triangleCount.i; i++) {
                     UShortBytes index0;
                     UShortBytes index1;
@@ -161,7 +172,29 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
                     inFile.read(index0.c, 2);
                     inFile.read(index1.c, 2);
                     inFile.read(index2.c, 2);
+
+                    primitives.push_back(PGE::Primitive(index0.i, index1.i, index2.i));
+
+                    indices.push_back(index0.i);
+                    indices.push_back(index1.i);
+                    indices.push_back(index2.i);
                 }
+
+                PGE::Mesh* mesh = PGE::Mesh::create(gfxRes->getGraphics(), PGE::Primitive::TYPE::TRIANGLE);
+
+                mesh->setMaterial(materials[textureIndex.u]);
+                mesh->setGeometry(vertices.size(), vertices, primitives.size(), primitives);
+
+                if (materials[textureIndex.u]->isOpaque())
+                {
+                    opaqueMeshes.push_back(mesh);
+                }
+                else
+                {
+                    alphaMeshes.push_back(mesh);
+                }
+
+                collisionMeshes.push_back(new CollisionMesh(vertexPositions, indices));
             } break;
             default: {
                 unrecognizedChunkHeader = true;
