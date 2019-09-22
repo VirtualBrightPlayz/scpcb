@@ -196,6 +196,46 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
 
                 collisionMeshes.push_back(new CollisionMesh(vertexPositions, indices));
             } break;
+            case FileSections::InvisibleGeometry: {
+                UShortBytes vertexCount;
+                inFile.read(vertexCount.c, 2);
+
+                std::vector<PGE::Vector3f> vertexPositions;
+                std::vector<int> indices;
+
+                for (int i = 0; i < vertexCount.i; i++) {
+                    FloatBytes inX;
+                    FloatBytes inY;
+                    FloatBytes inZ;
+
+                    inFile.read(inX.c, 4);
+                    inFile.read(inY.c, 4);
+                    inFile.read(inZ.c, 4);
+
+                    PGE::Vector3f position = PGE::Vector3f(inX.f, inY.f, inZ.f);
+
+                    vertexPositions.push_back(position);
+                }
+
+                UShortBytes triangleCount;
+                inFile.read(triangleCount.c, 2);
+
+                for (int i = 0; i < triangleCount.i; i++) {
+                    UShortBytes index0;
+                    UShortBytes index1;
+                    UShortBytes index2;
+
+                    inFile.read(index0.c, 2);
+                    inFile.read(index1.c, 2);
+                    inFile.read(index2.c, 2);
+
+                    indices.push_back(index0.i);
+                    indices.push_back(index1.i);
+                    indices.push_back(index2.i);
+                }
+
+                collisionMeshes.push_back(new CollisionMesh(vertexPositions, indices));
+            } break;
             default: {
                 unrecognizedChunkHeader = true;
             } break;
