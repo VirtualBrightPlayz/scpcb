@@ -11,6 +11,7 @@
 #include <Color/Color.h>
 #include "../Collision/CollisionMesh.h"
 #include "../Graphics/GraphicsResources.h"
+#include "../Graphics/Camera.h"
 
 struct PointLight {
     PGE::Vector3f position;
@@ -40,10 +41,22 @@ enum class RM2Error {
 
 class RM2 {
     private:
+		const static PGE::FileName opaqueShaderPath;
+		const static PGE::FileName alphaShaderPath;
+
         std::vector<PGE::Material*> materials;
         std::vector<PGE::Texture*> textures;
-        PGE::Shader* shader;
         GraphicsResources* graphicsResources;
+
+		PGE::Shader* opaqueShader;
+		PGE::Shader::Constant* opaqueProjMatrixConstant;
+		PGE::Shader::Constant* opaqueViewMatrixConstant;
+		PGE::Shader::Constant* opaqueModelMatrixConstant;
+
+		PGE::Shader* alphaShader;
+		PGE::Shader::Constant* alphaProjMatrixConstant;
+		PGE::Shader::Constant* alphaViewMatrixConstant;
+		PGE::Shader::Constant* alphaModelMatrixConstant;
 
         std::vector<PGE::Mesh*> opaqueMeshes;
         std::vector<PGE::Mesh*> alphaMeshes;
@@ -61,7 +74,7 @@ class RM2 {
 
         RM2Error getError() const;
 
-        void render(PGE::Matrix4x4f worldMatrix);
+        void render(Camera* cam, PGE::Matrix4x4f modelMatrix);
         const std::vector<CollisionMesh*>& getCollisionMeshes() const;
         const std::vector<PointLight>& getPointLights() const;
         const std::vector<Spotlight>& getSpotlights() const;

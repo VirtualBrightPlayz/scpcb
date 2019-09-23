@@ -1,6 +1,9 @@
 #include "RM2.h"
 #include <fstream>
 
+const PGE::FileName RM2::opaqueShaderPath = PGE::FileName::create("GFX/Shaders/RoomOpaque/");
+const PGE::FileName RM2::alphaShaderPath = PGE::FileName::create("GFX/Shaders/RoomAlpha/");
+
 enum class FileSections {
     Textures = 1,
     VisibleGeometry = 2,
@@ -79,6 +82,9 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
 
     const PGE::String extension = ".rm2";
 
+	opaqueShader = gfxRes->getShader(opaqueShaderPath);
+	alphaShader = gfxRes->getShader(alphaShaderPath);
+
     PGE::Texture* lightmapTextures[3];
     std::vector<PGE::Texture*> materialTextures;
     for (int i = 0; i < 3; i++) {
@@ -88,7 +94,6 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
         materialTextures.push_back(lightmapTextures[i]);
     }
     materialTextures.push_back(nullptr);
-
 
     for (int i = 0; i < (int)textureCount.u; i++) {
         PGE::String textureName = readByteString(inFile);
@@ -100,7 +105,9 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
 
         materialTextures[3] = texture;
 
-        PGE::Material* material = new PGE::Material(shader, materialTextures, (TextureLoadFlag)flag == TextureLoadFlag::Opaque);
+		bool isOpaque = (TextureLoadFlag)flag == TextureLoadFlag::Opaque;
+
+        PGE::Material* material = new PGE::Material(isOpaque ? opaqueShader : alphaShader, materialTextures, isOpaque);
 
         materials.push_back(material);
     }
@@ -253,7 +260,20 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
     inFile.close();
 }
 
-void RM2::render(PGE::Matrix4x4f worldMatrix) {
+void RM2::render(Camera* cam, PGE::Matrix4x4f modelMatrix) {
+	opaqueProjMatrixConstant->setValue(cam->getProjectionMatrix());
+	opaqueViewMatrixConstant->setValue(cam->getViewMatrix());
+	opaqueModelMatrixConstant->setValue(modelMatrix);
+	for (int i = 0; i < opaqueMeshes.size(); i++) {
+		opaqueMeshes[i]->render();
+	}
 
+	alphaProjMatrixConstant->setValue(cam->getProjectionMatrix());
+	alphaViewMatrixConstant->setValue(cam->getViewMatrix());
+	alphaModelMatrixConstant->setValue(modelMatrix);
+	//TODO: sort based on distance to camera
+	for (int i = 0; i < alphaMeshes.size(); i++) {
+		alphaMeshes[i]->render();
+	}
 }
 
