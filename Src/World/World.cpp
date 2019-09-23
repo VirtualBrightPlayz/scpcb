@@ -154,7 +154,7 @@ void World::runTick(float timeStep) {
     if (keyBinds->escape->isHit()) {
         // If a text input is active then escape de-selects it.
         // Unless it's the console's input.
-        if (GUITextInput::hasSubscriber() && !currMenu->getType().equals("console")) {
+        if (GUITextInput::hasSubscriber() && currMenu != nullptr && !currMenu->getType().equals("console")) {
             GUITextInput::deselectSubscribed();
         } else if (currMenu != nullptr) {
             currMenu->onEscapeHit();
