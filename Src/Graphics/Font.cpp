@@ -15,7 +15,7 @@ Font::Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::
     filename = fn;
     height = h;
 
-    shader = gr->getShader(shaderPath);
+    shader = gr->getShader(shaderPath, false);
 
     FT_New_Face(ftLibrary,
                 filename.cstr(),

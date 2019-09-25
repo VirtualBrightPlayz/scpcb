@@ -30,14 +30,9 @@ class Camera {
         PGE::Matrix4x4f projectionMatrix;
         PGE::Matrix4x4f rotation;
 
-        std::vector<PGE::Shader*> shaders;
-
     public:
         Camera(GraphicsResources* gr, float aspectRatio, float fov);
         Camera(GraphicsResources* gr, float aspectRatio);
-        ~Camera();
-
-        void addShader(PGE::FileName fn);
 
         void update();
 

@@ -31,38 +31,16 @@ Camera::Camera(GraphicsResources* gr, float aspectRatio, float fov) {
 
 Camera::Camera(GraphicsResources* gr, float aspectRatio) : Camera(gr, aspectRatio, MathUtil::degToRad(70.0f)) { }
 
-Camera::~Camera() {
-    for (int i = 0; i < (int)shaders.size(); i++) {
-        gfxRes->dropShader(shaders[i]);
-    }
-}
-
-void Camera::addShader(PGE::FileName fn) {
-    shaders.push_back(gfxRes->getShader(fn));
-
-    needsViewUpdate = true;
-    needsProjUpdate = true;
-}
-
 void Camera::update() {
     if (needsViewUpdate) {
         rotation = PGE::Matrix4x4f::rotate(PGE::Vector3f(-pitchAngle, yawAngle, tilt));
 
         viewMatrix = PGE::Matrix4x4f::constructViewMat(position, rotation.transform(lookAt), rotation.transform(upDir));
 
-        // Update shaders.
-        for (int i = 0; i < (int)shaders.size(); i++) {
-            shaders[i]->getVertexShaderConstant("viewMatrix")->setValue(viewMatrix);
-        }
-
         needsViewUpdate = false;
     }
 
     if (needsProjUpdate) {
-        for (int i = 0; i < (int)shaders.size(); i++) {
-            shaders[i]->getVertexShaderConstant("projectionMatrix")->setValue(projectionMatrix);
-        }
-
         needsProjUpdate = false;
     }
 }

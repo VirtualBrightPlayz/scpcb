@@ -35,7 +35,6 @@ World::World() {
     keyBinds = new KeyBinds(io);
 
     camera = new Camera(gfxRes, config->getAspectRatio());
-    camera->addShader(PGE::FileName::create("GFX/Shaders/Sprite/"));
 
     currMenu = nullptr;
     menuGraveyard = nullptr;
@@ -100,10 +99,13 @@ bool World::run() {
     if (isRoadRollered) {
         return false;
     }
+    
+    keyBinds->update();
+    Input input = keyBinds->getFiredInputs();
 
     // Game logic updates first, use accumulator.
     while (timing->tickReady()) {
-        runTick((float)timing->getTimeStep());
+        runTick((float)timing->getTimeStep(), input);
         timing->subtractTick();
     }
 
@@ -122,7 +124,7 @@ bool World::run() {
     return graphics->getWindow()->isOpen();
 }
 
-void World::runTick(float timeStep) {
+void World::runTick(float timeStep, Input input) {
     SysEvents::update();
     io->update();
 
@@ -142,30 +144,10 @@ void World::runTick(float timeStep) {
     mouseTxtY->text = PGE::String("MouseY: ", PGE::String(mousePosition.y));
 #endif
 
-    keyBinds->update();
-    Input input = keyBinds->getFiredInputs();
-
     // If a menu is in the graveyard then remove it.
     if (menuGraveyard != nullptr) {
         delete menuGraveyard;
         menuGraveyard = nullptr;
-    }
-
-    if (keyBinds->escape->isHit()) {
-        // If a text input is active then escape de-selects it.
-        // Unless it's the console's input.
-        if (GUITextInput::hasSubscriber() && currMenu != nullptr && !currMenu->getType().equals("console")) {
-            GUITextInput::deselectSubscribed();
-        } else if (currMenu != nullptr) {
-            currMenu->onEscapeHit();
-            if (currMenu == nullptr) {
-                io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
-                io->setMouseVisibility(false);
-            }
-        } else {
-            activateMenu(pauseMenu);
-            io->setMouseVisibility(true);
-        }
     }
 
     bool prevMenu = currMenu != nullptr;
@@ -173,6 +155,18 @@ void World::runTick(float timeStep) {
         updatePlaying(timeStep, input);
     } else {
         currMenu->update(mousePosition);
+    }
+    
+    if (keyBinds->escape->isHit()) {
+        // If a text input is active then escape de-selects it.
+        // Unless it's the console's input.
+        if (GUITextInput::hasSubscriber() && currMenu != nullptr && !currMenu->getType().equals("console")) {
+            GUITextInput::deselectSubscribed();
+        } else if (currMenu != nullptr) {
+            currMenu->onEscapeHit();
+        } else {
+            activateMenu(pauseMenu);
+        }
     }
 
     // If a menu was closed this tick then reset the mouse position.
@@ -220,12 +214,14 @@ void World::updatePlaying(float timeStep, Input input) {
 
     testSquare->addRotation(5.f * timeStep);
     testSquare->update();
+    
+    // View/Projection matrix.
+    camera->update();
 }
 
 void World::drawPlaying() {
-    // View/Projection matrix.
-    camera->update();
-
+    gfxRes->setCameraUniforms(camera);
+    
     testSquare->render();
 }
 

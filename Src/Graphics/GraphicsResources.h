@@ -6,6 +6,7 @@
 #include <Texture/Texture.h>
 
 class Config;
+class Camera;
 
 class GraphicsResources {
     private:
@@ -13,6 +14,7 @@ class GraphicsResources {
             PGE::FileName filename;
             PGE::Shader* shader;
             int refCount;
+            bool needsViewProjection;
         };
         std::vector<Shader> shaders;
 
@@ -33,15 +35,16 @@ class GraphicsResources {
     public:
         GraphicsResources(PGE::Graphics* gfx, Config* con);
 
-        PGE::Shader* getShader(PGE::FileName filename);
+        PGE::Shader* getShader(const PGE::FileName& filename, bool needsViewProjection);
         void dropShader(PGE::Shader* shader);
-        void updateShaderConstant(PGE::FileName shd, PGE::String constant, PGE::Matrix4x4f val);
+        void updateShaderConstant(const PGE::FileName& shd, const PGE::String& constant, const PGE::Matrix4x4f& val);
 
-        PGE::Texture* getTexture(PGE::FileName filename);
+        PGE::Texture* getTexture(const PGE::FileName& filename);
         void dropTexture(PGE::Texture* texture);
     
         void updateOrthoMat(float aspectRatio);
         PGE::Matrix4x4f getOrthoMat() const;
+        void setCameraUniforms(const Camera* cam) const;
 
         PGE::Graphics* getGraphics() const;
 };

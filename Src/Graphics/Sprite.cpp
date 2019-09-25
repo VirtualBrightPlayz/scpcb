@@ -5,7 +5,7 @@
 
 Sprite::Sprite(GraphicsResources* gr, PGE::Mesh* msh, PGE::Texture* tex) {
     mesh = msh; texture = tex; gfxRes = gr;
-    shader = gr->getShader(shaderPath);
+    shader = gr->getShader(shaderPath, true);
 
     modelMatrixValue = shader->getVertexShaderConstant("modelMatrix");
     spriteColorValue = shader->getFragmentShaderConstant("spriteColor");

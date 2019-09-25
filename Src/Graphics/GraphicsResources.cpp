@@ -1,4 +1,5 @@
 #include "GraphicsResources.h"
+#include "Camera.h"
 #include "../Save/Config.h"
 #include "../Menus/GUI/GUIComponent.h"
 
@@ -8,7 +9,7 @@ GraphicsResources::GraphicsResources(PGE::Graphics* gfx, Config* con) {
     graphics = gfx;
 }
 
-PGE::Shader* GraphicsResources::getShader(PGE::FileName filename) {
+PGE::Shader* GraphicsResources::getShader(const PGE::FileName& filename, bool needsViewProjection) {
     for (int i = 0; i < (int)shaders.size(); i++) {
         if (shaders[i].filename.equals(filename)) {
             shaders[i].refCount++;
@@ -20,6 +21,7 @@ PGE::Shader* GraphicsResources::getShader(PGE::FileName filename) {
     newShader.refCount = 1;
     newShader.shader = PGE::Shader::load(graphics, filename);
     newShader.filename = filename;
+    newShader.needsViewProjection = needsViewProjection;
     shaders.push_back(newShader);
     return newShader.shader;
 }
@@ -37,7 +39,7 @@ void GraphicsResources::dropShader(PGE::Shader* shader) {
     }
 }
 
-PGE::Texture* GraphicsResources::getTexture(PGE::FileName filename) {
+PGE::Texture* GraphicsResources::getTexture(const PGE::FileName& filename) {
     for (int i = 0; i < (int)textures.size(); i++) {
         if (textures[i].filename.equals(filename)) {
             textures[i].refCount++;
@@ -87,11 +89,20 @@ PGE::Matrix4x4f GraphicsResources::getOrthoMat() const {
     return orthoMat;
 }
 
+void GraphicsResources::setCameraUniforms(const Camera* cam) const {
+    for (int i = 0; i < (int)shaders.size(); i++) {
+        if (shaders[i].needsViewProjection) {
+            shaders[i].shader->getVertexShaderConstant("viewMatrix")->setValue(cam->getViewMatrix());
+            shaders[i].shader->getVertexShaderConstant("projectionMatrix")->setValue(cam->getProjectionMatrix());
+        }
+    }
+}
+
 PGE::Graphics* GraphicsResources::getGraphics() const {
     return graphics;
 }
 
-void GraphicsResources::updateShaderConstant(PGE::FileName shd, PGE::String name, PGE::Matrix4x4f val) {
+void GraphicsResources::updateShaderConstant(const PGE::FileName& shd, const PGE::String& name, const PGE::Matrix4x4f& val) {
     for (int i = 0; i < (int)shaders.size(); i++) {
         if (shaders[i].filename.equals(shd)) {
             PGE::Shader::Constant* constant = shaders[i].shader->getVertexShaderConstant(name);
