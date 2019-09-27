@@ -48,7 +48,7 @@ void UIMesh::endRender() {
     vertices.clear(); primitives.clear();
 }
 
-void UIMesh::setTextured(PGE::FileName textureName, bool tile) {
+void UIMesh::setTextured(const PGE::FileName& textureName, bool tile) {
     endRender();
 
     tiled = tile;
@@ -133,7 +133,7 @@ void UIMesh::addRect(const PGE::Rectanglef& rect) {
     primitives.push_back(PGE::Primitive(index3, index1, index2));
 }
 
-void UIMesh::loadTexture(PGE::FileName textureName) {
+void UIMesh::loadTexture(const PGE::FileName& textureName) {
     PGE::Texture* texture = nullptr;
     for (int i = 0; i < textures.size(); i++) {
         if (textures[i].name.equals(textureName)) {

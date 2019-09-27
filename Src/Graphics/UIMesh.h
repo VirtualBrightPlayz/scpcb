@@ -51,7 +51,7 @@ class UIMesh {
         void startRender();
 
         void setTextureless();
-        void setTextured(PGE::FileName texture, bool tile);
+        void setTextured(const PGE::FileName& texture, bool tile);
 
         void setColor(PGE::Color col);
 
@@ -59,7 +59,7 @@ class UIMesh {
 
         void endRender();
 
-        void loadTexture(PGE::FileName textureName);
+        void loadTexture(const PGE::FileName& textureName);
 };
 
 #endif // UIMESH_H_INCLUDED
