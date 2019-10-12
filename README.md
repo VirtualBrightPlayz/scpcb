@@ -6,7 +6,7 @@ The game is based on the works of the [SCP Foundation community][scp-wiki].
 
 # Requirements:
 Windows:
-* [Visual Studio 2017][vs2017].
+* [Visual Studio 2019][vs2019].
 
 macOS:
 * Mojave (10.14) or higher.
@@ -36,6 +36,6 @@ Licensing terms can be found in [License.txt](Content/License.txt).
 * Declaring several variables in one statement.
 * Placing the pointer/reference symbol anywhere other than next to the type.
 
-[vs2017]: https://visualstudio.microsoft.com/vs/
+[vs2019]: https://visualstudio.microsoft.com/vs/
 [scp-wiki]: http://www.scp-wiki.net/
 [cc3.0]: http://creativecommons.org/licenses/by-sa/3.0/
