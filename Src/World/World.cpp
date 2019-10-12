@@ -222,9 +222,13 @@ void World::updatePlaying(float timeStep, Input input) {
 void World::drawPlaying() {
     gfxRes->setCameraUniforms(camera);
     
-    PGE::Matrix4x4f rm2Matrix = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(0.f, -2.f, 0.f), PGE::Vector3f::one.multiply(0.01f), PGE::Vector3f::zero);
+    PGE::Matrix4x4f rm2Matrix = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(-6.f, -2.f, 0.f), PGE::Vector3f::one.multiply(0.01f), PGE::Vector3f::zero);
 
-    todo_Remove.rm2->render(rm2Matrix);
+	todo_Remove.rm2->render(rm2Matrix);
+
+	rm2Matrix = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(-6.f + (2048.f * 0.01f), -2.f, 0.f), PGE::Vector3f::one.multiply(0.01f), PGE::Vector3f::zero);
+
+	todo_Remove.rm2->render(rm2Matrix);
 
     todo_Remove.testSquare->render();
 }
@@ -235,7 +239,7 @@ void World::loadPlaying() {
     todo_Remove.testSquare->setPosition(0.f, 0.f, 2.f);
     todo_Remove.testSquare->setRotation(0.5f);
     todo_Remove.testSquare->setScale(1.f);
-    todo_Remove.rm2 = new RM2(gfxRes, PGE::FileName::create("GFX/Map/Rooms/EntranceZone/hll_plain_2/hll_plain_2.rm2"));
+    todo_Remove.rm2 = new RM2(gfxRes, PGE::FileName::create("GFX/Map/Rooms/EntranceZone/hll_plain_4/hll_plain_4.rm2"));
 }
 
 void World::destroyPlaying() {
