@@ -15,7 +15,7 @@ macOS:
 # License
 Licensing terms can be found in [License.txt](Content/License.txt).
 
-# List of banned stuff:
+# List of things to avoid doing in the game's code:
 
 * Anything that isn't K&R bracket style (Allman, GNU, etc).
 * Omitting brackets when they can be used.
