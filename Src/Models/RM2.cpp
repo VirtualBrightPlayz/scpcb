@@ -1,8 +1,12 @@
 #include "RM2.h"
 #include <fstream>
+#include <filesystem>
+#include <Windows.h>
 
 const PGE::FileName RM2::opaqueShaderPath = PGE::FileName::create("GFX/Shaders/RoomOpaque/");
 const PGE::FileName RM2::alphaShaderPath = PGE::FileName::create("GFX/Shaders/RoomAlpha/");
+
+const PGE::String RM2::texturePath = "GFX/Map/Textures/";
 
 enum class FileSections {
     Textures = 1,
@@ -82,8 +86,9 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
 
     const PGE::String extension = ".rm2";
 
-	opaqueShader = gfxRes->getShader(opaqueShaderPath);
-	alphaShader = gfxRes->getShader(alphaShaderPath);
+    opaqueShader = gfxRes->getShader(opaqueShaderPath, true);
+    opaqueModelMatrixConstant = opaqueShader->getVertexShaderConstant("modelMatrix");
+    alphaShader = opaqueShader;//gfxRes->getShader(alphaShaderPath, true);
 
     PGE::Texture* lightmapTextures[3];
     std::vector<PGE::Texture*> materialTextures;
@@ -94,18 +99,23 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
         materialTextures.push_back(lightmapTextures[i]);
     }
     materialTextures.push_back(nullptr);
-
+    
     for (int i = 0; i < (int)textureCount.u; i++) {
         PGE::String textureName = readByteString(inFile);
 
-        PGE::Texture* texture = gfxRes->getTexture(PGE::FileName::create(textureName));
+        PGE::FileName textureFileName = PGE::FileName::create(texturePath + textureName + ".jpg");
+        if (!textureFileName.exists()) {
+            textureFileName  = PGE::FileName::create(texturePath + textureName + ".png");
+        }
+
+        PGE::Texture* texture = gfxRes->getTexture(textureFileName);
         
         char flag = 0;
         inFile.read(&flag, 1);
 
         materialTextures[3] = texture;
-
-		bool isOpaque = (TextureLoadFlag)flag == TextureLoadFlag::Opaque;
+        
+        bool isOpaque = (TextureLoadFlag)flag == TextureLoadFlag::Opaque;
 
         PGE::Material* material = new PGE::Material(isOpaque ? opaqueShader : alphaShader, materialTextures, isOpaque);
 
@@ -144,7 +154,7 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
                     inFile.read(inY.c, 4);
                     inFile.read(inZ.c, 4);
 
-                    PGE::Vector3f position = PGE::Vector3f(inX.f, inY.f, inZ.f);
+                    PGE::Vector4f position = PGE::Vector4f(inX.f, inY.f, inZ.f, 1.f);
 
                     FloatBytes inDiffU;
                     FloatBytes inDiffV;
@@ -159,12 +169,14 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
                     PGE::Vector2f diffUv = PGE::Vector2f(inDiffU.f, inDiffV.f);
                     PGE::Vector2f lmUv = PGE::Vector2f(inLmU.f, inLmV.f);
 
-                    tempVertex.setVector3f("position", position);
+                    tempVertex.setVector4f("position", position);
+                    tempVertex.setVector3f("normal", PGE::Vector3f::one);
                     tempVertex.setVector2f("diffUv", diffUv);
                     tempVertex.setVector2f("lmUv", lmUv);
+                    tempVertex.setColor("color", PGE::Color(255,255,255,255));
                     vertices.push_back(tempVertex);
 
-                    vertexPositions.push_back(position);
+                    vertexPositions.push_back(PGE::Vector3f(position.x, position.y, position.z));
                 }
 
                 UShortBytes triangleCount;
@@ -177,8 +189,8 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
                     UShortBytes index2;
 
                     inFile.read(index0.c, 2);
-                    inFile.read(index1.c, 2);
                     inFile.read(index2.c, 2);
+                    inFile.read(index1.c, 2);
 
                     primitives.push_back(PGE::Primitive(index0.i, index1.i, index2.i));
 
@@ -260,20 +272,15 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
     inFile.close();
 }
 
-void RM2::render(Camera* cam, PGE::Matrix4x4f modelMatrix) {
-	opaqueProjMatrixConstant->setValue(cam->getProjectionMatrix());
-	opaqueViewMatrixConstant->setValue(cam->getViewMatrix());
-	opaqueModelMatrixConstant->setValue(modelMatrix);
-	for (int i = 0; i < opaqueMeshes.size(); i++) {
-		opaqueMeshes[i]->render();
-	}
+void RM2::render(PGE::Matrix4x4f modelMatrix) {
+    opaqueModelMatrixConstant->setValue(modelMatrix);
+    for (int i = 0; i < opaqueMeshes.size(); i++) {
+        opaqueMeshes[i]->render();
+    }
 
-	alphaProjMatrixConstant->setValue(cam->getProjectionMatrix());
-	alphaViewMatrixConstant->setValue(cam->getViewMatrix());
-	alphaModelMatrixConstant->setValue(modelMatrix);
-	//TODO: sort based on distance to camera
-	for (int i = 0; i < alphaMeshes.size(); i++) {
-		alphaMeshes[i]->render();
-	}
+    /*alphaModelMatrixConstant->setValue(modelMatrix);
+    //TODO: sort based on distance to camera
+    for (int i = 0; i < alphaMeshes.size(); i++) {
+        alphaMeshes[i]->render();
+    }*/
 }
-

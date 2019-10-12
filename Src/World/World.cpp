@@ -60,7 +60,7 @@ World::~World() {
     delete pauseMenu;
     delete uiMesh;
     delete keyBinds;
-    delete testSquare;
+    delete todo_Remove.testSquare;
     delete spriteMesh;
 #ifdef DEBUG
     delete mouseTxtX;
@@ -112,7 +112,7 @@ bool World::run() {
     // Rendering next, don't use accumulator.
     graphics->update();
 
-    graphics->clear(PGE::Color(0.f, 0.71f, 0.76f, 1.f)); // Turquoise.
+    graphics->clear(PGE::Color(1.f, 0.f, 1.f, 1.f)); // Puke-inducing magenta
 
     draw();
 
@@ -212,8 +212,8 @@ void World::updatePlaying(float timeStep, Input input) {
     // Reset mouse to center.
     io->setMousePosition(PGE::Vector2f(centerX, centerY));
 
-    testSquare->addRotation(5.f * timeStep);
-    testSquare->update();
+    todo_Remove.testSquare->addRotation(5.f * timeStep);
+    todo_Remove.testSquare->update();
     
     // View/Projection matrix.
     camera->update();
@@ -222,20 +222,25 @@ void World::updatePlaying(float timeStep, Input input) {
 void World::drawPlaying() {
     gfxRes->setCameraUniforms(camera);
     
-    testSquare->render();
+    PGE::Matrix4x4f rm2Matrix = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(0.f, -2.f, 0.f), PGE::Vector3f::one.multiply(0.01f), PGE::Vector3f::zero);
+
+    todo_Remove.rm2->render(rm2Matrix);
+
+    todo_Remove.testSquare->render();
 }
 
 void World::loadPlaying() {
-    dirtymetal = gfxRes->getTexture(PGE::FileName::create("GFX/Map/Textures/dirtymetal.jpg"));
-    testSquare = new Sprite(gfxRes, spriteMesh, dirtymetal);
-    testSquare->setPosition(0.f, 0.f, 2.f);
-    testSquare->setRotation(0.5f);
-    testSquare->setScale(1.f);
+    todo_Remove.dirtymetal = gfxRes->getTexture(PGE::FileName::create("GFX/Map/Textures/dirtymetal.jpg"));
+    todo_Remove.testSquare = new Sprite(gfxRes, spriteMesh, todo_Remove.dirtymetal);
+    todo_Remove.testSquare->setPosition(0.f, 0.f, 2.f);
+    todo_Remove.testSquare->setRotation(0.5f);
+    todo_Remove.testSquare->setScale(1.f);
+    todo_Remove.rm2 = new RM2(gfxRes, PGE::FileName::create("GFX/Map/Rooms/EntranceZone/hll_plain_2/hll_plain_2.rm2"));
 }
 
 void World::destroyPlaying() {
-    gfxRes->dropTexture(dirtymetal); dirtymetal = nullptr;
-    delete testSquare; testSquare = nullptr;
+    gfxRes->dropTexture(todo_Remove.dirtymetal); todo_Remove.dirtymetal = nullptr;
+    delete todo_Remove.testSquare; todo_Remove.testSquare = nullptr;
 }
 
 void World::quit() {

@@ -41,22 +41,18 @@ enum class RM2Error {
 
 class RM2 {
     private:
-		const static PGE::FileName opaqueShaderPath;
-		const static PGE::FileName alphaShaderPath;
+        const static PGE::FileName opaqueShaderPath;
+        const static PGE::FileName alphaShaderPath;
 
         std::vector<PGE::Material*> materials;
         std::vector<PGE::Texture*> textures;
         GraphicsResources* graphicsResources;
 
-		PGE::Shader* opaqueShader;
-		PGE::Shader::Constant* opaqueProjMatrixConstant;
-		PGE::Shader::Constant* opaqueViewMatrixConstant;
-		PGE::Shader::Constant* opaqueModelMatrixConstant;
+        PGE::Shader* opaqueShader;
+        PGE::Shader::Constant* opaqueModelMatrixConstant;
 
-		PGE::Shader* alphaShader;
-		PGE::Shader::Constant* alphaProjMatrixConstant;
-		PGE::Shader::Constant* alphaViewMatrixConstant;
-		PGE::Shader::Constant* alphaModelMatrixConstant;
+        PGE::Shader* alphaShader;
+        PGE::Shader::Constant* alphaModelMatrixConstant;
 
         std::vector<PGE::Mesh*> opaqueMeshes;
         std::vector<PGE::Mesh*> alphaMeshes;
@@ -68,17 +64,20 @@ class RM2 {
 
         RM2Error error;
 
+        static const PGE::String texturePath;
+
     public:
         RM2(GraphicsResources* gfxMgr, PGE::FileName filename);
-        ~RM2();
+        //~RM2();
 
-        RM2Error getError() const;
+        //RM2Error getError() const;
 
-        void render(Camera* cam, PGE::Matrix4x4f modelMatrix);
-        const std::vector<CollisionMesh*>& getCollisionMeshes() const;
-        const std::vector<PointLight>& getPointLights() const;
-        const std::vector<Spotlight>& getSpotlights() const;
-        const std::vector<Waypoint>& getWaypoints() const;
+        void render(PGE::Matrix4x4f modelMatrix);
+
+        //const std::vector<CollisionMesh*>& getCollisionMeshes() const;
+        //const std::vector<PointLight>& getPointLights() const;
+        //const std::vector<Spotlight>& getSpotlights() const;
+        //const std::vector<Waypoint>& getWaypoints() const;
 };
 
 #endif

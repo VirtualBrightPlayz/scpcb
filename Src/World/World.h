@@ -11,6 +11,7 @@
 #include "../Graphics/Font.h"
 #include "../Input/KeyBinds.h"
 #include "../Save/Config.h"
+#include "../Models/RM2.h"
 
 class Camera;
 class Timing;
@@ -43,8 +44,12 @@ class World {
         Menu* menuGraveyard;
 
         // TODO: Remove, these are a test.
-        Sprite* testSquare;
-        PGE::Texture* dirtymetal;
+        struct TODO_REMOVE
+        {
+            Sprite* testSquare;
+            PGE::Texture* dirtymetal;
+            RM2* rm2;
+        } todo_Remove;
 
 #ifdef DEBUG
         GUIText* mouseTxtX;
