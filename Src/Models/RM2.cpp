@@ -1,7 +1,6 @@
 #include "RM2.h"
 #include <fstream>
 #include <filesystem>
-#include <Windows.h>
 
 const PGE::FileName RM2::opaqueShaderPath = PGE::FileName::create("GFX/Shaders/RoomOpaque/");
 const PGE::FileName RM2::alphaShaderPath = PGE::FileName::create("GFX/Shaders/RoomAlpha/");
