@@ -63,7 +63,7 @@ class World {
 
         FPSCounter* fps;
 
-        bool isRoadRollered;
+        bool shutdownRequested;
 
         //-- Update/Draw code.
 

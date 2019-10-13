@@ -2,6 +2,7 @@ Texture2D lm0;
 Texture2D lm1;
 Texture2D lm2;
 Texture2D diff;
+Texture2D bump;
 SamplerState smp;
 
 cbuffer cbMatrices {
@@ -49,7 +50,8 @@ PS_OUTPUT PS(PS_INPUT input) {
     float4 lmColor0 = lm0.Sample(smp,input.lmUv);
     float4 lmColor1 = lm1.Sample(smp,input.lmUv);
     float4 lmColor2 = lm2.Sample(smp,input.lmUv);
-    float3 bumpColor = float3(0.0,0.0,1.0);
+    float3 bumpColor = bump.Sample(smp,input.diffUv).xyz-float3(0.5,0.5,0.0);
+    bumpColor = normalize(float3(bumpColor.x,bumpColor.y,bumpColor.z));
 
     float3 lmBasis0 = float3(-1.0/sqrt(6.0),-1.0/sqrt(2.0),1/sqrt(3.0));
     float3 lmBasis1 = float3(-1.0/sqrt(6.0),1.0/sqrt(2.0),1/sqrt(3.0));

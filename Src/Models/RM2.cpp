@@ -3,6 +3,7 @@
 #include <filesystem>
 
 const PGE::FileName RM2::opaqueShaderPath = PGE::FileName::create("GFX/Shaders/RoomOpaque/");
+const PGE::FileName RM2::opaqueNormalMapShaderPath = PGE::FileName::create("GFX/Shaders/RoomOpaqueNormalMap/");
 const PGE::FileName RM2::alphaShaderPath = PGE::FileName::create("GFX/Shaders/RoomAlpha/");
 
 const PGE::String RM2::texturePath = "GFX/Map/Textures/";
@@ -87,18 +88,21 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
 
     opaqueShader = gfxRes->getShader(opaqueShaderPath, true);
     opaqueModelMatrixConstant = opaqueShader->getVertexShaderConstant("modelMatrix");
-    alphaShader = opaqueShader;//gfxRes->getShader(alphaShaderPath, true);
+
+    opaqueNormalMapShader = gfxRes->getShader(opaqueNormalMapShaderPath, true);
+    opaqueNormalMapModelMatrixConstant = opaqueNormalMapShader->getVertexShaderConstant("modelMatrix");
+
+    //alphaShader = gfxRes->getShader(alphaShaderPath, true);
 
     PGE::Texture* lightmapTextures[3];
-    std::vector<PGE::Texture*> materialTextures;
     for (int i = 0; i < 3; i++) {
         const PGE::String lightmapSuffix = "_lm" + PGE::String(i) + ".png";
         PGE::String lightmapName = filename.str().substr(0, filename.size() - extension.size()) + lightmapSuffix;
         lightmapTextures[i] = gfxRes->getTexture(PGE::FileName::create(lightmapName));
-        materialTextures.push_back(lightmapTextures[i]);
     }
-    materialTextures.push_back(nullptr);
-    
+
+    std::vector<PGE::Texture*> materialTextures;
+
     for (int i = 0; i < (int)textureCount.u; i++) {
         PGE::String textureName = readByteString(inFile);
 
@@ -112,11 +116,34 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
         char flag = 0;
         inFile.read(&flag, 1);
 
-        materialTextures[3] = texture;
-        
         bool isOpaque = (TextureLoadFlag)flag == TextureLoadFlag::Opaque;
 
-        PGE::Material* material = new PGE::Material(isOpaque ? opaqueShader : alphaShader, materialTextures, isOpaque);
+        PGE::Shader* shader = alphaShader;
+        if (isOpaque) {
+            PGE::FileName normalMapFileName = PGE::FileName::create(texturePath + textureName + "_n.jpg");
+            if (!normalMapFileName.exists()) {
+                normalMapFileName = PGE::FileName::create(texturePath + textureName + "_n.png");
+            }
+
+            if (normalMapFileName.exists()) {
+                materialTextures.resize(5);
+                materialTextures[4] = gfxRes->getTexture(normalMapFileName);
+                shader = opaqueNormalMapShader;
+            } else {
+                materialTextures.resize(4);
+                shader = opaqueShader;
+            }
+
+            materialTextures[0] = lightmapTextures[0];
+            materialTextures[1] = lightmapTextures[1];
+            materialTextures[2] = lightmapTextures[2];
+            materialTextures[3] = texture;
+        } else {
+            materialTextures.resize(1);
+            materialTextures[0] = texture;
+        }
+
+        PGE::Material* material = new PGE::Material(shader, materialTextures, isOpaque);
 
         materials.push_back(material);
     }
@@ -273,6 +300,7 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
 
 void RM2::render(PGE::Matrix4x4f modelMatrix) {
     opaqueModelMatrixConstant->setValue(modelMatrix);
+    opaqueNormalMapModelMatrixConstant->setValue(modelMatrix);
     for (int i = 0; i < opaqueMeshes.size(); i++) {
         opaqueMeshes[i]->render();
     }

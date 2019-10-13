@@ -42,6 +42,7 @@ enum class RM2Error {
 class RM2 {
     private:
         const static PGE::FileName opaqueShaderPath;
+        const static PGE::FileName opaqueNormalMapShaderPath;
         const static PGE::FileName alphaShaderPath;
 
         std::vector<PGE::Material*> materials;
@@ -50,6 +51,9 @@ class RM2 {
 
         PGE::Shader* opaqueShader;
         PGE::Shader::Constant* opaqueModelMatrixConstant;
+
+        PGE::Shader* opaqueNormalMapShader;
+        PGE::Shader::Constant* opaqueNormalMapModelMatrixConstant;
 
         PGE::Shader* alphaShader;
         PGE::Shader::Constant* alphaModelMatrixConstant;
