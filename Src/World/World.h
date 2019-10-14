@@ -12,6 +12,8 @@
 #include "../Input/KeyBinds.h"
 #include "../Save/Config.h"
 #include "../Models/RM2.h"
+#include "../PlayerController/PlayerController.h"
+#include "../Collision/CollisionMeshCollection.h"
 
 class Camera;
 class Timing;
@@ -44,11 +46,12 @@ class World {
         Menu* menuGraveyard;
 
         // TODO: Remove, these are a test.
-        struct TODO_REMOVE
-        {
+        struct {
             Sprite* testSquare;
             PGE::Texture* dirtymetal;
             RM2* rm2;
+            PlayerController* playerController;
+            CollisionMeshCollection* collisionMeshCollection;
         } todo_Remove;
 
 #ifdef DEBUG

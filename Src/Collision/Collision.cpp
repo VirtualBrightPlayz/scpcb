@@ -31,7 +31,7 @@ using namespace PGE;
 
 static const float COLLISION_EPSILON = 0.001f;
 
-Collision::Collision() {}
+Collision::Collision() { coveredAmount = 1.0f; hit = false; }
 
 Collision::Collision(const Collision& other) {
     line = other.line;
@@ -45,44 +45,44 @@ Collision Collision::update(const Line3f& line,float t,const Vector3f& n) {
     Collision retVal;
     retVal.hit = false;
 
-    if (t<0.f || t>1.f) { return retVal; }
+	if (t<0.f || t>1.f) { return retVal; }
 
-    Plane p = Plane(n,line.pointB.subtract(line.pointA).multiply(t).add(line.pointA));
-    if (p.normal.dotProduct(line.pointB.subtract(line.pointA))>=0) { return retVal; }
-    if (p.evalAtPoint(line.pointA)<-COLLISION_EPSILON) { return retVal; }
+	Plane p = Plane(n,line.pointB.subtract(line.pointA).multiply(t).add(line.pointA));
+	if (p.normal.dotProduct(line.pointB.subtract(line.pointA))>=0) { return retVal; }
+	if (p.evalAtPoint(line.pointA)<-COLLISION_EPSILON) { return retVal; }
 
     retVal.line = line;
     retVal.coveredAmount = t;
-    retVal.normal = n.normalize();
+	retVal.normal = n.normalize();
     retVal.surfaceNormal = retVal.normal;
-    retVal.hit = true;
-    return retVal;
+	retVal.hit = true;
+	return retVal;
 }
 
 Collision Collision::sphereCollide(const Line3f& line,float radius,const Vector3f& otherPos,float other_radius) {
     Collision retVal;
     retVal.hit = false;
 
-    radius+=other_radius;
-    //Line3f l = Line3f(line.pointA.subtract(otherPos),line.pointB.subtract(otherPos));
+	radius+=other_radius;
+	//Line3f l = Line3f(line.pointA.subtract(otherPos),line.pointB.subtract(otherPos));
     Vector3f lineDir = line.pointB.subtract(line.pointA);
 
-    float a=lineDir.dotProduct(lineDir);
-    if (fabs(a)<COLLISION_EPSILON) { return retVal; }
-    float b=line.pointA.dotProduct(lineDir)*2;
-    float c=line.pointA.dotProduct(line.pointA)-radius*radius;
-    float d=b*b-4*a*c;
-    if (d<0) { return retVal; }
+	float a=lineDir.dotProduct(lineDir);
+	if (fabs(a)<COLLISION_EPSILON) { return retVal; }
+	float b=line.pointA.dotProduct(lineDir)*2;
+	float c=line.pointA.dotProduct(line.pointA)-radius*radius;
+	float d=b*b-4*a*c;
+	if (d<0) { return retVal; }
 
-    float t1=(-b+sqrt(d))/(2*a);
-    float t2=(-b-sqrt(d))/(2*a);
+	float t1=(-b+sqrt(d))/(2*a);
+	float t2=(-b-sqrt(d))/(2*a);
 
-    float t=t1<t2 ? t1 : t2;
+	float t=t1<t2 ? t1 : t2;
 
-    if (t<0.f || t>1.f) { return retVal; }
+	if (t<0.f || t>1.f) { return retVal; }
 
     if (line.pointA.add(lineDir.multiply(t)).length()<COLLISION_EPSILON) { return retVal; }
-    return update(line,t,line.pointA.add(lineDir.multiply(t)).normalize());
+	return update(line,t,line.pointA.add(lineDir.multiply(t)).normalize());
 }
 
 //v0,v1 = edge verts
@@ -105,40 +105,40 @@ Collision Collision::edgeTest(const Vector3f& v0,const Vector3f& v1,const Vector
     Vector3f dv = line.pointB.subtract(v0);
     dv = Vector3f(dv.dotProduct(tm0),dv.dotProduct(tm1),dv.dotProduct(tm2)).subtract(sv);
 
-    //do cylinder test...
-    float a,b,c,d,t1,t2,t;
-    a=(dv.x*dv.x+dv.z*dv.z);
-    if( !a ) { return retVal; }                    //ray parallel to cylinder
-    b=(sv.x*dv.x+sv.z*dv.z)*2;
-    c=(sv.x*sv.x+sv.z*sv.z)-radius*radius;
-    d=b*b-4*a*c;
-    if( d<0 ) { return retVal; }                    //ray misses cylinder
-    t1=(-b+sqrt(d))/(2*a);
-    t2=(-b-sqrt(d))/(2*a);
-    t=t1<t2 ? t1 : t2;
-    if( t>1.f ) { return retVal; }    //intersects too far away
-    Vector3f i=sv.add(dv.multiply(t)),p=Vector3f::zero;
-    if( i.y>v0.distance(v1) ) { return retVal; }    //intersection above cylinder
-    if( i.y>=0 ){
-        p.y=i.y;
-    }else{
-        //below bottom of cylinder...do sphere test...
-        a=dv.dotProduct(dv);
-        if( !a ) { return retVal; }                //ray parallel to sphere
-        b=sv.dotProduct(dv)*2;
-        c=sv.dotProduct(sv)-radius*radius;
-        d=b*b-4*a*c;
-        if( d<0 ) { return retVal; }                //ray misses sphere
-        t1=(-b+sqrt(d))/(2*a);
-        t2=(-b-sqrt(d))/(2*a);
-        t=t1<t2 ? t1 : t2;
-        if( t>1.f ) { return retVal; }
-        i=sv.add(dv.multiply(t));
-    }
+	//do cylinder test...
+	float a,b,c,d,t1,t2,t;
+	a=(dv.x*dv.x+dv.z*dv.z);
+	if( !a ) { return retVal; }					//ray parallel to cylinder
+	b=(sv.x*dv.x+sv.z*dv.z)*2;
+	c=(sv.x*sv.x+sv.z*sv.z)-radius*radius;
+	d=b*b-4*a*c;
+	if( d<0 ) { return retVal; }					//ray misses cylinder
+	t1=(-b+sqrt(d))/(2*a);
+	t2=(-b-sqrt(d))/(2*a);
+	t=t1<t2 ? t1 : t2;
+	if( t>1.f ) { return retVal; }	//intersects too far away
+	Vector3f i=sv.add(dv.multiply(t)),p=Vector3f::zero;
+	if( i.y>v0.distance(v1) ) { return retVal; }	//intersection above cylinder
+	if( i.y>=0 ){
+		p.y=i.y;
+	}else{
+		//below bottom of cylinder...do sphere test...
+		a=dv.dotProduct(dv);
+		if( !a ) { return retVal; }				//ray parallel to sphere
+		b=sv.dotProduct(dv)*2;
+		c=sv.dotProduct(sv)-radius*radius;
+		d=b*b-4*a*c;
+		if( d<0 ) { return retVal; }				//ray misses sphere
+		t1=(-b+sqrt(d))/(2*a);
+		t2=(-b-sqrt(d))/(2*a);
+		t=t1<t2 ? t1 : t2;
+		if( t>1.f ) { return retVal; }
+		i=sv.add(dv.multiply(t));
+	}
 
-    Vector3f n = i.subtract(p);
-    n = Vector3f(n.dotProduct(tm0Transposed),n.dotProduct(tm1Transposed),n.dotProduct(tm2Transposed));
-    return update(line,t,n);
+	Vector3f n = i.subtract(p);
+	n = Vector3f(n.dotProduct(tm0Transposed),n.dotProduct(tm1Transposed),n.dotProduct(tm2Transposed));
+	return update(line,t,n);
 }
 
 Collision Collision::triangleCollide(const PGE::Line3f& line,float radius,const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& v2) {

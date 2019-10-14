@@ -125,6 +125,7 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
   <ItemGroup>
     <ClInclude Include="..\Src\Collision\Collision.h" />
     <ClInclude Include="..\Src\Collision\CollisionMesh.h" />
+    <ClInclude Include="..\Src\Collision\CollisionMeshCollection.h" />
     <ClInclude Include="..\Src\Graphics\Camera.h" />
     <ClInclude Include="..\Src\Graphics\Font.h" />
     <ClInclude Include="..\Src\Graphics\GraphicsResources.h" />
@@ -161,6 +162,7 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
   <ItemGroup>
     <ClCompile Include="..\Src\Collision\Collision.cpp" />
     <ClCompile Include="..\Src\Collision\CollisionMesh.cpp" />
+    <ClCompile Include="..\Src\Collision\CollisionMeshCollection.cpp" />
     <ClCompile Include="..\Src\Graphics\Camera.cpp" />
     <ClCompile Include="..\Src\Graphics\Font.cpp" />
     <ClCompile Include="..\Src\Graphics\GraphicsResources.cpp" />

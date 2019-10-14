@@ -4,6 +4,7 @@
 #include <Math/Vector.h>
 #include "../Collision/Collision.h"
 #include "../Collision/CollisionMesh.h"
+#include "../Collision/CollisionMeshCollection.h"
 #include "../Input/Input.h"
 
 class PlayerController {
@@ -12,7 +13,7 @@ class PlayerController {
     
         bool noclip;
     
-        void setCollisionMeshes(std::vector<CollisionMesh*> meshes);
+        void setCollisionMeshCollection(CollisionMeshCollection* collection);
         void update(float angle, float angleY, Input input);
 
         PGE::Vector3f getPosition() const;
@@ -20,8 +21,7 @@ class PlayerController {
 
         float getCamAnimState() const;
     private:
-        std::vector<CollisionMesh*> collisionMeshes;
-        Collision checkCollision(PGE::Line3f line);
+        CollisionMeshCollection* collisionMeshCollection;
 
         float radius;
         float cameraHeight;

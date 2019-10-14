@@ -124,6 +124,9 @@
     <ClInclude Include="..\Src\Menus\Menu.h">
       <Filter>Src\Menus</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\Collision\CollisionMeshCollection.h">
+      <Filter>Src\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SCPCB.rc">
@@ -219,6 +222,9 @@
     </ClCompile>
     <ClCompile Include="..\Src\Menus\Menu.cpp">
       <Filter>Src\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Collision\CollisionMeshCollection.cpp">
+      <Filter>Src\Collision</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

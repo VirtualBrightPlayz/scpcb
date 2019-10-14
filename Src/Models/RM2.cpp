@@ -2,6 +2,8 @@
 #include <fstream>
 #include <filesystem>
 
+#include <Math/Matrix.h>
+
 const PGE::FileName RM2::opaqueShaderPath = PGE::FileName::create("GFX/Shaders/RoomOpaque/");
 const PGE::FileName RM2::opaqueNormalMapShaderPath = PGE::FileName::create("GFX/Shaders/RoomOpaqueNormalMap/");
 const PGE::FileName RM2::alphaShaderPath = PGE::FileName::create("GFX/Shaders/RoomAlpha/");
@@ -42,6 +44,8 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
 
     std::ifstream inFile;
     inFile.open(filename.cstr(), std::ios_base::in | std::ios_base::binary);
+
+    //PGE::Matrix4x4f TODO_REMOVE = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f::one.multiply(3.f), PGE::Vector3f::one.multiply(0.1f), PGE::Vector3f::zero);
 
     union IntBytes {
         int i;
@@ -181,6 +185,7 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
                     inFile.read(inZ.c, 4);
 
                     PGE::Vector4f position = PGE::Vector4f(inX.f, inY.f, inZ.f, 1.f);
+                    //position = TODO_REMOVE.transform(position);
 
                     FloatBytes inDiffU;
                     FloatBytes inDiffV;
@@ -310,4 +315,8 @@ void RM2::render(PGE::Matrix4x4f modelMatrix) {
     for (int i = 0; i < alphaMeshes.size(); i++) {
         alphaMeshes[i]->render();
     }*/
+}
+
+const std::vector<CollisionMesh*>& RM2::getCollisionMeshes() const {
+    return collisionMeshes;
 }

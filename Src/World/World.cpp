@@ -140,8 +140,14 @@ void World::runTick(float timeStep, Input input) {
     mousePosition.y -= GUIComponent::SCALE_MAGNITUDE;
 
 #ifdef DEBUG
-    mouseTxtX->text = PGE::String("MouseX: ", PGE::String(mousePosition.x));
-    mouseTxtY->text = PGE::String("MouseY: ", PGE::String(mousePosition.y));
+    Collision coll = todo_Remove.collisionMeshCollection->checkCollision(PGE::Line3f(PGE::Vector3f(0.0f, 30.0f, 0.0f), PGE::Vector3f(0.0f, 30.0f, 0.0f).add(camera->getRotationMatrix().transform(PGE::Vector3f(0.f,0.f,1000.f)))), 5.f);
+
+    PGE::Vector4f vec4 = PGE::Vector4f::one;
+    PGE::Matrix4x4f mat = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(0.f,0.f,1.f), PGE::Vector3f(0.1f,0.1f,0.1f), PGE::Vector3f::zero);
+    vec4 = mat.transform(vec4);
+
+    mouseTxtX->text = PGE::String(vec4.x)+" "+PGE::String(vec4.y)+" "+PGE::String(vec4.z)+" "+PGE::String(vec4.w);//PGE::String("MouseX: ", PGE::String(mousePosition.x));
+    mouseTxtY->text = coll.hit ? PGE::String(coll.coveredAmount) : "1.0f";//PGE::String("MouseY: ", PGE::String(mousePosition.y));
 #endif
 
     // If a menu is in the graveyard then remove it.
@@ -214,7 +220,14 @@ void World::updatePlaying(float timeStep, Input input) {
 
     todo_Remove.testSquare->addRotation(5.f * timeStep);
     todo_Remove.testSquare->update();
+
+    todo_Remove.playerController->update(camera->getYawAngle(), camera->getPitchAngle(), Input::Forward | Input::Sprint);
+
+    //PGE::Line3f line = PGE::Line3f(PGE::Vector3f(0.0f, 30.0f, 0.0f), PGE::Vector3f(0.0f, 30.0f, 0.0f).add(camera->getRotationMatrix().transform(PGE::Vector3f(0.f,0.f,1000.f))));
+    //Collision coll = todo_Remove.collisionMeshCollection->checkCollision(line, 5.f);
     
+    camera->setPosition(todo_Remove.playerController->getPosition().add(PGE::Vector3f(0.f,10.f,0.f)));
+
     // View/Projection matrix.
     camera->update();
 }
@@ -223,9 +236,11 @@ void World::drawPlaying() {
     gfxRes->setCameraUniforms(camera);
     
     PGE::Matrix4x4f rm2Matrix;
-    for (int i = -20; i <= 20; i++) {
-        for (int j = -20; j <= 20; j++) {
-            rm2Matrix = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(i * (2048.f * 0.01f) - 2.3f, -1.f, j * (2048.f * 0.01f) - 7.f), PGE::Vector3f::one.multiply(0.01f), PGE::Vector3f::zero);
+    rm2Matrix = PGE::Matrix4x4f::identity;
+
+    for (int x=-1; x<=1; x++) {
+        for (int y=-1; y<=1; y++) {
+            rm2Matrix = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f((float)x * 204.8f, 0.0f, (float)y * 204.8f), PGE::Vector3f::one.multiply(0.1f), PGE::Vector3f::zero);
 
             todo_Remove.rm2->render(rm2Matrix);
         }
@@ -241,6 +256,17 @@ void World::loadPlaying() {
     todo_Remove.testSquare->setRotation(0.5f);
     todo_Remove.testSquare->setScale(1.f);
     todo_Remove.rm2 = new RM2(gfxRes, PGE::FileName::create("GFX/Map/Rooms/EntranceZone/hll_plain_4/hll_plain_4.rm2"));
+    todo_Remove.collisionMeshCollection = new CollisionMeshCollection();
+    for (int i=0; i<todo_Remove.rm2->getCollisionMeshes().size(); i++) {
+        for (int x=-1; x<=1; x++) {
+            for (int y=-1; y<=1; y++) {
+                todo_Remove.collisionMeshCollection->addInstance(todo_Remove.rm2->getCollisionMeshes()[i], PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f((float)x * 204.8f, 0.0f, (float)y * 204.8f), PGE::Vector3f::one.multiply(0.1f), PGE::Vector3f::zero));
+            }
+        }
+    }
+    todo_Remove.playerController = new PlayerController(5.f, 100.f);
+    todo_Remove.playerController->setPosition(PGE::Vector3f(0.f,40.f,0.f));
+    todo_Remove.playerController->setCollisionMeshCollection(todo_Remove.collisionMeshCollection);
 }
 
 void World::destroyPlaying() {

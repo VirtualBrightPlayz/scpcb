@@ -36,19 +36,19 @@ struct Collision {
     PGE::Vector3f surfaceNormal;
     float coveredAmount;
 
-    Collision();
+	Collision();
     Collision(const Collision& other);
 
-    static Collision edgeTest(const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& pn,const PGE::Vector3f& en,const PGE::Line3f& line,float radius);
+	static Collision edgeTest(const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& pn,const PGE::Vector3f& en,const PGE::Line3f& line,float radius);
 
-    static Collision update(const PGE::Line3f& line,float t,const PGE::Vector3f& n);
+	static Collision update(const PGE::Line3f& line,float t,const PGE::Vector3f& n);
 
-    static Collision sphereCollide(const PGE::Line3f& line,float radius,const PGE::Vector3f& otherPos,float other_radius);
-    //void sphereCollide(const PGE::Line3f& line,float radius,const PGE::Vector3f& otherPos,const PGE::Vector3f& radii);
+	static Collision sphereCollide(const PGE::Line3f& line,float radius,const PGE::Vector3f& otherPos,float other_radius);
+	//void sphereCollide(const PGE::Line3f& line,float radius,const PGE::Vector3f& otherPos,const PGE::Vector3f& radii);
 
-    static Collision triangleCollide(const PGE::Line3f& line,float radius,const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& v2);
+	static Collision triangleCollide(const PGE::Line3f& line,float radius,const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& v2);
 
-    //void boxCollide(const PGE::Line3f& src_line,float src_radius,const PGE::AABBox& box);
+	//void boxCollide(const PGE::Line3f& src_line,float src_radius,const PGE::AABBox& box);
 };
 
 #endif

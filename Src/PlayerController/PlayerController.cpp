@@ -13,12 +13,15 @@ PlayerController::PlayerController(float r, float camHeight) {
     currWalkSpeed = 0.f;
     blinkTimer = 0.f;
     stamina = 1.f;
+    fallSpeed = 0.f;
+
+    collisionMeshCollection = nullptr;
     
     noclip = false;
 }
 
-void PlayerController::setCollisionMeshes(std::vector<CollisionMesh*> meshes) {
-    collisionMeshes = meshes;
+void PlayerController::setCollisionMeshCollection(CollisionMeshCollection* collection) {
+    collisionMeshCollection = collection;
 }
 
 Vector3f PlayerController::getPosition() const {
@@ -84,25 +87,12 @@ float PlayerController::getClampedStamina() const {
     return stamina;
 }
 
-Collision PlayerController::checkCollision(Line3f line) {
-    Collision retVal; retVal.hit = false;
-    for (int i=0;i<collisionMeshes.size();i++) {
-        Collision coll = collisionMeshes[i]->checkCollision(line,radius);
-        if (coll.hit) {
-            if (!retVal.hit || retVal.coveredAmount>coll.coveredAmount) {
-                retVal = coll;
-            }
-        }
-    }
-    return retVal;
-}
-
 void PlayerController::applyGravity() {
     int iterations = 0;
     fallSpeed += GRAVITY;
     Line3f line = Line3f(position,position.add(Vector3f(0.f,-fallSpeed-(currWalkSpeed*2.f),0.f)));
     while (true) {
-        Collision coll = checkCollision(line);
+        Collision coll = collisionMeshCollection->checkCollision(line, radius);
         if (coll.hit) {
             Vector3f resultPos = line.pointA.add(line.pointB.subtract(line.pointA).multiply(coll.coveredAmount*0.995f));
             if (iterations == 0) {
@@ -155,7 +145,7 @@ void PlayerController::walk(Vector2f dir) {
     Vector3f targetDir = line.pointB.subtract(line.pointA).normalize();
     Vector3f currDir = targetDir;
     while (true) {
-        Collision coll = checkCollision(line);
+        Collision coll = collisionMeshCollection->checkCollision(line, radius);
         if (coll.hit) {
             Vector3f resultPos = line.pointA.add(line.pointB.subtract(line.pointA).multiply(coll.coveredAmount*0.995f));
             if (resultPos.distanceSquared(position)<0.0001f) {
