@@ -140,14 +140,8 @@ void World::runTick(float timeStep, Input input) {
     mousePosition.y -= GUIComponent::SCALE_MAGNITUDE;
 
 #ifdef DEBUG
-    Collision coll = todo_Remove.collisionMeshCollection->checkCollision(PGE::Line3f(PGE::Vector3f(0.0f, 30.0f, 0.0f), PGE::Vector3f(0.0f, 30.0f, 0.0f).add(camera->getRotationMatrix().transform(PGE::Vector3f(0.f,0.f,1000.f)))), 5.f);
-
-    PGE::Vector4f vec4 = PGE::Vector4f::one;
-    PGE::Matrix4x4f mat = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(0.f,0.f,1.f), PGE::Vector3f(0.1f,0.1f,0.1f), PGE::Vector3f::zero);
-    vec4 = mat.transform(vec4);
-
-    mouseTxtX->text = PGE::String(vec4.x)+" "+PGE::String(vec4.y)+" "+PGE::String(vec4.z)+" "+PGE::String(vec4.w);//PGE::String("MouseX: ", PGE::String(mousePosition.x));
-    mouseTxtY->text = coll.hit ? PGE::String(coll.coveredAmount) : "1.0f";//PGE::String("MouseY: ", PGE::String(mousePosition.y));
+    mouseTxtX->text = PGE::String("MouseX: ", PGE::String(mousePosition.x));
+    mouseTxtY->text = PGE::String("MouseY: ", PGE::String(mousePosition.y));
 #endif
 
     // If a menu is in the graveyard then remove it.
@@ -238,8 +232,8 @@ void World::drawPlaying() {
     PGE::Matrix4x4f rm2Matrix;
     rm2Matrix = PGE::Matrix4x4f::identity;
 
-    for (int x=-1; x<=1; x++) {
-        for (int y=-1; y<=1; y++) {
+    for (int x=-4; x<=4; x++) {
+        for (int y=-4; y<=4; y++) {
             rm2Matrix = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f((float)x * 204.8f, 0.0f, (float)y * 204.8f), PGE::Vector3f::one.multiply(0.1f), PGE::Vector3f::zero);
 
             todo_Remove.rm2->render(rm2Matrix);
@@ -258,8 +252,8 @@ void World::loadPlaying() {
     todo_Remove.rm2 = new RM2(gfxRes, PGE::FileName::create("GFX/Map/Rooms/EntranceZone/hll_plain_4/hll_plain_4.rm2"));
     todo_Remove.collisionMeshCollection = new CollisionMeshCollection();
     for (int i=0; i<todo_Remove.rm2->getCollisionMeshes().size(); i++) {
-        for (int x=-1; x<=1; x++) {
-            for (int y=-1; y<=1; y++) {
+        for (int x=-4; x<=4; x++) {
+            for (int y=-4; y<=4; y++) {
                 todo_Remove.collisionMeshCollection->addInstance(todo_Remove.rm2->getCollisionMeshes()[i], PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f((float)x * 204.8f, 0.0f, (float)y * 204.8f), PGE::Vector3f::one.multiply(0.1f), PGE::Vector3f::zero));
             }
         }
