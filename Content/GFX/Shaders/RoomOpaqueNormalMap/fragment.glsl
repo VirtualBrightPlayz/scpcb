@@ -27,7 +27,7 @@ void main() {
     vec3 lmBasis2 = vec3(sqrt(2.0 / 3.0), 0.0, 1 / sqrt(3.0));
 
     vec4 lmColor = lmColor0 * dot(lmBasis0, bumpColor) + lmColor1 * dot(lmBasis1, bumpColor) + lmColor2 * dot(lmBasis2, bumpColor);
-    lmColor = float4(lmColor.x, lmColor.y, lmColor.z, 1.0f);
+    lmColor = vec4(lmColor.x, lmColor.y, lmColor.z, 1.0f);
 
     outColor = diffColor * lmColor;
 }
