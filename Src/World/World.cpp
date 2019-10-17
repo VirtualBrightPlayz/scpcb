@@ -249,7 +249,7 @@ void World::loadPlaying() {
     todo_Remove.testSquare->setPosition(0.f, 0.f, 2.f);
     todo_Remove.testSquare->setRotation(0.5f);
     todo_Remove.testSquare->setScale(1.f);
-    todo_Remove.rm2 = new RM2(gfxRes, PGE::FileName::create("GFX/Map/Rooms/EntranceZone/hll_plain_4/hll_plain_4.rm2"));
+    todo_Remove.rm2 = new RM2(gfxRes, PGE::String("GFX/Map/Rooms/EntranceZone/hll_plain_4/hll_plain_4.rm2"));
     todo_Remove.collisionMeshCollection = new CollisionMeshCollection();
     for (int i=0; i<todo_Remove.rm2->getCollisionMeshes().size(); i++) {
         for (int x=-4; x<=4; x++) {

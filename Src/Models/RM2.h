@@ -71,7 +71,7 @@ class RM2 {
         static const PGE::String texturePath;
 
     public:
-        RM2(GraphicsResources* gfxMgr, PGE::FileName filename);
+        RM2(GraphicsResources* gfxMgr, const PGE::String& filename);
         //~RM2();
 
         //RM2Error getError() const;

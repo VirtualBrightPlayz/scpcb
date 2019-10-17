@@ -9,12 +9,11 @@ uniform sampler2D lm0;
 uniform sampler2D lm1;
 uniform sampler2D lm2;
 uniform sampler2D diff;
-uniform sampler2D bump
+uniform sampler2D bump;
 
 out vec4 outColor;
 
 void main() {
-    texture(tex0, fsTexCoords)
     vec4 diffColor = texture(diff, fsDiffUV) * 2;
     vec4 lmColor0 = texture(lm0, fsLmUV);
     vec4 lmColor1 = texture(lm1, fsLmUV);
