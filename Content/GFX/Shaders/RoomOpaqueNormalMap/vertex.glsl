@@ -2,8 +2,8 @@
 
 in vec4 position;
 in vec3 normal;
-in vec2 diffUV;
-in vec2 lmUV;
+in vec2 diffUv;
+in vec2 lmUv;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
@@ -16,9 +16,9 @@ out vec2 fsLmUV;
 
 void main() {
     worldPos = modelMatrix * position;
-    gl_Position = projectionMatrix * viewModel * worldPos;
+    gl_Position = projectionMatrix * viewMatrix * worldPos;
 
     fsNormal = (modelMatrix * vec4(normal, 0.0f)).xyz;
-    fsDiffUV = diffUV;
-    fsLmUV = lmUV;
+    fsDiffUV = diffUv;
+    fsLmUV = lmUv;
 }

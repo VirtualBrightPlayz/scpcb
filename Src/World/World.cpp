@@ -34,7 +34,7 @@ World::World() {
     uiMesh = new UIMesh(gfxRes);
     keyBinds = new KeyBinds(io);
 
-    camera = new Camera(gfxRes, config->getAspectRatio());
+    camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
 
     currMenu = nullptr;
     menuGraveyard = nullptr;
@@ -99,7 +99,7 @@ bool World::run() {
     if (shutdownRequested) {
         return false;
     }
-    
+
     keyBinds->update();
     Input input = keyBinds->getFiredInputs();
 
@@ -156,7 +156,7 @@ void World::runTick(float timeStep, Input input) {
     } else {
         currMenu->update(mousePosition);
     }
-    
+
     if (keyBinds->escape->isHit()) {
         // If a text input is active then escape de-selects it.
         // Unless it's the console's input.
@@ -219,7 +219,7 @@ void World::updatePlaying(float timeStep, Input input) {
 
     //PGE::Line3f line = PGE::Line3f(PGE::Vector3f(0.0f, 30.0f, 0.0f), PGE::Vector3f(0.0f, 30.0f, 0.0f).add(camera->getRotationMatrix().transform(PGE::Vector3f(0.f,0.f,1000.f))));
     //Collision coll = todo_Remove.collisionMeshCollection->checkCollision(line, 5.f);
-    
+
     camera->setPosition(todo_Remove.playerController->getPosition().add(PGE::Vector3f(0.f,10.f,0.f)));
 
     // View/Projection matrix.
@@ -228,7 +228,7 @@ void World::updatePlaying(float timeStep, Input input) {
 
 void World::drawPlaying() {
     gfxRes->setCameraUniforms(camera);
-    
+
     PGE::Matrix4x4f rm2Matrix;
     rm2Matrix = PGE::Matrix4x4f::identity;
 
@@ -249,7 +249,7 @@ void World::loadPlaying() {
     todo_Remove.testSquare->setPosition(0.f, 0.f, 2.f);
     todo_Remove.testSquare->setRotation(0.5f);
     todo_Remove.testSquare->setScale(1.f);
-    todo_Remove.rm2 = new RM2(gfxRes, PGE::FileName::create("GFX/Map/Rooms/EntranceZone/hll_plain_4/hll_plain_4.rm2"));
+    todo_Remove.rm2 = new RM2(gfxRes, PGE::String("GFX/Map/Rooms/EntranceZone/hll_plain_4/hll_plain_4.rm2"));
     todo_Remove.collisionMeshCollection = new CollisionMeshCollection();
     for (int i=0; i<todo_Remove.rm2->getCollisionMeshes().size(); i++) {
         for (int x=-4; x<=4; x++) {

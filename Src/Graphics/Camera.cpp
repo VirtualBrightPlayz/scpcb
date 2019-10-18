@@ -4,7 +4,7 @@
 #include "../Utils/MathUtil.h"
 #include "GraphicsResources.h"
 
-Camera::Camera(GraphicsResources* gr, float aspectRatio, float fov) {
+Camera::Camera(GraphicsResources* gr, int w, int h, float fov, float nearZ, float farZ, bool orthographic) {
     gfxRes = gr;
 
     position = PGE::Vector3f(0.f, 0.f, 0.f);
@@ -18,10 +18,12 @@ Camera::Camera(GraphicsResources* gr, float aspectRatio, float fov) {
     pitchAngleLimit = MathUtil::PI / 2.f;
     tilt = 0.f;
 
-    float nearZ = 0.01f;
-    float farZ = 25.f;
+    this->nearPlaneZ = nearZ;
+    this->farPlaneZ = farZ;
     this->fov = fov;
-    projectionMatrix = PGE::Matrix4x4f::constructPerspectiveMat(fov, aspectRatio, nearZ, farZ);
+    this->width = w;
+    this->height = h;
+    this->orthographicProj = orthographic;
 
     rotation = PGE::Matrix4x4f::identity;
 
@@ -29,7 +31,7 @@ Camera::Camera(GraphicsResources* gr, float aspectRatio, float fov) {
     needsProjUpdate = true;
 }
 
-Camera::Camera(GraphicsResources* gr, float aspectRatio) : Camera(gr, aspectRatio, MathUtil::degToRad(70.0f)) { }
+Camera::Camera(GraphicsResources* gr, int w, int h) : Camera(gr, w, h, MathUtil::degToRad(70.0f)) { }
 
 void Camera::update() {
     if (needsViewUpdate) {
@@ -41,8 +43,18 @@ void Camera::update() {
     }
 
     if (needsProjUpdate) {
+        if (!orthographicProj) {
+            projectionMatrix = PGE::Matrix4x4f::constructPerspectiveMat(fov, getAspectRatio(), nearPlaneZ, farPlaneZ);
+        } else {
+            projectionMatrix = PGE::Matrix4x4f::constructOrthographicMat(width, height, nearPlaneZ, farPlaneZ);
+        }
+
         needsProjUpdate = false;
     }
+}
+
+float Camera::getAspectRatio() const {
+    return (float)width / height;
 }
 
 void Camera::setPosition(const PGE::Vector3f pos) {

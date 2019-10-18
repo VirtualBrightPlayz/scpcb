@@ -17,7 +17,13 @@ class Camera {
         float pitchAngleLimit;
         float tilt;
 
+        float nearPlaneZ;
+        float farPlaneZ;
+        int width;
+        int height;
         float fov;
+        // Perspective or Orthographic matrix.
+        bool orthographicProj;
 
         bool needsViewUpdate;
         bool needsProjUpdate;
@@ -30,9 +36,11 @@ class Camera {
         PGE::Matrix4x4f projectionMatrix;
         PGE::Matrix4x4f rotation;
 
+        float getAspectRatio() const;
+
     public:
-        Camera(GraphicsResources* gr, float aspectRatio, float fov);
-        Camera(GraphicsResources* gr, float aspectRatio);
+        Camera(GraphicsResources* gr, int w, int h, float fov, float nearZ = 0.01f, float farZ = 30.f, bool orthographic = false);
+        Camera(GraphicsResources* gr, int w, int h);
 
         void update();
 

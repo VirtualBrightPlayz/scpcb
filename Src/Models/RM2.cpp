@@ -39,11 +39,11 @@ static PGE::String readByteString(std::ifstream& inFile) {
     return retVal;
 }
 
-RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
+RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     graphicsResources = gfxRes;
 
     std::ifstream inFile;
-    inFile.open(filename.cstr(), std::ios_base::in | std::ios_base::binary);
+    inFile.open(PGE::FileName::create(filename).cstr(), std::ios_base::in | std::ios_base::binary);
 
     //PGE::Matrix4x4f TODO_REMOVE = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f::one.multiply(3.f), PGE::Vector3f::one.multiply(0.1f), PGE::Vector3f::zero);
 
@@ -101,7 +101,7 @@ RM2::RM2(GraphicsResources* gfxRes, PGE::FileName filename) {
     PGE::Texture* lightmapTextures[3];
     for (int i = 0; i < 3; i++) {
         const PGE::String lightmapSuffix = "_lm" + PGE::String(i) + ".png";
-        PGE::String lightmapName = filename.str().substr(0, filename.size() - extension.size()) + lightmapSuffix;
+        PGE::String lightmapName = filename.substr(0, filename.size() - extension.size()) + lightmapSuffix;
         lightmapTextures[i] = gfxRes->getTexture(PGE::FileName::create(lightmapName));
     }
 

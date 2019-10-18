@@ -50,6 +50,8 @@
 		19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EA822AD79A00061F643 /* Sprite.cpp */; };
 		19F17EAC22AD82940061F643 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EAB22AD82940061F643 /* Camera.cpp */; };
 		19FC31CC22C0736A00AE4011 /* KeyBinds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19FC31CB22C0736A00AE4011 /* KeyBinds.cpp */; };
+		19FC36002357DF8200F7F612 /* CollisionMeshCollection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19FC35FF2357DF8200F7F612 /* CollisionMeshCollection.cpp */; };
+		19FC36062357E05F00F7F612 /* RM2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19FC36052357E05F00F7F612 /* RM2.cpp */; };
 		19FD92E523213B5C0030BC9C /* GUITextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19FD92E423213B5C0030BC9C /* GUITextInput.cpp */; };
 /* End PBXBuildFile section */
 
@@ -166,6 +168,10 @@
 		19F17EAB22AD82940061F643 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		19FC31CA22C0736A00AE4011 /* KeyBinds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyBinds.h; sourceTree = "<group>"; };
 		19FC31CB22C0736A00AE4011 /* KeyBinds.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KeyBinds.cpp; sourceTree = "<group>"; };
+		19FC35FB2357DF8200F7F612 /* CollisionMeshCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollisionMeshCollection.h; sourceTree = "<group>"; };
+		19FC35FF2357DF8200F7F612 /* CollisionMeshCollection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionMeshCollection.cpp; sourceTree = "<group>"; };
+		19FC36042357E05F00F7F612 /* RM2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RM2.h; sourceTree = "<group>"; };
+		19FC36052357E05F00F7F612 /* RM2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RM2.cpp; sourceTree = "<group>"; };
 		19FD92E323213B5C0030BC9C /* GUITextInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GUITextInput.h; sourceTree = "<group>"; };
 		19FD92E423213B5C0030BC9C /* GUITextInput.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GUITextInput.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -243,6 +249,7 @@
 				19FC31C522C0531D00AE4011 /* Input */,
 				19C521F6231EABAE00255476 /* Items */,
 				19243C1222BC29430057054D /* Menus */,
+				19FC36032357E05F00F7F612 /* Models */,
 				191BDDAE22A846EE00270B9D /* PlayerController */,
 				1971577622BEB764003AF33E /* Save */,
 				19646FBD22A9FAA0005E027E /* World */,
@@ -288,10 +295,12 @@
 		191BDDA922A846EE00270B9D /* Collision */ = {
 			isa = PBXGroup;
 			children = (
-				191BDDAA22A846EE00270B9D /* CollisionMesh.cpp */,
-				191BDDAC22A846EE00270B9D /* CollisionMesh.h */,
 				191BDDAD22A846EE00270B9D /* Collision.cpp */,
 				191BDDAB22A846EE00270B9D /* Collision.h */,
+				191BDDAA22A846EE00270B9D /* CollisionMesh.cpp */,
+				191BDDAC22A846EE00270B9D /* CollisionMesh.h */,
+				19FC35FF2357DF8200F7F612 /* CollisionMeshCollection.cpp */,
+				19FC35FB2357DF8200F7F612 /* CollisionMeshCollection.h */,
 			);
 			path = Collision;
 			sourceTree = "<group>";
@@ -410,6 +419,15 @@
 				19FC31CA22C0736A00AE4011 /* KeyBinds.h */,
 			);
 			path = Input;
+			sourceTree = "<group>";
+		};
+		19FC36032357E05F00F7F612 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				19FC36052357E05F00F7F612 /* RM2.cpp */,
+				19FC36042357E05F00F7F612 /* RM2.h */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -536,6 +554,7 @@
 				192A67A622C43CBA009A6F1E /* GUIFrame.cpp in Sources */,
 				1968E82222F63E5400355243 /* FPSCounter.cpp in Sources */,
 				19646FC322A9FB6D005E027E /* Timing.cpp in Sources */,
+				19FC36002357DF8200F7F612 /* CollisionMeshCollection.cpp in Sources */,
 				19243C1622BC295C0057054D /* PauseMenu.cpp in Sources */,
 				191BDD9822A844FF00270B9D /* TextMgmt.cpp in Sources */,
 				191BDDB222A846EE00270B9D /* Collision.cpp in Sources */,
@@ -545,6 +564,7 @@
 				19F17EAC22AD82940061F643 /* Camera.cpp in Sources */,
 				19646FC022A9FAB4005E027E /* World.cpp in Sources */,
 				19CFE3212329A378009B37C6 /* GasMask.cpp in Sources */,
+				19FC36062357E05F00F7F612 /* RM2.cpp in Sources */,
 				19FC31CC22C0736A00AE4011 /* KeyBinds.cpp in Sources */,
 				19F15BF522F52DA90044E284 /* GraphicsResources.cpp in Sources */,
 				198F57F52335284800376771 /* Model.cpp in Sources */,
@@ -580,7 +600,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -643,7 +663,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -697,6 +717,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_ENTITLEMENTS = SCPCB/SCPCB.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -730,6 +751,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_ENTITLEMENTS = SCPCB/SCPCB.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
