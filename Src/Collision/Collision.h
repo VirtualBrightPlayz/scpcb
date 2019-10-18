@@ -48,6 +48,8 @@ struct Collision {
 
     static Collision triangleCollide(const PGE::Line3f& line,float radius,const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& v2);
 
+    static Collision triangleCollide(const PGE::Line3f& line,float radius,float height,const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& v2);
+
     //void boxCollide(const PGE::Line3f& src_line,float src_radius,const PGE::AABBox& box);
 };
 

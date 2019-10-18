@@ -194,3 +194,30 @@ Collision Collision::triangleCollide(const PGE::Line3f& line,float radius,const 
     retVal.surfaceNormal = p.normal;
     return retVal;
 }
+
+Collision Collision::triangleCollide(const Line3f& line,float radius,float height,const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& v2) {
+    Vector3f forward = line.pointB.subtract(line.pointA);
+    Vector3f upVector = Vector3f(0.f,1.f,0.f);
+
+    if (fabs(forward.dotProduct(upVector))>0.9999f) {
+        forward.x = 0.f; forward.z = 0.f;
+        Line3f newLine = Line3f(line.pointA,line.pointA.add(forward));
+
+        if (forward.y>0.f) {
+            newLine.pointA = newLine.pointA.add(-height*0.5f);
+            newLine.pointB = newLine.pointB.add(height*0.5f);
+        } else {
+            newLine.pointA = newLine.pointA.add(height*0.5f);
+            newLine.pointB = newLine.pointB.add(-height*0.5f);
+        }
+
+        return triangleCollide(newLine, radius, v0, v1, v2);
+    }
+
+    Vector3f forwardXZ = Vector3f(forward.x,0.f,forward.z).normalize().multiply(radius);
+
+    Vector3f planeNormal = upVector.crossProduct(forward).crossProduct(forward);
+
+    Plane bottomPlane = Plane(planeNormal, line.pointA.add(Vector3f(0.f,-height*0.5f,0.f)).add(forwardXZ));
+    Plane topPlane = Plane(planeNormal, line.pointA.add(Vector3f(0.f,height*0.5f,0.f)).add(forwardXZ));
+}
