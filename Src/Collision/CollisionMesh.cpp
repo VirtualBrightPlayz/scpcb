@@ -15,11 +15,13 @@ Collision CollisionMesh::checkCollision(Matrix4x4f matrix, Line3f line,float rad
     AABBox lineBox(line.pointA,line.pointB);
     lineBox.addPoint(lineBox.getMin().add(Vector3f(-radius,-radius,-radius)));
     lineBox.addPoint(lineBox.getMax().add(Vector3f(radius,radius,radius)));
+    AABBox triBox(PGE::Vector3f::zero);
     for (size_t i=0;i<indices.size()/3;i++) {
         PGE::Vector3f vert0 = matrix.transform(vertices[indices[(i*3)+0]]);
         PGE::Vector3f vert1 = matrix.transform(vertices[indices[(i*3)+1]]);
         PGE::Vector3f vert2 = matrix.transform(vertices[indices[(i*3)+2]]);
-        AABBox triBox(vert0,vert1);
+        triBox.reset(vert0);
+        triBox.addPoint(vert1);
         triBox.addPoint(vert2);
         triBox.addPoint(triBox.getMin().add(Vector3f(-0.1f,-0.1f,-0.1f)));
         triBox.addPoint(triBox.getMax().add(Vector3f(0.1f,0.1f,0.1f)));

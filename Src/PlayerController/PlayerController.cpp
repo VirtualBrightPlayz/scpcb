@@ -105,7 +105,7 @@ void PlayerController::applyGravity() {
             position = resultPos;
             if (abs(coll.normal.y)>0.71f && abs(coll.normal.y-coll.surfaceNormal.y)<0.05f) {
                 //hit a floor: stand still
-                fallSpeed = fmin(0.f,fallSpeed);
+                fallSpeed = 0.f < fallSpeed ? 0.f : fallSpeed;
                 break;
             } else {
                 if (iterations >= 5) { break; }
