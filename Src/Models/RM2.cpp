@@ -233,7 +233,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                 PGE::Mesh* mesh = PGE::Mesh::create(gfxRes->getGraphics(), PGE::Primitive::TYPE::TRIANGLE);
 
                 mesh->setMaterial(materials[textureIndex.u]);
-                mesh->setGeometry(vertices.size(), vertices, primitives.size(), primitives);
+                mesh->setGeometry((int)vertices.size(), vertices, (int)primitives.size(), primitives);
 
                 if (materials[textureIndex.u]->isOpaque())
                 {

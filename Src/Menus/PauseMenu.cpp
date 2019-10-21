@@ -20,7 +20,7 @@ PauseMenu::PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Conf
     btnY += btnSpacing;
     quit = new GUIButton(um, largeFnt, kb, con, tm, btnX, btnY, btnWidth, btnHeight, "mnu_quit");
     btnY += btnSpacing;
-    inputTest = new GUITextInput(um, largeFnt, kb, con, io, btnX, btnY, btnWidth, btnHeight, "banansunday.yogurt", 15);
+    inputTest = new GUITextInput(um, largeFnt, kb, con, io, btnX, btnY, btnWidth, btnHeight, "banansunday.yogurt");//, 15);
 
     float quitFrameWidth = 60.f;
     float quitFrameHeight = 30.f;

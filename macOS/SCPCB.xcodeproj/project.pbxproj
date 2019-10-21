@@ -20,6 +20,7 @@
 		191BDDBB22A8547E00270B9D /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 191BDDBA22A8547E00270B9D /* SDL2.framework */; };
 		191BDDBD22A854A900270B9D /* SDL2.framework in Copy Bundle Frameworks */ = {isa = PBXBuildFile; fileRef = 191BDDBA22A8547E00270B9D /* SDL2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		191BDDBF22A8551A00270B9D /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDBE22A8551A00270B9D /* Main.cpp */; };
+		1920EF7A2358AA12006867E4 /* XMLProperty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1920EF792358AA12006867E4 /* XMLProperty.cpp */; };
 		19243C1622BC295C0057054D /* PauseMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19243C1522BC295C0057054D /* PauseMenu.cpp */; };
 		1927734122A85D500055EB30 /* Dummy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1927733F22A85D500055EB30 /* Dummy.txt */; };
 		192A67A622C43CBA009A6F1E /* GUIFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 192A67A522C43CBA009A6F1E /* GUIFrame.cpp */; };
@@ -116,6 +117,8 @@
 		191BDDB522A846F600270B9D /* INI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INI.h; sourceTree = "<group>"; };
 		191BDDBA22A8547E00270B9D /* SDL2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SDL2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		191BDDBE22A8551A00270B9D /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
+		1920EF782358AA12006867E4 /* XMLProperty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XMLProperty.h; sourceTree = "<group>"; };
+		1920EF792358AA12006867E4 /* XMLProperty.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = XMLProperty.cpp; sourceTree = "<group>"; };
 		19243C1422BC295C0057054D /* PauseMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PauseMenu.h; sourceTree = "<group>"; };
 		19243C1522BC295C0057054D /* PauseMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PauseMenu.cpp; sourceTree = "<group>"; };
 		1927733F22A85D500055EB30 /* Dummy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Dummy.txt; sourceTree = SOURCE_ROOT; };
@@ -254,6 +257,7 @@
 				1971577622BEB764003AF33E /* Save */,
 				19646FBD22A9FAA0005E027E /* World */,
 				191BDD9522A844FF00270B9D /* Utils */,
+				1920EF732358A9C5006867E4 /* XML */,
 			);
 			name = Src;
 			path = ../Src;
@@ -312,6 +316,23 @@
 				191BDDB022A846EE00270B9D /* PlayerController.h */,
 			);
 			path = PlayerController;
+			sourceTree = "<group>";
+		};
+		1920EF732358A9C5006867E4 /* XML */ = {
+			isa = PBXGroup;
+			children = (
+				1920EF772358A9DC006867E4 /* Properties */,
+			);
+			path = XML;
+			sourceTree = "<group>";
+		};
+		1920EF772358A9DC006867E4 /* Properties */ = {
+			isa = PBXGroup;
+			children = (
+				1920EF792358AA12006867E4 /* XMLProperty.cpp */,
+				1920EF782358AA12006867E4 /* XMLProperty.h */,
+			);
+			path = Properties;
 			sourceTree = "<group>";
 		};
 		19243C1222BC29430057054D /* Menus */ = {
@@ -572,6 +593,7 @@
 				1971577C22BEB9CB003AF33E /* AppDelegate.h in Sources */,
 				193385FA22E157E900439AA9 /* GUIComponent.cpp in Sources */,
 				19FD92E523213B5C0030BC9C /* GUITextInput.cpp in Sources */,
+				1920EF7A2358AA12006867E4 /* XMLProperty.cpp in Sources */,
 				191BDDBF22A8551A00270B9D /* Main.cpp in Sources */,
 				1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */,
 				19C521FB231EABD500255476 /* Item.cpp in Sources */,
