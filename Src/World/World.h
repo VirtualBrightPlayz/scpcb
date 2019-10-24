@@ -52,6 +52,7 @@ class World {
             RM2* rm2;
             PlayerController* playerController;
             CollisionMeshCollection* collisionMeshCollection;
+            PGE::ControllerInput* rightAnalogStick;
         } todo_Remove;
 
 #ifdef DEBUG

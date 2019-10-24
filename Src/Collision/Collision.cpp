@@ -199,6 +199,7 @@ Collision Collision::triangleCollide(const PGE::Line3f& line,float radius,const 
 
 Collision Collision::triangleCollide(const Line3f& line,float radius,float height,const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& v2) {
     Collision retVal;
+    retVal.hit = false;
     
     Vector3f forward = line.pointB.subtract(line.pointA);
     Vector3f upVector = Vector3f(0.f,1.f,0.f);
@@ -237,9 +238,6 @@ Collision Collision::triangleCollide(const Line3f& line,float radius,float heigh
 
     Plane bottomPlane = Plane(planeNormal, line.pointA.add(Vector3f(0.f,-height*0.5f + radius,0.f)).add(planePoint));
     Plane topPlane = Plane(planeNormal, line.pointA.add(Vector3f(0.f,height*0.5f - radius,0.f)).add(planePoint));
-
-    Collision retVal;
-    retVal.hit = false;
 
     //cylinder collision
     //we only check for edges here because the sphere collision can handle the other case just fine
