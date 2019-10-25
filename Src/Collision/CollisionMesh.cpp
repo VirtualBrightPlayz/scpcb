@@ -42,3 +42,7 @@ Collision CollisionMesh::checkCollision(Matrix4x4f matrix, Line3f line, float he
     int outTriangleIndex;
     return checkCollision(matrix, line, height, radius, outTriangleIndex);
 }
+
+const std::vector<Vector3f>& CollisionMesh::getVertices() const {
+    return vertices;
+}

@@ -198,6 +198,10 @@ Collision Collision::triangleCollide(const PGE::Line3f& line,float radius,const 
 }
 
 Collision Collision::triangleCollide(const Line3f& line,float height,float radius,const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& v2) {
+    if (height<=radius) {
+        return triangleCollide(line, radius, v0, v1, v2);
+    }
+    
     Collision retVal;
     retVal.hit = false;
     

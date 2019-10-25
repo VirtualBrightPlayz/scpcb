@@ -5,6 +5,7 @@
 
 #include <Math/Line.h>
 #include <Math/Matrix.h>
+#include <Math/AABBox.h>
 #include "CollisionMesh.h"
 #include "Collision.h"
 
@@ -14,9 +15,12 @@ class CollisionMeshCollection {
             public:
                 Instance(CollisionMesh* msh, PGE::Matrix4x4f mtrx);
                 Collision checkCollision(PGE::Line3f line,float height,float radius) const;
+                PGE::AABBox getBBox() const;
             private:
+                Instance() {};
                 CollisionMesh* mesh;
                 PGE::Matrix4x4f matrix;
+                PGE::AABBox bbox;
         };
 
         Instance* addInstance(CollisionMesh* mesh, PGE::Matrix4x4f matrix);
