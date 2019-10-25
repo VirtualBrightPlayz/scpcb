@@ -13,7 +13,7 @@ class CollisionMeshCollection {
         class Instance {
             public:
                 Instance(CollisionMesh* msh, PGE::Matrix4x4f mtrx);
-                Collision checkCollision(PGE::Line3f line, float radius) const;
+                Collision checkCollision(PGE::Line3f line,float height,float radius) const;
             private:
                 CollisionMesh* mesh;
                 PGE::Matrix4x4f matrix;
@@ -22,7 +22,7 @@ class CollisionMeshCollection {
         Instance* addInstance(CollisionMesh* mesh, PGE::Matrix4x4f matrix);
         void removeInstance(Instance* instance);
 
-        Collision checkCollision(PGE::Line3f line, float radius) const;
+        Collision checkCollision(PGE::Line3f line,float height,float radius) const;
     private:
         std::vector<Instance*> instances;
 };

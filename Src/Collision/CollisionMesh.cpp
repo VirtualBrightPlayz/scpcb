@@ -8,13 +8,13 @@ CollisionMesh::CollisionMesh(std::vector<Vector3f> verts,std::vector<int> inds) 
     vertices = verts; indices = inds;
 }
 
-Collision CollisionMesh::checkCollision(Matrix4x4f matrix, Line3f line,float radius,int& outTriangleIndex) const {
+Collision CollisionMesh::checkCollision(Matrix4x4f matrix, Line3f line,float height,float radius,int& outTriangleIndex) const {
     Collision retVal;
     retVal.hit = false;
     outTriangleIndex = -1;
     AABBox lineBox(line.pointA,line.pointB);
-    lineBox.addPoint(lineBox.getMin().add(Vector3f(-radius,-radius,-radius)));
-    lineBox.addPoint(lineBox.getMax().add(Vector3f(radius,radius,radius)));
+    lineBox.addPoint(lineBox.getMin().add(Vector3f(-radius,-height*0.5f,-radius)));
+    lineBox.addPoint(lineBox.getMax().add(Vector3f(radius,height*0.5f,radius)));
     AABBox triBox(PGE::Vector3f::zero);
     for (size_t i=0;i<indices.size()/3;i++) {
         PGE::Vector3f vert0 = matrix.transform(vertices[indices[(i*3)+0]]);
@@ -27,7 +27,7 @@ Collision CollisionMesh::checkCollision(Matrix4x4f matrix, Line3f line,float rad
         triBox.addPoint(triBox.getMax().add(Vector3f(0.1f,0.1f,0.1f)));
         if (!triBox.intersects(lineBox)) { continue; }
         Collision coll; coll.hit = false;
-        coll = Collision::triangleCollide(line,radius,vert0,vert1,vert2);
+        coll = Collision::triangleCollide(line,height,radius,vert0,vert1,vert2);
         if (coll.hit) {
             if (!retVal.hit || retVal.coveredAmount>coll.coveredAmount) {
                 retVal = coll;
@@ -38,7 +38,7 @@ Collision CollisionMesh::checkCollision(Matrix4x4f matrix, Line3f line,float rad
     return retVal;
 }
 
-Collision CollisionMesh::checkCollision(Matrix4x4f matrix, Line3f line, float radius) const {
+Collision CollisionMesh::checkCollision(Matrix4x4f matrix, Line3f line, float height, float radius) const {
     int outTriangleIndex;
-    return checkCollision(matrix, line, radius, outTriangleIndex);
+    return checkCollision(matrix, line, height, radius, outTriangleIndex);
 }

@@ -6,8 +6,8 @@ CollisionMeshCollection::Instance::Instance(CollisionMesh* msh,Matrix4x4f mtrx) 
     mesh = msh; matrix = mtrx;
 }
 
-Collision CollisionMeshCollection::Instance::checkCollision(Line3f line, float radius) const {
-    return mesh->checkCollision(matrix, line, radius);
+Collision CollisionMeshCollection::Instance::checkCollision(Line3f line, float height, float radius) const {
+    return mesh->checkCollision(matrix, line, height, radius);
 }
 
 CollisionMeshCollection::Instance* CollisionMeshCollection::addInstance(CollisionMesh* mesh,Matrix4x4f matrix) {
@@ -25,10 +25,10 @@ void CollisionMeshCollection::removeInstance(Instance* instance) {
     }
 }
 
-Collision CollisionMeshCollection::checkCollision(Line3f line, float radius) const {
+Collision CollisionMeshCollection::checkCollision(Line3f line, float height, float radius) const {
     Collision retVal; retVal.hit = false;
     for (int i=0;i<instances.size();i++) {
-        Collision coll = instances[i]->checkCollision(line,radius);
+        Collision coll = instances[i]->checkCollision(line,height,radius);
         if (coll.hit) {
             if (!retVal.hit || retVal.coveredAmount>coll.coveredAmount) {
                 retVal = coll;

@@ -249,7 +249,7 @@ void World::updatePlaying(float timeStep, Input input) {
     //PGE::Line3f line = PGE::Line3f(PGE::Vector3f(0.0f, 30.0f, 0.0f), PGE::Vector3f(0.0f, 30.0f, 0.0f).add(camera->getRotationMatrix().transform(PGE::Vector3f(0.f,0.f,1000.f))));
     //Collision coll = todo_Remove.collisionMeshCollection->checkCollision(line, 5.f);
 
-    camera->setPosition(todo_Remove.playerController->getPosition().add(PGE::Vector3f(0.f,10.f,0.f)));
+    camera->setPosition(todo_Remove.playerController->getPosition().add(PGE::Vector3f(0.f,5.f*3.f,0.f)));
 
     // View/Projection matrix.
     camera->update();
