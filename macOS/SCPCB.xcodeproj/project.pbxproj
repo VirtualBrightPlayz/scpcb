@@ -47,6 +47,7 @@
 		19CFE3292329ACD0009B37C6 /* Inventory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19CFE3282329ACD0009B37C6 /* Inventory.cpp */; };
 		19CFE32C2329AE03009B37C6 /* InvSlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19CFE32B2329AE03009B37C6 /* InvSlot.cpp */; };
 		19DA6E0B230F6A3200F07961 /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19DA6E0A230F6A3200F07961 /* Input.cpp */; };
+		19F12D74235F64F3001D8238 /* libtinyxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F12D73235F64CF001D8238 /* libtinyxml2.a */; };
 		19F15BF522F52DA90044E284 /* GraphicsResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F15BF122F52DA90044E284 /* GraphicsResources.cpp */; };
 		19F17EA922AD79A00061F643 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EA822AD79A00061F643 /* Sprite.cpp */; };
 		19F17EAC22AD82940061F643 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19F17EAB22AD82940061F643 /* Camera.cpp */; };
@@ -77,6 +78,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 193A5C18224D8B5C000C5AC9;
 			remoteInfo = AssImp;
+		};
+		19F12D72235F64CF001D8238 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19F12D6B235F64CF001D8238 /* tinyxml2.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 19A391E0235D3514002D55CD;
+			remoteInfo = tinyxml2;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -163,6 +171,7 @@
 		19CFE32B2329AE03009B37C6 /* InvSlot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InvSlot.cpp; sourceTree = "<group>"; };
 		19DA6E09230F6A3200F07961 /* Input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
 		19DA6E0A230F6A3200F07961 /* Input.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
+		19F12D6B235F64CF001D8238 /* tinyxml2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tinyxml2.xcodeproj; path = "../Libraries/tinyxml2-7.1.0/tinyxml2/tinyxml2.xcodeproj"; sourceTree = "<group>"; };
 		19F15BF122F52DA90044E284 /* GraphicsResources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsResources.cpp; sourceTree = "<group>"; };
 		19F15BF422F52DA90044E284 /* GraphicsResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsResources.h; sourceTree = "<group>"; };
 		19F17EA722AD79A00061F643 /* Sprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sprite.h; sourceTree = "<group>"; };
@@ -188,6 +197,7 @@
 				191BDDA822A8458000270B9D /* libEngine.a in Frameworks */,
 				1932743222E543D1005F3528 /* libfreetype.a in Frameworks */,
 				198F5BC423352C2300376771 /* libAssImp.a in Frameworks */,
+				19F12D74235F64F3001D8238 /* libtinyxml2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +294,7 @@
 				191BDD9A22A8457700270B9D /* Engine.xcodeproj */,
 				1932732D22E53616005F3528 /* freetype.xcodeproj */,
 				198F5BBE23352C0F00376771 /* AssImp.xcodeproj */,
+				19F12D6B235F64CF001D8238 /* tinyxml2.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -412,6 +423,14 @@
 			path = Items;
 			sourceTree = "<group>";
 		};
+		19F12D6C235F64CF001D8238 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				19F12D73235F64CF001D8238 /* libtinyxml2.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		19F17EA622AD79860061F643 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
@@ -510,6 +529,10 @@
 					ProductGroup = 1932732E22E53616005F3528 /* Products */;
 					ProjectRef = 1932732D22E53616005F3528 /* freetype.xcodeproj */;
 				},
+				{
+					ProductGroup = 19F12D6C235F64CF001D8238 /* Products */;
+					ProjectRef = 19F12D6B235F64CF001D8238 /* tinyxml2.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -538,6 +561,13 @@
 			fileType = archive.ar;
 			path = libAssImp.a;
 			remoteRef = 198F5BC223352C0F00376771 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19F12D73235F64CF001D8238 /* libtinyxml2.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtinyxml2.a;
+			remoteRef = 19F12D72235F64CF001D8238 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
