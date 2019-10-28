@@ -197,95 +197,117 @@ Collision Collision::triangleCollide(const PGE::Line3f& line,float radius,const 
     return retVal;
 }
 
-Collision Collision::triangleCollide(const Line3f& line,float radius,float height,const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& v2) {
+Collision Collision::triangleCollide(const Line3f& line,float height,float radius,const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& v2) {
+    if (height<=radius) {
+        return triangleCollide(line, radius, v0, v1, v2);
+    }
+    
     Collision retVal;
+    retVal.hit = false;
     
     Vector3f forward = line.pointB.subtract(line.pointA);
     Vector3f upVector = Vector3f(0.f,1.f,0.f);
 
-    if (fabs(forward.dotProduct(upVector))>0.9999f) {
+    if (abs(forward.normalize().dotProduct(upVector))>0.9999f) {
         forward.x = 0.f; forward.z = 0.f;
         Line3f newLine = Line3f(line.pointA,line.pointA.add(forward));
 
         if (forward.y>0.f) {
-            newLine.pointA = newLine.pointA.add(-height*0.5f + radius);
-            newLine.pointB = newLine.pointB.add(height*0.5f - radius);
+            newLine.pointA.y -= height*0.5f - radius;
+            newLine.pointB.y += height*0.5f - radius;
         } else {
-            newLine.pointA = newLine.pointA.add(height*0.5f - radius);
-            newLine.pointB = newLine.pointB.add(-height*0.5f + radius);
+            newLine.pointA.y += height*0.5f - radius;
+            newLine.pointB.y -= height*0.5f - radius;
         }
 
         retVal = triangleCollide(newLine, radius, v0, v1, v2);
 
-        retVal.line = line;
-        retVal.coveredAmount -= (height*0.5f-radius)/(newLine.pointA.y-newLine.pointB.y);
-        retVal.coveredAmount *= (line.pointA.y-line.pointB.y)/(newLine.pointA.y-newLine.pointB.y);
+        if (retVal.hit)
+        {
+            Vector3f diff = newLine.pointB.subtract(newLine.pointA).multiply(retVal.coveredAmount).add(newLine.pointA).subtract(line.pointA);
+            if (forward.y>0.f) {
+                diff.y -= height*0.5f - radius;
+            } else {
+                diff.y += height*0.5f - radius;
+            }
+            retVal.line = line;
+            retVal.coveredAmount = diff.length()/line.pointB.distance(line.pointA);
 
-        if (retVal.coveredAmount < 0.f || retVal.coveredAmount > 1.f) {
-            retVal.hit = false;
+            if (retVal.coveredAmount > 1.f) {
+                retVal.hit = false;
+            }
+            if (retVal.coveredAmount < 0.f) {
+                retVal.coveredAmount = 0.f;
+            }
         }
 
         return retVal;
     }
 
-    Line3f newLine = Line3f(Vector3f(line.pointA.x,0.f,line.pointA.z),Vector3f(line.pointB.x,0.f,line.pointB.z));
-
     Vector3f forwardXZ = Vector3f(forward.x,0.f,forward.z);
     Vector3f planePoint = forwardXZ.normalize().multiply(radius);
 
-    Vector3f planeNormal = upVector.crossProduct(forward).crossProduct(forward);
+    Vector3f planeNormal = upVector.crossProduct(forward).crossProduct(forward).normalize();
+    if (planeNormal.y<0.f) { planeNormal = planeNormal.multiply(-1.f); }
 
     Plane bottomPlane = Plane(planeNormal, line.pointA.add(Vector3f(0.f,-height*0.5f + radius,0.f)).add(planePoint));
     Plane topPlane = Plane(planeNormal, line.pointA.add(Vector3f(0.f,height*0.5f - radius,0.f)).add(planePoint));
 
-    Collision retVal;
-    retVal.hit = false;
-
     //cylinder collision
     //we only check for edges here because the sphere collision can handle the other case just fine
-    Plane p = Plane(upVector, 0.f);
+    Plane p = Plane(v0,v1,v2);
 
     Collision temp;
     temp.hit = false;
 
     Vector3f edgePoints[6] = { v0,v1,v1,v2,v2,v0 };
 
+    Line3f newLine = Line3f(Vector3f(line.pointA.x,0.f,line.pointA.z),Vector3f(line.pointB.x,0.f,line.pointB.z));
+
     for (int i=0;i<6;i+=2) {
         Line3f edge = Line3f(edgePoints[i],edgePoints[i+1]);
         
         Vector3f edgePoint0; Vector3f edgePoint1;
-        float coveredAmount = 0;
+        float coveredAmountTop = 0;
+        float coveredAmountBottom = 0;
         
-        topPlane.getIntersectionPoint(edge, edgePoint0, coveredAmount, true, true);
-        if (coveredAmount < 0.f) {
-            edgePoint0 = edge.pointA;
-        } else if (coveredAmount > 1.f) {
-            edgePoint0 = edge.pointB;
-        }
-        topPlane.getIntersectionPoint(edge, edgePoint1, coveredAmount, true, true);
-        if (coveredAmount < 0.f) {
-            edgePoint1 = edge.pointA;
-        } else if (coveredAmount > 1.f) {
-            edgePoint1 = edge.pointB;
+        bool intersectsTop = topPlane.getIntersectionPoint(edge, edgePoint0, coveredAmountTop, true, true);
+        bool intersectsBottom = bottomPlane.getIntersectionPoint(edge, edgePoint1, coveredAmountBottom, true, true);
+        if (intersectsTop && intersectsBottom) {
+            if (coveredAmountTop < 0.f) {
+                edgePoint0 = edge.pointA;
+            } else if (coveredAmountTop > 1.f) {
+                edgePoint0 = edge.pointB;
+            }
+
+            if (coveredAmountBottom < 0.f) {
+                edgePoint1 = edge.pointA;
+            } else if (coveredAmountBottom > 1.f) {
+                edgePoint1 = edge.pointB;
+            }
+        } else {
+            if (topPlane.evalAtPoint(edge.pointA)<=0.f && bottomPlane.evalAtPoint(edge.pointA)>=0.f) {
+                edgePoint0 = edge.pointA;
+                edgePoint1 = edge.pointB;
+            } else {
+                continue;
+            }
         }
 
         if (edgePoint0.distanceSquared(edgePoint1) < 0.0000001f) {
             continue;
         }
 
-        Plane edgePlane(edgePoint0.add(p.normal),edgePoint1,edgePoint0);
+        edgePoint0.y = 0.f; edgePoint1.y = 0.f;
 
-        temp = edgeTest(edgePoint0,edgePoint1,p.normal,edgePlane.normal,newLine,radius);
+        Plane edgePlane(edgePoint0.add(upVector),edgePoint1,edgePoint0);
+
+        temp = edgeTest(edgePoint0,edgePoint1,upVector,edgePlane.normal,newLine,radius);
         if (temp.hit) {
             if (!retVal.hit || retVal.coveredAmount>temp.coveredAmount) {
                 retVal = temp;
             }
         }
-    }
-
-    if (temp.hit) {
-        temp.surfaceNormal = p.normal;
-        temp.line = line;
     }
 
     Line3f bottomSphereLine = line;
@@ -298,12 +320,17 @@ Collision Collision::triangleCollide(const Line3f& line,float radius,float heigh
     Collision bottomCollision = triangleCollide(bottomSphereLine, radius, v0, v1, v2);
     Collision topCollision = triangleCollide(topSphereLine, radius, v0, v1, v2);
 
-    if (bottomCollision.hit && bottomCollision.coveredAmount < retVal.coveredAmount) {
+    if (bottomCollision.hit && (!retVal.hit || bottomCollision.coveredAmount < retVal.coveredAmount)) {
         retVal = bottomCollision;
         retVal.line = line;
     }
-    if (topCollision.hit && topCollision.coveredAmount < retVal.coveredAmount) {
+    if (topCollision.hit && (!retVal.hit || topCollision.coveredAmount < retVal.coveredAmount)) {
         retVal = topCollision;
+        retVal.line = line;
+    }
+
+    if (retVal.hit) {
+        retVal.surfaceNormal = p.normal;
         retVal.line = line;
     }
 

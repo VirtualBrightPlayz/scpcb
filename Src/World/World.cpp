@@ -15,6 +15,7 @@
 #include "../Input/KeyBinds.h"
 #include "../Input/Input.h"
 #include "../Utils/TextMgmt.h"
+#include "../Utils/MathUtil.h"
 
 World::World() {
     config = new Config("options.ini");
@@ -204,10 +205,38 @@ void World::updatePlaying(float timeStep, Input input) {
     int centerY = config->getHeight() / 2;
 
     // TODO: Sensitivity from Config class.
-    float mouseXDiff = (float)(io->getMousePosition().x - centerX) / 300.f;
-    float mouseYDiff = (float)(io->getMousePosition().y - centerY) / 300.f;
+    float addXAngle = (float)(io->getMousePosition().x - centerX) / 300.f;
+    float addYAngle = (float)(io->getMousePosition().y - centerY) / 300.f;
 
-    camera->addAngle(mouseXDiff, mouseYDiff);
+    if (todo_Remove.rightAnalogStick != nullptr && todo_Remove.rightAnalogStick->getController() == nullptr) {
+        io->untrackInput(todo_Remove.rightAnalogStick);
+        delete todo_Remove.rightAnalogStick;
+    }
+    if (todo_Remove.rightAnalogStick == nullptr && io->getController(0) != nullptr) {
+        todo_Remove.rightAnalogStick = new PGE::ControllerInput(io->getController(0), PGE::ControllerInput::BUTTON::RIGHTSTICK);
+        io->trackInput(todo_Remove.rightAnalogStick);
+    }
+
+    if (todo_Remove.rightAnalogStick != nullptr) {
+        PGE::Vector2f rightAnalogMovement = todo_Remove.rightAnalogStick->getStickPosition();
+
+        //17% square deadzone
+        if (abs(rightAnalogMovement.x)<0.17f) { rightAnalogMovement.x = 0.f; }
+        if (abs(rightAnalogMovement.y)<0.17f) { rightAnalogMovement.y = 0.f; }
+
+        PGE::Vector2f rightAnalogMovementNormalized = rightAnalogMovement.normalize();
+        rightAnalogMovement = rightAnalogMovement.add(rightAnalogMovementNormalized.multiply(-0.15f)).multiply(1.f/0.85f);
+        rightAnalogMovement = rightAnalogMovement.multiply(0.1f);
+
+        addXAngle += rightAnalogMovement.x;
+        addYAngle += rightAnalogMovement.y;
+
+        if (todo_Remove.rightAnalogStick->isHit()) {
+            addXAngle += MathUtil::PI;
+        }
+    }
+
+    camera->addAngle(addXAngle, addYAngle);
 
     // Reset mouse to center.
     io->setMousePosition(PGE::Vector2f(centerX, centerY));
@@ -220,7 +249,7 @@ void World::updatePlaying(float timeStep, Input input) {
     //PGE::Line3f line = PGE::Line3f(PGE::Vector3f(0.0f, 30.0f, 0.0f), PGE::Vector3f(0.0f, 30.0f, 0.0f).add(camera->getRotationMatrix().transform(PGE::Vector3f(0.f,0.f,1000.f))));
     //Collision coll = todo_Remove.collisionMeshCollection->checkCollision(line, 5.f);
 
-    camera->setPosition(todo_Remove.playerController->getPosition().add(PGE::Vector3f(0.f,10.f,0.f)));
+    camera->setPosition(todo_Remove.playerController->getPosition().add(PGE::Vector3f(0.f,35.f * 0.5f - 5.f,0.f)));
 
     // View/Projection matrix.
     camera->update();
@@ -258,9 +287,10 @@ void World::loadPlaying() {
             }
         }
     }
-    todo_Remove.playerController = new PlayerController(5.f, 100.f);
+    todo_Remove.playerController = new PlayerController(5.f, 35.f);
     todo_Remove.playerController->setPosition(PGE::Vector3f(0.f,40.f,0.f));
     todo_Remove.playerController->setCollisionMeshCollection(todo_Remove.collisionMeshCollection);
+    todo_Remove.rightAnalogStick = nullptr;
 }
 
 void World::destroyPlaying() {

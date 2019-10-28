@@ -92,7 +92,7 @@ void PlayerController::applyGravity() {
     fallSpeed += GRAVITY;
     Line3f line = Line3f(position,position.add(Vector3f(0.f,-fallSpeed-(currWalkSpeed*2.f),0.f)));
     while (true) {
-        Collision coll = collisionMeshCollection->checkCollision(line, radius);
+        Collision coll = collisionMeshCollection->checkCollision(line, cameraHeight, radius);
         if (coll.hit) {
             Vector3f resultPos = line.pointA.add(line.pointB.subtract(line.pointA).multiply(coll.coveredAmount*0.995f));
             if (iterations == 0) {
@@ -145,7 +145,7 @@ void PlayerController::walk(Vector2f dir) {
     Vector3f targetDir = line.pointB.subtract(line.pointA).normalize();
     Vector3f currDir = targetDir;
     while (true) {
-        Collision coll = collisionMeshCollection->checkCollision(line, radius);
+        Collision coll = collisionMeshCollection->checkCollision(line, cameraHeight, radius);
         if (coll.hit) {
             Vector3f resultPos = line.pointA.add(line.pointB.subtract(line.pointA).multiply(coll.coveredAmount*0.995f));
             if (resultPos.distanceSquared(position)<0.0001f) {

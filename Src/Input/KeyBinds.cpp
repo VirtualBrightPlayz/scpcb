@@ -1,6 +1,8 @@
 #include "KeyBinds.h"
 
 KeyBinds::KeyBinds(PGE::IO* inIo) {
+    currInputs = Input::None;
+
     io = inIo;
 
     mouse1 = new PGE::MouseInput(PGE::MouseInput::BUTTON::LEFT);
@@ -170,7 +172,7 @@ void KeyBinds::bindInput(Input input, PGE::KeyboardInput::SCANCODE key) {
 
 void KeyBinds::bindInput(Input input, PGE::ControllerInput::BUTTON key) {
     UserInput wrapKey;
-    wrapKey.input = new PGE::ControllerInput(key);
+    wrapKey.input = new PGE::ControllerInput(io->getController(0),key);
     wrapKey.controllerButton = key;
 
     bindInput(input, wrapKey);
