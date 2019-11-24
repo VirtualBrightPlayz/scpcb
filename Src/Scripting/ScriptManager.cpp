@@ -7,15 +7,7 @@
 
 class StringFactory : public asIStringFactory {
     private:
-        struct PoolEntry {
-            PGE::String str;
-            int refCount;
-
-            PoolEntry() {
-                refCount = 0;
-            }
-        };
-        std::map<long long, PoolEntry> strPool;
+        std::map<long long, StringPoolEntry> strPool;
     public:
         const void* GetStringConstant(const char* data, asUINT length) {
             asAcquireExclusiveLock();
@@ -27,20 +19,19 @@ class StringFactory : public asIStringFactory {
             PGE::String tempStr = tempBuf;
             delete[] tempBuf;
 
-            std::map<long long, PoolEntry>::iterator poolEntry = strPool.find(tempStr.getHashCode());
+            std::map<long long, StringPoolEntry>::iterator poolEntry = strPool.find(tempStr.getHashCode());
             if (poolEntry != strPool.end()) {
                 poolEntry->second.refCount++;
             } else {
-                PoolEntry newEntry;
+                StringPoolEntry newEntry = StringPoolEntry(tempStr);
                 newEntry.refCount = 1;
-                newEntry.str = tempStr;
                 strPool.emplace(tempStr.getHashCode(), newEntry);
                 poolEntry = strPool.find(tempStr.getHashCode());
             }
             
             asReleaseExclusiveLock();
 
-            return &(poolEntry->first);
+            return &(poolEntry->second);
         }
 
         int ReleaseStringConstant(const void* str) {
@@ -48,15 +39,13 @@ class StringFactory : public asIStringFactory {
 
             asAcquireExclusiveLock();
 
-            PGE::String temp = (const char*)str;
-            std::map<long long, PoolEntry>::iterator poolEntry = strPool.find(temp.getHashCode());
+            StringPoolEntry deref = *((StringPoolEntry*)str);
+            std::map<long long, StringPoolEntry>::iterator poolEntry = strPool.find(deref.str.getHashCode());
             if (poolEntry != strPool.end()) {
                 poolEntry->second.refCount--;
                 if (poolEntry->second.refCount <= 0) {
-                    strPool.erase(temp.getHashCode());
+                    strPool.erase(deref.str.getHashCode());
                 }
-            } else {
-                retVal = asERROR;
             }
 
             asReleaseExclusiveLock();
@@ -67,15 +56,13 @@ class StringFactory : public asIStringFactory {
         int GetRawStringData(const void* str, char* data, asUINT* length) const {
             if (str == nullptr) { return asERROR; }
 
-            long long hashCode = *((long long*)str);
-
-            std::map<long long, PoolEntry>::const_iterator poolEntry = strPool.find(hashCode);
+            StringPoolEntry deref = *((StringPoolEntry*)str);
             if (length != nullptr) {
                 asUINT& lengthRef = *length;
-                lengthRef = poolEntry->second.str.size();
+                lengthRef = deref.str.size();
             }
             if (data != nullptr) {
-                memcpy(data, poolEntry->second.str.cstr(), sizeof(char)*poolEntry->second.str.size());
+                memcpy(data, deref.str.cstr(), sizeof(char)*deref.str.size());
             }
 
             return asSUCCESS;

@@ -2,6 +2,7 @@
 #define SCRIPTMANAGER_H_INCLUDED
 
 #include <angelscript.h>
+#include <Misc/String.h>
 
 class ScriptManager {
     private:
@@ -14,6 +15,16 @@ class ScriptManager {
         void messageCallback(const asSMessageInfo* msg, void* param);
 
         asIScriptEngine* getAngelScriptEngine() const;
+};
+
+struct StringPoolEntry {
+    PGE::String str;
+    int refCount;
+
+    StringPoolEntry(const PGE::String& s) {
+        str = s;
+        refCount = 0;
+    }
 };
 
 #endif
