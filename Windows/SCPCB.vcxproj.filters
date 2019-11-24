@@ -38,6 +38,9 @@
     <Filter Include="Src\Models">
       <UniqueIdentifier>{c46dcb69-887c-4267-a6c5-bb5d6929d76d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Scripting">
+      <UniqueIdentifier>{87a441c9-0375-48b0-993b-f423ae476615}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -126,6 +129,9 @@
     </ClInclude>
     <ClInclude Include="..\Src\Collision\CollisionMeshCollection.h">
       <Filter>Src\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\ScriptManager.h">
+      <Filter>Src\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
