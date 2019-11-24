@@ -136,6 +136,9 @@
     <ClInclude Include="..\Src\Scripting\Script.h">
       <Filter>Src\Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\Scripting\Function.h">
+      <Filter>Src\Scripting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SCPCB.rc">
@@ -239,6 +242,9 @@
       <Filter>Src\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Scripting\ScriptManager.cpp">
+      <Filter>Src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\Function.cpp">
       <Filter>Src\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
