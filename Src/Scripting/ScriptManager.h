@@ -2,12 +2,18 @@
 #define SCRIPTMANAGER_H_INCLUDED
 
 #include <angelscript.h>
-#include <scriptbuilder/scriptbuilder.h>
 
 class ScriptManager {
     private:
         asIScriptEngine* engine;
-        asIScriptContext* context;
+        asIStringFactory* stringFactory;
+    public:
+        ScriptManager();
+        ~ScriptManager();
+
+        void messageCallback(const asSMessageInfo* msg, void* param);
+
+        asIScriptEngine* getAngelScriptEngine() const;
 };
 
 #endif
