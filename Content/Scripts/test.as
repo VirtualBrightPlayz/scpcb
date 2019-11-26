@@ -3,5 +3,10 @@ int32 test() {
 }
 
 string test2() {
-    return "tada!!";
+    //assign same string constant to two variables, and then modify one
+    //if all is working correctly then "a" is returned
+    string a = "a";
+    string b = "a";
+    a += "b";
+    return b;
 }

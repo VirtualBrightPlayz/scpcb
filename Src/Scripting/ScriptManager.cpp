@@ -87,6 +87,62 @@ static void DestructStringGeneric(asIScriptGeneric* gen) {
     ptr->~StringPoolEntry();
 }
 
+static void AssignStringGeneric(asIScriptGeneric* gen) {
+    StringPoolEntry* a = static_cast<StringPoolEntry*>(gen->GetArgObject(0));
+    StringPoolEntry* self = static_cast<StringPoolEntry*>(gen->GetObject());
+    self->str = a->str;
+    gen->SetReturnAddress(self);
+}
+
+static void AddAssignStringGeneric(asIScriptGeneric* gen) {
+    StringPoolEntry* a = static_cast<StringPoolEntry*>(gen->GetArgObject(0));
+    StringPoolEntry* self = static_cast<StringPoolEntry*>(gen->GetObject());
+    self->str = PGE::String(self->str, a->str);
+    gen->SetReturnAddress(self);
+}
+
+static void StringEqualsGeneric(asIScriptGeneric* gen) {
+    StringPoolEntry* a = static_cast<StringPoolEntry*>(gen->GetObject());
+    StringPoolEntry* b = static_cast<StringPoolEntry*>(gen->GetArgAddress(0));
+    *(bool*)gen->GetAddressOfReturnLocation() = ((*a).str.equals((*b).str));
+}
+
+static void StringAddGeneric(asIScriptGeneric* gen) {
+    StringPoolEntry* a = static_cast<StringPoolEntry*>(gen->GetObject());
+    StringPoolEntry* b = static_cast<StringPoolEntry*>(gen->GetArgAddress(0));
+    StringPoolEntry retVal;
+    retVal.str = a->str+b->str;
+    gen->SetReturnObject(&retVal);
+}
+
+static void StringLengthGeneric(asIScriptGeneric* gen) {
+    StringPoolEntry* self = static_cast<StringPoolEntry*>(gen->GetObject());
+    *static_cast<asUINT*>(gen->GetAddressOfReturnLocation()) = (asUINT)self->str.size();
+}
+
+static void StringIsEmptyGeneric(asIScriptGeneric* gen) {
+    StringPoolEntry* self = reinterpret_cast<StringPoolEntry*>(gen->GetObject());
+    *reinterpret_cast<bool*>(gen->GetAddressOfReturnLocation()) = self->str.size()==0;
+}
+
+static void StringCharAtGeneric(asIScriptGeneric* gen) {
+    unsigned int index = gen->GetArgDWord(0);
+    StringPoolEntry* self = static_cast<StringPoolEntry*>(gen->GetObject());
+
+    if (index < 0 || index >= self->str.size())
+    {
+        // Set a script exception
+        asIScriptContext *ctx = asGetActiveContext();
+        ctx->SetException("Out of range");
+
+        gen->SetReturnAddress(0);
+    }
+    else
+    {
+        *static_cast<char*>(gen->GetAddressOfReturnLocation()) = self->str.charAt(index);
+    }
+}
+
 ScriptManager::ScriptManager() {
     engine = asCreateScriptEngine();
 
@@ -96,10 +152,21 @@ ScriptManager::ScriptManager() {
 
     engine->RegisterObjectType("string", sizeof(StringPoolEntry), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK);
 
-    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,  "void f()",asFUNCTION(ConstructStringGeneric), asCALL_GENERIC);
-    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,  "void f(const string &in)",asFUNCTION(CopyConstructStringGeneric), asCALL_GENERIC);
+    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f()",asFUNCTION(ConstructStringGeneric), asCALL_GENERIC);
+    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f(const string &in)",asFUNCTION(CopyConstructStringGeneric), asCALL_GENERIC);
     engine->RegisterObjectBehaviour("string",asBEHAVE_DESTRUCT,"void f()",asFUNCTION(DestructStringGeneric),asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","string &opAssign(const string &in)",asFUNCTION(AssignStringGeneric),    asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","string &opAddAssign(const string &in)",asFUNCTION(AddAssignStringGeneric), asCALL_GENERIC);
 
+    engine->RegisterObjectMethod("string","bool opEquals(const string &in) const",asFUNCTION(StringEqualsGeneric), asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","string opAdd(const string &in) const",asFUNCTION(StringAddGeneric), asCALL_GENERIC);
+    
+    engine->RegisterObjectMethod("string","uint length() const",asFUNCTION(StringLengthGeneric), asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","bool isEmpty() const",asFUNCTION(StringIsEmptyGeneric), asCALL_GENERIC);
+
+    engine->RegisterObjectMethod("string","uint8 &opIndex(uint)",asFUNCTION(StringCharAtGeneric), asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","const uint8 &opIndex(uint) const",asFUNCTION(StringCharAtGeneric), asCALL_GENERIC);
+    
     engine->RegisterStringFactory("string", stringFactory);
 }
 
@@ -109,16 +176,24 @@ ScriptManager::~ScriptManager() {
 }
 
 void ScriptManager::messageCallback(const asSMessageInfo* msg, void* param) {
-    const char *type = "ERR ";
-    if (msg->type==asMSGTYPE_WARNING) {
-        type = "WARN";
-    } else if (msg->type==asMSGTYPE_INFORMATION) {
-        type = "INFO";
+    LogEntry newLogEntry;
+    switch (msg->type) {
+        case asEMsgType::asMSGTYPE_ERROR: {
+            newLogEntry.type = LogEntry::Type::AngelScriptError;
+        } break;
+        case asEMsgType::asMSGTYPE_WARNING: {
+            newLogEntry.type = LogEntry::Type::AngelScriptWarning;
+        } break;
+        case asEMsgType::asMSGTYPE_INFORMATION: {
+            newLogEntry.type = LogEntry::Type::AngelScriptInfo;
+        } break;
     }
+    newLogEntry.message = msg->message;
+    newLogEntry.section = msg->section;
+    newLogEntry.row = msg->row;
+    newLogEntry.col = msg->col;
 
-    if (msg->type==asMSGTYPE_ERROR) {
-        throw msg->message;
-    }
+    log.push_back(newLogEntry);
 }
 
 asIScriptEngine* ScriptManager::getAngelScriptEngine() const {
