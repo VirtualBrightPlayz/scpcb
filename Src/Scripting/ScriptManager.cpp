@@ -129,16 +129,13 @@ static void StringCharAtGeneric(asIScriptGeneric* gen) {
     unsigned int index = gen->GetArgDWord(0);
     StringPoolEntry* self = static_cast<StringPoolEntry*>(gen->GetObject());
 
-    if (index < 0 || index >= self->str.size())
-    {
+    if (index < 0 || index >= self->str.size()) {
         // Set a script exception
         asIScriptContext *ctx = asGetActiveContext();
         ctx->SetException("Out of range");
 
         gen->SetReturnAddress(0);
-    }
-    else
-    {
+    } else {
         *static_cast<char*>(gen->GetAddressOfReturnLocation()) = self->str.charAt(index);
     }
 }
