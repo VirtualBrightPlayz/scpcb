@@ -73,16 +73,16 @@ static void localMessageCallback(ScriptManager* scriptManager, const asSMessageI
     scriptManager->messageCallback(msg, param);
 }
 
-static void ConstructStringGeneric(asIScriptGeneric * gen) {
+static void ConstructStringGeneric(asIScriptGeneric* gen) {
     new (gen->GetObject()) StringPoolEntry();
 }
 
-static void CopyConstructStringGeneric(asIScriptGeneric * gen) {
+static void CopyConstructStringGeneric(asIScriptGeneric* gen) {
     StringPoolEntry* a = static_cast<StringPoolEntry*>(gen->GetArgObject(0));
     new (gen->GetObject()) StringPoolEntry(*a);
 }
 
-static void DestructStringGeneric(asIScriptGeneric * gen) {
+static void DestructStringGeneric(asIScriptGeneric* gen) {
     StringPoolEntry* ptr = static_cast<StringPoolEntry*>(gen->GetObject());
     ptr->~StringPoolEntry();
 }
