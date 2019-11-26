@@ -21,6 +21,8 @@ struct StringPoolEntry {
     PGE::String str;
     int refCount;
 
+    StringPoolEntry() { refCount = 0; }
+
     StringPoolEntry(const PGE::String& s) {
         str = s;
         refCount = 0;

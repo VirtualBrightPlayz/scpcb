@@ -14,6 +14,9 @@
 #include "../Models/RM2.h"
 #include "../PlayerController/PlayerController.h"
 #include "../Collision/CollisionMeshCollection.h"
+#include "../Scripting/ScriptManager.h"
+#include "../Scripting/Script.h"
+#include "../Scripting/Function.h"
 
 class Camera;
 class Timing;
@@ -53,6 +56,12 @@ class World {
             PlayerController* playerController;
             CollisionMeshCollection* collisionMeshCollection;
             PGE::ControllerInput* rightAnalogStick;
+            ScriptManager* scriptManager;
+            Script* script;
+            ScriptFunction* testFunction1;
+            int functionReturn1;
+            ScriptFunction* testFunction2;
+            PGE::String functionReturn2;
         } todo_Remove;
 
 #ifdef DEBUG

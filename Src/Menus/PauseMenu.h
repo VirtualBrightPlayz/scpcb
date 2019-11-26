@@ -48,8 +48,6 @@ class PauseMenu : public Menu {
         GUIFrame* quitFrame;
         GUIButton* quitYes;
         GUIButton* quitNo;
-    
-        GUITextInput* inputTest;
 
         UIMesh* uiMesh;
         Font* largeFont;
@@ -62,6 +60,8 @@ class PauseMenu : public Menu {
 
         void update(const PGE::Vector2f& mousePosition) override;
         void render() const override;
+
+        GUITextInput* inputTest; //TODO: remove
 };
 
 #endif // PAUSEMENU_H_INCLUDED

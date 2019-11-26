@@ -59,6 +59,11 @@ class ScriptFunction : public Function {
         void setArgument(const PGE::String& argument, double d);
         void setArgument(const PGE::String& argument, const PGE::String& s);
         void execute();
+        int32_t getReturnInt32() const;
+        uint32_t getReturnUInt32() const;
+        float getReturnFloat() const;
+        double getReturnDouble() const;
+        PGE::String getReturnString() const;
 };
 
 class NativeFunction : public Function {
@@ -67,7 +72,7 @@ class NativeFunction : public Function {
         asSFuncPtr functionPointer;
     public:
         NativeFunction(ScriptManager* scriptMgr,asSFuncPtr fnPtr,Function::Signature sgntr);
-        ~NativeFunction();
+        ~NativeFunction() override;
 };
 
 #endif

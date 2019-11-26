@@ -66,9 +66,10 @@
       </AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;$(Platform)/$(Configuration)/Engine.lib;$(Platform)/$(Configuration)/SDL2.lib;../Libraries/freetype-2.10.1/objs/$(Platform)/$(Configuration)/freetype.lib;../Libraries/angelscript-2.34.0/angelscript/lib/angelscript64.lib;../Engine/Libraries/FreeImage3180/x64/Debug/FreeImaged.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;$(Platform)/$(Configuration)/Engine.lib;$(Platform)/$(Configuration)/SDL2.lib;../Libraries/freetype-2.10.1/objs/$(Platform)/$(Configuration)/freetype.lib;../Libraries/angelscript-2.34.0/angelscript/lib/angelscript64d.lib;../Engine/Libraries/FreeImage3180/x64/Debug/FreeImaged.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <CustomBuildStep>
@@ -95,7 +96,7 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
@@ -105,6 +106,7 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
       <ObjectFileName>.\obj\$(Platform)\$(Configuration)\</ObjectFileName>
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

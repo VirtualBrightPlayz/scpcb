@@ -244,7 +244,7 @@ void World::updatePlaying(float timeStep, Input input) {
     todo_Remove.testSquare->addRotation(5.f * timeStep);
     todo_Remove.testSquare->update();
 
-    todo_Remove.playerController->update(camera->getYawAngle(), camera->getPitchAngle(), Input::Forward | Input::Sprint);
+    todo_Remove.playerController->update(camera->getYawAngle(), camera->getPitchAngle(), (Input)todo_Remove.functionReturn1);
 
     //PGE::Line3f line = PGE::Line3f(PGE::Vector3f(0.0f, 30.0f, 0.0f), PGE::Vector3f(0.0f, 30.0f, 0.0f).add(camera->getRotationMatrix().transform(PGE::Vector3f(0.f,0.f,1000.f))));
     //Collision coll = todo_Remove.collisionMeshCollection->checkCollision(line, 5.f);
@@ -291,6 +291,21 @@ void World::loadPlaying() {
     todo_Remove.playerController->setPosition(PGE::Vector3f(0.f,40.f,0.f));
     todo_Remove.playerController->setCollisionMeshCollection(todo_Remove.collisionMeshCollection);
     todo_Remove.rightAnalogStick = nullptr;
+
+    todo_Remove.scriptManager = new ScriptManager();
+    todo_Remove.script = new Script(todo_Remove.scriptManager,PGE::FileName::create("Scripts/test.as"),"test");
+    Function::Signature signature;
+    signature.functionName = "test";
+    signature.returnType = Function::Type::Int32;
+    todo_Remove.testFunction1 = new ScriptFunction(todo_Remove.script,signature);
+    todo_Remove.testFunction1->execute();
+    todo_Remove.functionReturn1 = todo_Remove.testFunction1->getReturnInt32();
+    signature.functionName = "test2";
+    signature.returnType = Function::Type::String;
+    todo_Remove.testFunction2 = new ScriptFunction(todo_Remove.script,signature);
+    todo_Remove.testFunction2->execute();
+    todo_Remove.functionReturn2 = todo_Remove.testFunction2->getReturnString();
+    pauseMenu->inputTest->setText(todo_Remove.functionReturn2);
 }
 
 void World::destroyPlaying() {

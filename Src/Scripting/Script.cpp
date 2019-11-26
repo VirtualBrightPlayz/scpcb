@@ -35,8 +35,10 @@ Script::Script(ScriptManager* scriptMgr, const PGE::FileName& filename, const PG
     scriptModule = engine->GetModule(moduleName.size()>0 ? moduleName.cstr() : nullptr, asGM_CREATE_IF_NOT_EXISTS);
 
     int errorCode = scriptModule->AddScriptSection(sectionName.cstr(), scriptContents.cstr(), scriptContents.size());
+    if (errorCode<0) { throw std::exception("kablooey!"); }
 
     errorCode = scriptModule->Build();
+    if (errorCode<0) { throw std::exception("whabammy!"); }
 }
 
 Script::~Script() {

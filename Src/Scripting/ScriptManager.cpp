@@ -73,6 +73,20 @@ static void localMessageCallback(ScriptManager* scriptManager, const asSMessageI
     scriptManager->messageCallback(msg, param);
 }
 
+static void ConstructStringGeneric(asIScriptGeneric * gen) {
+    new (gen->GetObject()) StringPoolEntry();
+}
+
+static void CopyConstructStringGeneric(asIScriptGeneric * gen) {
+    StringPoolEntry* a = static_cast<StringPoolEntry*>(gen->GetArgObject(0));
+    new (gen->GetObject()) StringPoolEntry(*a);
+}
+
+static void DestructStringGeneric(asIScriptGeneric * gen) {
+    StringPoolEntry* ptr = static_cast<StringPoolEntry*>(gen->GetObject());
+    ptr->~StringPoolEntry();
+}
+
 ScriptManager::ScriptManager() {
     engine = asCreateScriptEngine();
 
@@ -80,16 +94,31 @@ ScriptManager::ScriptManager() {
 
     stringFactory = new StringFactory();
 
+    engine->RegisterObjectType("string", sizeof(StringPoolEntry), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK);
+
+    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,  "void f()",asFUNCTION(ConstructStringGeneric), asCALL_GENERIC);
+    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,  "void f(const string &in)",asFUNCTION(CopyConstructStringGeneric), asCALL_GENERIC);
+    engine->RegisterObjectBehaviour("string",asBEHAVE_DESTRUCT,"void f()",asFUNCTION(DestructStringGeneric),asCALL_GENERIC);
+
     engine->RegisterStringFactory("string", stringFactory);
 }
 
 ScriptManager::~ScriptManager() {
     engine->ShutDownAndRelease();
-    delete (StringFactory*)stringFactory;
+    delete ((StringFactory*)stringFactory);
 }
 
 void ScriptManager::messageCallback(const asSMessageInfo* msg, void* param) {
-    //TODO: implement
+    const char *type = "ERR ";
+    if (msg->type==asMSGTYPE_WARNING) {
+        type = "WARN";
+    } else if (msg->type==asMSGTYPE_INFORMATION) {
+        type = "INFO";
+    }
+
+    if (msg->type==asMSGTYPE_ERROR) {
+        throw msg->message;
+    }
 }
 
 asIScriptEngine* ScriptManager::getAngelScriptEngine() const {

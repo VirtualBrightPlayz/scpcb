@@ -61,7 +61,7 @@ ScriptFunction::ScriptFunction(Script* script, Function::Signature sgntr) {
     scriptFunction = module->GetFunctionByDecl(decl.cstr());
 
     scriptContext = module->GetEngine()->CreateContext();
-    scriptContext->Prepare(scriptFunction);
+    if (scriptContext->Prepare(scriptFunction)<0) { throw std::exception("ptooey!"); }
 }
 
 ScriptFunction::~ScriptFunction() {
@@ -97,6 +97,26 @@ void ScriptFunction::setArgument(const PGE::String& argument, const PGE::String&
 
 void ScriptFunction::execute() {
     scriptContext->Execute();
+}
+
+int32_t ScriptFunction::getReturnInt32() const {
+    return scriptContext->GetReturnDWord();
+}
+
+uint32_t ScriptFunction::getReturnUInt32() const {
+    return scriptContext->GetReturnDWord();
+}
+
+float ScriptFunction::getReturnFloat() const {
+    return scriptContext->GetReturnFloat();
+}
+
+double ScriptFunction::getReturnDouble() const {
+    return scriptContext->GetReturnDouble();
+}
+
+PGE::String ScriptFunction::getReturnString() const {
+    return ((StringPoolEntry*)scriptContext->GetReturnObject())->str;
 }
 
 //NativeFunction
