@@ -8,5 +8,6 @@ string test2() {
     string a = "a";
     string b = "a";
     a += "b";
-    return b;
+    b += "c";
+    return b+a.substr(1);
 }

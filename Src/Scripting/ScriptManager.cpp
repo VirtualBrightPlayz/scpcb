@@ -125,6 +125,16 @@ static void StringIsEmptyGeneric(asIScriptGeneric* gen) {
     *reinterpret_cast<bool*>(gen->GetAddressOfReturnLocation()) = self->str.size()==0;
 }
 
+static void StringSubStringStartLenGeneric(asIScriptGeneric *gen) {
+    // Get the arguments
+    StringPoolEntry* str = (StringPoolEntry*)gen->GetObject();
+    asUINT start = *(int*)gen->GetAddressOfArg(0);
+    int count = *(int*)gen->GetAddressOfArg(1);
+
+    // Return the substring
+    new(gen->GetAddressOfReturnLocation()) StringPoolEntry(str->str.substr(start,count));
+}
+
 static void StringCharAtGeneric(asIScriptGeneric* gen) {
     unsigned int index = gen->GetArgDWord(0);
     StringPoolEntry* self = static_cast<StringPoolEntry*>(gen->GetObject());
@@ -150,19 +160,20 @@ ScriptManager::ScriptManager() {
     engine->RegisterObjectType("string", sizeof(StringPoolEntry), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK);
 
     engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f()",asFUNCTION(ConstructStringGeneric), asCALL_GENERIC);
-    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f(const string &in)",asFUNCTION(CopyConstructStringGeneric), asCALL_GENERIC);
+    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f(const string &in)",asFUNCTION(CopyConstructStringGeneric),asCALL_GENERIC);
     engine->RegisterObjectBehaviour("string",asBEHAVE_DESTRUCT,"void f()",asFUNCTION(DestructStringGeneric),asCALL_GENERIC);
-    engine->RegisterObjectMethod("string","string &opAssign(const string &in)",asFUNCTION(AssignStringGeneric),    asCALL_GENERIC);
-    engine->RegisterObjectMethod("string","string &opAddAssign(const string &in)",asFUNCTION(AddAssignStringGeneric), asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","string &opAssign(const string &in)",asFUNCTION(AssignStringGeneric),asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","string &opAddAssign(const string &in)",asFUNCTION(AddAssignStringGeneric),asCALL_GENERIC);
 
-    engine->RegisterObjectMethod("string","bool opEquals(const string &in) const",asFUNCTION(StringEqualsGeneric), asCALL_GENERIC);
-    engine->RegisterObjectMethod("string","string opAdd(const string &in) const",asFUNCTION(StringAddGeneric), asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","bool opEquals(const string &in) const",asFUNCTION(StringEqualsGeneric),asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","string opAdd(const string &in) const",asFUNCTION(StringAddGeneric),asCALL_GENERIC);
     
-    engine->RegisterObjectMethod("string","uint length() const",asFUNCTION(StringLengthGeneric), asCALL_GENERIC);
-    engine->RegisterObjectMethod("string","bool isEmpty() const",asFUNCTION(StringIsEmptyGeneric), asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","uint length() const",asFUNCTION(StringLengthGeneric),asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","bool isEmpty() const",asFUNCTION(StringIsEmptyGeneric),asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","string substr(int start, int end=-1) const",asFUNCTION(StringSubStringStartLenGeneric),asCALL_GENERIC);
 
-    engine->RegisterObjectMethod("string","uint8 &opIndex(uint)",asFUNCTION(StringCharAtGeneric), asCALL_GENERIC);
-    engine->RegisterObjectMethod("string","const uint8 &opIndex(uint) const",asFUNCTION(StringCharAtGeneric), asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","uint8 &opIndex(uint)",asFUNCTION(StringCharAtGeneric),asCALL_GENERIC);
+    engine->RegisterObjectMethod("string","const uint8 &opIndex(uint) const",asFUNCTION(StringCharAtGeneric),asCALL_GENERIC);
     
     engine->RegisterStringFactory("string", stringFactory);
 }
