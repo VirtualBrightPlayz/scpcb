@@ -69,10 +69,6 @@ class StringFactory : public asIStringFactory {
         }
 };
 
-static void localMessageCallback(ScriptManager* scriptManager, const asSMessageInfo* msg, void* param) {
-    scriptManager->messageCallback(msg, param);
-}
-
 static void ConstructStringGeneric(asIScriptGeneric* gen) {
     new (gen->GetObject()) StringPoolEntry();
 }
@@ -153,7 +149,7 @@ static void StringCharAtGeneric(asIScriptGeneric* gen) {
 ScriptManager::ScriptManager() {
     engine = asCreateScriptEngine();
 
-    engine->SetMessageCallback(asFUNCTION(localMessageCallback), this, asCALL_CDECL_OBJFIRST);
+    engine->SetMessageCallback(asMETHOD(ScriptManager, messageCallback), this, asCALL_THISCALL);
 
     stringFactory = new StringFactory();
 
