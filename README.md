@@ -17,7 +17,7 @@ Licensing terms can be found in [License.txt](Content/License.txt).
 
 # List of things to avoid doing in the game's code:
 
-* Anything that isn't K&R bracket style (Allman, GNU, etc).
+* Anything that isn't OTBS bracket style (Allman, GNU, etc).
 * Omitting brackets when they can be used.
 * Any language other than C or C++.
 * Anything other than lower camelCase for functions and variables.
