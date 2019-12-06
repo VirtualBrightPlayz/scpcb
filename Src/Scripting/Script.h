@@ -6,6 +6,7 @@
 #include <Misc/String.h>
 #include <map>
 #include <inttypes.h>
+#include "ScriptManager.h"
 
 class Script {
     private:

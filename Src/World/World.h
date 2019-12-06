@@ -17,6 +17,7 @@
 #include "../Scripting/ScriptManager.h"
 #include "../Scripting/Script.h"
 #include "../Scripting/Function.h"
+#include "../Scripting/Class.h"
 
 class Camera;
 class Timing;
@@ -58,6 +59,7 @@ class World {
             PGE::ControllerInput* rightAnalogStick;
             ScriptManager* scriptManager;
             Script* script;
+            ScriptClass* testClass1;
             ScriptFunction* testFunction1;
             int functionReturn1;
             ScriptFunction* testFunction2;

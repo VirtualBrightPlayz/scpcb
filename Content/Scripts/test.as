@@ -1,5 +1,13 @@
-int32 test() {
-    return 2;
+class Test {
+    int publicProperty;
+    protected int protectedProperty;
+    private int privateProperty;
+};
+
+int32 test(const string& in arg) {
+    int32 retVal = arg[0];
+    retVal = retVal % 5;
+    return retVal;
 }
 
 string test2() {

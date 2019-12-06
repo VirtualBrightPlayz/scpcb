@@ -36,9 +36,9 @@ Script::Script(ScriptManager* scriptMgr, const PGE::FileName& filename, const PG
 
     int errorCode = scriptModule->AddScriptSection(sectionName.cstr(), scriptContents.cstr(), scriptContents.size());
     if (errorCode<0) { throw std::exception("kablooey!"); }
-
+    
     errorCode = scriptModule->Build();
-    if (errorCode<0) { throw std::exception("whabammy!"); }
+    //if (errorCode<0) { throw std::exception("whabammy!"); }
 }
 
 Script::~Script() {

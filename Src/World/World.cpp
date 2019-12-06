@@ -296,16 +296,20 @@ void World::loadPlaying() {
     todo_Remove.script = new Script(todo_Remove.scriptManager,PGE::FileName::create("Scripts/test.as"),"test");
     Function::Signature signature;
     signature.functionName = "test";
-    signature.returnType = Function::Type::Int32;
+    signature.arguments.push_back(Function::Signature::Argument(Type::String, "arg"));
+    signature.returnType = Type::Int32;
+    todo_Remove.testClass1 = new ScriptClass(todo_Remove.script,"Test");
     todo_Remove.testFunction1 = new ScriptFunction(todo_Remove.script,signature);
+    todo_Remove.testFunction1->setArgument("arg", todo_Remove.testClass1->getProperties()[0].name);
     todo_Remove.testFunction1->execute();
     todo_Remove.functionReturn1 = todo_Remove.testFunction1->getReturnInt32();
     signature.functionName = "test2";
-    signature.returnType = Function::Type::String;
+    signature.arguments.clear();
+    signature.returnType = Type::String;
     todo_Remove.testFunction2 = new ScriptFunction(todo_Remove.script,signature);
     todo_Remove.testFunction2->execute();
     todo_Remove.functionReturn2 = todo_Remove.testFunction2->getReturnString();
-    pauseMenu->inputTest->setText(todo_Remove.functionReturn2);
+    pauseMenu->inputTest->setText(todo_Remove.testClass1->getProperties()[1].name + todo_Remove.functionReturn2);
 }
 
 void World::destroyPlaying() {

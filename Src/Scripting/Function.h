@@ -1,32 +1,25 @@
 #ifndef FUNCTION_H_INCLUDED
 #define FUNCTION_H_INCLUDED
 
+#include <map>
+#include <vector>
 #include <angelscript.h>
 #include <Misc/String.h>
 #include "ScriptManager.h"
 #include "Script.h"
+#include "Type.h"
 
 class Function {
     public:
-        enum class Type {
-            Int32,
-            UInt32,
-            Float,
-            Double,
-            String
-        };
-
-        static PGE::String typeToString(Type type);
-
         struct Signature {
             struct Argument {
-                Function::Type type;
+                Type type;
                 PGE::String name;
 
-                Argument(Function::Type t, const PGE::String& n);
+                Argument(Type t, const PGE::String& n);
             };
             std::vector<Argument> arguments;
-            Function::Type returnType;
+            Type returnType;
             PGE::String functionName;
 
             PGE::String toString() const;
@@ -49,6 +42,8 @@ class ScriptFunction : public Function {
     private:
         asIScriptFunction* scriptFunction;
         asIScriptContext* scriptContext;
+
+        std::map<int, PGE::String> stringArgs;
     public:
         ScriptFunction(Script* script,Function::Signature sgntr);
         ~ScriptFunction() override;

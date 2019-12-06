@@ -1,39 +1,17 @@
 #include "Function.h"
 
-PGE::String Function::typeToString(Function::Type type) {
-    switch (type) {
-        case Function::Type::Int32: {
-            return "int32";
-        } break;
-        case Function::Type::UInt32: {
-            return "uint32";
-        } break;
-        case Function::Type::Float: {
-            return "float";
-        } break;
-        case Function::Type::Double: {
-            return "double";
-        } break;
-        case Function::Type::String: {
-            return "string";
-        } break;
-    }
-
-    return "<unknown>";
-}
-
 PGE::String Function::Signature::toString() const {
-    PGE::String retVal = typeToString(returnType) + " " + functionName;
+    PGE::String retVal = typeToString(returnType, false) + " " + functionName;
     retVal = PGE::String(retVal, "(");
     for (int i = 0; i < arguments.size(); i++) {
         if (i>0) { retVal = PGE::String(retVal, ", "); }
-        retVal = PGE::String(retVal, typeToString(arguments[i].type) + " " + arguments[i].name);
+        retVal = PGE::String(retVal, typeToString(arguments[i].type, true) + " " + arguments[i].name);
     }
     retVal = PGE::String(retVal, ")");
     return retVal;
 }
 
-Function::Signature::Argument::Argument(Function::Type t, const PGE::String& n) {
+Function::Signature::Argument::Argument(Type t, const PGE::String& n) {
     type = t; name = n;
 }
 
@@ -91,8 +69,12 @@ void ScriptFunction::setArgument(const PGE::String& argument, double d) {
 void ScriptFunction::setArgument(const PGE::String& argument, const PGE::String& s) {
     int index = getArgumentIndex(argument);
 
-    StringPoolEntry obj = StringPoolEntry(s);
-    scriptContext->SetArgObject(index, &obj);
+    if (stringArgs.find(index) == stringArgs.end()) {
+        stringArgs.emplace(index, s);
+    } else {
+        stringArgs[index] = s;
+    }
+    scriptContext->SetArgObject(index, &(stringArgs[index]));
 }
 
 void ScriptFunction::execute() {
@@ -116,7 +98,7 @@ double ScriptFunction::getReturnDouble() const {
 }
 
 PGE::String ScriptFunction::getReturnString() const {
-    return ((StringPoolEntry*)scriptContext->GetReturnObject())->str;
+    return *((PGE::String*)scriptContext->GetReturnObject());
 }
 
 //NativeFunction
