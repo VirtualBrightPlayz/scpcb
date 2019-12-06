@@ -11,6 +11,6 @@ enum class Type {
     String
 };
 
-extern PGE::String typeToString(Type type, bool isArgument);
+extern PGE::String typeToString(Type type);
 
 #endif

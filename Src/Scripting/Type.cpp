@@ -1,6 +1,6 @@
 #include "Type.h"
 
-PGE::String typeToString(Type type, bool isArgument) {
+PGE::String typeToString(Type type) {
     switch (type) {
         case Type::Int32: {
             return "int32";
@@ -15,11 +15,7 @@ PGE::String typeToString(Type type, bool isArgument) {
             return "double";
         } break;
         case Type::String: {
-            if (isArgument) {
-                return "const string& in";
-            } else {
-                return "string";
-            }
+            return "string";
         } break;
     }
 

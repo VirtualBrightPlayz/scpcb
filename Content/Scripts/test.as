@@ -4,7 +4,7 @@ class Test {
     private int privateProperty;
 };
 
-int32 test(const string& in arg) {
+int32 test(string arg) {
     int32 retVal = arg[0];
     retVal = retVal % 5;
     return retVal;
