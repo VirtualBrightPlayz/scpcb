@@ -13,13 +13,13 @@ class Function {
     public:
         struct Signature {
             struct Argument {
-                Type type;
+                const Type* type;
                 PGE::String name;
 
-                Argument(Type t, const PGE::String& n);
+                Argument(const Type* t, const PGE::String& n);
             };
             std::vector<Argument> arguments;
-            Type returnType;
+            const Type* returnType;
             PGE::String functionName;
 
             PGE::String toString() const;

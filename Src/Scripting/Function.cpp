@@ -1,17 +1,17 @@
 #include "Function.h"
 
 PGE::String Function::Signature::toString() const {
-    PGE::String retVal = returnType.toString() + " " + functionName;
+    PGE::String retVal = returnType->toString() + " " + functionName;
     retVal = PGE::String(retVal, "(");
     for (int i = 0; i < arguments.size(); i++) {
         if (i>0) { retVal = PGE::String(retVal, ", "); }
-        retVal = PGE::String(retVal, arguments[i].type.toString() + " " + arguments[i].name);
+        retVal = PGE::String(retVal, arguments[i].type->toString() + " " + arguments[i].name);
     }
     retVal = PGE::String(retVal, ")");
     return retVal;
 }
 
-Function::Signature::Argument::Argument(Type t, const PGE::String& n) {
+Function::Signature::Argument::Argument(const Type* t, const PGE::String& n) {
     type = t; name = n;
 }
 

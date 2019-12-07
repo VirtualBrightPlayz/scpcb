@@ -4,21 +4,28 @@
 #include <Misc/String.h>
 
 class Type {
+    private:
+        static const Type int32Private;
+        static const Type uint32Private;
+        static const Type floatPrivate;
+        static const Type doublePrivate;
+        static const Type stringPrivate;
     protected:
         PGE::String typeName;
     public:
         Type();
+        Type(const Type& other) = delete;
         Type(const PGE::String& name);
         ~Type();
 
-        virtual bool equals(const Type& other) const;
+        virtual bool equals(const Type* other) const;
         virtual PGE::String toString() const;
 
-        static const Type Int32;
-        static const Type UInt32;
-        static const Type Float;
-        static const Type Double;
-        static const Type String;
+        static const Type* const Int32;
+        static const Type* const UInt32;
+        static const Type* const Float;
+        static const Type* const Double;
+        static const Type* const String;
 };
 
 #endif
