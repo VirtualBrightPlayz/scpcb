@@ -12,7 +12,7 @@ int32 test(string arg) {
 
 string test2() {
     //assign same string constant to two variables, and then modify one
-    //if all is working correctly then "a" is returned
+    //if all is working correctly then "acb" is returned
     string a = "a";
     string b = "a";
     a += "b";

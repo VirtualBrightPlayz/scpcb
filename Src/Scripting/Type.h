@@ -3,14 +3,22 @@
 
 #include <Misc/String.h>
 
-enum class Type {
-    Int32,
-    UInt32,
-    Float,
-    Double,
-    String
-};
+class Type {
+    protected:
+        PGE::String typeName;
+    public:
+        Type();
+        Type(const PGE::String& name);
+        ~Type();
 
-extern PGE::String typeToString(Type type);
+        virtual bool equals(const Type& other) const;
+        virtual PGE::String toString() const;
+
+        static const Type Int32;
+        static const Type UInt32;
+        static const Type Float;
+        static const Type Double;
+        static const Type String;
+};
 
 #endif

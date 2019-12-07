@@ -1,23 +1,26 @@
 #include "Type.h"
 
-PGE::String typeToString(Type type) {
-    switch (type) {
-        case Type::Int32: {
-            return "int32";
-        } break;
-        case Type::UInt32: {
-            return "uint32";
-        } break;
-        case Type::Float: {
-            return "float";
-        } break;
-        case Type::Double: {
-            return "double";
-        } break;
-        case Type::String: {
-            return "string";
-        } break;
-    }
+const Type Type::Int32 = Type("int32");
+const Type Type::UInt32 = Type("uint32");
+const Type Type::Float = Type("float");
+const Type Type::Double = Type("double");
+const Type Type::String = Type("string");
 
-    return "<unknown>";
+Type::Type() {
+    typeName = "<unknown>";
 }
+
+Type::Type(const PGE::String& name) {
+    typeName = name;
+}
+
+Type::~Type() {}
+
+bool Type::equals(const Type& other) const {
+    return !typeName.equals("<unknown>") && other.toString().equals(typeName);
+}
+
+PGE::String Type::toString() const {
+    return typeName;
+}
+

@@ -7,7 +7,7 @@
 #include <vector>
 #include <angelscript.h>
 
-class ScriptClass {
+class ScriptClass : public Type {
     public:
         enum class Visibility {
             Private,

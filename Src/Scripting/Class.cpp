@@ -1,6 +1,8 @@
 #include "Class.h"
 
 ScriptClass::ScriptClass(Script* script, const PGE::String& className) {
+    typeName = className;
+
     asIScriptModule* module = script->getAngelScriptModule();
 
     angelScriptTypeInfo = module->GetTypeInfoByName(className.cstr());
