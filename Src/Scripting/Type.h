@@ -14,11 +14,9 @@ class Type {
         PGE::String typeName;
     public:
         Type();
-        Type(const Type& other) = delete;
         Type(const PGE::String& name);
         ~Type();
 
-        virtual bool equals(const Type* other) const;
         virtual PGE::String toString() const;
 
         static const Type* const Int32;

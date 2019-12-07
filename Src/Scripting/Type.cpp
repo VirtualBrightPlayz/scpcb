@@ -22,10 +22,6 @@ Type::Type(const PGE::String& name) {
 
 Type::~Type() {}
 
-bool Type::equals(const Type* other) const {
-    return !typeName.equals("<unknown>") && other->toString().equals(typeName);
-}
-
 PGE::String Type::toString() const {
     return typeName;
 }
