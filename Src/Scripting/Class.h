@@ -7,6 +7,7 @@
 #include <angelscript.h>
 
 class Script;
+class ScriptFunction;
 
 class ScriptClass : public Type {
     public:
@@ -36,12 +37,17 @@ class ScriptClass : public Type {
         asITypeInfo* angelScriptTypeInfo;
 
         std::vector<Property> properties;
+        std::vector<ScriptFunction*> methods;
+        std::vector<ScriptFunction*> constructors;
+
+        Script* script;
 
     public:
-        ScriptClass(Script* script, asITypeInfo* tInfo);
+        ScriptClass(Script* scrpt, asITypeInfo* tInfo);
 
         const std::vector<Property>& getProperties() const;
         int getTypeId() const;
+        void populateMethods();
 };
 
 #endif

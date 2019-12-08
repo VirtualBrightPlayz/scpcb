@@ -52,6 +52,8 @@ ScriptFunction::ScriptFunction(Script* scrpt, asIScriptFunction* asScriptFunctio
 
         const Type* type = typeFromTypeId(typeId);
 
+        if (name == nullptr) { name = ""; }
+
         signature.arguments.push_back(Signature::Argument(type, name));
     }
 
@@ -71,6 +73,9 @@ const Type* ScriptFunction::typeFromTypeId(int typeId) const {
 
     int stringFactoryTypeId = engine->GetStringFactoryReturnTypeId();
 
+    bool isRef = (typeId & asTYPEID_OBJHANDLE) != 0;
+    typeId = typeId & (~asTYPEID_OBJHANDLE);
+
     const Type* type = nullptr;
     switch (typeId) {
         case asTYPEID_INT32: {
@@ -85,6 +90,9 @@ const Type* ScriptFunction::typeFromTypeId(int typeId) const {
         case asTYPEID_DOUBLE: {
             type = Type::Double;
         } break;
+        case asTYPEID_VOID: {
+            type = Type::Void;
+        } break;
         default: {
             if (typeId == stringFactoryTypeId) {
                 type = Type::String;
@@ -95,6 +103,11 @@ const Type* ScriptFunction::typeFromTypeId(int typeId) const {
             }
         } break;
     }
+
+    if (isRef) {
+        type = type->asRef();
+    }
+
     return type;
 }
 

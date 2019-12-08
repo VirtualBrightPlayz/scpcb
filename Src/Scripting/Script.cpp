@@ -53,6 +53,10 @@ Script::Script(ScriptManager* scriptMgr, const PGE::FileName& filename, const PG
         }
     }
 
+    for (int i = 0; i < classes.size(); i++) {
+        classes[i]->populateMethods();
+    }
+
     int functionCount = scriptModule->GetFunctionCount();
     for (int i = 0; i < functionCount; i++) {
         asIScriptFunction* asFunction = scriptModule->GetFunctionByIndex(i);

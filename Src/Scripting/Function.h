@@ -8,6 +8,7 @@
 
 class Script;
 class ScriptManager;
+class ScriptObject;
 class Type;
 
 class Function {
@@ -54,6 +55,7 @@ class ScriptFunction : public Function {
         ScriptFunction(Script* scrpt,asIScriptFunction* asScriptFunction);
         ~ScriptFunction() override;
 
+        void setObject(ScriptObject* obj);
         void setArgument(const PGE::String& argument, int32_t i32);
         void setArgument(const PGE::String& argument, uint32_t u32);
         void setArgument(const PGE::String& argument, float f);

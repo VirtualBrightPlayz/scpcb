@@ -2,6 +2,10 @@ class Test {
     int publicProperty;
     protected int protectedProperty;
     private int privateProperty;
+
+    int getPrivateProperty(string someArg) {
+        return privateProperty;
+    }
 };
 
 int32 test(string arg) {

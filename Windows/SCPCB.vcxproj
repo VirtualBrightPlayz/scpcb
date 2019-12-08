@@ -151,6 +151,7 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
     <ClInclude Include="..\Src\Scripting\Function.h" />
     <ClInclude Include="..\Src\Scripting\Script.h" />
     <ClInclude Include="..\Src\Scripting\ScriptManager.h" />
+    <ClInclude Include="..\Src\Scripting\Object.h" />
     <ClInclude Include="..\Src\Scripting\Type.h" />
     <ClInclude Include="..\Src\Utils\INI.h" />
     <ClInclude Include="..\Src\Utils\MathUtil.h" />

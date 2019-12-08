@@ -1,8 +1,12 @@
 #include "Script.h"
+#include "Function.h"
 #include "Class.h"
 
-ScriptClass::ScriptClass(Script* script, asITypeInfo* tInfo) {
+ScriptClass::ScriptClass(Script* scrpt, asITypeInfo* tInfo) {
+    script = scrpt;
+
     typeName = tInfo->GetName();
+    refType = new RefType(this);
 
     asIScriptModule* module = script->getAngelScriptModule();
 
@@ -39,6 +43,27 @@ const std::vector<ScriptClass::Property>& ScriptClass::getProperties() const {
 
 int ScriptClass::getTypeId() const {
     return angelScriptTypeInfo->GetTypeId();
+}
+
+void ScriptClass::populateMethods() {
+    int methodCount = angelScriptTypeInfo->GetMethodCount();
+    for (int i = 0; i < methodCount; i++) {
+        ScriptFunction* newFunction = new ScriptFunction(script, angelScriptTypeInfo->GetMethodByIndex(i, false));
+
+        PGE::String decl = newFunction->getSignature().toString();
+
+        methods.push_back(newFunction);
+    }
+
+    int factoryCount = angelScriptTypeInfo->GetFactoryCount();
+
+    for (int i = 0; i < factoryCount; i++) {
+        ScriptFunction* newFunction = new ScriptFunction(script, angelScriptTypeInfo->GetFactoryByIndex(i));
+
+        PGE::String decl = newFunction->getSignature().toString();
+
+        constructors.push_back(newFunction);
+    }
 }
 
 ScriptClass::Property::Property(const PGE::String& n, int off, int tId, bool ref, ScriptClass::Visibility vis) {
