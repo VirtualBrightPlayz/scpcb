@@ -17,7 +17,7 @@ class Type {
         Type(const PGE::String& name);
         ~Type();
 
-        virtual PGE::String toString() const;
+        virtual PGE::String getName() const;
 
         static const Type* const Int32;
         static const Type* const UInt32;

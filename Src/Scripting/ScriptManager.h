@@ -5,6 +5,10 @@
 #include <Misc/String.h>
 #include <vector>
 
+class Script;
+class ScriptClass;
+class ScriptFunction;
+
 class ScriptManager {
     public:
         struct LogEntry {
@@ -24,6 +28,10 @@ class ScriptManager {
     private:
         asIScriptEngine* engine;
         asIStringFactory* stringFactory;
+
+        std::vector<ScriptClass*> sharedClasses;
+        std::vector<ScriptFunction*> scriptFunctions;
+
         std::vector<LogEntry> log;
     public:
         ScriptManager();
@@ -32,6 +40,9 @@ class ScriptManager {
         void messageCallback(const asSMessageInfo* msg, void* param);
 
         asIScriptEngine* getAngelScriptEngine() const;
+
+        ScriptClass* getSharedClassByTypeId(int typeId) const;
+        void registerSharedClass(ScriptClass* clss);
 
         const std::vector<LogEntry>& getLog() const;
 };

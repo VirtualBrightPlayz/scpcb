@@ -1,5 +1,7 @@
 #include "ScriptManager.h"
 #include "Script.h"
+#include "Class.h"
+#include "Function.h"
 
 #include <fstream>
 
@@ -38,7 +40,26 @@ Script::Script(ScriptManager* scriptMgr, const PGE::FileName& filename, const PG
     if (errorCode<0) { throw std::exception("kablooey!"); }
     
     errorCode = scriptModule->Build();
-    //if (errorCode<0) { throw std::exception("whabammy!"); }
+    if (errorCode<0) { throw std::exception("whabammy!"); }
+
+    int typeCount = scriptModule->GetObjectTypeCount();
+    for (int i = 0; i < typeCount; i++) {
+        asITypeInfo* typeInfo = scriptModule->GetObjectTypeByIndex(i);
+
+        ScriptClass* newClass = new ScriptClass(this, typeInfo);
+        classes.push_back(newClass);
+        if ((typeInfo->GetFlags() & asOBJ_SHARED) != 0) {
+            scriptManager->registerSharedClass(newClass);
+        }
+    }
+
+    int functionCount = scriptModule->GetFunctionCount();
+    for (int i = 0; i < functionCount; i++) {
+        asIScriptFunction* asFunction = scriptModule->GetFunctionByIndex(i);
+        ScriptFunction* newFunction = new ScriptFunction(this, asFunction);
+
+        functions.push_back(newFunction);
+    }
 }
 
 Script::~Script() {
@@ -47,4 +68,29 @@ Script::~Script() {
 
 asIScriptModule* Script::getAngelScriptModule() const {
     return scriptModule;
+}
+
+ScriptManager* Script::getScriptManager() const {
+    return scriptManager;
+}
+
+ScriptClass* Script::getClassByName(const PGE::String& name) const {
+    for (int i = 0; i < classes.size(); i++) {
+        if (classes[i]->getName().equals(name)) { return classes[i]; }
+    }
+    return nullptr;
+}
+
+ScriptClass* Script::getClassByTypeId(int typeId) const {
+    for (int i = 0; i < classes.size(); i++) {
+        if (classes[i]->getTypeId() == typeId) { return classes[i]; }
+    }
+    return nullptr;
+}
+
+ScriptFunction* Script::getFunctionByName(const PGE::String& name) const {
+    for (int i = 0; i < functions.size(); i++) {
+        if (functions[i]->getSignature().functionName.equals(name)) { return functions[i]; }
+    }
+    return nullptr;
 }

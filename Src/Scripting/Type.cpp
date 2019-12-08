@@ -22,7 +22,7 @@ Type::Type(const PGE::String& name) {
 
 Type::~Type() {}
 
-PGE::String Type::toString() const {
+PGE::String Type::getName() const {
     return typeName;
 }
 

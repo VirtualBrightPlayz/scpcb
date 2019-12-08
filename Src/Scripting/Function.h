@@ -5,9 +5,10 @@
 #include <vector>
 #include <angelscript.h>
 #include <Misc/String.h>
-#include "ScriptManager.h"
-#include "Script.h"
-#include "Type.h"
+
+class Script;
+class ScriptManager;
+class Type;
 
 class Function {
     public:
@@ -44,8 +45,13 @@ class ScriptFunction : public Function {
         asIScriptContext* scriptContext;
 
         std::map<int, PGE::String> stringArgs;
+
+        const Type* typeFromTypeId(int typeId) const;
+
+        Script* script;
+
     public:
-        ScriptFunction(Script* script,Function::Signature sgntr);
+        ScriptFunction(Script* scrpt,asIScriptFunction* asScriptFunction);
         ~ScriptFunction() override;
 
         void setArgument(const PGE::String& argument, int32_t i32);

@@ -1,4 +1,5 @@
 #include "ScriptManager.h"
+#include "Class.h"
 #include <angelscript.h>
 #include <Misc/String.h>
 #include <map>
@@ -165,4 +166,15 @@ void ScriptManager::messageCallback(const asSMessageInfo* msg, void* param) {
 
 asIScriptEngine* ScriptManager::getAngelScriptEngine() const {
     return engine;
+}
+
+ScriptClass* ScriptManager::getSharedClassByTypeId(int typeId) const {
+    for (int i = 0; i < sharedClasses.size(); i++) {
+        if (sharedClasses[i]->getTypeId() == typeId) { return sharedClasses[i]; }
+    }
+    return nullptr;
+}
+
+void ScriptManager::registerSharedClass(ScriptClass* clss) {
+    sharedClasses.push_back(clss);
 }
