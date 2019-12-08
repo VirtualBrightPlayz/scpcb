@@ -33,22 +33,24 @@ int Function::getArgumentIndex(const PGE::String& argument) const {
 }
 
 //ScriptFunction
-ScriptFunction::ScriptFunction(Script* scrpt, asIScriptFunction* asScriptFunction) {
+ScriptFunction::ScriptFunction(Script* scrpt, asIScriptFunction* asScriptFunction, asIScriptFunction* asFuncWithSignature) {
     script = scrpt;
     asIScriptModule* module = script->getAngelScriptModule();
     
     scriptFunction = asScriptFunction;
 
+    if (asFuncWithSignature == nullptr) { asFuncWithSignature = scriptFunction; }
+
     signature.functionName = scriptFunction->GetName();
 
-    int argCount = scriptFunction->GetParamCount();
+    int argCount = asFuncWithSignature->GetParamCount();
     for (int i = 0; i < argCount; i++) {
         int typeId;
         asDWORD flags;
         const char* name;
         const char* defaultArg;
 
-        scriptFunction->GetParam(i, &typeId, &flags, &name, &defaultArg);
+        asFuncWithSignature->GetParam(i, &typeId, &flags, &name, &defaultArg);
 
         const Type* type = typeFromTypeId(typeId);
 

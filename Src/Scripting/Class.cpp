@@ -48,7 +48,9 @@ int ScriptClass::getTypeId() const {
 void ScriptClass::populateMethods() {
     int methodCount = angelScriptTypeInfo->GetMethodCount();
     for (int i = 0; i < methodCount; i++) {
-        ScriptFunction* newFunction = new ScriptFunction(script, angelScriptTypeInfo->GetMethodByIndex(i, false));
+        ScriptFunction* newFunction = new ScriptFunction(script,
+                                                         angelScriptTypeInfo->GetMethodByIndex(i, true),
+                                                         angelScriptTypeInfo->GetMethodByIndex(i, false));
 
         PGE::String decl = newFunction->getSignature().toString();
 

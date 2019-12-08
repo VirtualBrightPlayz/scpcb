@@ -52,7 +52,7 @@ class ScriptFunction : public Function {
         Script* script;
 
     public:
-        ScriptFunction(Script* scrpt,asIScriptFunction* asScriptFunction);
+        ScriptFunction(Script* scrpt,asIScriptFunction* asScriptFunction,asIScriptFunction* asFuncWithSignature=nullptr);
         ~ScriptFunction() override;
 
         void setObject(ScriptObject* obj);
