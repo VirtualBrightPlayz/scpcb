@@ -19,7 +19,7 @@ class ScriptObject {
         asIScriptObject* getAngelScriptObject() const;
 
         PGE::String getPropertyString(const PGE::String& propertyName) const;
-        //PGE::String setPropertyString(const PGE::String& propertyName) const;
+        void setProperty(const PGE::String& propertyName, const PGE::String& val) const;
 };
 
 #endif

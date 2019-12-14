@@ -301,8 +301,12 @@ void World::loadPlaying() {
     todo_Remove.testFunction1->execute();
     todo_Remove.functionReturn1 = todo_Remove.testFunction1->getReturnInt32();
     todo_Remove.testFunction2 = todo_Remove.script->getFunctionByName("test2");
+    ScriptObject* inObj = todo_Remove.testClass1->createNewObject();
+    inObj->setProperty("publicProperty", "test");
+    todo_Remove.testFunction2->setArgument("inArg", inObj);
     todo_Remove.testFunction2->execute();
-    todo_Remove.functionReturn2 = todo_Remove.testFunction2->getReturnObject()->getPropertyString("publicProperty");
+    ScriptObject* resultObj = todo_Remove.testFunction2->getReturnObject();
+    todo_Remove.functionReturn2 = resultObj->getPropertyString("publicProperty");
     pauseMenu->inputTest->setText(todo_Remove.testFunction1->getSignature().toString() + todo_Remove.functionReturn2);
 }
 

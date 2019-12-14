@@ -32,4 +32,11 @@ PGE::String ScriptObject::getPropertyString(const PGE::String& propertyName) con
     return *((PGE::String*)obj);
 }
 
+void ScriptObject::setProperty(const PGE::String& propertyName, const PGE::String& val) const {
+    int index = getPropertyIndex(propertyName);
+
+    void* obj = angelScriptObject->GetAddressOfProperty(index);
+    *((PGE::String*)obj) = val;
+}
+
 

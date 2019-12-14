@@ -14,11 +14,9 @@ int32 test(string arg) {
     return retVal;
 }
 
-Test test2() {
-    //assign same string constant to two variables, and then modify one
-    //if all is working correctly then "acb" is returned
-    string a = "a";
-    string b = "a";
+Test test2(Test inArg) {
+    string a = inArg.publicProperty;
+    string b = inArg.publicProperty;
     a += "b";
     b += "c";
     Test retVal;
