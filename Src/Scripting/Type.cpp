@@ -29,6 +29,10 @@ PGE::String Type::getName() const {
     return typeName;
 }
 
+bool Type::isRef() const {
+    return false;
+}
+
 const RefType* Type::asRef() const {
     return refType;
 }
@@ -40,4 +44,12 @@ RefType::RefType(const Type* type) {
 
 PGE::String RefType::getName() const {
     return PGE::String(baseType->getName(), "@");
+}
+
+bool RefType::isRef() const {
+    return true;
+}
+
+const Type* RefType::getBaseType() const {
+    return baseType;
 }

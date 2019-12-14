@@ -47,26 +47,31 @@ class ScriptFunction : public Function {
 
         std::map<int, PGE::String> stringArgs;
 
-        const Type* typeFromTypeId(int typeId) const;
-
         Script* script;
+
+        bool returnsClassType;
+        ScriptObject* returnedObject;
 
     public:
         ScriptFunction(Script* scrpt,asIScriptFunction* asScriptFunction,asIScriptFunction* asFuncWithSignature=nullptr);
         ~ScriptFunction() override;
 
         void setObject(ScriptObject* obj);
+        void setObjectNative(void* obj);
         void setArgument(const PGE::String& argument, int32_t i32);
         void setArgument(const PGE::String& argument, uint32_t u32);
         void setArgument(const PGE::String& argument, float f);
         void setArgument(const PGE::String& argument, double d);
         void setArgument(const PGE::String& argument, const PGE::String& s);
+        void setArgument(const PGE::String& argument, ScriptObject* obj);
+        void setArgumentNative(const PGE::String& argument, void* obj);
         void execute();
         int32_t getReturnInt32() const;
         uint32_t getReturnUInt32() const;
         float getReturnFloat() const;
         double getReturnDouble() const;
         PGE::String getReturnString() const;
+        ScriptObject* getReturnObject() const;
 };
 
 class NativeFunction : public Function {

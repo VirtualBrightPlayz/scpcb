@@ -8,6 +8,7 @@
 
 class Script;
 class ScriptFunction;
+class ScriptObject;
 
 class ScriptClass : public Type {
     public:
@@ -22,10 +23,13 @@ class ScriptClass : public Type {
                 PGE::String name;
                 int offset;
                 int typeId;
+                const Type* type;
                 bool isRef;
                 Visibility visibility;
             public:
                 Property(const PGE::String& n, int off, int tId, bool ref, Visibility vis);
+
+                void determineType(Script* script);
 
                 PGE::String getName() const;
                 int getOffset() const;
@@ -46,8 +50,11 @@ class ScriptClass : public Type {
         ScriptClass(Script* scrpt, asITypeInfo* tInfo);
 
         const std::vector<Property>& getProperties() const;
+        Script* getScript() const;
         int getTypeId() const;
-        void populateMethods();
+
+        void finalizeInitialization();
+        ScriptObject* createNewObject();
 };
 
 #endif

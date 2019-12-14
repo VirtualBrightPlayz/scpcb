@@ -16,6 +16,7 @@
 #include "../Input/Input.h"
 #include "../Utils/TextMgmt.h"
 #include "../Utils/MathUtil.h"
+#include "../Scripting/Object.h"
 
 World::World() {
     config = new Config("options.ini");
@@ -301,7 +302,7 @@ void World::loadPlaying() {
     todo_Remove.functionReturn1 = todo_Remove.testFunction1->getReturnInt32();
     todo_Remove.testFunction2 = todo_Remove.script->getFunctionByName("test2");
     todo_Remove.testFunction2->execute();
-    todo_Remove.functionReturn2 = todo_Remove.testFunction2->getReturnString();
+    todo_Remove.functionReturn2 = todo_Remove.testFunction2->getReturnObject()->getPropertyString("publicProperty");
     pauseMenu->inputTest->setText(todo_Remove.testFunction1->getSignature().toString() + todo_Remove.functionReturn2);
 }
 

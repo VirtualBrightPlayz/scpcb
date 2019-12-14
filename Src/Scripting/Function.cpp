@@ -3,6 +3,7 @@
 #include "Function.h"
 #include "Type.h"
 #include "Class.h"
+#include "Object.h"
 
 PGE::String Function::Signature::toString() const {
     PGE::String retVal = returnType->getName() + " " + functionName;
@@ -36,6 +37,8 @@ int Function::getArgumentIndex(const PGE::String& argument) const {
 ScriptFunction::ScriptFunction(Script* scrpt, asIScriptFunction* asScriptFunction, asIScriptFunction* asFuncWithSignature) {
     script = scrpt;
     asIScriptModule* module = script->getAngelScriptModule();
+
+    returnedObject = nullptr;
     
     scriptFunction = asScriptFunction;
 
@@ -52,14 +55,14 @@ ScriptFunction::ScriptFunction(Script* scrpt, asIScriptFunction* asScriptFunctio
 
         asFuncWithSignature->GetParam(i, &typeId, &flags, &name, &defaultArg);
 
-        const Type* type = typeFromTypeId(typeId);
+        const Type* type = script->typeFromTypeId(typeId);
 
         if (name == nullptr) { name = ""; }
 
         signature.arguments.push_back(Signature::Argument(type, name));
     }
 
-    signature.returnType = typeFromTypeId(scriptFunction->GetReturnTypeId());
+    signature.returnType = script->typeFromTypeId(scriptFunction->GetReturnTypeId(), returnsClassType);
 
     scriptContext = module->GetEngine()->CreateContext();
     if (scriptContext->Prepare(scriptFunction)<0) { throw std::exception("ptooey!"); }
@@ -69,48 +72,12 @@ ScriptFunction::~ScriptFunction() {
     scriptContext->Release();
 }
 
-const Type* ScriptFunction::typeFromTypeId(int typeId) const {
-    asIScriptModule* module = script->getAngelScriptModule();
-    asIScriptEngine* engine = module->GetEngine();
+void ScriptFunction::setObject(ScriptObject* obj) {
+    scriptContext->SetObject(obj->getAngelScriptObject());
+}
 
-    int stringFactoryTypeId = engine->GetStringFactoryReturnTypeId();
-
-    bool isRef = (typeId & asTYPEID_OBJHANDLE) != 0;
-    typeId = typeId & (~asTYPEID_OBJHANDLE);
-
-    const Type* type = nullptr;
-    switch (typeId) {
-        case asTYPEID_INT32: {
-            type = Type::Int32;
-        } break;
-        case asTYPEID_UINT32: {
-            type = Type::UInt32;
-        } break;
-        case asTYPEID_FLOAT: {
-            type = Type::Float;
-        } break;
-        case asTYPEID_DOUBLE: {
-            type = Type::Double;
-        } break;
-        case asTYPEID_VOID: {
-            type = Type::Void;
-        } break;
-        default: {
-            if (typeId == stringFactoryTypeId) {
-                type = Type::String;
-            } else {
-                ScriptClass* clss = script->getClassByTypeId(typeId);
-                if (clss == nullptr) { clss = script->getScriptManager()->getSharedClassByTypeId(typeId); }
-                type = clss;
-            }
-        } break;
-    }
-
-    if (isRef) {
-        type = type->asRef();
-    }
-
-    return type;
+void ScriptFunction::setObjectNative(void* obj) {
+    scriptContext->SetObject(obj);
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, int32_t i32) {
@@ -144,8 +111,33 @@ void ScriptFunction::setArgument(const PGE::String& argument, const PGE::String&
     scriptContext->SetArgObject(index, &(stringArgs[index]));
 }
 
+void ScriptFunction::setArgument(const PGE::String& argument, ScriptObject* obj) {
+    int index = getArgumentIndex(argument);
+
+    scriptContext->SetArgObject(index, obj->getAngelScriptObject());
+}
+
+void ScriptFunction::setArgumentNative(const PGE::String& argument, void* obj) {
+    int index = getArgumentIndex(argument);
+
+    scriptContext->SetArgObject(index, obj);
+}
+
 void ScriptFunction::execute() {
     scriptContext->Execute();
+
+    if (returnsClassType) {
+        asIScriptObject* asObj = nullptr;
+        ScriptClass* returnClass = nullptr;
+        if (signature.returnType->isRef()) {
+            returnClass = (ScriptClass*)(((RefType*)signature.returnType)->getBaseType());
+            asObj = *(asIScriptObject**)scriptContext->GetAddressOfReturnValue();
+        } else {
+            returnClass = (ScriptClass*)signature.returnType;
+            asObj = (asIScriptObject*)scriptContext->GetAddressOfReturnValue();
+        }
+        returnedObject = new ScriptObject(returnClass, asObj);
+    }
 }
 
 int32_t ScriptFunction::getReturnInt32() const {
@@ -166,6 +158,10 @@ double ScriptFunction::getReturnDouble() const {
 
 PGE::String ScriptFunction::getReturnString() const {
     return *((PGE::String*)scriptContext->GetReturnObject());
+}
+
+ScriptObject* ScriptFunction::getReturnObject() const {
+    return returnedObject;
 }
 
 //NativeFunction

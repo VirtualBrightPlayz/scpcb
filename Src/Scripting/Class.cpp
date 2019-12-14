@@ -1,6 +1,7 @@
 #include "Script.h"
 #include "Function.h"
 #include "Class.h"
+#include "Object.h"
 
 ScriptClass::ScriptClass(Script* scrpt, asITypeInfo* tInfo) {
     script = scrpt;
@@ -41,11 +42,15 @@ const std::vector<ScriptClass::Property>& ScriptClass::getProperties() const {
     return properties;
 }
 
+Script* ScriptClass::getScript() const {
+    return script;
+}
+
 int ScriptClass::getTypeId() const {
     return angelScriptTypeInfo->GetTypeId();
 }
 
-void ScriptClass::populateMethods() {
+void ScriptClass::finalizeInitialization() {
     int methodCount = angelScriptTypeInfo->GetMethodCount();
     for (int i = 0; i < methodCount; i++) {
         ScriptFunction* newFunction = new ScriptFunction(script,
@@ -66,6 +71,16 @@ void ScriptClass::populateMethods() {
 
         constructors.push_back(newFunction);
     }
+
+    for (int i = 0; i < properties.size(); i++) {
+        properties[i].determineType(script);
+    }
+}
+
+ScriptObject* ScriptClass::createNewObject() {
+    //TODO: don't hardcode use of first constructor
+    constructors[0]->execute();
+    return constructors[0]->getReturnObject();
 }
 
 ScriptClass::Property::Property(const PGE::String& n, int off, int tId, bool ref, ScriptClass::Visibility vis) {
@@ -92,4 +107,6 @@ ScriptClass::Visibility ScriptClass::Property::getVisibility() const {
     return visibility;
 }
 
-
+void ScriptClass::Property::determineType(Script* script) {
+    type = script->typeFromTypeId(typeId);
+}

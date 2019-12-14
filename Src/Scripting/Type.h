@@ -22,6 +22,7 @@ class Type {
 
         virtual PGE::String getName() const;
         virtual const RefType* asRef() const;
+        virtual bool isRef() const;
 
         static const Type* const Int32;
         static const Type* const UInt32;
@@ -38,6 +39,8 @@ class RefType : public Type {
         RefType(const Type* type);
 
         PGE::String getName() const override;
+        bool isRef() const override;
+        const Type* getBaseType() const;
 };
 
 #endif

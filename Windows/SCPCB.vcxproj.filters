@@ -262,5 +262,8 @@
     <ClCompile Include="..\Src\Scripting\Type.cpp">
       <Filter>Src\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Scripting\Object.cpp">
+      <Filter>Src\Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

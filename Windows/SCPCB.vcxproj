@@ -193,6 +193,7 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
     <ClCompile Include="..\Src\Save\Config.cpp" />
     <ClCompile Include="..\Src\Scripting\Class.cpp" />
     <ClCompile Include="..\Src\Scripting\Function.cpp" />
+    <ClCompile Include="..\Src\Scripting\Object.cpp" />
     <ClCompile Include="..\Src\Scripting\Script.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptManager.cpp" />
     <ClCompile Include="..\Src\Scripting\Type.cpp" />

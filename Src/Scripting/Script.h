@@ -6,6 +6,7 @@
 #include <Misc/String.h>
 #include <map>
 #include <inttypes.h>
+#include "Type.h"
 
 class ScriptManager;
 class ScriptFunction;
@@ -29,6 +30,9 @@ class Script {
         ScriptClass* getClassByTypeId(int typeId) const;
 
         ScriptFunction* getFunctionByName(const PGE::String& name) const;
+
+        const Type* typeFromTypeId(int typeId) const;
+        const Type* typeFromTypeId(int typeId, bool& isClssType) const;
 };
 
 #endif

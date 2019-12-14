@@ -54,7 +54,7 @@ Script::Script(ScriptManager* scriptMgr, const PGE::FileName& filename, const PG
     }
 
     for (int i = 0; i < classes.size(); i++) {
-        classes[i]->populateMethods();
+        classes[i]->finalizeInitialization();
     }
 
     int functionCount = scriptModule->GetFunctionCount();
@@ -97,4 +97,56 @@ ScriptFunction* Script::getFunctionByName(const PGE::String& name) const {
         if (functions[i]->getSignature().functionName.equals(name)) { return functions[i]; }
     }
     return nullptr;
+}
+
+const Type* Script::typeFromTypeId(int typeId) const {
+    bool discard;
+    return typeFromTypeId(typeId, discard);
+}
+
+const Type* Script::typeFromTypeId(int typeId, bool& isClssType) const {
+    asIScriptModule* module = scriptModule;
+    asIScriptEngine* engine = module->GetEngine();
+
+    int stringFactoryTypeId = engine->GetStringFactoryReturnTypeId();
+
+    bool isRef = (typeId & asTYPEID_OBJHANDLE) != 0;
+    typeId = typeId & (~asTYPEID_OBJHANDLE);
+
+    isClssType = false;
+    const Type* type = nullptr;
+    switch (typeId) {
+        case asTYPEID_INT32: {
+            type = Type::Int32;
+        } break;
+        case asTYPEID_UINT32: {
+            type = Type::UInt32;
+        } break;
+        case asTYPEID_FLOAT: {
+            type = Type::Float;
+        } break;
+        case asTYPEID_DOUBLE: {
+            type = Type::Double;
+        } break;
+        case asTYPEID_VOID: {
+            type = Type::Void;
+        } break;
+        default: {
+            if (typeId == stringFactoryTypeId) {
+                type = Type::String;
+            }
+            else {
+                ScriptClass* clss = getClassByTypeId(typeId);
+                if (clss == nullptr) { clss = scriptManager->getSharedClassByTypeId(typeId); }
+                type = clss;
+                isClssType = true;
+            }
+        } break;
+    }
+
+    if (isRef) {
+        type = type->asRef();
+    }
+
+    return type;
 }

@@ -119,7 +119,7 @@ ScriptManager::ScriptManager() {
 
     stringFactory = new StringFactory();
 
-    engine->RegisterObjectType("string", sizeof(StringPoolEntry), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK);
+    engine->RegisterObjectType("string", sizeof(PGE::String), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK);
 
     engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f()",asFUNCTION(constructString), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f(const string& in)",asFUNCTION(copyConstructString), asCALL_CDECL_OBJLAST);
