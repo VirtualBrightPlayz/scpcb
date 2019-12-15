@@ -23,9 +23,10 @@ class ScriptClass : public Type {
                 PGE::String name;
                 int offset;
                 int typeId;
-                const Type* type;
+                Type* type;
                 bool isRef;
                 Visibility visibility;
+                int arrayDims;
             public:
                 Property(const PGE::String& n, int off, int tId, bool ref, Visibility vis);
 
@@ -36,6 +37,7 @@ class ScriptClass : public Type {
                 int getTypeId() const;
                 bool isReference() const;
                 Visibility getVisibility() const;
+                int getArrayDims() const;
         };
     private:
         asITypeInfo* angelScriptTypeInfo;

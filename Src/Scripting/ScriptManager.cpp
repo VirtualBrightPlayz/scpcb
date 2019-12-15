@@ -5,6 +5,7 @@
 #include <map>
 #include <stdlib.h>
 #include <inttypes.h>
+#include "AngelScriptAddons/scriptarray/scriptarray.h"
 
 class StringFactory : public asIStringFactory {
     private:
@@ -136,6 +137,8 @@ ScriptManager::ScriptManager() {
     engine->RegisterObjectMethod("string","uint8 opIndex(uint) const",asFUNCTION(stringCharAt), asCALL_CDECL_OBJLAST);
 
     engine->RegisterStringFactory("string", stringFactory);
+
+    RegisterScriptArray(engine, true);
 }
 
 ScriptManager::~ScriptManager() {
@@ -177,4 +180,8 @@ ScriptClass* ScriptManager::getSharedClassByTypeId(int typeId) const {
 
 void ScriptManager::registerSharedClass(ScriptClass* clss) {
     sharedClasses.push_back(clss);
+}
+
+bool ScriptManager::isArrayTypeId(int typeId) const {
+    return IsScriptArrayType(engine->GetTypeInfoById(typeId));
 }

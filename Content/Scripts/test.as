@@ -1,7 +1,7 @@
 class Test {
     string publicProperty;
-    protected int protectedProperty;
-    private int privateProperty;
+    protected array<int32> protectedProperty;
+    private int32 privateProperty;
 
     int getPrivateProperty(string someArg) {
         return privateProperty;

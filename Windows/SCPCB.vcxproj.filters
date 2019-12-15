@@ -41,6 +41,12 @@
     <Filter Include="Src\Scripting">
       <UniqueIdentifier>{87a441c9-0375-48b0-993b-f423ae476615}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Scripting\AngelScriptAddons">
+      <UniqueIdentifier>{2a57d497-43c7-4a74-b7d0-9efaf65d4287}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Scripting\AngelScriptAddons\scriptarray">
+      <UniqueIdentifier>{d905b520-cf21-4253-b96e-68117e68fab8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -147,6 +153,9 @@
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\Object.h">
       <Filter>Src\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.h">
+      <Filter>Src\Scripting\AngelScriptAddons\scriptarray</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -264,6 +273,9 @@
     </ClCompile>
     <ClCompile Include="..\Src\Scripting\Object.cpp">
       <Filter>Src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.cpp">
+      <Filter>Src\Scripting\AngelScriptAddons\scriptarray</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

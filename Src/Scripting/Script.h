@@ -31,8 +31,8 @@ class Script {
 
         ScriptFunction* getFunctionByName(const PGE::String& name) const;
 
-        const Type* typeFromTypeId(int typeId) const;
-        const Type* typeFromTypeId(int typeId, bool& isClssType) const;
+        Type* typeFromTypeId(int typeId) const;
+        Type* typeFromTypeId(int typeId, bool& isClssType) const;
 };
 
 #endif

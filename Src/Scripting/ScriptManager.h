@@ -44,6 +44,8 @@ class ScriptManager {
         ScriptClass* getSharedClassByTypeId(int typeId) const;
         void registerSharedClass(ScriptClass* clss);
 
+        bool isArrayTypeId(int typeId) const;
+
         const std::vector<LogEntry>& getLog() const;
 };
 

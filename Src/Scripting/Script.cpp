@@ -99,22 +99,25 @@ ScriptFunction* Script::getFunctionByName(const PGE::String& name) const {
     return nullptr;
 }
 
-const Type* Script::typeFromTypeId(int typeId) const {
+Type* Script::typeFromTypeId(int typeId) const {
     bool discard;
     return typeFromTypeId(typeId, discard);
 }
 
-const Type* Script::typeFromTypeId(int typeId, bool& isClssType) const {
+Type* Script::typeFromTypeId(int typeId, bool& isClssType) const {
     asIScriptModule* module = scriptModule;
     asIScriptEngine* engine = module->GetEngine();
 
     int stringFactoryTypeId = engine->GetStringFactoryReturnTypeId();
+    int arrayTypeId = engine->GetDefaultArrayTypeId();
 
+    int originalTypeId = typeId;
     bool isRef = (typeId & asTYPEID_OBJHANDLE) != 0;
-    typeId = typeId & (~asTYPEID_OBJHANDLE);
+    bool isTemplate = (typeId & asTYPEID_TEMPLATE) != 0;
+    typeId = typeId & (~asTYPEID_OBJHANDLE) & (~asTYPEID_TEMPLATE);
 
     isClssType = false;
-    const Type* type = nullptr;
+    Type* type = nullptr;
     switch (typeId) {
         case asTYPEID_INT32: {
             type = Type::Int32;
@@ -134,8 +137,15 @@ const Type* Script::typeFromTypeId(int typeId, bool& isClssType) const {
         default: {
             if (typeId == stringFactoryTypeId) {
                 type = Type::String;
-            }
-            else {
+            } else if (isTemplate) {
+                if (scriptManager->isArrayTypeId(originalTypeId)) {
+                    asITypeInfo* typeInfo = engine->GetTypeInfoById(originalTypeId);
+                    Type* baseType = typeFromTypeId(typeInfo->GetSubTypeId());
+                    type = baseType->getArrayType();
+                } else {
+                    throw std::exception("Templates are currently not supported for types other than arrays");
+                }
+            } else {
                 ScriptClass* clss = getClassByTypeId(typeId);
                 if (clss == nullptr) { clss = scriptManager->getSharedClassByTypeId(typeId); }
                 type = clss;

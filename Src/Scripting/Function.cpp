@@ -16,7 +16,7 @@ PGE::String Function::Signature::toString() const {
     return retVal;
 }
 
-Function::Signature::Argument::Argument(const Type* t, const PGE::String& n) {
+Function::Signature::Argument::Argument(Type* t, const PGE::String& n) {
     type = t; name = n;
 }
 
@@ -55,7 +55,7 @@ ScriptFunction::ScriptFunction(Script* scrpt, asIScriptFunction* asScriptFunctio
 
         asFuncWithSignature->GetParam(i, &typeId, &flags, &name, &defaultArg);
 
-        const Type* type = script->typeFromTypeId(typeId);
+        Type* type = script->typeFromTypeId(typeId);
 
         if (name == nullptr) { name = ""; }
 
