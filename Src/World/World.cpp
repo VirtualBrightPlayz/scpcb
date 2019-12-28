@@ -294,6 +294,10 @@ void World::loadPlaying() {
     todo_Remove.rightAnalogStick = nullptr;
 
     todo_Remove.scriptManager = new ScriptManager();
+
+    Script* otherTestScript = new Script(todo_Remove.scriptManager, PGE::FileName::create("Scripts/MapGen/EntranceZone.as"), "mapgen_entrancezone");
+    delete otherTestScript;
+
     todo_Remove.script = new Script(todo_Remove.scriptManager,PGE::FileName::create("Scripts/test.as"),"test");
     todo_Remove.testClass1 = todo_Remove.script->getClassByName("Test");
     todo_Remove.testFunction1 = todo_Remove.script->getFunctionByName("test");
