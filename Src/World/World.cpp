@@ -16,7 +16,7 @@
 #include "../Input/Input.h"
 #include "../Utils/TextMgmt.h"
 #include "../Utils/MathUtil.h"
-#include "../Scripting/Object.h"
+#include "../Scripting/ScriptObject.h"
 
 World::World() {
     config = new Config("options.ini");

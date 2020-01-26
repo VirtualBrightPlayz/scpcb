@@ -1,11 +1,13 @@
 #include "ScriptManager.h"
-#include "Class.h"
+#include "ScriptClass.h"
 #include <angelscript.h>
 #include <Misc/String.h>
 #include <map>
 #include <stdlib.h>
 #include <inttypes.h>
 #include "AngelScriptAddons/scriptarray/scriptarray.h"
+
+#include "NativeDefinitions/RM2Definitions.h"
 
 class StringFactory : public asIStringFactory {
     private:
@@ -139,6 +141,9 @@ ScriptManager::ScriptManager() {
     engine->RegisterStringFactory("string", stringFactory);
 
     RegisterScriptArray(engine, true);
+
+    RM2Definitions* rm2Def = new RM2Definitions();
+    rm2Def->registerToEngine(this);
 }
 
 ScriptManager::~ScriptManager() {

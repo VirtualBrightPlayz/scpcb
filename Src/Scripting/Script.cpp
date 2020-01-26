@@ -1,7 +1,7 @@
 #include "ScriptManager.h"
 #include "Script.h"
-#include "Class.h"
-#include "Function.h"
+#include "ScriptClass.h"
+#include "ScriptFunction.h"
 
 #include <fstream>
 

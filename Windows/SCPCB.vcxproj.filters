@@ -47,6 +47,9 @@
     <Filter Include="Src\Scripting\AngelScriptAddons\scriptarray">
       <UniqueIdentifier>{d905b520-cf21-4253-b96e-68117e68fab8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Scripting\NativeDefinitions">
+      <UniqueIdentifier>{c98c4347-32be-43a2-8178-fcf50d1af4b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -142,20 +145,26 @@
     <ClInclude Include="..\Src\Scripting\Script.h">
       <Filter>Src\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\Scripting\Function.h">
-      <Filter>Src\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\Class.h">
-      <Filter>Src\Scripting</Filter>
-    </ClInclude>
     <ClInclude Include="..\Src\Scripting\Type.h">
-      <Filter>Src\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\Object.h">
       <Filter>Src\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.h">
       <Filter>Src\Scripting\AngelScriptAddons\scriptarray</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\ScriptClass.h">
+      <Filter>Src\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\ScriptObject.h">
+      <Filter>Src\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.h">
+      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\ScriptFunction.h">
+      <Filter>Src\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinition.h">
+      <Filter>Src\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -262,20 +271,23 @@
     <ClCompile Include="..\Src\Scripting\ScriptManager.cpp">
       <Filter>Src\Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\Function.cpp">
-      <Filter>Src\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Scripting\Class.cpp">
-      <Filter>Src\Scripting</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\Scripting\Type.cpp">
-      <Filter>Src\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Scripting\Object.cpp">
       <Filter>Src\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.cpp">
       <Filter>Src\Scripting\AngelScriptAddons\scriptarray</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\ScriptFunction.cpp">
+      <Filter>Src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\ScriptClass.cpp">
+      <Filter>Src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\ScriptObject.cpp">
+      <Filter>Src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.cpp">
+      <Filter>Src\Scripting\NativeDefinitions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

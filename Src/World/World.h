@@ -16,8 +16,8 @@
 #include "../Collision/CollisionMeshCollection.h"
 #include "../Scripting/ScriptManager.h"
 #include "../Scripting/Script.h"
-#include "../Scripting/Function.h"
-#include "../Scripting/Class.h"
+#include "../Scripting/ScriptFunction.h"
+#include "../Scripting/ScriptClass.h"
 
 class Camera;
 class Timing;

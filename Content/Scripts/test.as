@@ -9,6 +9,7 @@ class Test {
 };
 
 int32 test(string arg) {
+    LoadRM2("test");
     int32 retVal = arg[0];
     retVal = retVal % 5;
     return retVal;

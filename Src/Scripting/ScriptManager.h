@@ -8,6 +8,7 @@
 class Script;
 class ScriptClass;
 class ScriptFunction;
+class NativeFunction;
 
 class ScriptManager {
     public:
@@ -47,6 +48,8 @@ class ScriptManager {
         bool isArrayTypeId(int typeId) const;
 
         const std::vector<LogEntry>& getLog() const;
+
+
 };
 
 struct StringPoolEntry {
