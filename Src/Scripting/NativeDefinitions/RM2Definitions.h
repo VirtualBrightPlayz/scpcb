@@ -6,10 +6,16 @@
 #include <Misc/String.h>
 #include "../../Models/RM2.h"
 
+class GraphicsResources;
+
 class RM2Definitions : public NativeDefinition {
     private:
-        void loadRM2(PGE::String filename);
+        RM2* loadRM2(PGE::String filename);
+        void deleteRM2(RM2* rm2);
+
+        GraphicsResources* graphicsResources;
     public:
+        RM2Definitions(GraphicsResources* gfxRes);
         void registerToEngine(ScriptManager* mgr) override;
         void cleanup() override;
 };

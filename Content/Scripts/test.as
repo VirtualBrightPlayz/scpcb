@@ -9,7 +9,8 @@ class Test {
 };
 
 int32 test(string arg) {
-    LoadRM2("test");
+    RM2@ testRm2 = LoadRM2("GFX/Map/Rooms/EntranceZone/hll_plain_2/hll_plain_2.rm2");
+    DeleteRM2(testRm2);
     int32 retVal = arg[0];
     retVal = retVal % 5;
     return retVal;

@@ -17,6 +17,7 @@
 #include "../Utils/TextMgmt.h"
 #include "../Utils/MathUtil.h"
 #include "../Scripting/ScriptObject.h"
+#include "../Scripting/NativeDefinitions/RM2Definitions.h"
 
 World::World() {
     config = new Config("options.ini");
@@ -294,6 +295,9 @@ void World::loadPlaying() {
     todo_Remove.rightAnalogStick = nullptr;
 
     todo_Remove.scriptManager = new ScriptManager();
+
+    RM2Definitions* rm2Def = new RM2Definitions(gfxRes);
+    rm2Def->registerToEngine(todo_Remove.scriptManager);
 
     Script* otherTestScript = new Script(todo_Remove.scriptManager, PGE::FileName::create("Scripts/MapGen/EntranceZone.as"), "mapgen_entrancezone");
     delete otherTestScript;
