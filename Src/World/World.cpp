@@ -54,6 +54,10 @@ World::World() {
 #endif
 
     shutdownRequested = false;
+    
+    scripting.manager = new ScriptManager();
+    scripting.perTickScript = new Script(scripting.manager, PGE::FileName::create("Scripts/Events/PerTick.as"), "SCPCB");
+    scripting.perTickPerform = scripting.perTickScript->getFunctionByName("PerformPerTick");
 
     // TODO: Remove.
     loadPlaying();
@@ -63,7 +67,6 @@ World::~World() {
     delete pauseMenu;
     delete uiMesh;
     delete keyBinds;
-    delete todo_Remove.testSquare;
     delete spriteMesh;
 #ifdef DEBUG
     delete mouseTxtX;
@@ -160,6 +163,8 @@ void World::runTick(float timeStep, Input input) {
         currMenu->update(mousePosition);
     }
 
+    scripting.perTickPerform->execute();
+
     if (keyBinds->escape->isHit()) {
         // If a text input is active then escape de-selects it.
         // Unless it's the console's input.
@@ -210,48 +215,10 @@ void World::updatePlaying(float timeStep, Input input) {
     float addXAngle = (float)(io->getMousePosition().x - centerX) / 300.f;
     float addYAngle = (float)(io->getMousePosition().y - centerY) / 300.f;
 
-    if (todo_Remove.rightAnalogStick != nullptr && todo_Remove.rightAnalogStick->getController() == nullptr) {
-        io->untrackInput(todo_Remove.rightAnalogStick);
-        delete todo_Remove.rightAnalogStick;
-    }
-    if (todo_Remove.rightAnalogStick == nullptr && io->getController(0) != nullptr) {
-        todo_Remove.rightAnalogStick = new PGE::ControllerInput(io->getController(0), PGE::ControllerInput::BUTTON::RIGHTSTICK);
-        io->trackInput(todo_Remove.rightAnalogStick);
-    }
-
-    if (todo_Remove.rightAnalogStick != nullptr) {
-        PGE::Vector2f rightAnalogMovement = todo_Remove.rightAnalogStick->getStickPosition();
-
-        //17% square deadzone
-        if (abs(rightAnalogMovement.x)<0.17f) { rightAnalogMovement.x = 0.f; }
-        if (abs(rightAnalogMovement.y)<0.17f) { rightAnalogMovement.y = 0.f; }
-
-        PGE::Vector2f rightAnalogMovementNormalized = rightAnalogMovement.normalize();
-        rightAnalogMovement = rightAnalogMovement.add(rightAnalogMovementNormalized.multiply(-0.15f)).multiply(1.f/0.85f);
-        rightAnalogMovement = rightAnalogMovement.multiply(0.1f);
-
-        addXAngle += rightAnalogMovement.x;
-        addYAngle += rightAnalogMovement.y;
-
-        if (todo_Remove.rightAnalogStick->isHit()) {
-            addXAngle += MathUtil::PI;
-        }
-    }
-
     camera->addAngle(addXAngle, addYAngle);
 
     // Reset mouse to center.
     io->setMousePosition(PGE::Vector2f(centerX, centerY));
-
-    todo_Remove.testSquare->addRotation(5.f * timeStep);
-    todo_Remove.testSquare->update();
-
-    todo_Remove.playerController->update(camera->getYawAngle(), camera->getPitchAngle(), (Input)todo_Remove.functionReturn1);
-
-    //PGE::Line3f line = PGE::Line3f(PGE::Vector3f(0.0f, 30.0f, 0.0f), PGE::Vector3f(0.0f, 30.0f, 0.0f).add(camera->getRotationMatrix().transform(PGE::Vector3f(0.f,0.f,1000.f))));
-    //Collision coll = todo_Remove.collisionMeshCollection->checkCollision(line, 5.f);
-
-    camera->setPosition(todo_Remove.playerController->getPosition().add(PGE::Vector3f(0.f,35.f * 0.5f - 5.f,0.f)));
 
     // View/Projection matrix.
     camera->update();
@@ -259,68 +226,14 @@ void World::updatePlaying(float timeStep, Input input) {
 
 void World::drawPlaying() {
     gfxRes->setCameraUniforms(camera);
-
-    PGE::Matrix4x4f rm2Matrix;
-    rm2Matrix = PGE::Matrix4x4f::identity;
-
-    for (int x=-4; x<=4; x++) {
-        for (int y=-4; y<=4; y++) {
-            rm2Matrix = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f((float)x * 204.8f, 0.0f, (float)y * 204.8f), PGE::Vector3f::one.multiply(0.1f), PGE::Vector3f::zero);
-
-            todo_Remove.rm2->render(rm2Matrix);
-        }
-    }
-
-    todo_Remove.testSquare->render();
 }
 
 void World::loadPlaying() {
-    todo_Remove.dirtymetal = gfxRes->getTexture(PGE::FileName::create("GFX/Map/Textures/dirtymetal.jpg"));
-    todo_Remove.testSquare = new Sprite(gfxRes, spriteMesh, todo_Remove.dirtymetal);
-    todo_Remove.testSquare->setPosition(0.f, 0.f, 2.f);
-    todo_Remove.testSquare->setRotation(0.5f);
-    todo_Remove.testSquare->setScale(1.f);
-    todo_Remove.rm2 = new RM2(gfxRes, PGE::String("GFX/Map/Rooms/EntranceZone/hll_plain_4/hll_plain_4.rm2"));
-    todo_Remove.collisionMeshCollection = new CollisionMeshCollection();
-    for (int i=0; i<todo_Remove.rm2->getCollisionMeshes().size(); i++) {
-        for (int x=-4; x<=4; x++) {
-            for (int y=-4; y<=4; y++) {
-                todo_Remove.collisionMeshCollection->addInstance(todo_Remove.rm2->getCollisionMeshes()[i], PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f((float)x * 204.8f, 0.0f, (float)y * 204.8f), PGE::Vector3f::one.multiply(0.1f), PGE::Vector3f::zero));
-            }
-        }
-    }
-    todo_Remove.playerController = new PlayerController(5.f, 35.f);
-    todo_Remove.playerController->setPosition(PGE::Vector3f(0.f,40.f,0.f));
-    todo_Remove.playerController->setCollisionMeshCollection(todo_Remove.collisionMeshCollection);
-    todo_Remove.rightAnalogStick = nullptr;
-
-    todo_Remove.scriptManager = new ScriptManager();
-
-    RM2Definitions* rm2Def = new RM2Definitions(gfxRes);
-    rm2Def->registerToEngine(todo_Remove.scriptManager);
-
-    Script* otherTestScript = new Script(todo_Remove.scriptManager, PGE::FileName::create("Scripts/MapGen/EntranceZone.as"), "mapgen_entrancezone");
-    delete otherTestScript;
-
-    todo_Remove.script = new Script(todo_Remove.scriptManager,PGE::FileName::create("Scripts/test.as"),"test");
-    todo_Remove.testClass1 = todo_Remove.script->getClassByName("Test");
-    todo_Remove.testFunction1 = todo_Remove.script->getFunctionByName("test");
-    todo_Remove.testFunction1->setArgument("arg", todo_Remove.testClass1->getProperties()[0].getName());
-    todo_Remove.testFunction1->execute();
-    todo_Remove.functionReturn1 = todo_Remove.testFunction1->getReturnInt32();
-    todo_Remove.testFunction2 = todo_Remove.script->getFunctionByName("test2");
-    ScriptObject* inObj = todo_Remove.testClass1->createNewObject();
-    inObj->setProperty("publicProperty", "test");
-    todo_Remove.testFunction2->setArgument("inArg", inObj);
-    todo_Remove.testFunction2->execute();
-    ScriptObject* resultObj = todo_Remove.testFunction2->getReturnObject();
-    todo_Remove.functionReturn2 = resultObj->getPropertyString("publicProperty");
-    pauseMenu->inputTest->setText(todo_Remove.testFunction1->getSignature().toString() + todo_Remove.functionReturn2);
+    
 }
 
 void World::destroyPlaying() {
-    gfxRes->dropTexture(todo_Remove.dirtymetal); todo_Remove.dirtymetal = nullptr;
-    delete todo_Remove.testSquare; todo_Remove.testSquare = nullptr;
+
 }
 
 void World::quit() {

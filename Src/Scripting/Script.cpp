@@ -154,6 +154,10 @@ Type* Script::typeFromTypeId(int typeId, bool& isClssType) const {
         } break;
     }
 
+    if (type == nullptr) {
+        return Type::Unsupported;
+    }
+
     if (isRef) {
         type = type->asRef();
     }

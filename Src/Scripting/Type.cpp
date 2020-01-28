@@ -6,7 +6,7 @@ Type Type::floatPrivate = Type("float");
 Type Type::doublePrivate = Type("double");
 Type Type::stringPrivate = Type("string");
 Type Type::voidPrivate = Type("void");
-Type Type::unspecifiedArrayPrivate = Type("array<?>");
+Type Type::unsupportedPrivate = Type("!!unsupported!!");
 
 Type* const Type::Int32 = &Type::int32Private;
 Type* const Type::UInt32 = &Type::uint32Private;
@@ -14,7 +14,7 @@ Type* const Type::Float = &Type::floatPrivate;
 Type* const Type::Double = &Type::doublePrivate;
 Type* const Type::String = &Type::stringPrivate;
 Type* const Type::Void = &Type::voidPrivate;
-Type* const Type::UnspecifiedArray = &Type::unspecifiedArrayPrivate;
+Type* const Type::Unsupported = &Type::unsupportedPrivate;
 
 Type::Type() {
     typeName = "<unknown>";

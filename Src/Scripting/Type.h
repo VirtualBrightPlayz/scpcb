@@ -13,7 +13,7 @@ class Type {
         static Type doublePrivate;
         static Type stringPrivate;
         static Type voidPrivate;
-        static Type unspecifiedArrayPrivate;
+        static Type unsupportedPrivate;
     protected:
         PGE::String typeName;
         RefType* refType;
@@ -34,7 +34,7 @@ class Type {
         static Type* const Double;
         static Type* const String;
         static Type* const Void;
-        static Type* const UnspecifiedArray;
+        static Type* const Unsupported;
 };
 
 class ArrayType : public Type {

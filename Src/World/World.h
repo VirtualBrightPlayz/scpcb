@@ -49,23 +49,6 @@ class World {
         // When a menu is markedForRemoval it's moved here where it'll be deleted in the update loop.
         Menu* menuGraveyard;
 
-        // TODO: Remove, these are a test.
-        struct {
-            Sprite* testSquare;
-            PGE::Texture* dirtymetal;
-            RM2* rm2;
-            PlayerController* playerController;
-            CollisionMeshCollection* collisionMeshCollection;
-            PGE::ControllerInput* rightAnalogStick;
-            ScriptManager* scriptManager;
-            Script* script;
-            ScriptClass* testClass1;
-            ScriptFunction* testFunction1;
-            int functionReturn1;
-            ScriptFunction* testFunction2;
-            PGE::String functionReturn2;
-        } todo_Remove;
-
 #ifdef DEBUG
         GUIText* mouseTxtX;
         GUIText* mouseTxtY;
@@ -79,6 +62,12 @@ class World {
         FPSCounter* fps;
 
         bool shutdownRequested;
+
+        struct {
+            ScriptManager* manager;
+            Script* perTickScript;
+            ScriptFunction* perTickPerform;
+        } scripting;
 
         //-- Update/Draw code.
 

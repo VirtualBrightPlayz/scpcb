@@ -45,8 +45,6 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     std::ifstream inFile;
     inFile.open(PGE::FileName::create(filename).cstr(), std::ios_base::in | std::ios_base::binary);
 
-    //PGE::Matrix4x4f TODO_REMOVE = PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f::one.multiply(3.f), PGE::Vector3f::one.multiply(0.1f), PGE::Vector3f::zero);
-
     union IntBytes {
         int i;
         char c[4];
@@ -161,8 +159,6 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
         bool unrecognizedChunkHeader = false;
         switch ((FileSections)chunkHeader) {
             case FileSections::VisibleGeometry: {
-                //TODO: put mesh together
-
                 UCharByte textureIndex;
                 inFile.read(&textureIndex.c, 1);
 
@@ -185,7 +181,6 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                     inFile.read(inZ.c, 4);
 
                     PGE::Vector4f position = PGE::Vector4f(inX.f, inY.f, inZ.f, 1.f);
-                    //position = TODO_REMOVE.transform(position);
 
                     FloatBytes inDiffU;
                     FloatBytes inDiffV;
