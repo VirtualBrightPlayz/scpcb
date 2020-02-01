@@ -17,7 +17,6 @@
 #include "../Utils/TextMgmt.h"
 #include "../Utils/MathUtil.h"
 #include "../Scripting/ScriptObject.h"
-#include "../Scripting/NativeDefinitions/RM2Definitions.h"
 
 World::World() {
     config = new Config("options.ini");
@@ -56,6 +55,10 @@ World::World() {
     shutdownRequested = false;
     
     scripting.manager = new ScriptManager();
+    scripting.mathDefinitions = new MathDefinitions();
+    scripting.mathDefinitions->registerToEngine(scripting.manager);
+    scripting.rm2Definitions = new RM2Definitions(gfxRes);
+    scripting.rm2Definitions->registerToEngine(scripting.manager);
     scripting.perTickScript = new Script(scripting.manager, PGE::FileName::create("Scripts/Events/PerTick.as"), "SCPCB");
     scripting.perTickPerform = scripting.perTickScript->getFunctionByName("PerformPerTick");
 

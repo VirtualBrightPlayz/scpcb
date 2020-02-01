@@ -4,6 +4,7 @@
 #include "../ScriptManager.h"
 #include "../NativeDefinition.h"
 #include <Misc/String.h>
+#include <Math/Matrix.h>
 #include "../../Models/RM2.h"
 
 class GraphicsResources;

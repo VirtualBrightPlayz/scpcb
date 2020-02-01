@@ -19,6 +19,9 @@
 #include "../Scripting/ScriptFunction.h"
 #include "../Scripting/ScriptClass.h"
 
+#include "../Scripting/NativeDefinitions/MathDefinitions.h"
+#include "../Scripting/NativeDefinitions/RM2Definitions.h"
+
 class Camera;
 class Timing;
 class GraphicsResources;
@@ -65,6 +68,10 @@ class World {
 
         struct {
             ScriptManager* manager;
+
+            MathDefinitions* mathDefinitions;
+            RM2Definitions* rm2Definitions;
+
             Script* perTickScript;
             ScriptFunction* perTickPerform;
         } scripting;

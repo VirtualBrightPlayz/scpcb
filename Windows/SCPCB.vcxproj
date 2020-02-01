@@ -148,6 +148,7 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
     <ClInclude Include="..\Src\PlayerController\PlayerController.h" />
     <ClInclude Include="..\Src\Save\Config.h" />
     <ClInclude Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.h" />
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinition.h" />
     <ClInclude Include="..\Src\Scripting\ScriptClass.h" />
@@ -195,6 +196,7 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
     <ClCompile Include="..\Src\PlayerController\PlayerController.cpp" />
     <ClCompile Include="..\Src\Save\Config.cpp" />
     <ClCompile Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.cpp" />
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptClass.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptFunction.cpp" />
