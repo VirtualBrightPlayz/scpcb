@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -148,6 +148,7 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
     <ClInclude Include="..\Src\PlayerController\PlayerController.h" />
     <ClInclude Include="..\Src\Save\Config.h" />
     <ClInclude Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.h" />
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\EventDefinition.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinition.h" />
@@ -196,6 +197,7 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
     <ClCompile Include="..\Src\PlayerController\PlayerController.cpp" />
     <ClCompile Include="..\Src\Save\Config.cpp" />
     <ClCompile Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.cpp" />
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\EventDefinition.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptClass.cpp" />

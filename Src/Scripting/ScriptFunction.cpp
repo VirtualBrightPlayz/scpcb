@@ -5,7 +5,7 @@
 #include "ScriptClass.h"
 #include "ScriptObject.h"
 
-PGE::String Function::Signature::toString() const {
+PGE::String ScriptFunction::Signature::toString() const {
     PGE::String retVal = returnType->getName() + " " + functionName;
     retVal = PGE::String(retVal, "(");
     for (int i = 0; i < arguments.size(); i++) {
@@ -16,15 +16,15 @@ PGE::String Function::Signature::toString() const {
     return retVal;
 }
 
-Function::Signature::Argument::Argument(Type* t, const PGE::String& n) {
+ScriptFunction::Signature::Argument::Argument(Type* t, const PGE::String& n) {
     type = t; name = n;
 }
 
-const Function::Signature& Function::getSignature() const {
+const ScriptFunction::Signature& ScriptFunction::getSignature() const {
     return signature;
 }
 
-int Function::getArgumentIndex(const PGE::String& argument) const {
+int ScriptFunction::getArgumentIndex(const PGE::String& argument) const {
     for (int i = 0; i < signature.arguments.size(); i++) {
         if (signature.arguments[i].name.equals(argument)) {
             return i;

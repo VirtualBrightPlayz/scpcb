@@ -11,7 +11,7 @@ class ScriptManager;
 class ScriptObject;
 class Type;
 
-class Function {
+class ScriptFunction {
     public:
         struct Signature {
             struct Argument {
@@ -26,22 +26,9 @@ class Function {
 
             PGE::String toString() const;
         };
-    protected:
+    private:
         Signature signature;
 
-        //protected constructors to make this class non-instantiable
-        Function() {}
-        Function(const Function& other) {}
-    public:
-        int getArgumentIndex(const PGE::String& argument) const;
-
-        virtual ~Function() {}
-
-        const Signature& getSignature() const;
-};
-
-class ScriptFunction : public Function {
-    private:
         asIScriptFunction* scriptFunction;
         asIScriptContext* scriptContext;
 
@@ -54,7 +41,11 @@ class ScriptFunction : public Function {
 
     public:
         ScriptFunction(Script* scrpt,asIScriptFunction* asScriptFunction,asIScriptFunction* asFuncWithSignature=nullptr);
-        ~ScriptFunction() override;
+        ~ScriptFunction();
+
+        int getArgumentIndex(const PGE::String& argument) const;
+
+        const Signature& getSignature() const;
 
         void setObject(ScriptObject* obj);
         void setObjectNative(void* obj);
