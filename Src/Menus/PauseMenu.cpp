@@ -12,26 +12,26 @@ PauseMenu::PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Conf
     float btnX = -btnWidth / 2.f;
     float btnY = -38.f;
 
-    newgame = new GUIButton(um, largeFnt, kb, con, tm, btnX, btnY, btnWidth, btnHeight, "mnu_new");
+    newgame = new GUIButton(um, largeFnt, kb, con, tm, btnX, btnY, btnWidth, btnHeight, "MainMenu.NewGame");
     btnY += btnSpacing;
-    loadgame = new GUIButton(um, largeFnt, kb, con, tm, btnX, btnY, btnWidth, btnHeight, "mnu_load");
+    loadgame = new GUIButton(um, largeFnt, kb, con, tm, btnX, btnY, btnWidth, btnHeight, "MainMenu.LoadGame");
     btnY += btnSpacing;
-    options = new GUIButton(um, largeFnt, kb, con, tm, btnX, btnY, btnWidth, btnHeight, "mnu_opt");
+    options = new GUIButton(um, largeFnt, kb, con, tm, btnX, btnY, btnWidth, btnHeight, "MainMenu.Options");
     btnY += btnSpacing;
-    quit = new GUIButton(um, largeFnt, kb, con, tm, btnX, btnY, btnWidth, btnHeight, "mnu_quit");
+    quit = new GUIButton(um, largeFnt, kb, con, tm, btnX, btnY, btnWidth, btnHeight, "MainMenu.Quit");
     btnY += btnSpacing;
     inputTest = new GUITextInput(um, largeFnt, kb, con, io, btnX, btnY, btnWidth, btnHeight, "banansunday.yogurt");//, 15);
 
     float quitFrameWidth = 60.f;
     float quitFrameHeight = 30.f;
     quitFrame = new GUIFrame(um, kb, con, -quitFrameWidth / 2.f, -quitFrameHeight / 2.f, quitFrameWidth, quitFrameHeight);
-    quitYes = new GUIButton(um, largeFnt, kb, con, tm, -31.f, 10.f, 3.f, 1.f, "mnu_quit_yes");
-    quitNo = new GUIButton(um, largeFnt, kb, con, tm, 29.f, 10.f, 3.f, 1.f, "mnu_quit_no");
+    quitYes = new GUIButton(um, largeFnt, kb, con, tm, -31.f, 10.f, 3.f, 1.f, "MainMenu.Quit.Yes");
+    quitNo = new GUIButton(um, largeFnt, kb, con, tm, 29.f, 10.f, 3.f, 1.f, "MainMenu.Quit.No");
 
     uiMesh = um;
     largeFont = largeFnt;
     keyBinds = kb;
-    
+
     setState(SubState::Main);
     mainMenu = false;
 }

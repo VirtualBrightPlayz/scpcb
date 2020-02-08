@@ -17,5 +17,5 @@ PGE::String GasMask::getType() const {
 }
 
 PGE::String GasMask::getInvName() const {
-    return txtM->getLocalTxt("it_gasmask");
+    return txtM->getLocalTxt("Items.GasMask.Name");
 }

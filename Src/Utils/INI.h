@@ -5,15 +5,14 @@
 #include <map>
 
 class INIFile {
-    private:
-        static std::vector<INIFile*> list;
-
-        struct Section
-        {
+    public:
+        struct Section {
             std::vector<PGE::String> names;
             std::vector<PGE::String> keys;
             std::vector<PGE::String> values;
         };
+    private:
+        static std::vector<INIFile*> list;
 
         std::vector<Section*> sections;
 
@@ -29,7 +28,7 @@ class INIFile {
         PGE::String getValue(const PGE::String& section, const PGE::String& key, const PGE::String& defaultValue);
         void setValue(const PGE::String& section, const PGE::String& key, const PGE::String& value);
 
-        std::map<PGE::String, PGE::String> getSection(const PGE::String& section);
+        std::vector<INIFile::Section*> getAllSections();
 
         void save();
 
@@ -47,6 +46,6 @@ float getINIFloat(const PGE::String& file, const PGE::String& section, const PGE
 
 void putINIValue(const PGE::String& file, const PGE::String& INI_sSection, const PGE::String& INI_sKey, const PGE::String& INI_sValue);
 
-std::map<PGE::String, PGE::String> getINISection(const PGE::String& file, const PGE::String& section);
+std::vector<INIFile::Section*> getINISections(const PGE::String& file);
 
 #endif // INI_H_INCLUDED

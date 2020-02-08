@@ -65,7 +65,7 @@ ScriptFunction::ScriptFunction(Script* scrpt, asIScriptFunction* asScriptFunctio
     signature.returnType = script->typeFromTypeId(scriptFunction->GetReturnTypeId(), returnsClassType);
 
     scriptContext = module->GetEngine()->CreateContext();
-    if (scriptContext->Prepare(scriptFunction) < 0) { throw std::exception("ptooey!"); }
+    if (scriptContext->Prepare(scriptFunction) < 0) { throw std::runtime_error("ptooey!"); }
 }
 
 ScriptFunction::~ScriptFunction() {
@@ -125,7 +125,7 @@ void ScriptFunction::setArgumentNative(const PGE::String& argument, void* obj) {
 
 void ScriptFunction::execute() {
     scriptContext->Execute();
-    if (scriptContext->Prepare(scriptFunction) < 0) { throw std::exception("ptooey!"); }
+    if (scriptContext->Prepare(scriptFunction) < 0) { throw std::runtime_error("ptooey!"); }
 
     if (returnsClassType) {
         asIScriptObject* asObj = nullptr;

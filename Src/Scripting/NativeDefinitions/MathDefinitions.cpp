@@ -34,7 +34,7 @@ void MathDefinitions::registerToEngine(ScriptManager* mgr) {
     asIScriptEngine* engine = mgr->getAngelScriptEngine();
 
     //Vector3f
-    engine->RegisterObjectType("Vector3f", sizeof(PGE::Vector3f), asOBJ_VALUE | asGetTypeTraits<PGE::Vector3f>());
+    engine->RegisterObjectType("Vector3f", sizeof(PGE::Vector3f), asOBJ_VALUE | asOBJ_APP_CLASS_ALLFLOATS | asGetTypeTraits<PGE::Vector3f>());
     engine->RegisterObjectBehaviour("Vector3f", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(vector3fConstructor), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("Vector3f", asBEHAVE_CONSTRUCT, "void f(float x, float y, float z)",
         asFUNCTION(vector3fConstructorParametrized), asCALL_CDECL_OBJLAST);
@@ -59,7 +59,7 @@ void MathDefinitions::registerToEngine(ScriptManager* mgr) {
     engine->RegisterObjectMethod("Vector3f", "Vector3f crossProduct(const Vector3f&in other) const", asMETHOD(PGE::Vector3f, crossProduct), asCALL_THISCALL);
 
     //Matrix4x4f
-    engine->RegisterObjectType("Matrix4x4f", sizeof(PGE::Matrix4x4f), asOBJ_VALUE | asGetTypeTraits<PGE::Matrix4x4f>());
+    engine->RegisterObjectType("Matrix4x4f", sizeof(PGE::Matrix4x4f), asOBJ_VALUE | asOBJ_APP_CLASS_ALLFLOATS | asGetTypeTraits<PGE::Matrix4x4f>());
     engine->RegisterObjectBehaviour("Matrix4x4f", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(matrixConstructor), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("Matrix4x4f", asBEHAVE_CONSTRUCT, "void f(float aa, float ab, float ac, float ad,"
                                                                              "float ba, float bb, float bc, float bd,"

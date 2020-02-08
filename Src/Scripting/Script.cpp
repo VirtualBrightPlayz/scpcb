@@ -14,6 +14,10 @@ Script::Script(ScriptManager* scriptMgr, const PGE::FileName& filename, const PG
 
     std::ifstream inFile;
     inFile.open(filename.cstr(), std::ios_base::in);
+    
+    if (!inFile.good()) {
+        throw std::runtime_error((PGE::String("Could not find script: \"") + filename.cstr() + "\"").cstr());
+    }
 
     bool reachedEndOfFile = inFile.eof();
     while (!reachedEndOfFile) {
@@ -37,10 +41,10 @@ Script::Script(ScriptManager* scriptMgr, const PGE::FileName& filename, const PG
     scriptModule = engine->GetModule(moduleName.size()>0 ? moduleName.cstr() : nullptr, asGM_CREATE_IF_NOT_EXISTS);
 
     int errorCode = scriptModule->AddScriptSection(sectionName.cstr(), scriptContents.cstr(), scriptContents.size());
-    if (errorCode<0) { throw std::exception("kablooey!"); }
+    if (errorCode<0) { throw std::runtime_error("kablooey!"); }
     
     errorCode = scriptModule->Build();
-    if (errorCode<0) { throw std::exception("whabammy!"); }
+    if (errorCode<0) { throw std::runtime_error("whabammy!"); }
 
     int typeCount = scriptModule->GetObjectTypeCount();
     for (int i = 0; i < typeCount; i++) {
@@ -143,7 +147,7 @@ Type* Script::typeFromTypeId(int typeId, bool& isClssType) const {
                     Type* baseType = typeFromTypeId(typeInfo->GetSubTypeId());
                     type = baseType->getArrayType();
                 } else {
-                    throw std::exception("Templates are currently not supported for types other than arrays");
+                    throw std::runtime_error("Templates are currently not supported for types other than arrays");
                 }
             } else {
                 ScriptClass* clss = getClassByTypeId(typeId);

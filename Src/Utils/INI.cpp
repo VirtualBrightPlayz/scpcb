@@ -97,7 +97,7 @@ void INIFile::setValue(const PGE::String& section, const PGE::String& key, const
                         return;
                     }
                 }
-                
+
                 // Key doesn't exist, make it.
                 sections[i]->keys.push_back(key.toLower());
                 sections[i]->values.push_back(value);
@@ -115,23 +115,8 @@ void INIFile::setValue(const PGE::String& section, const PGE::String& key, const
     sections.push_back(sec);
 }
 
-std::map<PGE::String, PGE::String> INIFile::getSection(const PGE::String& section) {
-    for (int i = 0; i < (int)sections.size(); i++) {
-        for (int j = 0; j < (int)sections[i]->names.size(); j++) {
-            if (section.toLower().equals(sections[i]->names[j])) {
-                std::map<PGE::String, PGE::String> retVal;
-
-                for (int k = 0; k < (int)sections[i]->keys.size(); k++) {
-                    PGE::String key = sections[i]->keys[k];
-                    PGE::String value = sections[i]->values[k];
-                    retVal[key] = value;
-                }
-                return retVal;
-            }
-        }
-    }
-
-    return std::map<PGE::String, PGE::String>();
+std::vector<INIFile::Section*> INIFile::getAllSections() {
+    return sections;
 }
 
 void INIFile::save() {
@@ -195,14 +180,14 @@ void putINIValue(const PGE::String& file, const PGE::String& section, const PGE:
     targetFile->save();
 }
 
-std::map<PGE::String, PGE::String> getINISection(const PGE::String& file, const PGE::String& section) {
+std::vector<INIFile::Section*> getINISections(const PGE::String& file) {
     for (int i = 0; i < INIFile::getListSize(); i++) {
         INIFile* iniFile = INIFile::getObject(i);
 
         if (iniFile->getName().toLower().equals(file.toLower())) {
-            return iniFile->getSection(section);
+            return iniFile->getAllSections();
         }
     }
     INIFile* newFile = new INIFile(file);
-    return newFile->getSection(section);
+    return newFile->getAllSections();
 }
