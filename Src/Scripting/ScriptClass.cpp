@@ -18,11 +18,12 @@ ScriptClass::ScriptClass(Script* scrpt, asITypeInfo* tInfo) {
         const char* name;
         bool isPrivate;
         bool isProtected;
+        bool isUnSerialize;
         int typeId;
         int offset;
         bool isReference;
         Visibility visibility;
-        angelScriptTypeInfo->GetProperty(i, &name, &typeId, &isPrivate, &isProtected, &offset, &isReference);
+        angelScriptTypeInfo->GetProperty(i, &name, &typeId, &isPrivate, &isProtected, &isUnSerialize, &offset, &isReference);
 
         if (isPrivate) {
             visibility = Visibility::Private;
@@ -32,7 +33,7 @@ ScriptClass::ScriptClass(Script* scrpt, asITypeInfo* tInfo) {
             visibility = Visibility::Public;
         }
 
-        Property newProperty = Property(name, offset, typeId, isReference, visibility);
+        Property newProperty = Property(name, offset, typeId, isReference, visibility, isUnSerialize);
 
         properties.push_back(newProperty);
     }
@@ -83,8 +84,8 @@ ScriptObject* ScriptClass::createNewObject() {
     return constructors[0]->getReturnObject();
 }
 
-ScriptClass::Property::Property(const PGE::String& n, int off, int tId, bool ref, ScriptClass::Visibility vis) {
-    name = n; offset = off; typeId = tId; isRef = ref; visibility = vis;
+ScriptClass::Property::Property(const PGE::String& n, int off, int tId, bool ref, ScriptClass::Visibility vis, bool isUnSerial) {
+    name = n; offset = off; typeId = tId; isRef = ref; visibility = vis; isUnSerialize = isUnSerial;
 }
 
 PGE::String ScriptClass::Property::getName() const {
@@ -105,6 +106,10 @@ bool ScriptClass::Property::isReference() const {
 
 ScriptClass::Visibility ScriptClass::Property::getVisibility() const {
     return visibility;
+}
+
+bool ScriptClass::Property::isUnSerializable() const {
+    return isUnSerialize;
 }
 
 void ScriptClass::Property::determineType(Script* script) {

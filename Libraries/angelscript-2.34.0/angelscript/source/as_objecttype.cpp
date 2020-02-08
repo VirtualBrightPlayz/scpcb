@@ -2,23 +2,23 @@
    AngelCode Scripting Library
    Copyright (c) 2003-2017 Andreas Jonsson
 
-   This software is provided 'as-is', without any express or implied 
-   warranty. In no event will the authors be held liable for any 
+   This software is provided 'as-is', without any express or implied
+   warranty. In no event will the authors be held liable for any
    damages arising from the use of this software.
 
-   Permission is granted to anyone to use this software for any 
-   purpose, including commercial applications, and to alter it and 
+   Permission is granted to anyone to use this software for any
+   purpose, including commercial applications, and to alter it and
    redistribute it freely, subject to the following restrictions:
 
-   1. The origin of this software must not be misrepresented; you 
+   1. The origin of this software must not be misrepresented; you
       must not claim that you wrote the original software. If you use
-      this software in a product, an acknowledgment in the product 
+      this software in a product, an acknowledgment in the product
       documentation would be appreciated but is not required.
 
-   2. Altered source versions must be plainly marked as such, and 
+   2. Altered source versions must be plainly marked as such, and
       must not be misrepresented as being the original software.
 
-   3. This notice may not be removed or altered from any source 
+   3. This notice may not be removed or altered from any source
       distribution.
 
    The original version of this library can be located at:
@@ -115,7 +115,7 @@ void asCObjectType::DestroyInternal()
 			func->parentClass = 0;
 			if (isTemplateInstance)
 			{
-				// Any child funcdefs that have been created as part of the template 
+				// Any child funcdefs that have been created as part of the template
 				// instantiation must be destroyed too
 				// TODO: Before destroying the funcdef, make sure no external references to it is held
 				if (func->externalRefCount.get() == 0)
@@ -311,8 +311,8 @@ asIScriptFunction *asCObjectType::GetMethodByDecl(const char *decl, bool getVirt
 
 	// Get the module from one of the methods, but it will only be
 	// used to allow the parsing of types not already known by the object.
-	// It is possible for object types to be orphaned, e.g. by discarding 
-	// the module that created it. In this case it is still possible to 
+	// It is possible for object types to be orphaned, e.g. by discarding
+	// the module that created it. In this case it is still possible to
 	// find the methods, but any type not known by the object will result in
 	// an invalid declaration.
 	asCModule *mod = engine->scriptFunctions[methods[0]]->module;
@@ -337,7 +337,7 @@ asUINT asCObjectType::GetPropertyCount() const
 }
 
 // interface
-int asCObjectType::GetProperty(asUINT index, const char **out_name, int *out_typeId, bool *out_isPrivate, bool *out_isProtected, int *out_offset, bool *out_isReference, asDWORD *out_accessMask, int *out_compositeOffset, bool *out_isCompositeIndirect) const
+int asCObjectType::GetProperty(asUINT index, const char **out_name, int *out_typeId, bool *out_isPrivate, bool *out_isProtected, bool *out_isUnSerialize, int *out_offset, bool *out_isReference, asDWORD *out_accessMask, int *out_compositeOffset, bool *out_isCompositeIndirect) const
 {
 	if( index >= properties.GetLength() )
 		return asINVALID_ARG;
@@ -351,6 +351,8 @@ int asCObjectType::GetProperty(asUINT index, const char **out_name, int *out_typ
 		*out_isPrivate = prop->isPrivate;
 	if( out_isProtected )
 		*out_isProtected = prop->isProtected;
+	if( out_isUnSerialize )
+		*out_isUnSerialize = prop->isUnSerialize;
 	if( out_offset )
 		*out_offset = prop->byteOffset;
 	if( out_isReference )
@@ -387,14 +389,14 @@ const char *asCObjectType::GetPropertyDeclaration(asUINT index, bool includeName
 
 asITypeInfo *asCObjectType::GetBaseType() const
 {
-	return derivedFrom; 
+	return derivedFrom;
 }
 
 asUINT asCObjectType::GetBehaviourCount() const
 {
 	// Count the number of behaviours (except factory functions)
 	asUINT count = 0;
-	
+
 	if( beh.destruct )               count++;
 	if( beh.addref )                 count++;
 	if( beh.release )                count++;
@@ -402,7 +404,7 @@ asUINT asCObjectType::GetBehaviourCount() const
 	if( beh.gcSetFlag )              count++;
 	if( beh.gcGetFlag )              count++;
 	if( beh.gcEnumReferences )       count++;
-	if( beh.gcReleaseAllReferences ) count++; 
+	if( beh.gcReleaseAllReferences ) count++;
 	if( beh.templateCallback )       count++;
 	if( beh.listFactory )            count++;
 	if( beh.getWeakRefFlag )         count++;
@@ -420,7 +422,7 @@ asIScriptFunction *asCObjectType::GetBehaviourByIndex(asUINT index, asEBehaviour
 	asUINT count = 0;
 
 	if( beh.destruct && count++ == index ) // only increase count if the behaviour is registered
-	{ 
+	{
 		if( outBehaviour ) *outBehaviour = asBEHAVE_DESTRUCT;
 		return engine->scriptFunctions[beh.destruct];
 	}
@@ -475,7 +477,7 @@ asIScriptFunction *asCObjectType::GetBehaviourByIndex(asUINT index, asEBehaviour
 
 	if( beh.listFactory && count++ == index )
 	{
-		if( outBehaviour ) 
+		if( outBehaviour )
 		{
 			if( flags & asOBJ_VALUE )
 				*outBehaviour = asBEHAVE_LIST_CONSTRUCT;
@@ -499,14 +501,14 @@ asIScriptFunction *asCObjectType::GetBehaviourByIndex(asUINT index, asEBehaviour
 		if( outBehaviour ) *outBehaviour = asBEHAVE_CONSTRUCT;
 		return engine->scriptFunctions[beh.constructors[index - count]];
 	}
-	else 
+	else
 		count += (asUINT)beh.constructors.GetLength();
 
 	return 0;
 }
 
 // internal
-asCObjectProperty *asCObjectType::AddPropertyToClass(const asCString &propName, const asCDataType &dt, bool isPrivate, bool isProtected, bool isInherited)
+asCObjectProperty *asCObjectType::AddPropertyToClass(const asCString &propName, const asCDataType &dt, bool isPrivate, bool isProtected, bool isUnSerialize, bool isInherited)
 {
 	asASSERT( flags & asOBJ_SCRIPT_OBJECT );
 	asASSERT( dt.CanBeInstantiated() );
@@ -524,6 +526,7 @@ asCObjectProperty *asCObjectType::AddPropertyToClass(const asCString &propName, 
 	prop->type        = dt;
 	prop->isPrivate   = isPrivate;
 	prop->isProtected = isProtected;
+	prop->isUnSerialize = isUnSerialize;
 	prop->isInherited = isInherited;
 
 	int propSize;
@@ -588,7 +591,7 @@ void asCObjectType::ReleaseAllProperties()
 {
 	for( asUINT n = 0; n < properties.GetLength(); n++ )
 	{
-		if( properties[n] ) 
+		if( properties[n] )
 		{
 			if( flags & asOBJ_SCRIPT_OBJECT )
 			{
@@ -623,7 +626,7 @@ void asCObjectType::ReleaseAllFunctions()
 	beh.copyfactory = 0;
 	for( asUINT a = 0; a < beh.factories.GetLength(); a++ )
 	{
-		if( engine->scriptFunctions[beh.factories[a]] ) 
+		if( engine->scriptFunctions[beh.factories[a]] )
 			engine->scriptFunctions[beh.factories[a]]->ReleaseInternal();
 	}
 	beh.factories.SetLength(0);
@@ -632,7 +635,7 @@ void asCObjectType::ReleaseAllFunctions()
 	beh.copyconstruct = 0;
 	for( asUINT b = 0; b < beh.constructors.GetLength(); b++ )
 	{
-		if( engine->scriptFunctions[beh.constructors[b]] ) 
+		if( engine->scriptFunctions[beh.constructors[b]] )
 			engine->scriptFunctions[beh.constructors[b]]->ReleaseInternal();
 	}
 	beh.constructors.SetLength(0);
@@ -655,7 +658,7 @@ void asCObjectType::ReleaseAllFunctions()
 
 	for( asUINT c = 0; c < methods.GetLength(); c++ )
 	{
-		if( engine->scriptFunctions[methods[c]] ) 
+		if( engine->scriptFunctions[methods[c]] )
 			engine->scriptFunctions[methods[c]]->ReleaseInternal();
 	}
 	methods.SetLength(0);

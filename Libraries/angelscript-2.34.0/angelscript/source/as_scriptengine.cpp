@@ -1491,6 +1491,7 @@ int asCScriptEngine::RegisterObjectProperty(const char *obj, const char *declara
 	prop->byteOffset          = byteOffset;
 	prop->isPrivate           = false;
 	prop->isProtected         = false;
+	prop->isUnSerialize       = false;
 	prop->compositeOffset     = compositeOffset;
 	prop->isCompositeIndirect = isCompositeIndirect;
 	prop->accessMask          = defaultAccessMask;
@@ -2462,7 +2463,7 @@ int asCScriptEngine::SetTemplateRestrictions(asCObjectType *templateType, asCScr
 		{
 			if (func->parameterTypes[n].GetTypeInfo() == templateType->templateSubTypes[subTypeIdx].GetTypeInfo())
 			{
-				if (func->parameterTypes[n].IsObjectHandle() || 
+				if (func->parameterTypes[n].IsObjectHandle() ||
 					(!ep.allowUnsafeReferences && func->parameterTypes[n].IsReference() && func->inOutFlags[n] == asTM_INOUTREF))
 					templateType->acceptValueSubType = false;
 				else if (!func->parameterTypes[n].IsReference())
@@ -2812,7 +2813,7 @@ int asCScriptEngine::RegisterMethodToObjectType(asCObjectType *objectType, const
 		else
 			return ConfigError(asINVALID_DECLARATION, "RegisterObjectMethod", objectType->name.AddressOf(), declaration);
 	}
-	
+
 	// Check against duplicate methods
 	if( func->name == "opConv" || func->name == "opImplConv" || func->name == "opCast" || func->name == "opImplCast" )
 	{
@@ -2927,7 +2928,7 @@ int asCScriptEngine::RegisterGlobalFunction(const char *declaration, const asSFu
 		asDELETE(func,asCScriptFunction);
 		return ConfigError(asNAME_TAKEN, "RegisterGlobalFunction", declaration, 0);
 	}
-	
+
 	// Validate property signature
 	if( func->IsProperty() && (r = bld.ValidateVirtualProperty(func)) < 0 )
 	{
@@ -3681,7 +3682,7 @@ asCDataType asCScriptEngine::DetermineTypeForTemplate(const asCDataType &orig, a
 					dt.MakeReference(orig.IsReference());
 					dt.MakeReadOnly(ot->templateSubTypes[n].IsReadOnly() || orig.IsReadOnly());
 
-					// If the target is a @& then don't make the handle const, 
+					// If the target is a @& then don't make the handle const,
 					// as it is not possible to declare functions with @const &
 					if (orig.IsReference() && dt.IsObjectHandle())
 						dt.MakeReadOnly(false);
@@ -3920,7 +3921,7 @@ bool asCScriptEngine::RequireTypeReplacement(asCDataType &type, asCObjectType *t
 
 bool asCScriptEngine::GenerateNewTemplateFunction(asCObjectType *templateType, asCObjectType *ot, asCScriptFunction *func, asCScriptFunction **newFunc)
 {
-	// Due to the objectType it is always required to generate a new function, 
+	// Due to the objectType it is always required to generate a new function,
 	// even if none of the function arguments needs to be changed.
 /*
 	// TODO: Can we store the new function in some other optimized way to avoid
@@ -6292,7 +6293,7 @@ int asCScriptEngine::SetTranslateAppExceptionCallback(asSFuncPtr callback, void 
 		}
 	}
 	int r = DetectCallingConvention(isObj, callback, callConv, 0, &translateExceptionCallbackFunc);
-	if (r < 0) 
+	if (r < 0)
 		translateExceptionCallback = false;
 
 	return r;

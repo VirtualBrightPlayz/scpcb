@@ -26,9 +26,10 @@ class ScriptClass : public Type {
                 Type* type;
                 bool isRef;
                 Visibility visibility;
+                bool isUnSerialize;
                 int arrayDims;
             public:
-                Property(const PGE::String& n, int off, int tId, bool ref, Visibility vis);
+                Property(const PGE::String& n, int off, int tId, bool ref, Visibility vis, bool isUnSerial);
 
                 void determineType(Script* script);
 
@@ -37,6 +38,7 @@ class ScriptClass : public Type {
                 int getTypeId() const;
                 bool isReference() const;
                 Visibility getVisibility() const;
+                bool isUnSerializable() const;
                 int getArrayDims() const;
         };
     private:

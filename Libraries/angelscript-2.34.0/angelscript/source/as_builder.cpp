@@ -1508,7 +1508,7 @@ int asCBuilder::CheckNameConflictMember(asCTypeInfo *t, const char *name, asCScr
 		// Check as if not a function as it doesn't matter the function signature
 		return CheckNameConflict(name, node, code, ns, true, isVirtualProperty);
 	}
-	
+
 	return 0;
 }
 
@@ -1549,7 +1549,7 @@ int asCBuilder::CheckNameConflict(const char *name, asCScriptNode *node, asCScri
 
 		return -1;
 	}
-	
+
 	// Check against registered global virtual properties
 	// Don't do this when the check is for a virtual property, as it is allowed to have multiple overloads for virtual properties
 	if( !isProperty || !isVirtualProperty )
@@ -1690,9 +1690,9 @@ int asCBuilder::CheckNameConflict(const char *name, asCScriptNode *node, asCScri
 		for (n = 0; n < functions.GetLength(); n++)
 		{
 			asCScriptFunction *func = engine->scriptFunctions[functions[n] ? functions[n]->funcId : 0];
-			if (func && 
+			if (func &&
 				func->IsProperty() &&
-				func->objectType == 0 && 
+				func->objectType == 0 &&
 				func->nameSpace == ns &&
 				func->name.SubString(4) == name)
 			{
@@ -1711,14 +1711,14 @@ int asCBuilder::CheckNameConflict(const char *name, asCScriptNode *node, asCScri
 			}
 		}
 	}
-	
+
 	// Property names must be checked against function names
 	if (isProperty)
 	{
 		for (n = 0; n < functions.GetLength(); n++)
 		{
-			if (functions[n] && 
-				functions[n]->objType == 0 && 
+			if (functions[n] &&
+				functions[n]->objType == 0 &&
 				functions[n]->name == name &&
 				engine->scriptFunctions[functions[n]->funcId]->nameSpace == ns )
 			{
@@ -1750,27 +1750,27 @@ int asCBuilder::CheckNameConflict(const char *name, asCScriptNode *node, asCScri
 int asCBuilder::ValidateVirtualProperty(asCScriptFunction *func)
 {
 	asASSERT( func->IsProperty() );
-	
+
 	// A virtual property must have the prefix "get_" or "set_"
 	asCString prefix = func->name.SubString(0, 4);
 	if( prefix != "get_" && prefix != "set_" )
 		return -2;
-	
+
 	// A getter must return a non-void type and have at most 1 argument (indexed property)
 	if( prefix == "get_" && (func->returnType == asCDataType::CreatePrimitive(ttVoid, false) || func->parameterTypes.GetLength() > 1) )
 		return -3;
-	
+
 	// A setter must return a void and have 1 or 2 arguments (indexed property)
 	if( prefix == "set_" && (func->returnType != asCDataType::CreatePrimitive(ttVoid, false) || func->parameterTypes.GetLength() < 1 || func->parameterTypes.GetLength() > 2) )
 		return -3;
-	
+
 	// Check matching getter/setter
 	asCDataType getType, setType;
 	bool found = false;
 	if( prefix == "get_" )
 	{
 		getType = func->returnType;
-		
+
 		// Find if there is a set accessor in the same scope, and then validate the type of it
 		// TODO: optimize search
 		asCString setName = "set_" + func->name.SubString(4);
@@ -1779,11 +1779,11 @@ int asCBuilder::ValidateVirtualProperty(asCScriptFunction *func)
 			asCScriptFunction *setFunc = engine->scriptFunctions[n];
 			if( setFunc == 0 || setFunc->name != setName || !setFunc->IsProperty() )
 				continue;
-			
+
 			// Is it the same scope?
 			if( func->module != setFunc->module || func->nameSpace != setFunc->nameSpace || func->objectType != setFunc->objectType )
 				continue;
-			
+
 			setType = setFunc->parameterTypes[setFunc->parameterTypes.GetLength() - 1];
 			found = true;
 			break;
@@ -1792,7 +1792,7 @@ int asCBuilder::ValidateVirtualProperty(asCScriptFunction *func)
 	else
 	{
 		setType = func->parameterTypes[func->parameterTypes.GetLength() - 1];
-		
+
 		// Find if there is a get accessor in the same scope and then validate the type of it
 		// TODO: optimize search
 		asCString getName = "get_" + func->name.SubString(4);
@@ -1801,17 +1801,17 @@ int asCBuilder::ValidateVirtualProperty(asCScriptFunction *func)
 			asCScriptFunction *getFunc = engine->scriptFunctions[n];
 			if( getFunc == 0 || getFunc->name != getName || !getFunc->IsProperty() )
 				continue;
-			
+
 			// Is it the same scope?
 			if( func->module != getFunc->module || func->nameSpace != getFunc->nameSpace || func->objectType != getFunc->objectType )
 				continue;
-			
+
 			getType = getFunc->returnType;
 			found = true;
 			break;
 		}
 	}
-	
+
 	if( found )
 	{
 		// Check that the type matches
@@ -1823,7 +1823,7 @@ int asCBuilder::ValidateVirtualProperty(asCScriptFunction *func)
 			return -4;
 		}
 	}
-	
+
 	// Check name conflict with other entities in the same scope
 	// It is allowed to have a real property of the same name, in which case the virtual property hides the real one.
 	int r;
@@ -1833,7 +1833,7 @@ int asCBuilder::ValidateVirtualProperty(asCScriptFunction *func)
 		r = CheckNameConflict(func->name.SubString(4).AddressOf(), 0, 0, func->nameSpace, true, true);
 	if( r < 0 )
 		return -5;
-	
+
 	// Everything is OK
 	return 0;
 }
@@ -2944,7 +2944,7 @@ void asCBuilder::CompileInterfaces()
 			intfDecl->validState = 1;
 			continue;
 		}
-		
+
 		asCObjectType *intfType = CastToObjectType(intfDecl->typeInfo);
 
 		// TODO: Is this really at the correct place? Hasn't the vfTableIdx already been set here?
@@ -3302,7 +3302,7 @@ void asCBuilder::CompileClasses(asUINT numTempl)
 			// Copy properties from base class to derived class
 			for( asUINT p = 0; p < baseType->properties.GetLength(); p++ )
 			{
-				asCObjectProperty *prop = AddPropertyToClass(decl, baseType->properties[p]->name, baseType->properties[p]->type, baseType->properties[p]->isPrivate, baseType->properties[p]->isProtected, true);
+				asCObjectProperty *prop = AddPropertyToClass(decl, baseType->properties[p]->name, baseType->properties[p]->type, baseType->properties[p]->isPrivate, baseType->properties[p]->isProtected, baseType->properties[p]->isUnSerialize, true);
 
 				// The properties must maintain the same offset
 				asASSERT(prop && prop->byteOffset == baseType->properties[p]->byteOffset); UNUSED_VAR(prop);
@@ -3462,7 +3462,7 @@ void asCBuilder::CompileClasses(asUINT numTempl)
 			asCScriptNode *nd = node->firstChild;
 
 			// Is the property declared as private or protected?
-			bool isPrivate = false, isProtected = false;
+			bool isPrivate = false, isProtected = false, isUnSerialize = false;
 			if( nd && nd->tokenType == ttPrivate )
 			{
 				isPrivate = true;
@@ -3471,6 +3471,11 @@ void asCBuilder::CompileClasses(asUINT numTempl)
 			else if( nd && nd->tokenType == ttProtected )
 			{
 				isProtected = true;
+				nd = nd->next;
+			}
+			else if( nd && nd->tokenType == ttUnSerialize )
+			{
+				isUnSerialize = true;
 				nd = nd->next;
 			}
 
@@ -3496,7 +3501,7 @@ void asCBuilder::CompileClasses(asUINT numTempl)
 				if( !decl->isExistingShared )
 				{
 					CheckNameConflictMember(ot, name.AddressOf(), nd, file, true, false);
-					AddPropertyToClass(decl, name, dt, isPrivate, isProtected, false, file, nd);
+					AddPropertyToClass(decl, name, dt, isPrivate, isProtected, isUnSerialize, false, file, nd);
 				}
 				else
 				{
@@ -3507,6 +3512,7 @@ void asCBuilder::CompileClasses(asUINT numTempl)
 						asCObjectProperty *prop = ot->properties[p];
 						if( prop->isPrivate == isPrivate &&
 							prop->isProtected == isProtected &&
+							prop->isUnSerialize == isUnSerialize &&
 							prop->name == name &&
 							prop->type.IsEqualExceptRef(dt) )
 						{
@@ -4015,7 +4021,7 @@ void asCBuilder::IncludePropertiesFromMixins(sClassDeclaration *decl)
 				if( n->nodeType == snDeclaration )
 				{
 					asCScriptNode *n2 = n->firstChild;
-					bool isPrivate = false, isProtected = false;
+					bool isPrivate = false, isProtected = false, isUnSerialize = false;
 					if( n2 && n2->tokenType == ttPrivate )
 					{
 						isPrivate = true;
@@ -4024,6 +4030,11 @@ void asCBuilder::IncludePropertiesFromMixins(sClassDeclaration *decl)
 					else if( n2 && n2->tokenType == ttProtected )
 					{
 						isProtected = true;
+						n2 = n2->next;
+					}
+					else if( n2 && n2->tokenType == ttUnSerialize )
+					{
+						isUnSerialize = true;
 						n2 = n2->next;
 					}
 
@@ -4065,7 +4076,7 @@ void asCBuilder::IncludePropertiesFromMixins(sClassDeclaration *decl)
 								if( r < 0 )
 									WriteInfo(TXT_WHILE_INCLUDING_MIXIN, decl->script, node);
 
-								AddPropertyToClass(decl, name, dt, isPrivate, isProtected, false, file, n2);
+								AddPropertyToClass(decl, name, dt, isPrivate, isProtected, isUnSerialize, false, file, n2);
 							}
 							else
 							{
@@ -4076,6 +4087,7 @@ void asCBuilder::IncludePropertiesFromMixins(sClassDeclaration *decl)
 									asCObjectProperty *prop = ot->properties[p];
 									if( prop->isPrivate == isPrivate &&
 										prop->isProtected == isProtected &&
+										prop->isUnSerialize == isUnSerialize &&
 										prop->name == name &&
 										prop->type == dt )
 									{
@@ -4140,7 +4152,7 @@ int asCBuilder::CreateVirtualFunction(asCScriptFunction *func, int idx)
 	return vf->id;
 }
 
-asCObjectProperty *asCBuilder::AddPropertyToClass(sClassDeclaration *decl, const asCString &name, const asCDataType &dt, bool isPrivate, bool isProtected, bool isInherited, asCScriptCode *file, asCScriptNode *node)
+asCObjectProperty *asCBuilder::AddPropertyToClass(sClassDeclaration *decl, const asCString &name, const asCDataType &dt, bool isPrivate, bool isProtected, bool isUnSerialize, bool isInherited, asCScriptCode *file, asCScriptNode *node)
 {
 	if( node )
 	{
@@ -4184,7 +4196,7 @@ asCObjectProperty *asCBuilder::AddPropertyToClass(sClassDeclaration *decl, const
 	}
 
 	// Add the property to the object type
-	return CastToObjectType(decl->typeInfo)->AddPropertyToClass(name, dt, isPrivate, isProtected, isInherited);
+	return CastToObjectType(decl->typeInfo)->AddPropertyToClass(name, dt, isPrivate, isProtected, isUnSerialize, isInherited);
 }
 
 bool asCBuilder::DoesMethodExist(asCObjectType *objType, int methodId, asUINT *methodIndex)
@@ -4637,8 +4649,8 @@ void asCBuilder::GetParsedFunctionDetails(asCScriptNode *node, asCScriptCode *fi
 				asCString msg(&file->code[decorator->tokenPos], decorator->tokenLength);
 				msg.Format(TXT_UNEXPECTED_TOKEN_s, msg.AddressOf());
 				WriteError(msg.AddressOf(), file, decorator);
-			}			
-			
+			}
+
 			decorator = decorator->next;
 		}
 	}
@@ -4904,7 +4916,7 @@ int asCBuilder::RegisterScriptFunction(asCScriptNode *node, asCScriptCode *file,
 		func.traits         = funcTraits;
 		func.returnType     = returnType;
 		func.parameterTypes = parameterTypes;
-		
+
 		int r = ValidateVirtualProperty(&func);
 		if( r < 0 )
 		{
@@ -4917,10 +4929,10 @@ int asCBuilder::RegisterScriptFunction(asCScriptNode *node, asCScriptCode *file,
 				str.Format(TXT_NAME_CONFLICT_s_ALREADY_USED, name.SubString(4).AddressOf());
 			WriteError(str, file, node);
 		}
-		
+
 		func.funcType = asFUNC_DUMMY;
 	}
-	
+
 	isExistingShared = false;
 	int funcId = engine->GetNextScriptFunctionId();
 	if( !isInterface )
@@ -5219,7 +5231,7 @@ int asCBuilder::RegisterVirtualProperty(asCScriptNode *node, asCScriptCode *file
 			ns = engine->nameSpaces[0];
 	}
 
-	bool isPrivate = false, isProtected = false;
+	bool isPrivate = false, isProtected = false, isUnSerialize = false;
 	asCString emulatedName;
 	asCDataType emulatedType;
 
@@ -5234,6 +5246,11 @@ int asCBuilder::RegisterVirtualProperty(asCScriptNode *node, asCScriptCode *file
 	else if( !isGlobalFunction && node->tokenType == ttProtected )
 	{
 		isProtected = true;
+		node = node->next;
+	}
+	else if( !isGlobalFunction && node->tokenType == ttUnSerialize )
+	{
+		isUnSerialize = true;
 		node = node->next;
 	}
 
@@ -6003,7 +6020,7 @@ asCDataType asCBuilder::CreateDataTypeFromNode(asCScriptNode *node, asCScriptCod
 						*isValid = false;
 					break;
 				}
-				
+
 				// Check if the handle should be read-only
 				if( n && n->next && n->next->tokenType == ttConst )
 					dt.MakeReadOnly(true);
@@ -6164,7 +6181,7 @@ asCDataType asCBuilder::ModifyDataTypeFromNode(const asCDataType &type, asCScrip
 			!(dt.GetTypeInfo() && (dt.GetTypeInfo()->flags & asOBJ_TEMPLATE_SUBTYPE)) )
 		{
 			// Verify that the base type support &inout parameter types
-			if( !dt.IsObject() || dt.IsObjectHandle() || 
+			if( !dt.IsObject() || dt.IsObjectHandle() ||
 				!((dt.GetTypeInfo()->flags & asOBJ_NOCOUNT) || (CastToObjectType(dt.GetTypeInfo())->beh.addref && CastToObjectType(dt.GetTypeInfo())->beh.release)) )
 				WriteError(TXT_ONLY_OBJECTS_MAY_USE_REF_INOUT, file, node->firstChild);
 		}

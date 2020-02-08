@@ -843,7 +843,7 @@ void asCReader::ReadUsedFunctions()
 							for (asUINT i = 0; i < func.objectType->beh.constructors.GetLength(); i++)
 							{
 								asCScriptFunction *f = engine->scriptFunctions[func.objectType->beh.constructors[i]];
-								
+
 								// Find the id of the real constructor and not the generated stub
 								asUINT id = 0;
 								asDWORD *bc = f->scriptData->byteCode.AddressOf();
@@ -1291,10 +1291,10 @@ asCScriptFunction *asCReader::ReadFunction(bool &isNew, bool addToModule, bool a
 						func->scriptData->objVariableInfo[i].variableOffset = ReadEncodedUInt();
 						asEObjVarInfoOption option = (asEObjVarInfoOption)ReadEncodedUInt();
 						func->scriptData->objVariableInfo[i].option = option;
-						if (option != asOBJ_INIT && 
-							option != asOBJ_UNINIT && 
-							option != asBLOCK_BEGIN && 
-							option != asBLOCK_END && 
+						if (option != asOBJ_INIT &&
+							option != asOBJ_UNINIT &&
+							option != asBLOCK_BEGIN &&
+							option != asBLOCK_END &&
 							option != asOBJ_VARDECL)
 						{
 							error = true;
@@ -2094,11 +2094,12 @@ void asCReader::ReadObjectProperty(asCObjectType *ot)
 	bool isPrivate = (flags & 1) ? true : false;
 	bool isProtected = (flags & 2) ? true : false;
 	bool isInherited = (flags & 4) ? true : false;
+	bool isUnSerialize = (flags & 8) ? true : false;
 
 	// TODO: shared: If the type is shared and pre-existing, we should just
 	//               validate that the loaded methods match the original
 	if( !existingShared.MoveTo(0, ot) )
-		ot->AddPropertyToClass(name, dt, isPrivate, isProtected, isInherited);
+		ot->AddPropertyToClass(name, dt, isPrivate, isProtected, isUnSerialize, isInherited);
 }
 
 void asCReader::ReadDataType(asCDataType *dt)
@@ -4563,6 +4564,7 @@ void asCWriter::WriteObjectProperty(asCObjectProperty* prop)
 	if( prop->isPrivate ) flags |= 1;
 	if( prop->isProtected ) flags |= 2;
 	if( prop->isInherited ) flags |= 4;
+	if( prop->isUnSerialize ) flags |= 8;
 	WriteEncodedInt64(flags);
 }
 
@@ -4771,9 +4773,9 @@ void asCWriter::CalculateAdjustmentByPos(asCScriptFunction *func)
 		num++;
 	}
 
-	// Store the number of instructions in the last position of bytecodeNbrByPos, 
+	// Store the number of instructions in the last position of bytecodeNbrByPos,
 	// so this can be easily queried in SaveBytecode. Normally this is already done
-	// as most functions end with BC_RET, but in some cases the last instruction in 
+	// as most functions end with BC_RET, but in some cases the last instruction in
 	// the function is not a BC_RET, e.g. when a function has a never ending loop.
 	bytecodeNbrByPos[length - 1] = num - 1;
 }
@@ -5629,14 +5631,14 @@ int asCWriter::FindObjectPropIndex(short offset, int typeId, asDWORD *bc)
 		lastWasComposite = false;
 		return 0;
 	}
-	
+
 	asCObjectType *objType = engine->GetObjectTypeFromTypeId(typeId);
 	asCObjectProperty *objProp = 0;
 
 	// Look for composite properties first
 	for (asUINT n = 0; objProp == 0 && n < objType->properties.GetLength(); n++)
 	{
-		// TODO: Composite: Perhaps it would be better to add metadata to the bytecode instruction to give the exact property. 
+		// TODO: Composite: Perhaps it would be better to add metadata to the bytecode instruction to give the exact property.
 		//                  That would also allow me to remove the typeId from the bytecode instruction itself
 		//                  Or perhaps a new bytecode instruction all together for accessing composite properties
 		//                  One that would do both offsets and indirection in a single go.

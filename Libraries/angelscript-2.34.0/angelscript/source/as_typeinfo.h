@@ -55,9 +55,9 @@ struct asSNameSpace;
 
 // TODO: type: asCPrimitiveType shall be implemented to represent primitives (void, int, double, etc)
 
-// TODO: type: asCTypeInfo should have an internal virtual method GetBehaviours. For asCObjectType it 
-//             should return the beh member. For asCFuncdefType it should return the beh member of 
-//             engine->functionBehaviours. This will allow the code that needs the behaviour to handle 
+// TODO: type: asCTypeInfo should have an internal virtual method GetBehaviours. For asCObjectType it
+//             should return the beh member. For asCFuncdefType it should return the beh member of
+//             engine->functionBehaviours. This will allow the code that needs the behaviour to handle
 //             both object types and funcdefs the same way
 
 class asCTypeInfo : public asITypeInfo
@@ -105,7 +105,7 @@ public:
 
 	// Properties
 	asUINT      GetPropertyCount() const { return 0; }
-	int         GetProperty(asUINT index, const char **name, int *typeId, bool *isPrivate, bool *isProtected, int *offset, bool *isReference, asDWORD *accessMask, int *compositeOffset, bool *isCompositeIndirect) const;
+	int         GetProperty(asUINT index, const char **name, int *typeId, bool *isPrivate, bool *isProtected, bool *isUnSerialize, int *offset, bool *isReference, asDWORD *accessMask, int *compositeOffset, bool *isCompositeIndirect) const;
 	const char *GetPropertyDeclaration(asUINT index, bool includeNamespace = false) const { UNUSED_VAR(index); UNUSED_VAR(includeNamespace); return 0; }
 
 	// Behaviours
@@ -138,7 +138,7 @@ public:
 	asCTypeInfo(asCScriptEngine *engine);
 	virtual ~asCTypeInfo();
 
-	// Keep an internal reference counter to separate references coming from 
+	// Keep an internal reference counter to separate references coming from
 	// application or script objects and references coming from the script code
 	virtual int AddRefInternal();
 	virtual int ReleaseInternal();

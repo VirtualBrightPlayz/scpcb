@@ -1228,8 +1228,8 @@ void asCParser::ParseMethodAttributes(asCScriptNode *funcNode)
 		GetToken(&t1);
 		RewindTo(&t1);
 
-		if( IdentifierIs(t1, FINAL_TOKEN) || 
-			IdentifierIs(t1, OVERRIDE_TOKEN) || 
+		if( IdentifierIs(t1, FINAL_TOKEN) ||
+			IdentifierIs(t1, OVERRIDE_TOKEN) ||
 			IdentifierIs(t1, EXPLICIT_TOKEN) ||
 			IdentifierIs(t1, PROPERTY_TOKEN) )
 			funcNode->AddChildLast(ParseIdentifier());
@@ -1687,7 +1687,7 @@ asCScriptNode *asCParser::ParseLambda()
 		while( t.type == ttListSeparator )
 		{
 			// Parse optional type before parameter name
-			if (IsType(t) && (t.type == ttAmp || t.type == ttIdentifier)) 
+			if (IsType(t) && (t.type == ttAmp || t.type == ttIdentifier))
 			{
 				node->AddChildLast(ParseType(true));
 				if (isSyntaxError) return node;
@@ -2709,7 +2709,8 @@ bool asCParser::IsVarDecl()
 	// A class property decl can be preceded by 'private' or 'protected'
 	sToken t1;
 	GetToken(&t1);
-	if( t1.type != ttPrivate && t1.type != ttProtected )
+
+	if( t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttUnSerialize )
 		RewindTo(&t1);
 
 	// A variable decl starts with the type
@@ -2722,7 +2723,7 @@ bool asCParser::IsVarDecl()
 	// Jump to the token after the type
 	RewindTo(&t1);
 	GetToken(&t1);
-	
+
 	// The declaration needs to have a name
 	if( t1.type != ttIdentifier )
 	{
@@ -2739,9 +2740,9 @@ bool asCParser::IsVarDecl()
 	}
 	if( t1.type == ttOpenParanthesis )
 	{
-		// If the closing parenthesis is followed by a statement block, 
-		// function decorator, or end-of-file, then treat it as a function. 
-		// A function decl may have nested parenthesis so we need to check 
+		// If the closing parenthesis is followed by a statement block,
+		// function decorator, or end-of-file, then treat it as a function.
+		// A function decl may have nested parenthesis so we need to check
 		// for this too.
 		int nest = 0;
 		while( t1.type != ttEnd )
@@ -2766,7 +2767,7 @@ bool asCParser::IsVarDecl()
 		{
 			GetToken(&t1);
 			RewindTo(&t);
-			if( t1.type == ttStartStatementBlock || 
+			if( t1.type == ttStartStatementBlock ||
 				t1.type == ttIdentifier || // function decorator
 				t1.type == ttEnd )
 				return false;
@@ -2790,7 +2791,8 @@ bool asCParser::IsVirtualPropertyDecl()
 	// A class property decl can be preceded by 'private' or 'protected'
 	sToken t1;
 	GetToken(&t1);
-	if( t1.type != ttPrivate && t1.type != ttProtected )
+
+	if( t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttUnSerialize )
 		RewindTo(&t1);
 
 	// A variable decl starts with the type
@@ -2910,7 +2912,7 @@ bool asCParser::IsFuncDecl(bool isMethod)
 			for( ; ; )
 			{
 				GetToken(&t1);
-				if( !IdentifierIs(t1, FINAL_TOKEN) && 
+				if( !IdentifierIs(t1, FINAL_TOKEN) &&
 					!IdentifierIs(t1, OVERRIDE_TOKEN) &&
 					!IdentifierIs(t1, EXPLICIT_TOKEN) &&
 					!IdentifierIs(t1, PROPERTY_TOKEN) )
@@ -2919,7 +2921,7 @@ bool asCParser::IsFuncDecl(bool isMethod)
 					break;
 				}
 			}
-			
+
 			GetToken(&t1);
 			RewindTo(&t);
 			if( t1.type == ttStartStatementBlock )
@@ -3840,7 +3842,7 @@ asCScriptNode *asCParser::ParseInitList()
 	UNREACHABLE_RETURN;
 }
 
-// BNF:1: VAR           ::= ['private'|'protected'] TYPE IDENTIFIER [( '=' (INITLIST | EXPR)) | ARGLIST] {',' IDENTIFIER [( '=' (INITLIST | EXPR)) | ARGLIST]} ';'
+// BNF:1: VAR           ::= ['private'|'protected'|'unserialize'] TYPE IDENTIFIER [( '=' (INITLIST | EXPR)) | ARGLIST] {',' IDENTIFIER [( '=' (INITLIST | EXPR)) | ARGLIST]} ';'
 asCScriptNode *asCParser::ParseDeclaration(bool isClassProp, bool isGlobalVar)
 {
 	asCScriptNode *node = CreateNode(snDeclaration);
@@ -3855,6 +3857,8 @@ asCScriptNode *asCParser::ParseDeclaration(bool isClassProp, bool isGlobalVar)
 		node->AddChildLast(ParseToken(ttPrivate));
 	else if( t.type == ttProtected && isClassProp )
 		node->AddChildLast(ParseToken(ttProtected));
+	else if( t.type == ttUnSerialize && isClassProp )
+		node->AddChildLast(ParseToken(ttUnSerialize));
 
 	// Parse data type
 	node->AddChildLast(ParseType(true, false, !isClassProp));
