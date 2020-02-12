@@ -156,7 +156,7 @@ Contributors
     Orgil Pount ("Destructoid")
         Textures.
 
-    Pavel Lvovich Gorfunkel ("-Mark-")
+    Munted
         Graphics.
 
     phlip45
