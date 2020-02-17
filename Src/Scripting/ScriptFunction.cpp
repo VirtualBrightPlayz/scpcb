@@ -4,6 +4,7 @@
 #include "Type.h"
 #include "ScriptClass.h"
 #include "ScriptObject.h"
+#include <stdexcept>
 
 PGE::String ScriptFunction::Signature::toString() const {
     PGE::String retVal = returnType->getName() + " " + functionName;
