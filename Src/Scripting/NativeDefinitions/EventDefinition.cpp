@@ -75,7 +75,7 @@ void EventDefinition::execute() {
             } else if(arguments[j].type == Type::Float) {
                 scriptContext->SetArgFloat(j, arguments[j].value.f);
             } else if(arguments[j].type == Type::Double) {
-                scriptContext->SetArgDouble(j, arguments[j].value.u32);
+                scriptContext->SetArgDouble(j, arguments[j].value.d);
             }
         }
 
