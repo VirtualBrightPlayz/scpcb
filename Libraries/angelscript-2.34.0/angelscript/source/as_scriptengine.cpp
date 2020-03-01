@@ -1491,7 +1491,7 @@ int asCScriptEngine::RegisterObjectProperty(const char *obj, const char *declara
 	prop->byteOffset          = byteOffset;
 	prop->isPrivate           = false;
 	prop->isProtected         = false;
-	prop->isUnSerialize       = false;
+	prop->isNonSerialize       = false;
 	prop->compositeOffset     = compositeOffset;
 	prop->isCompositeIndirect = isCompositeIndirect;
 	prop->accessMask          = defaultAccessMask;

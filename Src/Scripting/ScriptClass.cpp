@@ -18,12 +18,12 @@ ScriptClass::ScriptClass(Script* scrpt, asITypeInfo* tInfo) {
         const char* name;
         bool isPrivate;
         bool isProtected;
-        bool isUnSerialize;
+        bool isNonSerialize;
         int typeId;
         int offset;
         bool isReference;
         Visibility visibility;
-        angelScriptTypeInfo->GetProperty(i, &name, &typeId, &isPrivate, &isProtected, &isUnSerialize, &offset, &isReference);
+        angelScriptTypeInfo->GetProperty(i, &name, &typeId, &isPrivate, &isProtected, &isNonSerialize, &offset, &isReference);
 
         if (isPrivate) {
             visibility = Visibility::Private;
@@ -33,7 +33,7 @@ ScriptClass::ScriptClass(Script* scrpt, asITypeInfo* tInfo) {
             visibility = Visibility::Public;
         }
 
-        Property newProperty = Property(name, offset, typeId, isReference, visibility, isUnSerialize);
+        Property newProperty = Property(name, offset, typeId, isReference, visibility, isNonSerialize);
 
         properties.push_back(newProperty);
     }
@@ -84,8 +84,8 @@ ScriptObject* ScriptClass::createNewObject() {
     return constructors[0]->getReturnObject();
 }
 
-ScriptClass::Property::Property(const PGE::String& n, int off, int tId, bool ref, ScriptClass::Visibility vis, bool isUnSerial) {
-    name = n; offset = off; typeId = tId; isRef = ref; visibility = vis; isUnSerialize = isUnSerial;
+ScriptClass::Property::Property(const PGE::String& n, int off, int tId, bool ref, ScriptClass::Visibility vis, bool isNonSerial) {
+    name = n; offset = off; typeId = tId; isRef = ref; visibility = vis; isNonSerialize = isNonSerial;
 }
 
 PGE::String ScriptClass::Property::getName() const {
@@ -108,8 +108,8 @@ ScriptClass::Visibility ScriptClass::Property::getVisibility() const {
     return visibility;
 }
 
-bool ScriptClass::Property::isUnSerializable() const {
-    return isUnSerialize;
+bool ScriptClass::Property::isNonSerializable() const {
+    return isNonSerialize;
 }
 
 void ScriptClass::Property::determineType(Script* script) {

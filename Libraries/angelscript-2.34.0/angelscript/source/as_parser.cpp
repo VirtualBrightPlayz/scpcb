@@ -2710,7 +2710,7 @@ bool asCParser::IsVarDecl()
 	sToken t1;
 	GetToken(&t1);
 
-	if( t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttUnSerialize )
+	if( t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttNonSerialize )
 		RewindTo(&t1);
 
 	// A variable decl starts with the type
@@ -2792,7 +2792,7 @@ bool asCParser::IsVirtualPropertyDecl()
 	sToken t1;
 	GetToken(&t1);
 
-	if( t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttUnSerialize )
+	if( t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttNonSerialize )
 		RewindTo(&t1);
 
 	// A variable decl starts with the type
@@ -3853,12 +3853,17 @@ asCScriptNode *asCParser::ParseDeclaration(bool isClassProp, bool isGlobalVar)
 	RewindTo(&t);
 
 	// A class property can be preceeded by private
-	if( t.type == ttPrivate && isClassProp )
-		node->AddChildLast(ParseToken(ttPrivate));
-	else if( t.type == ttProtected && isClassProp )
-		node->AddChildLast(ParseToken(ttProtected));
-	else if( t.type == ttUnSerialize && isClassProp )
-		node->AddChildLast(ParseToken(ttUnSerialize));
+	for (int k = 0; k < 2; k++)
+	{
+		if (t.type == ttPrivate && isClassProp)
+			node->AddChildLast(ParseToken(ttPrivate));
+		else if (t.type == ttProtected && isClassProp)
+			node->AddChildLast(ParseToken(ttProtected));
+		else if (t.type == ttNonSerialize && isClassProp)
+			node->AddChildLast(ParseToken(ttNonSerialize));
+		else
+			break;
+	}
 
 	// Parse data type
 	node->AddChildLast(ParseType(true, false, !isClassProp));

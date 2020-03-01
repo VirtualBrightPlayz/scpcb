@@ -2094,12 +2094,12 @@ void asCReader::ReadObjectProperty(asCObjectType *ot)
 	bool isPrivate = (flags & 1) ? true : false;
 	bool isProtected = (flags & 2) ? true : false;
 	bool isInherited = (flags & 4) ? true : false;
-	bool isUnSerialize = (flags & 8) ? true : false;
+	bool isNonSerialize = (flags & 8) ? true : false;
 
 	// TODO: shared: If the type is shared and pre-existing, we should just
 	//               validate that the loaded methods match the original
 	if( !existingShared.MoveTo(0, ot) )
-		ot->AddPropertyToClass(name, dt, isPrivate, isProtected, isUnSerialize, isInherited);
+		ot->AddPropertyToClass(name, dt, isPrivate, isProtected, isNonSerialize, isInherited);
 }
 
 void asCReader::ReadDataType(asCDataType *dt)
@@ -4564,7 +4564,7 @@ void asCWriter::WriteObjectProperty(asCObjectProperty* prop)
 	if( prop->isPrivate ) flags |= 1;
 	if( prop->isProtected ) flags |= 2;
 	if( prop->isInherited ) flags |= 4;
-	if( prop->isUnSerialize ) flags |= 8;
+	if( prop->isNonSerialize ) flags |= 8;
 	WriteEncodedInt64(flags);
 }
 
