@@ -285,7 +285,7 @@ sTokenWord const tokenWords[] =
 	asTokenDef("out"       , ttOut),
 	asTokenDef("private"   , ttPrivate),
 	asTokenDef("protected" , ttProtected),
-	asTokenDef("noserialize" , ttNonSerialize),
+	asTokenDef("nonserialize" , ttNonSerialize),
 	asTokenDef("return"    , ttReturn),
 	asTokenDef("switch"    , ttSwitch),
 	asTokenDef("true"      , ttTrue),
