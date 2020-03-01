@@ -86,7 +86,6 @@ class World {
         void updatePlaying(float timeStep, Input input);
         // Draw code for GameState::Playing game state.
         void drawPlaying();
-        void loadPlaying();
         void destroyPlaying();
 
         // Goes through the draw phase.

@@ -72,9 +72,6 @@ World::World() {
     scripting.mainScript = new Script(scripting.manager, PGE::FileName::create("Scripts/Main.as"), "SCPCB");
 
     scripting.mainScript->getFunctionByName("test")->execute();
-
-    // TODO: Remove.
-    loadPlaying();
 }
 
 World::~World() {
@@ -240,10 +237,6 @@ void World::updatePlaying(float timeStep, Input input) {
 
 void World::drawPlaying() {
     gfxRes->setCameraUniforms(camera);
-}
-
-void World::loadPlaying() {
-    
 }
 
 void World::destroyPlaying() {
