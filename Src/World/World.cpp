@@ -59,8 +59,19 @@ World::World() {
     scripting.mathDefinitions->registerToEngine(scripting.manager);
     scripting.rm2Definitions = new RM2Definitions(gfxRes);
     scripting.rm2Definitions->registerToEngine(scripting.manager);
-    scripting.perTickScript = new Script(scripting.manager, PGE::FileName::create("Scripts/Events/PerTick.as"), "SCPCB");
-    scripting.perTickPerform = scripting.perTickScript->getFunctionByName("PerformPerTick");
+
+    ScriptFunction::Signature perTickSignature;
+    perTickSignature.functionName = "PerTick";
+    perTickSignature.returnType = Type::Void;
+    perTickSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "deltaTime"));
+
+    scripting.perTickEventDefinition = new EventDefinition("PerTick", perTickSignature);
+    scripting.perTickEventDefinition->registerToEngine(scripting.manager);
+    scripting.perTickEventDefinition->setArgument("deltaTime", 1.f / 60.f);
+
+    scripting.mainScript = new Script(scripting.manager, PGE::FileName::create("Scripts/Main.as"), "SCPCB");
+
+    scripting.mainScript->getFunctionByName("test")->execute();
 
     // TODO: Remove.
     loadPlaying();
@@ -166,7 +177,7 @@ void World::runTick(float timeStep, Input input) {
         currMenu->update(mousePosition);
     }
 
-    scripting.perTickPerform->execute();
+    scripting.perTickEventDefinition->execute();
 
     if (keyBinds->escape->isHit()) {
         // If a text input is active then escape de-selects it.

@@ -169,7 +169,9 @@
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.h">
       <Filter>Src\Scripting\NativeDefinitions</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\EventDefinition.h" />
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\EventDefinition.h">
+      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SCPCB.rc">
@@ -296,6 +298,8 @@
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.cpp">
       <Filter>Src\Scripting\NativeDefinitions</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\EventDefinition.cpp" />
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\EventDefinition.cpp">
+      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -17,6 +17,20 @@ class EventDefinition : public NativeDefinition {
 
         void registerCallback(asIScriptFunction* f);
         void unregisterCallback(asIScriptFunction* f);
+
+        struct Argument {
+            PGE::String name;
+            Type* type;
+            union Value {
+                Value();
+                int32_t i32;
+                uint32_t u32;
+                float f;
+                double d;
+            } value;
+            Argument(const PGE::String& nm, Type* t);
+        }; 
+        std::vector<Argument> arguments;
     public:
         EventDefinition(const PGE::String& nm, const ScriptFunction::Signature& sgntr);
 
@@ -24,9 +38,9 @@ class EventDefinition : public NativeDefinition {
         void setArgument(const PGE::String& argument, uint32_t u32);
         void setArgument(const PGE::String& argument, float f);
         void setArgument(const PGE::String& argument, double d);
-        void setArgument(const PGE::String& argument, const PGE::String& s);
-        void setArgument(const PGE::String& argument, ScriptObject* obj);
-        void setArgumentNative(const PGE::String& argument, void* obj);
+        /*void setArgument(const PGE::String& argument, const PGE::String& s);
+        void setArgument(const PGE::String& argument, ScriptObject* srcObj);
+        void setArgumentNative(const PGE::String& argument, void* natObj);*/
         void execute();
 
         void registerToEngine(ScriptManager* mgr) override;

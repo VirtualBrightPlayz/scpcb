@@ -21,6 +21,7 @@
 
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
 #include "../Scripting/NativeDefinitions/RM2Definitions.h"
+#include "../Scripting/NativeDefinitions/EventDefinition.h"
 
 class Camera;
 class Timing;
@@ -71,9 +72,9 @@ class World {
 
             MathDefinitions* mathDefinitions;
             RM2Definitions* rm2Definitions;
+            EventDefinition* perTickEventDefinition;
 
-            Script* perTickScript;
-            ScriptFunction* perTickPerform;
+            Script* mainScript;
         } scripting;
 
         //-- Update/Draw code.
