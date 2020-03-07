@@ -51,7 +51,7 @@ class Font {
             PGE::Rectanglef srcRect;
         };
 
-        PGE::FileName shaderPath = PGE::FileName::create("GFX/Shaders/Text/");
+        PGE::FileName shaderPath = PGE::FileName::fromStr("GFX/Shaders/Text/");
         PGE::Shader* shader;
         PGE::Shader::Constant* modelMatrixConstant;
         PGE::Shader::Constant* colorConstant;

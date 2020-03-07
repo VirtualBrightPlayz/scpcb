@@ -1,10 +1,12 @@
 #ifndef WORLD_H_INCLUDED
 #define WORLD_H_INCLUDED
 
+#include <map>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <Graphics/Graphics.h>
 #include <IO/IO.h>
+#include <Misc/String.h>
 
 #include "../Graphics/Sprite.h"
 #include "../Graphics/UIMesh.h"
@@ -74,7 +76,7 @@ class World {
             RM2Definitions* rm2Definitions;
             EventDefinition* perTickEventDefinition;
 
-            Script* mainScript;
+            std::map<PGE::FileName, Script*> scripts;
         } scripting;
 
         //-- Update/Draw code.

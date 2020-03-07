@@ -21,7 +21,7 @@ class Sprite {
 
         PGE::Mesh* mesh;
         PGE::Texture* texture;
-        PGE::FileName shaderPath = PGE::FileName::create("GFX/Shaders/Sprite/");
+        PGE::FileName shaderPath = PGE::FileName::fromStr("GFX/Shaders/Sprite/");
         PGE::Shader* shader;
         PGE::Material* material;
         PGE::Color color;

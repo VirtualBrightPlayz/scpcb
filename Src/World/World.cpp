@@ -71,7 +71,7 @@ World::World() {
 
     scripting.mainScript = new Script(scripting.manager, PGE::FileName::create("Scripts/Main.as"), "SCPCB");
 
-    scripting.mainScript->getFunctionByName("test")->execute();
+    scripting.mainScript->getFunctionByName("main")->execute();
 }
 
 World::~World() {
