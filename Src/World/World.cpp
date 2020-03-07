@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <Color/Color.h>
+#include <filesystem>
 
 #include "World.h"
 #include "Timing.h"
@@ -69,9 +70,10 @@ World::World() {
     scripting.perTickEventDefinition->registerToEngine(scripting.manager);
     scripting.perTickEventDefinition->setArgument("deltaTime", 1.f / 60.f);
 
-    scripting.mainScript = new Script(scripting.manager, PGE::FileName::fromStr("Scripts/Main.as"), "SCPCB");
-
-    scripting.mainScript->getFunctionByName("main")->execute();
+    std::filesystem::recursive_directory_iterator scriptDir = std::filesystem::recursive_directory_iterator(PGE::FileName::fromStr("Scripts/").cstr());
+    for (const std::filesystem::directory_entry& entry : scriptDir) {
+        printf("%s\n", entry.path().c_str());
+    }
 }
 
 World::~World() {
