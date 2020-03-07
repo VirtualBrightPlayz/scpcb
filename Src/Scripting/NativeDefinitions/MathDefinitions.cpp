@@ -16,10 +16,10 @@ void matrixConstructor(void* memory) {
     new(memory) PGE::Matrix4x4f();
 }
 
-void matrixConstructorParametrized(void* memory, float aa, float ab, float ac, float ad,
-                                                 float ba, float bb, float bc, float bd,
-                                                 float ca, float cb, float cc, float cd,
-                                                 float da, float db, float dc, float dd) {
+void matrixConstructorParametrized(float aa, float ab, float ac, float ad,
+                                   float ba, float bb, float bc, float bd,
+                                   float ca, float cb, float cc, float cd,
+                                   float da, float db, float dc, float dd, void* memory) {
     new(memory) PGE::Matrix4x4f(aa, ab, ac, ad,
                                 ba, bb, bc, bd,
                                 ca, cb, cc, cd,
