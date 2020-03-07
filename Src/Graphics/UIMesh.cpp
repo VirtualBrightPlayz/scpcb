@@ -4,8 +4,8 @@
 UIMesh::UIMesh(GraphicsResources* gr) {
     gfxRes = gr;
 
-    shaderTextured = gr->getShader(PGE::FileName::create("GFX/Shaders/UI/"), false);
-    shaderTextureless = gr->getShader(PGE::FileName::create("GFX/Shaders/UITextureless/"), false);
+    shaderTextured = gr->getShader(PGE::FileName::fromStr("GFX/Shaders/UI/"), false);
+    shaderTextureless = gr->getShader(PGE::FileName::fromStr("GFX/Shaders/UITextureless/"), false);
 
     mesh = PGE::Mesh::create(gfxRes->getGraphics(), PGE::Primitive::TYPE::TRIANGLE);
     material = nullptr;

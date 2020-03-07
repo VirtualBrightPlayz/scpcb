@@ -31,7 +31,7 @@ World::World() {
     txtMngt = new TxtManager(config->getLangCode());
 
     FT_Init_FreeType(&ftLibrary);
-    largeFont = new Font(ftLibrary, gfxRes, config, PGE::FileName::create("GFX/Font/cour.ttf"), 20);
+    largeFont = new Font(ftLibrary, gfxRes, config, PGE::FileName::fromStr("GFX/Font/cour.ttf"), 20);
     spriteMesh = Sprite::createSpriteMesh(graphics);
     uiMesh = new UIMesh(gfxRes);
     keyBinds = new KeyBinds(io);
@@ -69,7 +69,7 @@ World::World() {
     scripting.perTickEventDefinition->registerToEngine(scripting.manager);
     scripting.perTickEventDefinition->setArgument("deltaTime", 1.f / 60.f);
 
-    scripting.mainScript = new Script(scripting.manager, PGE::FileName::create("Scripts/Main.as"), "SCPCB");
+    scripting.mainScript = new Script(scripting.manager, PGE::FileName::fromStr("Scripts/Main.as"), "SCPCB");
 
     scripting.mainScript->getFunctionByName("main")->execute();
 }
