@@ -1,7 +1,7 @@
 #ifndef WORLD_H_INCLUDED
 #define WORLD_H_INCLUDED
 
-#include <map>
+#include <vector>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <Graphics/Graphics.h>
@@ -17,6 +17,7 @@
 #include "../PlayerController/PlayerController.h"
 #include "../Collision/CollisionMeshCollection.h"
 #include "../Scripting/ScriptManager.h"
+#include "../Scripting/ScriptModule.h"
 #include "../Scripting/Script.h"
 #include "../Scripting/ScriptFunction.h"
 #include "../Scripting/ScriptClass.h"
@@ -76,7 +77,8 @@ class World {
             RM2Definitions* rm2Definitions;
             EventDefinition* perTickEventDefinition;
 
-            std::map<PGE::FileName, Script*> scripts;
+            std::vector<Script*> scripts;
+            ScriptModule* module;
         } scripting;
 
         //-- Update/Draw code.

@@ -156,6 +156,7 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
     <ClInclude Include="..\Src\Scripting\ScriptFunction.h" />
     <ClInclude Include="..\Src\Scripting\Script.h" />
     <ClInclude Include="..\Src\Scripting\ScriptManager.h" />
+    <ClInclude Include="..\Src\Scripting\ScriptModule.h" />
     <ClInclude Include="..\Src\Scripting\ScriptObject.h" />
     <ClInclude Include="..\Src\Scripting\Type.h" />
     <ClInclude Include="..\Src\Utils\INI.h" />
@@ -202,6 +203,7 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptClass.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptFunction.cpp" />
+    <ClCompile Include="..\Src\Scripting\ScriptModule.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptObject.cpp" />
     <ClCompile Include="..\Src\Scripting\Script.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptManager.cpp" />

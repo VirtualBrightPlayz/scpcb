@@ -6,7 +6,7 @@
 #include <angelscript.h>
 #include <Misc/String.h>
 
-class Script;
+class ScriptModule;
 class ScriptManager;
 class ScriptObject;
 class Type;
@@ -34,13 +34,13 @@ class ScriptFunction {
 
         std::map<int, PGE::String> stringArgs;
 
-        Script* script;
+        ScriptModule* scriptModule;
 
         bool returnsClassType;
         ScriptObject* returnedObject;
 
     public:
-        ScriptFunction(Script* scrpt,asIScriptFunction* asScriptFunction,asIScriptFunction* asFuncWithSignature=nullptr);
+        ScriptFunction(ScriptModule* module,asIScriptFunction* asScriptFunction,asIScriptFunction* asFuncWithSignature=nullptr);
         ~ScriptFunction();
 
         int getArgumentIndex(const PGE::String& argument) const;

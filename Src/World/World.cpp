@@ -72,8 +72,17 @@ World::World() {
 
     std::filesystem::recursive_directory_iterator scriptDir = std::filesystem::recursive_directory_iterator(PGE::FileName::fromStr("Scripts/").cstr());
     for (const std::filesystem::directory_entry& entry : scriptDir) {
-        printf("%s\n", entry.path().c_str());
+        if (entry.is_directory()) { continue; }
+        PGE::FileName scriptName = PGE::FileName::fromStr(entry.path().c_str());
+        scripting.scripts.push_back(new Script(scriptName));
     }
+    scripting.module = new ScriptModule(scripting.manager, "SCPCB");
+    for (int i = 0; i < scripting.scripts.size(); i++) {
+        PGE::String sectionName = scripting.scripts[i]->getFileName().str();
+
+        scripting.module->addScript(sectionName, scripting.scripts[i]);
+    }
+    scripting.module->build();
 }
 
 World::~World() {

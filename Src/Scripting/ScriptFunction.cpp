@@ -1,5 +1,5 @@
 #include "ScriptManager.h"
-#include "Script.h"
+#include "ScriptModule.h"
 #include "ScriptFunction.h"
 #include "Type.h"
 #include "ScriptClass.h"
@@ -35,9 +35,9 @@ int ScriptFunction::getArgumentIndex(const PGE::String& argument) const {
 }
 
 //ScriptFunction
-ScriptFunction::ScriptFunction(Script* scrpt, asIScriptFunction* asScriptFunction, asIScriptFunction* asFuncWithSignature) {
-    script = scrpt;
-    asIScriptModule* module = script->getAngelScriptModule();
+ScriptFunction::ScriptFunction(ScriptModule* module, asIScriptFunction* asScriptFunction, asIScriptFunction* asFuncWithSignature) {
+    scriptModule = module;
+    asIScriptModule* asModule = scriptModule->getAngelScriptModule();
 
     returnedObject = nullptr;
     
@@ -56,16 +56,16 @@ ScriptFunction::ScriptFunction(Script* scrpt, asIScriptFunction* asScriptFunctio
 
         asFuncWithSignature->GetParam(i, &typeId, &flags, &name, &defaultArg);
 
-        Type* type = script->typeFromTypeId(typeId);
+        Type* type = scriptModule->typeFromTypeId(typeId);
 
         if (name == nullptr) { name = ""; }
 
         signature.arguments.push_back(Signature::Argument(type, name));
     }
 
-    signature.returnType = script->typeFromTypeId(scriptFunction->GetReturnTypeId(), returnsClassType);
+    signature.returnType = scriptModule->typeFromTypeId(scriptFunction->GetReturnTypeId(), returnsClassType);
 
-    scriptContext = module->GetEngine()->CreateContext();
+    scriptContext = asModule->GetEngine()->CreateContext();
     if (scriptContext->Prepare(scriptFunction) < 0) { throw std::runtime_error("ptooey!"); }
 }
 

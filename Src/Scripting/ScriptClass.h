@@ -6,7 +6,7 @@
 #include <vector>
 #include <angelscript.h>
 
-class Script;
+class ScriptModule;
 class ScriptFunction;
 class ScriptObject;
 
@@ -31,7 +31,7 @@ class ScriptClass : public Type {
             public:
                 Property(const PGE::String& n, int off, int tId, bool ref, Visibility vis, bool isNonSerial);
 
-                void determineType(Script* script);
+                void determineType(ScriptModule* scriptModule);
 
                 PGE::String getName() const;
                 int getOffset() const;
@@ -48,13 +48,13 @@ class ScriptClass : public Type {
         std::vector<ScriptFunction*> methods;
         std::vector<ScriptFunction*> constructors;
 
-        Script* script;
+        ScriptModule* scriptModule;
 
     public:
-        ScriptClass(Script* scrpt, asITypeInfo* tInfo);
+        ScriptClass(ScriptModule* module, asITypeInfo* tInfo);
 
         const std::vector<Property>& getProperties() const;
-        Script* getScript() const;
+        ScriptModule* getScriptModule() const;
         int getTypeId() const;
 
         void finalizeInitialization();

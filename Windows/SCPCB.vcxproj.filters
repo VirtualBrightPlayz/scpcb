@@ -172,6 +172,9 @@
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\EventDefinition.h">
       <Filter>Src\Scripting\NativeDefinitions</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\Scripting\ScriptModule.h">
+      <Filter>Src\Scripting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SCPCB.rc">
@@ -300,6 +303,9 @@
     </ClCompile>
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\EventDefinition.cpp">
       <Filter>Src\Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\ScriptModule.cpp">
+      <Filter>Src\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

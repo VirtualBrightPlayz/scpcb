@@ -1,15 +1,15 @@
-#include "Script.h"
+#include "ScriptModule.h"
 #include "ScriptFunction.h"
 #include "ScriptClass.h"
 #include "ScriptObject.h"
 
-ScriptClass::ScriptClass(Script* scrpt, asITypeInfo* tInfo) {
-    script = scrpt;
+ScriptClass::ScriptClass(ScriptModule* module, asITypeInfo* tInfo) {
+    scriptModule = module;
 
     typeName = tInfo->GetName();
     refType = new RefType(this);
 
-    asIScriptModule* module = script->getAngelScriptModule();
+    //asIScriptModule* module = scriptModule->getAngelScriptModule();
 
     angelScriptTypeInfo = tInfo;
 
@@ -43,8 +43,8 @@ const std::vector<ScriptClass::Property>& ScriptClass::getProperties() const {
     return properties;
 }
 
-Script* ScriptClass::getScript() const {
-    return script;
+ScriptModule* ScriptClass::getScriptModule() const {
+    return scriptModule;
 }
 
 int ScriptClass::getTypeId() const {
@@ -54,7 +54,7 @@ int ScriptClass::getTypeId() const {
 void ScriptClass::finalizeInitialization() {
     int methodCount = angelScriptTypeInfo->GetMethodCount();
     for (int i = 0; i < methodCount; i++) {
-        ScriptFunction* newFunction = new ScriptFunction(script,
+        ScriptFunction* newFunction = new ScriptFunction(scriptModule,
                                                          angelScriptTypeInfo->GetMethodByIndex(i, true),
                                                          angelScriptTypeInfo->GetMethodByIndex(i, false));
 
@@ -66,7 +66,7 @@ void ScriptClass::finalizeInitialization() {
     int factoryCount = angelScriptTypeInfo->GetFactoryCount();
 
     for (int i = 0; i < factoryCount; i++) {
-        ScriptFunction* newFunction = new ScriptFunction(script, angelScriptTypeInfo->GetFactoryByIndex(i));
+        ScriptFunction* newFunction = new ScriptFunction(scriptModule, angelScriptTypeInfo->GetFactoryByIndex(i));
 
         PGE::String decl = newFunction->getSignature().toString();
 
@@ -74,7 +74,7 @@ void ScriptClass::finalizeInitialization() {
     }
 
     for (int i = 0; i < properties.size(); i++) {
-        properties[i].determineType(script);
+        properties[i].determineType(scriptModule);
     }
 }
 
@@ -112,6 +112,6 @@ bool ScriptClass::Property::isNonSerializable() const {
     return isNonSerialize;
 }
 
-void ScriptClass::Property::determineType(Script* script) {
-    type = script->typeFromTypeId(typeId);
+void ScriptClass::Property::determineType(ScriptModule* scriptModule) {
+    type = scriptModule->typeFromTypeId(typeId);
 }
