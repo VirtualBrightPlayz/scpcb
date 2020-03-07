@@ -76,6 +76,7 @@ class World {
             MathDefinitions* mathDefinitions;
             RM2Definitions* rm2Definitions;
             EventDefinition* perTickEventDefinition;
+            EventDefinition* perFrameEventDefinition;
 
             std::vector<Script*> scripts;
             ScriptModule* module;

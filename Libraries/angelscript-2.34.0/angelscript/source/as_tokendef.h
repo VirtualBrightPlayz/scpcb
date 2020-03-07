@@ -172,7 +172,7 @@ enum eTokenType
 	ttCast,                // cast
 	ttPrivate,             // private
     ttProtected,           // protected
-    ttNonSerialize,         // unserialize
+    ttNonSerialize,        // nonserialize
 	ttNamespace,           // namespace
 	ttMixin,               // mixin
 	ttAuto,                // auto

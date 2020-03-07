@@ -70,6 +70,15 @@ World::World() {
     scripting.perTickEventDefinition->registerToEngine(scripting.manager);
     scripting.perTickEventDefinition->setArgument("deltaTime", 1.f / 60.f);
 
+    ScriptFunction::Signature perFrameSignature;
+    perFrameSignature.functionName = "PerFrame";
+    perFrameSignature.returnType = Type::Void;
+    perFrameSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "interpolation"));
+
+    scripting.perFrameEventDefinition = new EventDefinition("PerFrame", perFrameSignature);
+    scripting.perFrameEventDefinition->registerToEngine(scripting.manager);
+    scripting.perFrameEventDefinition->setArgument("interpolation", 1.0f);
+    
     std::filesystem::recursive_directory_iterator scriptDir = std::filesystem::recursive_directory_iterator(PGE::FileName::fromStr("Scripts/").cstr());
     for (const std::filesystem::directory_entry& entry : scriptDir) {
         if (entry.is_directory()) { continue; }
@@ -83,6 +92,8 @@ World::World() {
         scripting.module->addScript(sectionName, scripting.scripts[i]);
     }
     scripting.module->build();
+
+    scripting.module->getFunctionByName("main")->execute();
 }
 
 World::~World() {
@@ -171,7 +182,7 @@ void World::runTick(float timeStep, Input input) {
     mouseTxtX->text = PGE::String("MouseX: ", PGE::String(mousePosition.x));
     mouseTxtY->text = PGE::String("MouseY: ", PGE::String(mousePosition.y));
 #endif
-
+    
     // If a menu is in the graveyard then remove it.
     if (menuGraveyard != nullptr) {
         delete menuGraveyard;
@@ -210,6 +221,8 @@ void World::runTick(float timeStep, Input input) {
 
 void World::draw() {
     drawPlaying();
+
+    scripting.perFrameEventDefinition->execute();
 
     // UI.
     graphics->setDepthTest(false);

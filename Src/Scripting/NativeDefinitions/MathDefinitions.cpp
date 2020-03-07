@@ -4,7 +4,7 @@ void vector3fConstructor(void* memory) {
     new(memory) PGE::Vector3f();
 }
 
-void vector3fConstructorParametrized(void* memory, float x, float y, float z) {
+void vector3fConstructorParametrized(float x, float y, float z, void* memory) {
     new(memory) PGE::Vector3f(x, y, z);
 }
 
@@ -43,6 +43,8 @@ void MathDefinitions::registerToEngine(ScriptManager* mgr) {
     engine->RegisterObjectProperty("Vector3f", "float y", asOFFSET(PGE::Vector3f, y));
     engine->RegisterObjectProperty("Vector3f", "float z", asOFFSET(PGE::Vector3f, z));
 
+    engine->RegisterObjectMethod("Vector3f", "Vector3f& opAssign(const Vector3f &in other)", asMETHODPR(PGE::Vector3f, operator=, (const PGE::Vector3f&), PGE::Vector3f&), asCALL_THISCALL);
+
     engine->RegisterObjectMethod("Vector3f", "float lengthSquared() const", asMETHOD(PGE::Vector3f, lengthSquared), asCALL_THISCALL);
     engine->RegisterObjectMethod("Vector3f", "float length() const", asMETHOD(PGE::Vector3f, length), asCALL_THISCALL);
     engine->RegisterObjectMethod("Vector3f", "float distanceSquared(const Vector3f&in other) const", asMETHOD(PGE::Vector3f, distanceSquared), asCALL_THISCALL);
@@ -67,7 +69,9 @@ void MathDefinitions::registerToEngine(ScriptManager* mgr) {
                                                                              "float da, float db, float dc, float dd)",
         asFUNCTION(matrixConstructorParametrized), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("Matrix4x4f", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(matrixDestructor), asCALL_CDECL_OBJLAST);
-    
+
+    engine->RegisterObjectMethod("Matrix4x4f", "Matrix4x4f& opAssign(const Matrix4x4f &in other)", asMETHODPR(PGE::Matrix4x4f, operator=, (const PGE::Matrix4x4f&), PGE::Matrix4x4f&), asCALL_THISCALL);
+
     engine->RegisterObjectMethod("Matrix4x4f", "Matrix4x4f transpose() const", asMETHOD(PGE::Matrix4x4f, transpose), asCALL_THISCALL);
     engine->RegisterObjectMethod("Matrix4x4f", "Matrix4x4f product(const Matrix4x4f&in other) const", asMETHOD(PGE::Matrix4x4f, product), asCALL_THISCALL);
     engine->RegisterObjectMethod("Matrix4x4f", "Vector3f transform(const Vector3f&in vec) const", asMETHODPR(PGE::Matrix4x4f, transform, (const PGE::Vector3f&) const, PGE::Vector3f), asCALL_THISCALL);
@@ -76,7 +80,7 @@ void MathDefinitions::registerToEngine(ScriptManager* mgr) {
     engine->RegisterGlobalFunction("Matrix4x4f translate(const Vector3f&in position)", asFUNCTION(PGE::Matrix4x4f::translate), asCALL_CDECL, this);
     engine->RegisterGlobalFunction("Matrix4x4f scale(const Vector3f&in scale)", asFUNCTION(PGE::Matrix4x4f::scale), asCALL_CDECL, this);
     engine->RegisterGlobalFunction("Matrix4x4f rotate(const Vector3f&in rotation)", asFUNCTION(PGE::Matrix4x4f::rotate), asCALL_CDECL, this);
-
+    
     engine->RegisterGlobalFunction("Matrix4x4f constructWorldMat(const Vector3f&in position, const Vector3f&in scale, const Vector3f&in rotation)", asFUNCTION(PGE::Matrix4x4f::constructWorldMat), asCALL_CDECL, this);
     engine->RegisterGlobalFunction("Matrix4x4f constructViewMat(const Vector3f&in position, const Vector3f&in target, const Vector3f&in upVector)", asFUNCTION(PGE::Matrix4x4f::constructViewMat), asCALL_CDECL, this);
     engine->RegisterGlobalFunction("Matrix4x4f constructPerspectiveMat(float horizontalfov, float aspectRatio, float nearZ, float farZ)", asFUNCTION(PGE::Matrix4x4f::constructPerspectiveMat), asCALL_CDECL, this);

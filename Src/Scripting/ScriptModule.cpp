@@ -24,8 +24,6 @@ void ScriptModule::addScript(const PGE::String& sectionName, Script* script) {
 }
 
 void ScriptModule::build() {
-
-
     int errorCode = scriptModule->Build();
     if (errorCode < 0) { throw std::runtime_error("whabammy!"); }
 

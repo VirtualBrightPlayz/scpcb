@@ -2707,11 +2707,18 @@ bool asCParser::IsVarDecl()
 	RewindTo(&t);
 
 	// A class property decl can be preceded by 'private' or 'protected'
-	sToken t1;
-	GetToken(&t1);
 
-	if( t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttNonSerialize )
-		RewindTo(&t1);
+	sToken t1;
+	for (int k = 0; k < 2; k++)
+	{
+		GetToken(&t1);
+
+		if (t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttNonSerialize)
+		{
+			RewindTo(&t1);
+			break;
+		}
+	}
 
 	// A variable decl starts with the type
 	if (!IsType(t1))
@@ -2790,10 +2797,16 @@ bool asCParser::IsVirtualPropertyDecl()
 
 	// A class property decl can be preceded by 'private' or 'protected'
 	sToken t1;
-	GetToken(&t1);
+	for (int k = 0; k < 2; k++)
+	{
+		GetToken(&t1);
 
-	if( t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttNonSerialize )
-		RewindTo(&t1);
+		if (t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttNonSerialize)
+		{
+			RewindTo(&t1);
+			break;
+		}
+	}
 
 	// A variable decl starts with the type
 	if (!IsType(t1))
@@ -3138,7 +3151,7 @@ asCScriptNode *asCParser::ParseVirtualPropertyDecl(bool isMethod, bool isInterfa
 	// A class method can start with 'private' or 'protected'
 	if( isMethod && t1.type == ttPrivate )
 		node->AddChildLast(ParseToken(ttPrivate));
-	else if( isMethod && t1.type == ttProtected )
+	else if (isMethod && t1.type == ttProtected)
 		node->AddChildLast(ParseToken(ttProtected));
 	if( isSyntaxError ) return node;
 
@@ -3842,19 +3855,19 @@ asCScriptNode *asCParser::ParseInitList()
 	UNREACHABLE_RETURN;
 }
 
-// BNF:1: VAR           ::= ['private'|'protected'|'unserialize'] TYPE IDENTIFIER [( '=' (INITLIST | EXPR)) | ARGLIST] {',' IDENTIFIER [( '=' (INITLIST | EXPR)) | ARGLIST]} ';'
+// BNF:1: VAR           ::= ['private'|'protected'|'nonserialize'] TYPE IDENTIFIER [( '=' (INITLIST | EXPR)) | ARGLIST] {',' IDENTIFIER [( '=' (INITLIST | EXPR)) | ARGLIST]} ';'
 asCScriptNode *asCParser::ParseDeclaration(bool isClassProp, bool isGlobalVar)
 {
 	asCScriptNode *node = CreateNode(snDeclaration);
 	if( node == 0 ) return 0;
 
 	sToken t;
-	GetToken(&t);
-	RewindTo(&t);
 
 	// A class property can be preceeded by private
 	for (int k = 0; k < 2; k++)
 	{
+		GetToken(&t);
+		RewindTo(&t);
 		if (t.type == ttPrivate && isClassProp)
 			node->AddChildLast(ParseToken(ttPrivate));
 		else if (t.type == ttProtected && isClassProp)
