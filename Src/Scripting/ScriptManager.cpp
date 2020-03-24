@@ -105,6 +105,10 @@ static int stringLength(const PGE::String& str) {
     return str.size();
 }
 
+static long long stringGetHashCode(const PGE::String& str) {
+    return str.getHashCode();
+}
+
 static PGE::String stringSubstrStartLen(int start, int count, const PGE::String& str) {
     return str.substr(start, count);
 }
@@ -130,8 +134,9 @@ ScriptManager::ScriptManager() {
 
     engine->RegisterObjectMethod("string","bool opEquals(const string& in) const",asFUNCTION(stringEquals), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectMethod("string","string opAdd(const string& in) const",asFUNCTION(stringAdd), asCALL_CDECL_OBJLAST);
-    
-    engine->RegisterObjectMethod("string","uint length() const",asFUNCTION(stringLength), asCALL_CDECL_OBJLAST);
+
+    engine->RegisterObjectMethod("string", "uint length() const", asFUNCTION(stringLength), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectMethod("string", "uint64 getHashCode() const", asFUNCTION(stringGetHashCode), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectMethod("string","string substr(int start, int end=-1) const",asFUNCTION(stringSubstrStartLen), asCALL_CDECL_OBJLAST);
 
     engine->RegisterObjectMethod("string","uint8 opIndex(uint) const",asFUNCTION(stringCharAt), asCALL_CDECL_OBJLAST);

@@ -1,0 +1,39 @@
+Item Names:
+all of them basically renamed, also:
+-vest uses a texture from the NPCs folder, consider moving it to items instead
+-the world model for paper-based objects should just be the paper itself
+-doc914 was never used so I removed it
+-why the fuck was there a doc109
+-need to figure out what all the loose metal textures are for
+
+endingscreen.pt -> General/endingscreen.jpg
+cursor.PNG -> Menu/cursor.png
+npcs/hg.pt -> General/hg.jpg
+spark.jpg -> Sprites/spark.jpg
+monitortexture.jpg -> General/monitortexture.jpg
+fog.jpg -> Overlays/fog.jpg
+fogNV.jpg -> dead
+KeyPadHUD.jpg -> Overlays/KeyPadHUD.jpg
+InfectOverlay.jpg -> Overlays/InfectOverlay.jpg
+NightVisionOverlay.jpg -> Overlays/NightVisionOverlay.jpg
+GasmaskOverlay.jpg -> Overlays/GasmaskOverlay.jpg
+sprinticon.png -> HUD/sprinticon.png
+sneakicon.png -> HUD/sneakicon.png
+BlinkIcon.png -> HUD/BlinkIcon.png
+KeyPadHUD.jpg -> HUD/KeyPadHUD.jpg
+StaminaMeter.jpg -> HUD/StaminaMeter.jpg
+BlinkMeter.jpg -> HUD/BlinkMeter.jpg
+handsymbol.png -> HUD/handsymbol.png
+handsymbol2.png -> HUD/handsymbol2.png
+smoke.png -> Sprites/smoke.png
+smoke2.png -> Sprites/smoke2.png
+light1.jpg -> Sprites/light1.jpg
+light2.jpg -> Sprites/light2.jpg
+lightsprite.jpg -> Sprites/lightsprite.jpg
+flash.jpg -> Sprites/flash.jpg
+dust.jpg -> Sprites/dust.jpg
+AIface.jpg -> 079pics/AIface.jpg
+AIface2.jpg -> 079pics/AIface2.jpg
+ButtonDown.png -> HUD/ButtonDown.png
+ButtonUp.png -> HUD/ButtonUp.png
+294panel.jpg -> HUD/294panel.jpg
