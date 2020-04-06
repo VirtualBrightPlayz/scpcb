@@ -7,7 +7,7 @@
 #include <Graphics/Graphics.h>
 #include <Texture/Texture.h>
 #include <Material/Material.h>
-#include <Misc/FileName.h>
+#include <Misc/FilePath.h>
 #include <Color/Color.h>
 #include "../Collision/CollisionMesh.h"
 #include "../Graphics/GraphicsResources.h"
@@ -41,9 +41,9 @@ enum class RM2Error {
 
 class RM2 {
     private:
-        const static PGE::FileName opaqueShaderPath;
-        const static PGE::FileName opaqueNormalMapShaderPath;
-        const static PGE::FileName alphaShaderPath;
+        const static PGE::FilePath opaqueShaderPath;
+        const static PGE::FilePath opaqueNormalMapShaderPath;
+        const static PGE::FilePath alphaShaderPath;
 
         std::vector<PGE::Material*> materials;
         std::vector<PGE::Texture*> textures;

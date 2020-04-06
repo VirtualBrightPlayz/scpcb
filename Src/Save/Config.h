@@ -3,7 +3,7 @@
 
 #include <map>
 
-#include <Misc/FileName.h>
+#include <Misc/FilePath.h>
 #include <Math/Matrix.h>
  #include <UserInput/UserInput.h>
 
@@ -24,6 +24,7 @@ class Config {
         PGE::String secGen = "general";
         PGE::String secGFX = "graphics";
         PGE::String secCon = "controls";
+        PGE::String secMod = "mods";
 
         PGE::String languageCode;
 
@@ -37,6 +38,8 @@ class Config {
         std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>> kbBinds;
         void loadKeyboardInput(Input input);
         std::map<Input, std::vector<PGE::MouseInput::BUTTON>> msBinds;
+
+        std::vector<PGE::String> enabledMods;
 
         void genDefaultKeyboardBindings();
 
@@ -58,6 +61,8 @@ class Config {
         int getWidth() const;
         int getHeight() const;
         float getAspectRatio() const;
+
+        const std::vector<PGE::String>& getEnabledMods() const;
 
         float isVsync() const;
 };

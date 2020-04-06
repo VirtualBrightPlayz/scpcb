@@ -9,7 +9,7 @@
 #include "../Graphics/GraphicsResources.h"
 #include "../Save/Config.h"
 
-Font::Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::FileName& fn, int h) {
+Font::Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::FilePath& fn, int h) {
     graphicsRes = gr;
     config = con;
     filename = fn;

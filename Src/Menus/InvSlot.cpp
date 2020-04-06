@@ -4,8 +4,8 @@ InvSlot::InvSlot(UIMesh* um, KeyBinds* kb, Config* con, float x, float y)
 : GUIComponent(um, kb, con, x, y, SIZE, SIZE, Alignment::CenterXY) {
     item = nullptr;
 
-    menuwhite = PGE::FileName::fromStr("GFX/Menu/menuwhite.jpg");
-    menublack = PGE::FileName::fromStr("GFX/Menu/menublack.jpg");
+    menuwhite = PGE::FilePath::fromStr("GFX/Menu/menuwhite.jpg");
+    menublack = PGE::FilePath::fromStr("GFX/Menu/menublack.jpg");
     hoverColor = PGE::Color(70, 70, 150, 200);
     borderThickness = 0.33f;
 }

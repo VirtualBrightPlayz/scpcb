@@ -11,7 +11,7 @@
 #include <Material/Material.h>
 #include <Mesh/Mesh.h>
 
-#include <Misc/FileName.h>
+#include <Misc/FilePath.h>
 #include <Misc/String.h>
 #include <Math/Vector.h>
 #include <Math/Rectangle.h>
@@ -21,7 +21,7 @@ class Config;
 
 class Font {
     public:
-        Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::FileName& fn, int h);
+        Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::FilePath& fn, int h);
         ~Font();
 
         void draw(const PGE::String& text, PGE::Vector3f pos, PGE::Vector2f scale=PGE::Vector2f::one, PGE::Vector3f rotation=PGE::Vector3f::zero, PGE::Color color=PGE::Color(1.f,1.f,1.f,1.f));
@@ -51,7 +51,7 @@ class Font {
             PGE::Rectanglef srcRect;
         };
 
-        PGE::FileName shaderPath = PGE::FileName::fromStr("GFX/Shaders/Text/");
+        PGE::FilePath shaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/Text/");
         PGE::Shader* shader;
         PGE::Shader::Constant* modelMatrixConstant;
         PGE::Shader::Constant* colorConstant;
@@ -68,7 +68,7 @@ class Font {
         GraphicsResources* graphicsRes;
         Config* config;
 
-        PGE::FileName filename;
+        PGE::FilePath filename;
 };
 
 #endif

@@ -10,8 +10,8 @@ class GUITextInput : public GUIComponent {
 private:
     static GUITextInput* subscriber;
 
-    PGE::FileName menuwhite;
-    PGE::FileName menublack;
+    PGE::FilePath menuwhite;
+    PGE::FilePath menublack;
     PGE::Color hoverColor;
     float borderThickness;
     PGE::Vector2f txtScale;

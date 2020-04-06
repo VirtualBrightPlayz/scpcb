@@ -9,7 +9,7 @@ int PGEMain::Main() {
     // TODO: Remove.
 //    IntProperty ip = IntProperty("test");
 //    tinyxml2::XMLDocument doc;
-//    PGE::String filename = PGE::FileName::fromStr("GFX/test.xml").cstr();
+//    PGE::String filename = PGE::FilePath::fromStr("GFX/test.xml").cstr();
 //    doc.LoadFile(filename.cstr());
 //    for (tinyxml2::XMLElement* ele = doc.FirstChildElement()->FirstChildElement(); ele != NULL; ele = ele->NextSiblingElement()) {
 //        const PGE::String& type = PGE::String(ele->Name());

@@ -78,8 +78,7 @@ class World {
             EventDefinition* perTickEventDefinition;
             EventDefinition* perFrameEventDefinition;
 
-            std::vector<Script*> scripts;
-            ScriptModule* module;
+            std::vector<ScriptModule*> modules;
         } scripting;
 
         //-- Update/Draw code.

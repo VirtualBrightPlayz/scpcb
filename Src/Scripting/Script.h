@@ -2,7 +2,7 @@
 #define SCRIPT_H_INCLUDED
 
 #include <angelscript.h>
-#include <Misc/FileName.h>
+#include <Misc/FilePath.h>
 #include <Misc/String.h>
 #include <map>
 #include <inttypes.h>
@@ -14,12 +14,12 @@ class ScriptClass;
 class Script {
     private:
         PGE::String scriptContents;
-        PGE::FileName fileName;
+        PGE::FilePath fileName;
     public:
-        Script(const PGE::FileName& fn);
+        Script(const PGE::FilePath& fn);
         ~Script();
 
-        PGE::FileName getFileName() const;
+        PGE::FilePath getFileName() const;
         PGE::String getScriptContents() const;
 };
 

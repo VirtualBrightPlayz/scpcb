@@ -1,7 +1,7 @@
 #include <iostream>
 #include <exception>
 #include <Misc/FileUtil.h>
-#include <Misc/FileName.h>
+#include <Misc/FilePath.h>
 
 #include "TextMgmt.h"
 
@@ -79,8 +79,8 @@ void TxtManager::changeLocalization(const PGE::String& langCode) {
         delete currentLanguage;
     }
 
-    PGE::FileName path = PGE::FileName::fromStr("Data/lang/" + langCode + "/text.ini");
-    if (!PGE::FileUtil::exists(path.str())) {
+    PGE::FilePath path = PGE::FilePath::fromStr("Data/lang/" + langCode + "/text.ini");
+    if (!PGE::FileUtil::exists(path)) {
         throw std::runtime_error(PGE::String("Language file \"" + path.str() + "\" not found!").cstr());
     }
 

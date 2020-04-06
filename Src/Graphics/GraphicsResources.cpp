@@ -9,7 +9,7 @@ GraphicsResources::GraphicsResources(PGE::Graphics* gfx, Config* con) {
     graphics = gfx;
 }
 
-PGE::Shader* GraphicsResources::getShader(const PGE::FileName& filename, bool needsViewProjection) {
+PGE::Shader* GraphicsResources::getShader(const PGE::FilePath& filename, bool needsViewProjection) {
     for (int i = 0; i < (int)shaders.size(); i++) {
         if (shaders[i].filename.equals(filename)) {
             shaders[i].refCount++;
@@ -39,7 +39,7 @@ void GraphicsResources::dropShader(PGE::Shader* shader) {
     }
 }
 
-PGE::Texture* GraphicsResources::getTexture(const PGE::FileName& filename) {
+PGE::Texture* GraphicsResources::getTexture(const PGE::FilePath& filename) {
     for (int i = 0; i < (int)textures.size(); i++) {
         if (textures[i].filename.equals(filename)) {
             textures[i].refCount++;
@@ -102,7 +102,7 @@ PGE::Graphics* GraphicsResources::getGraphics() const {
     return graphics;
 }
 
-void GraphicsResources::updateShaderConstant(const PGE::FileName& shd, const PGE::String& name, const PGE::Matrix4x4f& val) {
+void GraphicsResources::updateShaderConstant(const PGE::FilePath& shd, const PGE::String& name, const PGE::Matrix4x4f& val) {
     for (int i = 0; i < (int)shaders.size(); i++) {
         if (shaders[i].filename.equals(shd)) {
             PGE::Shader::Constant* constant = shaders[i].shader->getVertexShaderConstant(name);

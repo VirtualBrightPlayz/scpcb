@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <Color/Color.h>
+#include <Misc/FileUtil.h>
 #include <filesystem>
 
 #include "World.h"
@@ -32,7 +33,7 @@ World::World() {
     txtMngt = new TxtManager(config->getLangCode());
 
     FT_Init_FreeType(&ftLibrary);
-    largeFont = new Font(ftLibrary, gfxRes, config, PGE::FileName::fromStr("GFX/Font/cour.ttf"), 20);
+    largeFont = new Font(ftLibrary, gfxRes, config, PGE::FilePath::fromStr("SCPCB/GFX/Font/cour.ttf"), 20);
     spriteMesh = Sprite::createSpriteMesh(graphics);
     uiMesh = new UIMesh(gfxRes);
     keyBinds = new KeyBinds(io);
@@ -78,22 +79,13 @@ World::World() {
     scripting.perFrameEventDefinition = new EventDefinition("PerFrame", perFrameSignature);
     scripting.perFrameEventDefinition->registerToEngine(scripting.manager);
     scripting.perFrameEventDefinition->setArgument("interpolation", 1.0f);
-    
-    std::filesystem::recursive_directory_iterator scriptDir = std::filesystem::recursive_directory_iterator(PGE::FileName::fromStr("Scripts/").cstr());
-    for (const std::filesystem::directory_entry& entry : scriptDir) {
-        if (entry.is_directory()) { continue; }
-        PGE::FileName scriptName = PGE::FileName::fromStr(entry.path().c_str());
-        scripting.scripts.push_back(new Script(scriptName));
-    }
-    scripting.module = new ScriptModule(scripting.manager, "SCPCB");
-    for (int i = 0; i < scripting.scripts.size(); i++) {
-        PGE::String sectionName = scripting.scripts[i]->getFileName().str();
 
-        scripting.module->addScript(sectionName, scripting.scripts[i]);
-    }
-    scripting.module->build();
+    const std::vector<PGE::String>& enabledMods = config->getEnabledMods();
 
-    scripting.module->getFunctionByName("main")->execute();
+    for (int i=0;i<enabledMods.size();i++) {
+        std::vector<PGE::FilePath> files = PGE::FileUtil::enumerateFiles(PGE::FilePath::fromStr(enabledMods[i]));
+        int e = 0;
+    }
 }
 
 World::~World() {

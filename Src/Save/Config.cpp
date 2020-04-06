@@ -43,15 +43,15 @@ Config::Config(const PGE::String& optionsFile) {
 
     genDefaultKeyboardBindings();
 
-    if (PGE::FileUtil::exists(filename)) {
+    if (PGE::FileUtil::exists(PGE::FilePath::fromStr(filename))) {
         loadFile();
     } else {
-        if (!PGE::FileUtil::exists(PGE::FileUtil::getDataFolder() + corpFolder)) {
-            PGE::FileUtil::createDirectory(PGE::FileUtil::getDataFolder() + corpFolder);
+        if (!PGE::FileUtil::exists(PGE::FilePath::fromStr(PGE::FileUtil::getDataFolder() + corpFolder))) {
+            PGE::FileUtil::createDirectory(PGE::FilePath::fromStr(PGE::FileUtil::getDataFolder() + corpFolder));
         }
 
-        if (!PGE::FileUtil::exists(getConfigDir())) {
-            PGE::FileUtil::createDirectory(getConfigDir());
+        if (!PGE::FileUtil::exists(PGE::FilePath::fromStr(getConfigDir()))) {
+            PGE::FileUtil::createDirectory(PGE::FilePath::fromStr(getConfigDir()));
         }
 
         saveFile();
@@ -96,6 +96,8 @@ void Config::loadFile() {
     int heightINI = getINIInt(filename, secGFX, "height", defaultHeight);
     setResolution(widthINI, heightINI);
     vsync = getINIBool(filename, secGFX, "vsync", defaultVsync);
+
+    enabledMods = getINIString(filename, secMod, "enabledmods").split("|", true);
 
     loadKeyboardInput(Input::Forward);
     loadKeyboardInput(Input::Backward);
@@ -171,6 +173,10 @@ int Config::getHeight() const {
 
 float Config::getAspectRatio() const {
     return aspectRatio;
+}
+
+const std::vector<PGE::String>& Config::getEnabledMods() const {
+    return enabledMods;
 }
 
 float Config::isVsync() const {

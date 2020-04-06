@@ -2,7 +2,7 @@
 #define UIMESH_H_INCLUDED
 
 #include <Misc/String.h>
-#include <Misc/FileName.h>
+#include <Misc/FilePath.h>
 
 #include <vector>
 #include <Math/Rectangle.h>
@@ -40,7 +40,7 @@ class UIMesh {
 
         struct Texture
         {
-            PGE::FileName name;
+            PGE::FilePath name;
             PGE::Texture* pgeTexture;
         };
         std::vector<Texture> textures;
@@ -51,7 +51,7 @@ class UIMesh {
         void startRender();
 
         void setTextureless();
-        void setTextured(const PGE::FileName& texture, bool tile);
+        void setTextured(const PGE::FilePath& texture, bool tile);
 
         void setColor(PGE::Color col);
 
@@ -59,7 +59,7 @@ class UIMesh {
 
         void endRender();
 
-        void loadTexture(const PGE::FileName& textureName);
+        void loadTexture(const PGE::FilePath& textureName);
 };
 
 #endif // UIMESH_H_INCLUDED

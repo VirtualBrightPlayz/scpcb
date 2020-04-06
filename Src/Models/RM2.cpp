@@ -4,9 +4,9 @@
 
 #include <Math/Matrix.h>
 
-const PGE::FileName RM2::opaqueShaderPath = PGE::FileName::fromStr("GFX/Shaders/RoomOpaque/");
-const PGE::FileName RM2::opaqueNormalMapShaderPath = PGE::FileName::fromStr("GFX/Shaders/RoomOpaqueNormalMap/");
-const PGE::FileName RM2::alphaShaderPath = PGE::FileName::fromStr("GFX/Shaders/RoomAlpha/");
+const PGE::FilePath RM2::opaqueShaderPath = PGE::FilePath::fromStr("GFX/Shaders/RoomOpaque/");
+const PGE::FilePath RM2::opaqueNormalMapShaderPath = PGE::FilePath::fromStr("GFX/Shaders/RoomOpaqueNormalMap/");
+const PGE::FilePath RM2::alphaShaderPath = PGE::FilePath::fromStr("GFX/Shaders/RoomAlpha/");
 
 const PGE::String RM2::texturePath = "GFX/Map/Textures/";
 
@@ -43,7 +43,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     graphicsResources = gfxRes;
 
     std::ifstream inFile;
-    inFile.open(PGE::FileName::fromStr(filename).cstr(), std::ios_base::in | std::ios_base::binary);
+    inFile.open(PGE::FilePath::fromStr(filename).cstr(), std::ios_base::in | std::ios_base::binary);
 
     union IntBytes {
         int i;
@@ -100,7 +100,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     for (int i = 0; i < 3; i++) {
         const PGE::String lightmapSuffix = "_lm" + PGE::String(i) + ".png";
         PGE::String lightmapName = filename.substr(0, filename.size() - extension.size()) + lightmapSuffix;
-        lightmapTextures[i] = gfxRes->getTexture(PGE::FileName::fromStr(lightmapName));
+        lightmapTextures[i] = gfxRes->getTexture(PGE::FilePath::fromStr(lightmapName));
     }
 
     std::vector<PGE::Texture*> materialTextures;
@@ -108,9 +108,9 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     for (int i = 0; i < (int)textureCount.u; i++) {
         PGE::String textureName = readByteString(inFile);
 
-        PGE::FileName textureFileName = PGE::FileName::fromStr(texturePath + textureName + ".jpg");
+        PGE::FilePath textureFileName = PGE::FilePath::fromStr(texturePath + textureName + ".jpg");
         if (!textureFileName.exists()) {
-            textureFileName  = PGE::FileName::fromStr(texturePath + textureName + ".png");
+            textureFileName  = PGE::FilePath::fromStr(texturePath + textureName + ".png");
         }
 
         PGE::Texture* texture = gfxRes->getTexture(textureFileName);
@@ -122,9 +122,9 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
 
         PGE::Shader* shader = alphaShader;
         if (isOpaque) {
-            PGE::FileName normalMapFileName = PGE::FileName::fromStr(texturePath + textureName + "_n.jpg");
+            PGE::FilePath normalMapFileName = PGE::FilePath::fromStr(texturePath + textureName + "_n.jpg");
             if (!normalMapFileName.exists()) {
-                normalMapFileName = PGE::FileName::fromStr(texturePath + textureName + "_n.png");
+                normalMapFileName = PGE::FilePath::fromStr(texturePath + textureName + "_n.png");
             }
 
             if (normalMapFileName.exists()) {

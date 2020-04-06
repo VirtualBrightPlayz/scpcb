@@ -11,7 +11,7 @@ class Camera;
 class GraphicsResources {
     private:
         struct Shader {
-            PGE::FileName filename;
+            PGE::FilePath filename;
             PGE::Shader* shader;
             int refCount;
             bool needsViewProjection;
@@ -19,27 +19,27 @@ class GraphicsResources {
         std::vector<Shader> shaders;
 
         struct Texture {
-            PGE::FileName filename;
+            PGE::FilePath filename;
             PGE::Texture* texture;
             int refCount;
         };
         std::vector<Texture> textures;
 
         PGE::Matrix4x4f orthoMat;
-        PGE::FileName uiShaderPath = PGE::FileName::fromStr("GFX/Shaders/UI/");
-        PGE::FileName uiTexturelessShaderPath = PGE::FileName::fromStr("GFX/Shaders/UITextureless/");
-        PGE::FileName fontShaderPath = PGE::FileName::fromStr("GFX/Shaders/Text/");
+        PGE::FilePath uiShaderPath = PGE::FilePath::fromStr("GFX/Shaders/UI/");
+        PGE::FilePath uiTexturelessShaderPath = PGE::FilePath::fromStr("GFX/Shaders/UITextureless/");
+        PGE::FilePath fontShaderPath = PGE::FilePath::fromStr("GFX/Shaders/Text/");
 
         PGE::Graphics* graphics;
 
     public:
         GraphicsResources(PGE::Graphics* gfx, Config* con);
 
-        PGE::Shader* getShader(const PGE::FileName& filename, bool needsViewProjection);
+        PGE::Shader* getShader(const PGE::FilePath& filename, bool needsViewProjection);
         void dropShader(PGE::Shader* shader);
-        void updateShaderConstant(const PGE::FileName& shd, const PGE::String& constant, const PGE::Matrix4x4f& val);
+        void updateShaderConstant(const PGE::FilePath& shd, const PGE::String& constant, const PGE::Matrix4x4f& val);
 
-        PGE::Texture* getTexture(const PGE::FileName& filename);
+        PGE::Texture* getTexture(const PGE::FilePath& filename);
         void dropTexture(PGE::Texture* texture);
     
         void updateOrthoMat(float aspectRatio);

@@ -6,7 +6,7 @@
 
 #include <fstream>
 
-Script::Script(const PGE::FileName& fn) {
+Script::Script(const PGE::FilePath& fn) {
     fileName = fn;
 
     scriptContents = "";
@@ -34,7 +34,7 @@ Script::Script(const PGE::FileName& fn) {
     delete[] readBuf;
 }
 
-PGE::FileName Script::getFileName() const {
+PGE::FilePath Script::getFileName() const {
     return fileName;
 }
 

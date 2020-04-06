@@ -2,7 +2,7 @@
 #define SCRIPTMODULE_H_INCLUDED
 
 #include <angelscript.h>
-#include <Misc/FileName.h>
+#include <Misc/FilePath.h>
 #include <Misc/String.h>
 #include <map>
 #include <inttypes.h>
