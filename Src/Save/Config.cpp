@@ -29,6 +29,9 @@ void Config::genDefaultKeyboardBindings() {
 }
 
 PGE::String getConfigDir() {
+#if DEBUG
+    return "";
+#endif
     return PGE::FileUtil::getDataFolder() + corpFolder + "/" + gameFolder + "/";
 }
 
