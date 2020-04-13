@@ -8,5 +8,5 @@ void main() {
 }
 
 void render(float interpolation) {
-    entranceZone.render();
+    entranceZone.render(interpolation);
 }

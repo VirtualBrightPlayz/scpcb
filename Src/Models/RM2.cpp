@@ -4,11 +4,11 @@
 
 #include <Math/Matrix.h>
 
-const PGE::FilePath RM2::opaqueShaderPath = PGE::FilePath::fromStr("GFX/Shaders/RoomOpaque/");
-const PGE::FilePath RM2::opaqueNormalMapShaderPath = PGE::FilePath::fromStr("GFX/Shaders/RoomOpaqueNormalMap/");
-const PGE::FilePath RM2::alphaShaderPath = PGE::FilePath::fromStr("GFX/Shaders/RoomAlpha/");
+const PGE::FilePath RM2::opaqueShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/");
+const PGE::FilePath RM2::opaqueNormalMapShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaqueNormalMap/");
+const PGE::FilePath RM2::alphaShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomAlpha/");
 
-const PGE::String RM2::texturePath = "GFX/Map/Textures/";
+const PGE::String RM2::texturePath = "SCPCB/GFX/Map/Textures/";
 
 enum class FileSections {
     Textures = 1,
@@ -41,7 +41,7 @@ static PGE::String readByteString(std::ifstream& inFile) {
 
 RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     graphicsResources = gfxRes;
-
+    
     std::ifstream inFile;
     inFile.open(PGE::FilePath::fromStr(filename).cstr(), std::ios_base::in | std::ios_base::binary);
 

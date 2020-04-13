@@ -83,8 +83,39 @@ World::World() {
     const std::vector<PGE::String>& enabledMods = config->getEnabledMods();
 
     for (int i=0;i<enabledMods.size();i++) {
-        std::vector<PGE::FilePath> files = PGE::FileUtil::enumerateFiles(PGE::FilePath::fromStr(enabledMods[i]));
-        int e = 0;
+        PGE::FilePath directory = PGE::FilePath::fromStr(enabledMods[i]+"/");
+        PGE::FilePath depsFile = PGE::FilePath(directory, "dependencies.cfg");
+        if (PGE::FileUtil::exists(depsFile)) {
+            std::vector<PGE::String> depNames = PGE::FileUtil::readLines(depsFile);
+            int depsNotEnabled = depNames.size();
+            for (int j=0;j<i;j++) {
+                for (int k=0;k<depNames.size();k++) {
+                    if (enabledMods[j].equals(depNames[k])) {
+                        depsNotEnabled--;
+                        break;
+                    }
+                }
+            }
+            if (depsNotEnabled > 0) {
+                throw std::runtime_error((enabledMods[i]+" has dependencies that are not enabled before it").cstr());
+            }
+        }
+        ScriptModule* scriptModule = new ScriptModule(scripting.manager, enabledMods[i]);
+        std::vector<PGE::FilePath> files = PGE::FileUtil::enumerateFiles(directory);
+        for (int j=0;j<files.size();j++) {
+            if (files[j].getExtension().equals("as")) {
+                Script* script = new Script(files[j]);
+                scriptModule->addScript(files[j].str()
+                    .replace("/","")
+                    .replace(".",""), script);
+            }
+        }
+        scriptModule->build();
+        scripting.modules.push_back(scriptModule);
+        ScriptFunction* mainFunction = scriptModule->getFunctionByName("main");
+        if (mainFunction != nullptr) {
+            mainFunction->execute();
+        }
     }
 }
 
