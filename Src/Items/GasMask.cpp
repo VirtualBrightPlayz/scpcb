@@ -1,10 +1,10 @@
-#include <Misc/FileName.h>
+#include <Misc/FilePath.h>
 
 #include "GasMask.h"
 #include "../Utils/TextMgmt.h"
 
 GasMask::GasMask(GraphicsResources* gfx, TxtManager* tm)
-: Item(gfx, tm, PGE::FileName::create("GFX/Items/gasmask/gasmask.b3d"), 6.f, ItemPickSound::Heafty) { }
+: Item(gfx, tm, PGE::FilePath::fromStr("GFX/Items/gasmask/gasmask.b3d"), 6.f, ItemPickSound::Heafty) { }
 
 GasMask* GasMask::spawn(GraphicsResources* gfx, TxtManager* tm, float x, float y, float z) {
     GasMask* it = new GasMask(gfx, tm);

@@ -55,7 +55,7 @@ World::World() {
 #endif
 
     shutdownRequested = false;
-    
+
     scripting.manager = new ScriptManager();
     scripting.mathDefinitions = new MathDefinitions();
     scripting.mathDefinitions->registerToEngine(scripting.manager);
@@ -69,7 +69,7 @@ World::World() {
 
     scripting.perTickEventDefinition = new EventDefinition("PerTick", perTickSignature);
     scripting.perTickEventDefinition->registerToEngine(scripting.manager);
-    scripting.perTickEventDefinition->setArgument("deltaTime", 1.f / 60.f);
+    scripting.perTickEventDefinition->setArgument("deltaTime", timing->getTimeStep());
 
     ScriptFunction::Signature perFrameSignature;
     perFrameSignature.functionName = "PerFrame";
@@ -87,7 +87,7 @@ World::World() {
         PGE::FilePath depsFile = PGE::FilePath(directory, "dependencies.cfg");
         if (PGE::FileUtil::exists(depsFile)) {
             std::vector<PGE::String> depNames = PGE::FileUtil::readLines(depsFile);
-            int depsNotEnabled = depNames.size();
+            int depsNotEnabled = (int)depNames.size();
             for (int j=0;j<i;j++) {
                 for (int k=0;k<depNames.size();k++) {
                     if (enabledMods[j].equals(depNames[k])) {
@@ -205,7 +205,7 @@ void World::runTick(float timeStep, Input input) {
     mouseTxtX->text = PGE::String("MouseX: ", PGE::String(mousePosition.x));
     mouseTxtY->text = PGE::String("MouseY: ", PGE::String(mousePosition.y));
 #endif
-    
+
     // If a menu is in the graveyard then remove it.
     if (menuGraveyard != nullptr) {
         delete menuGraveyard;

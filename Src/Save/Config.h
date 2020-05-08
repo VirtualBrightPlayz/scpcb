@@ -52,6 +52,8 @@ class Config {
         Config(const Config& cpy);
 
         Config& operator=(const Config& other);
+    
+        void loadExistingConfigFile(const Config& src);
 
         void setGraphicsResources(GraphicsResources* grm);
 

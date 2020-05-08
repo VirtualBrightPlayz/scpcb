@@ -3,15 +3,15 @@
 #include "../Graphics/Camera.h"
 #include "../Utils/MathUtil.h"
 
-Item::Item(GraphicsResources* gfx, TxtManager* tm, const PGE::FileName& path, float scale, ItemPickSound ips) {
+Item::Item(GraphicsResources* gfx, TxtManager* tm, const PGE::FilePath& path, float scale, ItemPickSound ips) {
     dropSpeed = 0.f;
     inventoryIcon = nullptr;
     markedForRemoval = false;
     needsInventoryIcon = false;
-    
+
     gfxRes = gfx;
     txtM = tm;
-    
+
     this->scale = scale;
 }
 
@@ -27,11 +27,11 @@ void Item::setPosition(float x, float y, float z) {
 
 void Item::generateInventoryIcon() {
     if (!needsInventoryIcon) { return; }
-    
+
     Camera* tempCam = new Camera(gfxRes, 1, MathUtil::degToRad(70.f));
-    
+
     tempCam->update();
-    
+
     needsInventoryIcon = false;
 }
 

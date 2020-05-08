@@ -41,7 +41,7 @@ static PGE::String readByteString(std::ifstream& inFile) {
 
 RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     graphicsResources = gfxRes;
-    
+
     std::ifstream inFile;
     inFile.open(PGE::FilePath::fromStr(filename).cstr(), std::ios_base::in | std::ios_base::binary);
 
@@ -68,7 +68,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     //header
     PGE::String header = ".RM2";
     char inHeader[4];
-    
+
     inFile.read(inHeader, 4);
 
     if (memcmp(inHeader, header.cstr(), 4) != 0) {
@@ -78,7 +78,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     //textures
     char chunkHeader = 0;
     inFile.read(&chunkHeader, 1);
-    
+
     if ((FileSections)chunkHeader != FileSections::Textures) {
         error = RM2Error::UnexpectedChunk;
     }
@@ -108,13 +108,13 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     for (int i = 0; i < (int)textureCount.u; i++) {
         PGE::String textureName = readByteString(inFile);
 
-        PGE::FilePath textureFileName = PGE::FilePath::fromStr(texturePath + textureName + ".jpg");
-        if (!textureFileName.exists()) {
-            textureFileName  = PGE::FilePath::fromStr(texturePath + textureName + ".png");
+        PGE::FilePath textureFilePath = PGE::FilePath::fromStr(texturePath + textureName + ".jpg");
+        if (!textureFilePath.exists()) {
+            textureFilePath  = PGE::FilePath::fromStr(texturePath + textureName + ".png");
         }
 
-        PGE::Texture* texture = gfxRes->getTexture(textureFileName);
-        
+        PGE::Texture* texture = gfxRes->getTexture(textureFilePath);
+
         char flag = 0;
         inFile.read(&flag, 1);
 
@@ -122,14 +122,14 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
 
         PGE::Shader* shader = alphaShader;
         if (isOpaque) {
-            PGE::FilePath normalMapFileName = PGE::FilePath::fromStr(texturePath + textureName + "_n.jpg");
-            if (!normalMapFileName.exists()) {
-                normalMapFileName = PGE::FilePath::fromStr(texturePath + textureName + "_n.png");
+            PGE::FilePath normalMapFilePath = PGE::FilePath::fromStr(texturePath + textureName + "_n.jpg");
+            if (!normalMapFilePath.exists()) {
+                normalMapFilePath = PGE::FilePath::fromStr(texturePath + textureName + "_n.png");
             }
 
-            if (normalMapFileName.exists()) {
+            if (normalMapFilePath.exists()) {
                 materialTextures.resize(5);
-                materialTextures[4] = gfxRes->getTexture(normalMapFileName);
+                materialTextures[4] = gfxRes->getTexture(normalMapFilePath);
                 shader = opaqueNormalMapShader;
             } else {
                 materialTextures.resize(4);

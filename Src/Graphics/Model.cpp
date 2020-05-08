@@ -7,11 +7,11 @@
 
 Model::Model(GraphicsResources* gfx, const PGE::String& filename) {
     gfxRes = gfx;
-    shader = gfx->getShader(PGE::FileName::create("GFX/Shaders/Model/"), true);
-    
+    shader = gfx->getShader(PGE::FilePath::fromStr("GFX/Shaders/Model/"), true);
+
     Assimp::Importer importer;
 
-    const aiScene* scene = importer.ReadFile(PGE::FileName::create(filename).cstr(),
+    const aiScene* scene = importer.ReadFile(PGE::FilePath::fromStr(filename).cstr(),
         aiProcess_Triangulate |
         aiProcess_ConvertToLeftHanded);
 
@@ -41,14 +41,14 @@ Model::Model(GraphicsResources* gfx, const PGE::String& filename) {
     int slashPos0 = filename.findLast('/')+1;
     int slashPos1 = filename.findLast('\\')+1;
     PGE::String path = filename.substr(0, slashPos0 > slashPos1 ? slashPos0 : slashPos1);
-    
+
     for (int i=0;i<scene->mNumMaterials;i++) {
         const aiMaterial* material = scene->mMaterials[i];
         //for (int j=0;j<material->GetTextureCount(aiTextureType_DIFFUSE);j++) {
         const int j=0;
         aiString textureName;
         aiReturn ret = material->GetTexture(aiTextureType_DIFFUSE,j,&textureName);
-        textures.push_back(PGE::Texture::load(gfx->getGraphics(), PGE::FileName::create(path+textureName.C_Str())));
+        textures.push_back(PGE::Texture::load(gfx->getGraphics(), PGE::FilePath::fromStr(path+textureName.C_Str())));
         materials.push_back(new PGE::Material(shader, textures[textures.size()-1]));
         //}
     }

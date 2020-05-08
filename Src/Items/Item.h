@@ -29,25 +29,25 @@ class Item {
         bool needsInventoryIcon;
 
         ItemPickSound pickSound;
-    
+
         PGE::Texture* inventoryIcon;
-    
+
         GraphicsResources* gfxRes;
-    
+
         void generateInventoryIcon();
-    
+
     protected:
-        Item(GraphicsResources* gfx, TxtManager* tm, const PGE::FileName& path, float scale, ItemPickSound ips);
+        Item(GraphicsResources* gfx, TxtManager* tm, const PGE::FilePath& path, float scale, ItemPickSound ips);
         virtual ~Item();
-    
+
         TxtManager* txtM;
 
     public:
         bool markedForRemoval;
-    
+
         virtual PGE::String getType() const=0;
         virtual PGE::String getInvName() const=0;
-    
+
         void setPosition(float x, float y, float z);
 
         // Called when the player picks up the item.

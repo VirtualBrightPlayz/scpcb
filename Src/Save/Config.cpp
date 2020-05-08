@@ -28,6 +28,8 @@ void Config::genDefaultKeyboardBindings() {
     kbBinds[Input::Inventory] = { PGE::KeyboardInput::SCANCODE::TAB };
 }
 
+PGE::String defaultModules = "RootScript|SCPCB";
+
 PGE::String getConfigDir() {
 #if DEBUG
     return "";
@@ -45,6 +47,8 @@ Config::Config(const PGE::String& optionsFile) {
     vsync = defaultVsync;
 
     genDefaultKeyboardBindings();
+    
+    enabledMods = defaultModules.split("|", true);
 
     if (PGE::FileUtil::exists(PGE::FilePath::fromStr(filename))) {
         loadFile();
@@ -61,27 +65,26 @@ Config::Config(const PGE::String& optionsFile) {
     }
 }
 
+void Config::loadExistingConfigFile(const Config& src) {
+    languageCode = src.languageCode;
+
+    windowType = src.windowType;
+    setResolution(src.width, src.height);
+    vsync = src.vsync;
+
+    kbBinds = src.kbBinds;
+    msBinds = src.msBinds;
+    
+    enabledMods = src.enabledMods;
+}
+
 Config::Config(const Config& cpy) {
-    languageCode = cpy.languageCode;
-
-    windowType = cpy.windowType;
-    setResolution(cpy.width, cpy.height);
-    vsync = cpy.vsync;
-
-    kbBinds = cpy.kbBinds;
-    msBinds = cpy.msBinds;
+    loadExistingConfigFile(cpy);
 }
 
 Config& Config::operator=(const Config& other) {
     if (this != &other) {
-        languageCode = other.languageCode;
-
-        windowType = other.windowType;
-        setResolution(other.width, other.height);
-        vsync = other.vsync;
-
-        kbBinds = other.kbBinds;
-        msBinds = other.msBinds;
+        loadExistingConfigFile(other);
     }
 
     return *this;
