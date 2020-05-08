@@ -2713,7 +2713,7 @@ bool asCParser::IsVarDecl()
 	{
 		GetToken(&t1);
 
-		if (t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttNonSerialize)
+		if (t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttSerialize)
 		{
 			RewindTo(&t1);
 			break;
@@ -2801,7 +2801,7 @@ bool asCParser::IsVirtualPropertyDecl()
 	{
 		GetToken(&t1);
 
-		if (t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttNonSerialize)
+		if (t1.type != ttPrivate && t1.type != ttProtected && t1.type != ttSerialize)
 		{
 			RewindTo(&t1);
 			break;
@@ -3855,7 +3855,7 @@ asCScriptNode *asCParser::ParseInitList()
 	UNREACHABLE_RETURN;
 }
 
-// BNF:1: VAR           ::= ['private'|'protected'|'nonserialize'] TYPE IDENTIFIER [( '=' (INITLIST | EXPR)) | ARGLIST] {',' IDENTIFIER [( '=' (INITLIST | EXPR)) | ARGLIST]} ';'
+// BNF:1: VAR           ::= ['private'|'protected'|'serialize'] TYPE IDENTIFIER [( '=' (INITLIST | EXPR)) | ARGLIST] {',' IDENTIFIER [( '=' (INITLIST | EXPR)) | ARGLIST]} ';'
 asCScriptNode *asCParser::ParseDeclaration(bool isClassProp, bool isGlobalVar)
 {
 	asCScriptNode *node = CreateNode(snDeclaration);
@@ -3872,8 +3872,8 @@ asCScriptNode *asCParser::ParseDeclaration(bool isClassProp, bool isGlobalVar)
 			node->AddChildLast(ParseToken(ttPrivate));
 		else if (t.type == ttProtected && isClassProp)
 			node->AddChildLast(ParseToken(ttProtected));
-		else if (t.type == ttNonSerialize && isClassProp)
-			node->AddChildLast(ParseToken(ttNonSerialize));
+		else if (t.type == ttSerialize && isClassProp)
+			node->AddChildLast(ParseToken(ttSerialize));
 		else
 			break;
 	}

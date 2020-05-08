@@ -1,5 +1,5 @@
 shared abstract class Zone {
-    protected nonserialize array<MapGenEntry> mapGenEntries;
+    protected array<MapGenEntry> mapGenEntries;
     protected array<array<Room@>> rooms;
 
     void registerRoom(const string name, const RoomType type, RoomConstructor@ constructor) {

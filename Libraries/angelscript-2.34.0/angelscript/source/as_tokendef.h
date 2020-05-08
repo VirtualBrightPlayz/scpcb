@@ -172,7 +172,7 @@ enum eTokenType
 	ttCast,                // cast
 	ttPrivate,             // private
     ttProtected,           // protected
-    ttNonSerialize,        // nonserialize
+    ttSerialize,        // serialize
 	ttNamespace,           // namespace
 	ttMixin,               // mixin
 	ttAuto,                // auto
@@ -285,7 +285,7 @@ sTokenWord const tokenWords[] =
 	asTokenDef("out"       , ttOut),
 	asTokenDef("private"   , ttPrivate),
 	asTokenDef("protected" , ttProtected),
-	asTokenDef("nonserialize" , ttNonSerialize),
+	asTokenDef("serialize" , ttSerialize),
 	asTokenDef("return"    , ttReturn),
 	asTokenDef("switch"    , ttSwitch),
 	asTokenDef("true"      , ttTrue),

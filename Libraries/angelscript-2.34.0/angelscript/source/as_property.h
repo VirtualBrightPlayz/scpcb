@@ -53,8 +53,8 @@ struct asSNameSpace;
 class asCObjectProperty
 {
 public:
-	asCObjectProperty() : byteOffset(0), accessMask(0xFFFFFFFF), compositeOffset(0), isCompositeIndirect(false), isPrivate(false), isProtected(false), isNonSerialize(false), isInherited(false) {}
-	asCObjectProperty(const asCObjectProperty &o) : name(o.name), type(o.type), byteOffset(o.byteOffset), accessMask(o.accessMask), compositeOffset(o.compositeOffset), isCompositeIndirect(o.isCompositeIndirect), isPrivate(o.isPrivate), isProtected(o.isProtected), isNonSerialize(o.isNonSerialize), isInherited(o.isInherited) {}
+	asCObjectProperty() : byteOffset(0), accessMask(0xFFFFFFFF), compositeOffset(0), isCompositeIndirect(false), isPrivate(false), isProtected(false), isSerialize(false), isInherited(false) {}
+	asCObjectProperty(const asCObjectProperty &o) : name(o.name), type(o.type), byteOffset(o.byteOffset), accessMask(o.accessMask), compositeOffset(o.compositeOffset), isCompositeIndirect(o.isCompositeIndirect), isPrivate(o.isPrivate), isProtected(o.isProtected), isSerialize(o.isSerialize), isInherited(o.isInherited) {}
 	asCString   name;
 	asCDataType type;
 	int         byteOffset;
@@ -63,7 +63,7 @@ public:
 	bool        isCompositeIndirect;
 	bool        isPrivate;
 	bool        isProtected;
-	bool        isNonSerialize;
+	bool        isSerialize;
 	bool        isInherited;
 };
 
