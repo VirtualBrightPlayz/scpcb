@@ -81,12 +81,12 @@
       </Message>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>xcopy /d /s /y $(ProjectDir)..\Content\*  $(TargetDir)
-xcopy /d /y  $(ProjectDir)$(Platform)\$(Configuration)\SDL2.dll $(TargetDir)
-if $(ConfigurationName) == Debug xcopy /d /s /y $(ProjectDir)..\Engine\Libraries\FreeImage3180\$(Platform)\$(Configuration)\FreeImaged.dll $(TargetDir)
-if $(ConfigurationName) == Release xcopy /d /s /y $(ProjectDir)..\Engine\Libraries\FreeImage3180\$(Platform)\$(Configuration)\FreeImage.dll $(TargetDir)
-xcopy /d /s /y $(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Configuration)\freetype.dll $(TargetDir)
-$(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildShaders.exe  $(TargetDir)SCPCB\GFX\Shaders</Command>
+      <Command>xcopy /d /s /y "$(ProjectDir)..\Content\*" "$(TargetDir)"
+xcopy /d /y  "$(ProjectDir)$(Platform)\$(Configuration)\SDL2.dll" "$(TargetDir)"
+if $(ConfigurationName) == Debug xcopy /d /s /y "$(ProjectDir)..\Engine\Libraries\FreeImage3180\$(Platform)\$(Configuration)\FreeImaged.dll" "$(TargetDir)"
+if $(ConfigurationName) == Release xcopy /d /s /y "$(ProjectDir)..\Engine\Libraries\FreeImage3180\$(Platform)\$(Configuration)\FreeImage.dll" "$(TargetDir)"
+xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Configuration)\freetype.dll" "$(TargetDir)"
+"$(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildShaders.exe"  "$(TargetDir)SCPCB\GFX\Shaders"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy Contents files and DLLs to output directory and run BuildShaders.</Message>
@@ -115,12 +115,12 @@ $(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildSh
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /d /s /y $(ProjectDir)..\Content\*  $(TargetDir)
-xcopy /d /y  $(ProjectDir)$(Platform)\$(Configuration)\SDL2.dll $(TargetDir)
-if $(ConfigurationName) == Debug xcopy /d /s /y $(ProjectDir)..\Engine\Libraries\FreeImage3180\$(Platform)\$(Configuration)\FreeImaged.dll $(TargetDir)
-if $(ConfigurationName) == Release xcopy /d /s /y $(ProjectDir)..\Engine\Libraries\FreeImage3180\$(Platform)\$(Configuration)\FreeImage.dll $(TargetDir)
-xcopy /d /s /y $(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Configuration)\freetype.dll $(TargetDir)
-$(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildShaders.exe  $(TargetDir)SCPCB\GFX\Shaders</Command>
+      <Command>xcopy /d /s /y "$(ProjectDir)..\Content\*" "$(TargetDir)"
+xcopy /d /y  "$(ProjectDir)$(Platform)\$(Configuration)\SDL2.dll" "$(TargetDir)"
+if $(ConfigurationName) == Debug xcopy /d /s /y "$(ProjectDir)..\Engine\Libraries\FreeImage3180\$(Platform)\$(Configuration)\FreeImaged.dll" "$(TargetDir)"
+if $(ConfigurationName) == Release xcopy /d /s /y "$(ProjectDir)..\Engine\Libraries\FreeImage3180\$(Platform)\$(Configuration)\FreeImage.dll" "$(TargetDir)"
+xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Configuration)\freetype.dll" "$(TargetDir)"
+"$(ProjectDir)..\Engine\Windows\BuildShaders\$(Platform)\$(Configuration)\BuildShaders.exe"  "$(TargetDir)SCPCB\GFX\Shaders"</Command>
       <Message>Copy Contents files and DLLs to output directory and run BuildShaders.</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
