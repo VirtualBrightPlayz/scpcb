@@ -18,6 +18,8 @@ Type* const Type::Unsupported = &Type::unsupportedPrivate;
 
 Type::Type() {
     typeName = "<unknown>";
+    refType = nullptr;
+    arrayType = nullptr;
 }
 
 Type::Type(const PGE::String& name) {
@@ -61,6 +63,9 @@ Type* ArrayType::getElementType() const {
 
 RefType::RefType(Type* type) {
     baseType = type;
+    if (refType != nullptr) {
+        delete refType;
+    }
     refType = nullptr;
 }
 
