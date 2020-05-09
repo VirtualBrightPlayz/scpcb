@@ -3302,7 +3302,7 @@ void asCBuilder::CompileClasses(asUINT numTempl)
 			// Copy properties from base class to derived class
 			for( asUINT p = 0; p < baseType->properties.GetLength(); p++ )
 			{
-				asCObjectProperty *prop = AddPropertyToClass(decl, baseType->properties[p]->name, baseType->properties[p]->type, baseType->properties[p]->isPrivate, baseType->properties[p]->isProtected, baseType->properties[p]->isNonSerialize, true);
+				asCObjectProperty *prop = AddPropertyToClass(decl, baseType->properties[p]->name, baseType->properties[p]->type, baseType->properties[p]->isPrivate, baseType->properties[p]->isProtected, baseType->properties[p]->isSerialize, true);
 
 				// The properties must maintain the same offset
 				asASSERT(prop && prop->byteOffset == baseType->properties[p]->byteOffset); UNUSED_VAR(prop);
@@ -3462,7 +3462,7 @@ void asCBuilder::CompileClasses(asUINT numTempl)
 			asCScriptNode *nd = node->firstChild;
 
 			// Is the property declared as private or protected?
-			bool isPrivate = false, isProtected = false, isNonSerialize = false;
+			bool isPrivate = false, isProtected = false, isSerialize = false;
 			for (int k = 0; k < 2; k++)
 			{
 				if (nd && nd->tokenType == ttPrivate)
@@ -3475,9 +3475,9 @@ void asCBuilder::CompileClasses(asUINT numTempl)
 					isProtected = true;
 					nd = nd->next;
 				}
-				else if (nd && nd->tokenType == ttNonSerialize)
+				else if (nd && nd->tokenType == ttSerialize)
 				{
-					isNonSerialize = true;
+					isSerialize = true;
 					nd = nd->next;
 				}
 				else
@@ -3508,7 +3508,7 @@ void asCBuilder::CompileClasses(asUINT numTempl)
 				if( !decl->isExistingShared )
 				{
 					CheckNameConflictMember(ot, name.AddressOf(), nd, file, true, false);
-					AddPropertyToClass(decl, name, dt, isPrivate, isProtected, isNonSerialize, false, file, nd);
+					AddPropertyToClass(decl, name, dt, isPrivate, isProtected, isSerialize, false, file, nd);
 				}
 				else
 				{
@@ -3519,7 +3519,7 @@ void asCBuilder::CompileClasses(asUINT numTempl)
 						asCObjectProperty *prop = ot->properties[p];
 						if( prop->isPrivate == isPrivate &&
 							prop->isProtected == isProtected &&
-							prop->isNonSerialize == isNonSerialize &&
+							prop->isSerialize == isSerialize &&
 							prop->name == name &&
 							prop->type.IsEqualExceptRef(dt) )
 						{
@@ -4028,7 +4028,7 @@ void asCBuilder::IncludePropertiesFromMixins(sClassDeclaration *decl)
 				if( n->nodeType == snDeclaration )
 				{
 					asCScriptNode *n2 = n->firstChild;
-					bool isPrivate = false, isProtected = false, isNonSerialize = false;
+					bool isPrivate = false, isProtected = false, isSerialize = false;
 					for (int k = 0; k < 2; k++)
 					{
 						if (n2 && n2->tokenType == ttPrivate)
@@ -4041,9 +4041,9 @@ void asCBuilder::IncludePropertiesFromMixins(sClassDeclaration *decl)
 							isProtected = true;
 							n2 = n2->next;
 						}
-						else if (n2 && n2->tokenType == ttNonSerialize)
+						else if (n2 && n2->tokenType == ttSerialize)
 						{
-							isNonSerialize = true;
+							isSerialize = true;
 							n2 = n2->next;
 						}
 						else
@@ -4090,7 +4090,7 @@ void asCBuilder::IncludePropertiesFromMixins(sClassDeclaration *decl)
 								if( r < 0 )
 									WriteInfo(TXT_WHILE_INCLUDING_MIXIN, decl->script, node);
 
-								AddPropertyToClass(decl, name, dt, isPrivate, isProtected, isNonSerialize, false, file, n2);
+								AddPropertyToClass(decl, name, dt, isPrivate, isProtected, isSerialize, false, file, n2);
 							}
 							else
 							{
@@ -4101,7 +4101,7 @@ void asCBuilder::IncludePropertiesFromMixins(sClassDeclaration *decl)
 									asCObjectProperty *prop = ot->properties[p];
 									if( prop->isPrivate == isPrivate &&
 										prop->isProtected == isProtected &&
-										prop->isNonSerialize == isNonSerialize &&
+										prop->isSerialize == isSerialize &&
 										prop->name == name &&
 										prop->type == dt )
 									{
@@ -4166,7 +4166,7 @@ int asCBuilder::CreateVirtualFunction(asCScriptFunction *func, int idx)
 	return vf->id;
 }
 
-asCObjectProperty *asCBuilder::AddPropertyToClass(sClassDeclaration *decl, const asCString &name, const asCDataType &dt, bool isPrivate, bool isProtected, bool isNonSerialize, bool isInherited, asCScriptCode *file, asCScriptNode *node)
+asCObjectProperty *asCBuilder::AddPropertyToClass(sClassDeclaration *decl, const asCString &name, const asCDataType &dt, bool isPrivate, bool isProtected, bool isSerialize, bool isInherited, asCScriptCode *file, asCScriptNode *node)
 {
 	if( node )
 	{
@@ -4210,7 +4210,7 @@ asCObjectProperty *asCBuilder::AddPropertyToClass(sClassDeclaration *decl, const
 	}
 
 	// Add the property to the object type
-	return CastToObjectType(decl->typeInfo)->AddPropertyToClass(name, dt, isPrivate, isProtected, isNonSerialize, isInherited);
+	return CastToObjectType(decl->typeInfo)->AddPropertyToClass(name, dt, isPrivate, isProtected, isSerialize, isInherited);
 }
 
 bool asCBuilder::DoesMethodExist(asCObjectType *objType, int methodId, asUINT *methodIndex)
@@ -5245,7 +5245,7 @@ int asCBuilder::RegisterVirtualProperty(asCScriptNode *node, asCScriptCode *file
 			ns = engine->nameSpaces[0];
 	}
 
-	bool isPrivate = false, isProtected = false, isNonSerialize = false;
+	bool isPrivate = false, isProtected = false, isSerialize = false;
 	asCString emulatedName;
 	asCDataType emulatedType;
 
@@ -5264,9 +5264,9 @@ int asCBuilder::RegisterVirtualProperty(asCScriptNode *node, asCScriptCode *file
 			isProtected = true;
 			node = node->next;
 		}
-		else if (!isGlobalFunction && node->tokenType == ttNonSerialize)
+		else if (!isGlobalFunction && node->tokenType == ttSerialize)
 		{
-			isNonSerialize = true;
+			isSerialize = true;
 			node = node->next;
 		}
 		else

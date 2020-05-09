@@ -1,8 +1,8 @@
 shared abstract class Room {
-    protected nonserialize RM2@ mesh;
-    protected nonserialize Zone@ zone;
+    protected RM2@ mesh;
+    protected Zone@ zone;
 
-    protected nonserialize Vector3f _position;
+    protected Vector3f _position;
     Vector3f position {
         get {
             return _position;
@@ -12,7 +12,7 @@ shared abstract class Room {
             recalculateWorldMatrix();
         }
     }
-    protected nonserialize float _rotation;
+    protected float _rotation;
     float rotation {
         get {
             return _rotation;
@@ -23,7 +23,7 @@ shared abstract class Room {
         }
     }
 
-    protected nonserialize Matrix4x4f worldMatrix;
+    protected Matrix4x4f worldMatrix;
 
     protected void recalculateWorldMatrix() {
         worldMatrix = Matrix4x4f::constructWorldMat(position, Vector3f(0.1, 0.1, 0.1), Vector3f(0.0, rotation, 0.0));

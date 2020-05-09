@@ -18,12 +18,12 @@ ScriptClass::ScriptClass(ScriptModule* module, asITypeInfo* tInfo) {
         const char* name;
         bool isPrivate;
         bool isProtected;
-        bool isNonSerialize;
+        bool isSerialize;
         int typeId;
         int offset;
         bool isReference;
         Visibility visibility;
-        angelScriptTypeInfo->GetProperty(i, &name, &typeId, &isPrivate, &isProtected, &isNonSerialize, &offset, &isReference);
+        angelScriptTypeInfo->GetProperty(i, &name, &typeId, &isPrivate, &isProtected, &isSerialize, &offset, &isReference);
 
         if (isPrivate) {
             visibility = Visibility::Private;
@@ -33,7 +33,7 @@ ScriptClass::ScriptClass(ScriptModule* module, asITypeInfo* tInfo) {
             visibility = Visibility::Public;
         }
 
-        Property newProperty = Property(name, offset, typeId, isReference, visibility, isNonSerialize);
+        Property newProperty = Property(name, offset, typeId, isReference, visibility, isSerialize);
 
         properties.push_back(newProperty);
     }
@@ -84,8 +84,8 @@ ScriptObject* ScriptClass::createNewObject() {
     return constructors[0]->getReturnObject();
 }
 
-ScriptClass::Property::Property(const PGE::String& n, int off, int tId, bool ref, ScriptClass::Visibility vis, bool isNonSerial) {
-    name = n; offset = off; typeId = tId; isRef = ref; visibility = vis; isNonSerialize = isNonSerial;
+ScriptClass::Property::Property(const PGE::String& n, int off, int tId, bool ref, ScriptClass::Visibility vis, bool isSerial) {
+    name = n; offset = off; typeId = tId; isRef = ref; visibility = vis; isSerialize = isSerial;
 }
 
 PGE::String ScriptClass::Property::getName() const {
@@ -108,8 +108,8 @@ ScriptClass::Visibility ScriptClass::Property::getVisibility() const {
     return visibility;
 }
 
-bool ScriptClass::Property::isNonSerializable() const {
-    return isNonSerialize;
+bool ScriptClass::Property::isSerializable() const {
+    return isSerialize;
 }
 
 void ScriptClass::Property::determineType(ScriptModule* scriptModule) {

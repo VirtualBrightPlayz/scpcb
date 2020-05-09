@@ -337,7 +337,7 @@ asUINT asCObjectType::GetPropertyCount() const
 }
 
 // interface
-int asCObjectType::GetProperty(asUINT index, const char **out_name, int *out_typeId, bool *out_isPrivate, bool *out_isProtected, bool *out_isNonSerialize, int *out_offset, bool *out_isReference, asDWORD *out_accessMask, int *out_compositeOffset, bool *out_isCompositeIndirect) const
+int asCObjectType::GetProperty(asUINT index, const char **out_name, int *out_typeId, bool *out_isPrivate, bool *out_isProtected, bool *out_isSerialize, int *out_offset, bool *out_isReference, asDWORD *out_accessMask, int *out_compositeOffset, bool *out_isCompositeIndirect) const
 {
 	if( index >= properties.GetLength() )
 		return asINVALID_ARG;
@@ -351,8 +351,8 @@ int asCObjectType::GetProperty(asUINT index, const char **out_name, int *out_typ
 		*out_isPrivate = prop->isPrivate;
 	if( out_isProtected )
 		*out_isProtected = prop->isProtected;
-	if( out_isNonSerialize )
-		*out_isNonSerialize = prop->isNonSerialize;
+	if( out_isSerialize )
+		*out_isSerialize = prop->isSerialize;
 	if( out_offset )
 		*out_offset = prop->byteOffset;
 	if( out_isReference )
@@ -508,7 +508,7 @@ asIScriptFunction *asCObjectType::GetBehaviourByIndex(asUINT index, asEBehaviour
 }
 
 // internal
-asCObjectProperty *asCObjectType::AddPropertyToClass(const asCString &propName, const asCDataType &dt, bool isPrivate, bool isProtected, bool isNonSerialize, bool isInherited)
+asCObjectProperty *asCObjectType::AddPropertyToClass(const asCString &propName, const asCDataType &dt, bool isPrivate, bool isProtected, bool isSerialize, bool isInherited)
 {
 	asASSERT( flags & asOBJ_SCRIPT_OBJECT );
 	asASSERT( dt.CanBeInstantiated() );
@@ -526,7 +526,7 @@ asCObjectProperty *asCObjectType::AddPropertyToClass(const asCString &propName, 
 	prop->type        = dt;
 	prop->isPrivate   = isPrivate;
 	prop->isProtected = isProtected;
-	prop->isNonSerialize = isNonSerialize;
+	prop->isSerialize = isSerialize;
 	prop->isInherited = isInherited;
 
 	int propSize;
