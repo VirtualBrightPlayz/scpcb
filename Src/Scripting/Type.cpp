@@ -63,10 +63,8 @@ Type* ArrayType::getElementType() const {
 
 RefType::RefType(Type* type) {
     baseType = type;
-    if (refType != nullptr) {
-        delete refType;
-    }
     refType = nullptr;
+    arrayType = nullptr;
 }
 
 PGE::String RefType::getName() const {

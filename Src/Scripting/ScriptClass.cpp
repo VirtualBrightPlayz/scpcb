@@ -7,7 +7,9 @@ ScriptClass::ScriptClass(ScriptModule* module, asITypeInfo* tInfo) {
     scriptModule = module;
 
     typeName = tInfo->GetName();
+
     refType = new RefType(this);
+    arrayType = nullptr;
 
     //asIScriptModule* module = scriptModule->getAngelScriptModule();
 

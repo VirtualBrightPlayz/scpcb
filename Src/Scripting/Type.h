@@ -16,8 +16,8 @@ class Type {
         static Type unsupportedPrivate;
     protected:
         PGE::String typeName;
-        RefType* refType;
-        ArrayType* arrayType;
+        RefType* refType = nullptr;
+        ArrayType* arrayType = nullptr;
     public:
         Type();
         Type(const PGE::String& name);
