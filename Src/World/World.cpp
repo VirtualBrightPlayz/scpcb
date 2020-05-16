@@ -39,7 +39,8 @@ World::World() {
     keyBinds = new KeyBinds(io);
 
     camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
-
+    camera->setPosition(PGE::Vector3f(0.f, 10.f, 0.f));
+    
     currMenu = nullptr;
     menuGraveyard = nullptr;
     io->setMouseVisibility(false);
