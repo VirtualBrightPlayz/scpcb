@@ -1,4 +1,5 @@
 EntranceZone@ entranceZone;
+int why = 17;
 
 external shared enum RoomType;
 

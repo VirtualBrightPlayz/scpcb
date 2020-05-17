@@ -204,6 +204,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptClass.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptFunction.cpp" />
+    <ClCompile Include="..\Src\Scripting\ScriptGlobal.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptModule.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptObject.cpp" />
     <ClCompile Include="..\Src\Scripting\Script.cpp" />
@@ -216,6 +217,9 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\World\ScriptWorld.cpp" />
     <ClCompile Include="..\Src\World\Timing.cpp" />
     <ClCompile Include="..\Src\World\World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Src\Scripting\ScriptGlobal.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

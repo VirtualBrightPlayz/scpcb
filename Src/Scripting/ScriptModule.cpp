@@ -2,6 +2,7 @@
 #include "Script.h"
 #include "ScriptClass.h"
 #include "ScriptFunction.h"
+#include "ScriptGlobal.h"
 #include "ScriptManager.h"
 
 #include <stdexcept>
@@ -48,6 +49,13 @@ void ScriptModule::build() {
         ScriptFunction* newFunction = new ScriptFunction(this, asFunction);
 
         functions.push_back(newFunction);
+    }
+
+    int globalCount = scriptModule->GetGlobalVarCount();
+    for (int i = 0; i < globalCount; i++) {
+        ScriptGlobal* newGlobal = new ScriptGlobal(this, i);
+
+        globals.push_back(newGlobal);
     }
 }
 

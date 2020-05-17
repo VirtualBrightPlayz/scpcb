@@ -11,6 +11,7 @@
 class ScriptManager;
 class ScriptFunction;
 class ScriptClass;
+class ScriptGlobal;
 class Script;
 
 class ScriptModule {
@@ -22,7 +23,9 @@ class ScriptModule {
 
         std::vector<Script*> scripts;
         std::vector<ScriptFunction*> functions;
+        std::vector<ScriptGlobal*> globals;
         std::vector<ScriptClass*> classes;
+
     public:
         ScriptModule(ScriptManager* mgr, const PGE::String& nm);
 

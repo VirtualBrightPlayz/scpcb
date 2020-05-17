@@ -307,11 +307,19 @@
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\EventDefinition.cpp">
       <Filter>Src\Scripting\NativeDefinitions</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\ScriptModule.cpp">
-      <Filter>Src\Scripting</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\World\ScriptWorld.cpp">
       <Filter>Src\World</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Scripting\ScriptModule.cpp">
+      <Filter>Src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\ScriptGlobal.cpp">
+      <Filter>Src\Scripting</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\Src\Scripting\ScriptGlobal.h">
+      <Filter>Src\Scripting</Filter>
+    </Text>
   </ItemGroup>
 </Project>
