@@ -4077,6 +4077,12 @@ void asCScriptEngine::CallObjectMethod(void *obj, asSSystemFunctionInterface *i,
 		void (asCSimpleDummy::*f)() = p.mthd;
 		(((asCSimpleDummy*)obj)->*f)();
 	}
+	else if (i->callConv == ICC_THISCALL_OBJLAST || i->callConv == ICC_THISCALL_OBJFIRST)
+	{
+		//TODO: THIS IS A HACK. PLS TEST :)
+		void (*f)(void *,void *) = (void (*)(void *, void *))(i->func);
+		f(i->auxiliary, obj);
+	}
 	else /*if( i->callConv == ICC_CDECL_OBJLAST || i->callConv == ICC_CDECL_OBJFIRST )*/
 	{
 		void (*f)(void *) = (void (*)(void *))(i->func);
