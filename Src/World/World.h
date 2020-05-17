@@ -16,15 +16,6 @@
 #include "../Models/RM2.h"
 #include "../PlayerController/PlayerController.h"
 #include "../Collision/CollisionMeshCollection.h"
-#include "../Scripting/ScriptManager.h"
-#include "../Scripting/ScriptModule.h"
-#include "../Scripting/Script.h"
-#include "../Scripting/ScriptFunction.h"
-#include "../Scripting/ScriptClass.h"
-
-#include "../Scripting/NativeDefinitions/MathDefinitions.h"
-#include "../Scripting/NativeDefinitions/RM2Definitions.h"
-#include "../Scripting/NativeDefinitions/EventDefinition.h"
 
 class Camera;
 class Timing;
@@ -34,6 +25,7 @@ class PauseMenu;
 class FPSCounter;
 class GUIText;
 class Menu;
+class ScriptWorld;
 
 class World {
     private:
@@ -68,18 +60,9 @@ class World {
 
         FPSCounter* fps;
 
+        ScriptWorld* scripting;
+
         bool shutdownRequested;
-
-        struct {
-            ScriptManager* manager;
-
-            MathDefinitions* mathDefinitions;
-            RM2Definitions* rm2Definitions;
-            EventDefinition* perTickEventDefinition;
-            EventDefinition* perFrameEventDefinition;
-
-            std::vector<ScriptModule*> modules;
-        } scripting;
 
         //-- Update/Draw code.
 

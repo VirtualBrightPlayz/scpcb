@@ -7,6 +7,7 @@
 #include "World.h"
 #include "Timing.h"
 #include "FPSCounter.h"
+#include "ScriptWorld.h"
 #include "../Graphics/Camera.h"
 #include "../Graphics/GraphicsResources.h"
 #include "../Menus/PauseMenu.h"
@@ -50,74 +51,14 @@ World::World() {
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
 
+    scripting = new ScriptWorld(gfxRes, config, timing->getTimeStep());
+
 #ifdef DEBUG
     mouseTxtX =  new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -5.f, Alignment::Bottom | Alignment::Left);
     mouseTxtY =  new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -2.5f, Alignment::Bottom | Alignment::Left);
 #endif
 
     shutdownRequested = false;
-
-    scripting.manager = new ScriptManager();
-    scripting.mathDefinitions = new MathDefinitions();
-    scripting.mathDefinitions->registerToEngine(scripting.manager);
-    scripting.rm2Definitions = new RM2Definitions(gfxRes);
-    scripting.rm2Definitions->registerToEngine(scripting.manager);
-
-    ScriptFunction::Signature perTickSignature;
-    perTickSignature.functionName = "PerTick";
-    perTickSignature.returnType = Type::Void;
-    perTickSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "deltaTime"));
-
-    scripting.perTickEventDefinition = new EventDefinition("PerTick", perTickSignature);
-    scripting.perTickEventDefinition->registerToEngine(scripting.manager);
-    scripting.perTickEventDefinition->setArgument("deltaTime", timing->getTimeStep());
-
-    ScriptFunction::Signature perFrameSignature;
-    perFrameSignature.functionName = "PerFrame";
-    perFrameSignature.returnType = Type::Void;
-    perFrameSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "interpolation"));
-
-    scripting.perFrameEventDefinition = new EventDefinition("PerFrame", perFrameSignature);
-    scripting.perFrameEventDefinition->registerToEngine(scripting.manager);
-    scripting.perFrameEventDefinition->setArgument("interpolation", 1.0f);
-
-    const std::vector<PGE::String>& enabledMods = config->getEnabledMods();
-
-    for (int i=0;i<enabledMods.size();i++) {
-        PGE::FilePath directory = PGE::FilePath::fromStr(enabledMods[i]+"/");
-        PGE::FilePath depsFile = PGE::FilePath(directory, "dependencies.cfg");
-        if (PGE::FileUtil::exists(depsFile)) {
-            std::vector<PGE::String> depNames = PGE::FileUtil::readLines(depsFile);
-            int depsNotEnabled = (int)depNames.size();
-            for (int j=0;j<i;j++) {
-                for (int k=0;k<depNames.size();k++) {
-                    if (enabledMods[j].equals(depNames[k])) {
-                        depsNotEnabled--;
-                        break;
-                    }
-                }
-            }
-            if (depsNotEnabled > 0) {
-                throw std::runtime_error((enabledMods[i]+" has dependencies that are not enabled before it").cstr());
-            }
-        }
-        ScriptModule* scriptModule = new ScriptModule(scripting.manager, enabledMods[i]);
-        std::vector<PGE::FilePath> files = PGE::FileUtil::enumerateFiles(directory);
-        for (int j=0;j<files.size();j++) {
-            if (files[j].getExtension().equals("as")) {
-                Script* script = new Script(files[j]);
-                scriptModule->addScript(files[j].str()
-                    .replace("/","")
-                    .replace(".",""), script);
-            }
-        }
-        scriptModule->build();
-        scripting.modules.push_back(scriptModule);
-        ScriptFunction* mainFunction = scriptModule->getFunctionByName("main");
-        if (mainFunction != nullptr) {
-            mainFunction->execute();
-        }
-    }
 }
 
 World::~World() {
@@ -132,6 +73,7 @@ World::~World() {
 
     delete camera;
     delete timing;
+    delete scripting;
     delete gfxRes;
     delete txtMngt;
 
@@ -220,7 +162,7 @@ void World::runTick(float timeStep, Input input) {
         currMenu->update(mousePosition);
     }
 
-    scripting.perTickEventDefinition->execute();
+    scripting->update(input);
 
     if (keyBinds->escape->isHit()) {
         // If a text input is active then escape de-selects it.
@@ -246,7 +188,7 @@ void World::runTick(float timeStep, Input input) {
 void World::draw() {
     drawPlaying();
 
-    scripting.perFrameEventDefinition->execute();
+    scripting->draw(1.0f); // TODO: Pass actual interpolation.
 
     // UI.
     graphics->setDepthTest(false);
