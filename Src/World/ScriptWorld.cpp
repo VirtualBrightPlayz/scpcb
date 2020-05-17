@@ -98,9 +98,8 @@ void ScriptWorld::update(Input input) {
     perTickEventDefinition->execute();
 }
 
-void ScriptWorld::draw(float OH_MY_GOD) {
-    float A_MOBILE_TASK_FORCE_SQUAD = OH_MY_GOD;
-    perFrameEventDefinition->setArgument("interpolation", A_MOBILE_TASK_FORCE_SQUAD);
+void ScriptWorld::draw(float interpolation) {
+    perFrameEventDefinition->setArgument("interpolation", interpolation);
 
     perFrameEventDefinition->execute();
 }

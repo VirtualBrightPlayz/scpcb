@@ -28,7 +28,7 @@ public:
     ~ScriptWorld();
 
     void update(Input input);
-    void draw(float OH_MY_GOD);
+    void draw(float interpolation);
 
 };
 
