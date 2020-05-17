@@ -374,6 +374,7 @@ int asCBuilder::CompileGlobalVar(const char *sectionName, const char *code, int 
 
 	asCScriptNode *node = parser.GetScriptNode();
 
+	//COMEBACK
 	// Make sure there is nothing else than the global variable in the script code
 	if( node == 0 ||
 		node->firstChild == 0 ||
@@ -2003,8 +2004,17 @@ int asCBuilder::RegisterGlobalVar(asCScriptNode *node, asCScriptCode *file, asSN
 	if( engine->ep.disallowGlobalVars )
 		WriteError(TXT_GLOBAL_VARS_NOT_ALLOWED, file, node);
 
+	asCScriptNode *n = node->firstChild;
+
+	bool isSerialize = false;
+	if (n->tokenType == ttSerialize)
+	{
+		isSerialize = true;
+		n = n->next;
+	}
+
 	// What data type is it?
-	asCDataType type = CreateDataTypeFromNode(node->firstChild, file, ns);
+	asCDataType type = CreateDataTypeFromNode(n, file, ns);
 
 	if( !type.CanBeInstantiated() )
 	{
@@ -2020,7 +2030,7 @@ int asCBuilder::RegisterGlobalVar(asCScriptNode *node, asCScriptCode *file, asSN
 		WriteError(str, file, node);
 	}
 
-	asCScriptNode *n = node->firstChild->next;
+	n = n->next;
 
 	while( n )
 	{
@@ -2041,6 +2051,7 @@ int asCBuilder::RegisterGlobalVar(asCScriptNode *node, asCScriptCode *file, asSN
 		gvar->isCompiled  = false;
 		gvar->datatype    = type;
 		gvar->isEnumValue = false;
+		gvar->isSerialize = isSerialize;
 		gvar->ns          = ns;
 
 		// TODO: Give error message if wrong
@@ -4480,6 +4491,7 @@ int asCBuilder::RegisterEnum(asCScriptNode *node, asCScriptCode *file, asSNameSp
 				gvar->isCompiled         = false;
 				gvar->isPureConstant     = true;
 				gvar->isEnumValue        = true;
+				gvar->isSerialize        = false;
 				gvar->constantValue      = 0xdeadbeef;
 
 				// Allocate dummy property so we can compile the value.
@@ -4491,6 +4503,7 @@ int asCBuilder::RegisterEnum(asCScriptNode *node, asCScriptCode *file, asSNameSp
 				gvar->property->name      = name;
 				gvar->property->nameSpace = ns;
 				gvar->property->type      = gvar->datatype;
+				gvar->property->isSerialize = gvar->isSerialize;
 				gvar->property->id        = 0;
 
 				globVariables.Put(gvar);

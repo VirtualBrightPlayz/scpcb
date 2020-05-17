@@ -1234,6 +1234,7 @@ int asCCompiler::CompileGlobalVariable(asCBuilder *in_builder, asCScriptCode *in
 	if( in_gvar->property == 0 )
 	{
 		in_gvar->property = builder->module->AllocateGlobalProperty(in_gvar->name.AddressOf(), in_gvar->datatype, in_gvar->ns);
+		in_gvar->property->isSerialize = in_gvar->isSerialize;
 		in_gvar->index = in_gvar->property->id;
 	}
 

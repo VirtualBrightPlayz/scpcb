@@ -82,6 +82,7 @@ struct sGlobalVariableDescription
 	bool               isCompiled;
 	bool               isPureConstant;
 	bool               isEnumValue;
+	bool               isSerialize;
 	asQWORD            constantValue;
 };
 

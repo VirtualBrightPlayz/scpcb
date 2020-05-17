@@ -126,7 +126,7 @@ public:
 	virtual int         GetGlobalVarIndexByName(const char *name) const;
 	virtual int         GetGlobalVarIndexByDecl(const char *decl) const;
 	virtual const char *GetGlobalVarDeclaration(asUINT index, bool includeNamespace) const;
-	virtual int         GetGlobalVar(asUINT index, const char **name, const char **nameSpace, int *typeId, bool *isConst) const;
+	virtual int         GetGlobalVar(asUINT index, const char **name, const char **nameSpace, int *typeId, bool *isConst, bool *isSerialize) const;
 	virtual void       *GetAddressOfGlobalVar(asUINT index);
 	virtual int         RemoveGlobalVar(asUINT index);
 

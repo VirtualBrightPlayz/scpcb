@@ -833,7 +833,7 @@ public:
 	virtual int         GetGlobalVarIndexByName(const char *name) const = 0;
 	virtual int         GetGlobalVarIndexByDecl(const char *decl) const = 0;
 	virtual const char *GetGlobalVarDeclaration(asUINT index, bool includeNamespace = false) const = 0;
-	virtual int         GetGlobalVar(asUINT index, const char **name, const char **nameSpace = 0, int *typeId = 0, bool *isConst = 0) const = 0;
+	virtual int         GetGlobalVar(asUINT index, const char **name, const char **nameSpace = 0, int *typeId = 0, bool *isConst = 0, bool *isSerialize = 0) const = 0;
 	virtual void       *GetAddressOfGlobalVar(asUINT index) = 0;
 	virtual int         RemoveGlobalVar(asUINT index) = 0;
 

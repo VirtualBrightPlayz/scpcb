@@ -86,6 +86,7 @@ public:
 	asCDataType        type;
 	asUINT             id;
 	asSNameSpace      *nameSpace;
+	bool               isSerialize;
 
 	void SetInitFunc(asCScriptFunction *initFunc);
 	asCScriptFunction *GetInitFunc();

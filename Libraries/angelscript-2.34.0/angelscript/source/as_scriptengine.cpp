@@ -2562,6 +2562,7 @@ int asCScriptEngine::RegisterGlobalProperty(const char *declaration, void *point
 	prop->nameSpace   = defaultNamespace;
 	prop->type        = type;
 	prop->accessMask  = defaultAccessMask;
+	prop->isSerialize = false;
 
 	prop->SetRegisteredAddress(pointer);
 	varAddressMap.Insert(prop->GetAddressOfValue(), prop);

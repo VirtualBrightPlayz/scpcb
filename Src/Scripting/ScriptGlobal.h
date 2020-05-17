@@ -15,6 +15,7 @@ private:
     int index;
     PGE::String name;
     PGE::String varNamespace;
+    bool isSerialize;
 
     Type* type;
     bool isClassType;

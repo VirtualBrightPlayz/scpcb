@@ -6,15 +6,17 @@
 ScriptGlobal::ScriptGlobal(ScriptModule* module, int index) {
 	this->module = module;
 	this->index = index;
-	const char* out_name;
-	const char* out_namespace;
-	int out_typeID;
+	const char* outName;
+	const char* outNamespace;
+	int outTypeID;
+	bool outIsSerialize;
 
-	module->getAngelScriptModule()->GetGlobalVar(index, &out_name, &out_namespace, &out_typeID);
-	name = out_name;
-	varNamespace = out_namespace;
+	module->getAngelScriptModule()->GetGlobalVar(index, &outName, &outNamespace, &outTypeID, nullptr, &outIsSerialize);
+	name = outName;
+	varNamespace = outNamespace;
+	isSerialize = outIsSerialize;
 	bool isClass;
-	type = module->typeFromTypeId(out_typeID, isClass);
+	type = module->typeFromTypeId(outTypeID, isClass);
 	isClassType = isClass;
 }
 
@@ -24,8 +26,7 @@ void ScriptGlobal::SaveXML(tinyxml2::XMLElement* element) const {
 	if (!isClassType) {
 		if (type == Type::String) {
 
-		} 
-		else {
+		} else {
 			int size = 0;
 			if (type == Type::Int32) {
 				size = 4;

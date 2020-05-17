@@ -2428,7 +2428,7 @@ asCScriptNode *asCParser::ParseScript(bool inBlock)
 				node->AddChildLast(ParseInterface());
 			else if( t1.type == ttFuncDef )
 				node->AddChildLast(ParseFuncDef());
-			else if( t1.type == ttConst || t1.type == ttScope || t1.type == ttAuto || IsDataType(t1) )
+			else if( t1.type == ttSerialize || t1.type == ttConst || t1.type == ttScope || t1.type == ttAuto || IsDataType(t1) )
 			{
 				if( IsVirtualPropertyDecl() )
 					node->AddChildLast(ParseVirtualPropertyDecl(false, false));
@@ -3872,7 +3872,7 @@ asCScriptNode *asCParser::ParseDeclaration(bool isClassProp, bool isGlobalVar)
 			node->AddChildLast(ParseToken(ttPrivate));
 		else if (t.type == ttProtected && isClassProp)
 			node->AddChildLast(ParseToken(ttProtected));
-		else if (t.type == ttSerialize && isClassProp)
+		else if (t.type == ttSerialize && (isClassProp || isGlobalVar))
 			node->AddChildLast(ParseToken(ttSerialize));
 		else
 			break;
