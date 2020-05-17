@@ -12,6 +12,7 @@
 
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
 #include "../Scripting/NativeDefinitions/RM2Definitions.h"
+#include "../Scripting/NativeDefinitions/CollisionDefinitions.h"
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 
 ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, const Config* config, float timestep) {
@@ -20,6 +21,8 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, const Config* config, float 
     mathDefinitions->registerToEngine(manager);
     rm2Definitions = new RM2Definitions(gfxRes);
     rm2Definitions->registerToEngine(manager);
+    collisionDefinitions = new CollisionDefinitions();
+    collisionDefinitions->registerToEngine(manager);
 
     ScriptFunction::Signature perTickSignature;
     perTickSignature.functionName = "PerTick";

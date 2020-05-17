@@ -4103,11 +4103,18 @@ void asCScriptEngine::CallObjectMethod(void *obj, asSSystemFunctionInterface *i,
 	}
 	else
 #endif
+
 	if( i->callConv == ICC_GENERIC_METHOD )
 	{
 		asCGeneric gen(const_cast<asCScriptEngine*>(this), s, obj, 0);
 		void (*f)(asIScriptGeneric *) = (void (*)(asIScriptGeneric *))(i->func);
 		f(&gen);
+	}
+	else if (i->callConv == ICC_THISCALL_OBJLAST || i->callConv == ICC_THISCALL_OBJFIRST)
+	{
+		//TODO: THIS IS A HACK. PLS TEST :)
+		void (*f)(void *,void *) = (void (*)(void *, void *))(i->func);
+		f(i->auxiliary, obj);
 	}
 	else /*if( i->callConv == ICC_CDECL_OBJLAST || i->callConv == ICC_CDECL_OBJFIRST )*/
 	{
