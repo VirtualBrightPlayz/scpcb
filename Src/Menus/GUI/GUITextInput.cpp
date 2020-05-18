@@ -8,8 +8,8 @@ GUITextInput* GUITextInput::subscriber = nullptr;
 
 GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, const PGE::String& defaultText, int limit, const PGE::String& pattern, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment) {
-    menuwhite = PGE::FilePath::fromStr("GFX/Menu/menuwhite.jpg");
-    menublack = PGE::FilePath::fromStr("GFX/Menu/menublack.jpg");
+    menuwhite = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menuwhite.jpg");
+    menublack = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menublack.jpg");
     hoverColor = PGE::Color(70, 70, 150, 200);
     borderThickness = 0.33f;
 

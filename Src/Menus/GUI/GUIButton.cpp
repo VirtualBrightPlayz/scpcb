@@ -4,8 +4,8 @@
 
 GUIButton::GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, TxtManager* tm, float x, float y, float width, float height, const PGE::String& txt, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment), clicked(false), locked(false) {
-    menuwhite = PGE::FilePath::fromStr("GFX/Menu/menuwhite.jpg");
-    menublack = PGE::FilePath::fromStr("GFX/Menu/menublack.jpg");
+    menuwhite = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menuwhite.jpg");
+    menublack = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menublack.jpg");
     hoverColor = PGE::Color(70, 70, 150, 200);
     borderThickness = 0.33f;
 

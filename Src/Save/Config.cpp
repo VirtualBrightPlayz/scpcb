@@ -137,6 +137,8 @@ void Config::saveFile() const {
     putINIValue(filename, secGFX, "width", width);
     putINIValue(filename, secGFX, "height", height);
     putINIValue(filename, secGFX, "vsync", vsync);
+    
+    putINIValue(filename, secMod, "enabledmods", PGE::String::join(enabledMods, "|"));
 
     std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>>::const_iterator it;
     for (it = kbBinds.begin(); it != kbBinds.end(); it++) {

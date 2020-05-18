@@ -21,7 +21,6 @@
 		191BDDBD22A854A900270B9D /* SDL2.framework in Copy Bundle Frameworks */ = {isa = PBXBuildFile; fileRef = 191BDDBA22A8547E00270B9D /* SDL2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		191BDDBF22A8551A00270B9D /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 191BDDBE22A8551A00270B9D /* Main.cpp */; };
 		19243C1622BC295C0057054D /* PauseMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19243C1522BC295C0057054D /* PauseMenu.cpp */; };
-		1927734122A85D500055EB30 /* Dummy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1927733F22A85D500055EB30 /* Dummy.txt */; };
 		192A67A622C43CBA009A6F1E /* GUIFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 192A67A522C43CBA009A6F1E /* GUIFrame.cpp */; };
 		1932743222E543D1005F3528 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1932733322E53616005F3528 /* libfreetype.a */; };
 		193385FA22E157E900439AA9 /* GUIComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 193385F922E157E900439AA9 /* GUIComponent.cpp */; };
@@ -41,6 +40,9 @@
 		19646FC322A9FB6D005E027E /* Timing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19646FC222A9FB6D005E027E /* Timing.cpp */; };
 		1968E82222F63E5400355243 /* FPSCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1968E82122F63E5400355243 /* FPSCounter.cpp */; };
 		196B3F2423357CF000F15A5A /* Menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 196B3F2323357CF000F15A5A /* Menu.cpp */; };
+		196D1FC724732C06002EA4B5 /* ScriptGlobal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 196D1FBF24732C06002EA4B5 /* ScriptGlobal.cpp */; };
+		196D1FCA24732CB7002EA4B5 /* ScriptWorld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 196D1FC824732CB6002EA4B5 /* ScriptWorld.cpp */; };
+		196D1FCD24732CCD002EA4B5 /* CollisionDefinitions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 196D1FCC24732CCD002EA4B5 /* CollisionDefinitions.cpp */; };
 		1971577A22BEB776003AF33E /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1971577922BEB776003AF33E /* Config.cpp */; };
 		1971577C22BEB9CB003AF33E /* AppDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = 1971577B22BEB9CB003AF33E /* AppDelegate.h */; };
 		1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1971577D22BEB9EC003AF33E /* AppDelegate.m */; };
@@ -155,7 +157,6 @@
 		191BDDBE22A8551A00270B9D /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		19243C1422BC295C0057054D /* PauseMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PauseMenu.h; sourceTree = "<group>"; };
 		19243C1522BC295C0057054D /* PauseMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PauseMenu.cpp; sourceTree = "<group>"; };
-		1927733F22A85D500055EB30 /* Dummy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Dummy.txt; sourceTree = SOURCE_ROOT; };
 		192A67A422C43CBA009A6F1E /* GUIFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GUIFrame.h; sourceTree = "<group>"; };
 		192A67A522C43CBA009A6F1E /* GUIFrame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GUIFrame.cpp; sourceTree = "<group>"; };
 		1932732D22E53616005F3528 /* freetype.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = freetype.xcodeproj; path = Libraries/freetype.xcodeproj; sourceTree = "<group>"; };
@@ -194,6 +195,12 @@
 		1968E82122F63E5400355243 /* FPSCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FPSCounter.cpp; sourceTree = "<group>"; };
 		196B3F2223357CF000F15A5A /* Menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
 		196B3F2323357CF000F15A5A /* Menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
+		196D1FBF24732C06002EA4B5 /* ScriptGlobal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScriptGlobal.cpp; sourceTree = "<group>"; };
+		196D1FC624732C06002EA4B5 /* ScriptGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptGlobal.h; sourceTree = "<group>"; };
+		196D1FC824732CB6002EA4B5 /* ScriptWorld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScriptWorld.cpp; sourceTree = "<group>"; };
+		196D1FC924732CB7002EA4B5 /* ScriptWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptWorld.h; sourceTree = "<group>"; };
+		196D1FCB24732CCD002EA4B5 /* CollisionDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollisionDefinitions.h; sourceTree = "<group>"; };
+		196D1FCC24732CCD002EA4B5 /* CollisionDefinitions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CollisionDefinitions.cpp; sourceTree = "<group>"; };
 		1971577822BEB776003AF33E /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		1971577922BEB776003AF33E /* Config.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
 		1971577B22BEB9CB003AF33E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -433,6 +440,8 @@
 				193D5E5A23EE235000588323 /* ScriptClass.h */,
 				193D5E4B23EE235000588323 /* ScriptFunction.cpp */,
 				193D5E4A23EE235000588323 /* ScriptFunction.h */,
+				196D1FBF24732C06002EA4B5 /* ScriptGlobal.cpp */,
+				196D1FC624732C06002EA4B5 /* ScriptGlobal.h */,
 				19AD2CBA2464BDCC006CBD3A /* ScriptModule.cpp */,
 				19AD2CB92464BDCC006CBD3A /* ScriptModule.h */,
 				193D5E5B23EE235000588323 /* ScriptObject.cpp */,
@@ -448,6 +457,8 @@
 		193D5E4E23EE235000588323 /* NativeDefinitions */ = {
 			isa = PBXGroup;
 			children = (
+				196D1FCC24732CCD002EA4B5 /* CollisionDefinitions.cpp */,
+				196D1FCB24732CCD002EA4B5 /* CollisionDefinitions.h */,
 				193D5E5223EE235000588323 /* EventDefinition.cpp */,
 				193D5E5023EE235000588323 /* EventDefinition.h */,
 				193D5E5323EE235000588323 /* MathDefinitions.cpp */,
@@ -482,7 +493,6 @@
 				19AD2CDC2464C1DF006CBD3A /* RootScript */,
 				19AD2CDE2464C1E0006CBD3A /* SCPCB */,
 				19AD2CDD2464C1DF006CBD3A /* Scripts */,
-				1927733F22A85D500055EB30 /* Dummy.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -492,6 +502,8 @@
 			children = (
 				1968E82122F63E5400355243 /* FPSCounter.cpp */,
 				1968E81E22F63E5400355243 /* FPSCounter.h */,
+				196D1FC824732CB6002EA4B5 /* ScriptWorld.cpp */,
+				196D1FC924732CB7002EA4B5 /* ScriptWorld.h */,
 				19646FC222A9FB6D005E027E /* Timing.cpp */,
 				19646FC122A9FB6D005E027E /* Timing.h */,
 				19646FBF22A9FAB4005E027E /* World.cpp */,
@@ -716,7 +728,6 @@
 				19AD2CE12464C1E0006CBD3A /* SCPCB in Resources */,
 				190E9C372257866500A59243 /* Main.storyboard in Resources */,
 				19AD2CE02464C1E0006CBD3A /* Scripts in Resources */,
-				1927734122A85D500055EB30 /* Dummy.txt in Resources */,
 				190E9C342257866500A59243 /* Assets.xcassets in Resources */,
 				19AD2CDF2464C1E0006CBD3A /* RootScript in Resources */,
 				19AD2CE32464C234006CBD3A /* Data in Resources */,
@@ -762,6 +773,7 @@
 				19FC31CC22C0736A00AE4011 /* KeyBinds.cpp in Sources */,
 				19F15BF522F52DA90044E284 /* GraphicsResources.cpp in Sources */,
 				198F57F52335284800376771 /* Model.cpp in Sources */,
+				196D1FCD24732CCD002EA4B5 /* CollisionDefinitions.cpp in Sources */,
 				19CFE32C2329AE03009B37C6 /* InvSlot.cpp in Sources */,
 				1971577C22BEB9CB003AF33E /* AppDelegate.h in Sources */,
 				199386B123EE65E300DC0872 /* XMLProperty.cpp in Sources */,
@@ -770,6 +782,7 @@
 				191BDDBF22A8551A00270B9D /* Main.cpp in Sources */,
 				1971577E22BEB9EC003AF33E /* AppDelegate.m in Sources */,
 				199386B023EE65E300DC0872 /* IntProperty.cpp in Sources */,
+				196D1FC724732C06002EA4B5 /* ScriptGlobal.cpp in Sources */,
 				193D5E6623EE235000588323 /* ScriptObject.cpp in Sources */,
 				19C521FB231EABD500255476 /* Item.cpp in Sources */,
 				193D5E6523EE235000588323 /* scriptarray.cpp in Sources */,
@@ -778,6 +791,7 @@
 				193D5E6223EE235000588323 /* RM2Definitions.cpp in Sources */,
 				199386B423EE662300DC0872 /* ScriptSerializer.cpp in Sources */,
 				19AD2CBB2464BDCC006CBD3A /* ScriptModule.cpp in Sources */,
+				196D1FCA24732CB7002EA4B5 /* ScriptWorld.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

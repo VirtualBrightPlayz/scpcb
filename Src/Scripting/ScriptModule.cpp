@@ -8,6 +8,7 @@
 
 #include <stdexcept>
 #include <Math/Vector.h>
+#include <Math/Matrix.h>
 #include "AngelScriptAddons/scriptarray/scriptarray.h"
 #include <iostream>
 
@@ -190,6 +191,26 @@ void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* el
                 PGE::String(vectValue->x) + ","
                 + PGE::String(vectValue->y) + ","
                 + PGE::String(vectValue->z);
+        } else if (type == Type::Matrix4x4f) {
+            PGE::Matrix4x4f* matValue = (PGE::Matrix4x4f*)ref;
+
+            strValue =
+                PGE::String(matValue->elements[0][0]) + ","
+                + PGE::String(matValue->elements[0][1]) + ","
+                + PGE::String(matValue->elements[0][2]) + ","
+                + PGE::String(matValue->elements[0][3]) + ","
+                + PGE::String(matValue->elements[1][0]) + ","
+                + PGE::String(matValue->elements[1][1]) + ","
+                + PGE::String(matValue->elements[1][2]) + ","
+                + PGE::String(matValue->elements[1][3]) + ","
+                + PGE::String(matValue->elements[2][0]) + ","
+                + PGE::String(matValue->elements[2][1]) + ","
+                + PGE::String(matValue->elements[2][2]) + ","
+                + PGE::String(matValue->elements[2][3]) + ","
+                + PGE::String(matValue->elements[3][0]) + ","
+                + PGE::String(matValue->elements[3][1]) + ","
+                + PGE::String(matValue->elements[3][2]) + ","
+                + PGE::String(matValue->elements[3][3]);
         } else {
             int iValue = 0;
             memcpy(&iValue, ref, type->getSize());
@@ -217,7 +238,7 @@ void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* el
         void** objectRef = (void**)ref;
         asIScriptObject* obj = (asIScriptObject*)(*objectRef);
 
-        ScriptObject classObject = ScriptObject(clss, obj);
-        classObject.saveXML(element, doc, this);
+//        ScriptObject classObject = ScriptObject(clss, obj);
+//        classObject.saveXML(element, doc, this);
     }
 }
