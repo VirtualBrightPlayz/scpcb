@@ -7,6 +7,7 @@
 class ScriptManager;
 class MathDefinitions;
 class RM2Definitions;
+class CollisionDefinitions;
 class EventDefinition;
 class ScriptModule;
 class GraphicsResources;
@@ -18,6 +19,8 @@ private:
 
     MathDefinitions* mathDefinitions;
     RM2Definitions* rm2Definitions;
+    CollisionDefinitions* collisionDefinitions;
+
     EventDefinition* perTickEventDefinition;
     EventDefinition* perFrameEventDefinition;
 
