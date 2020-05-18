@@ -42,6 +42,10 @@ PGE::String Type::getName() const {
     return typeName;
 }
 
+bool Type::isClassType() const {
+    return false;
+}
+
 bool Type::isRef() const {
     return false;
 }
@@ -51,6 +55,10 @@ ArrayType* Type::getArrayType() {
         arrayType = new ArrayType(this);
     }
     return arrayType;
+}
+
+bool Type::isArrayType() const {
+    return false;
 }
 
 RefType* Type::asRef() const {
@@ -69,6 +77,10 @@ PGE::String ArrayType::getName() const {
     return "array<" + elementType->getName() + ">";
 }
 
+bool ArrayType::isArrayType() const {
+    return true;
+}
+
 Type* ArrayType::getElementType() const {
     return elementType;
 }
@@ -81,6 +93,10 @@ RefType::RefType(Type* type) {
 
 PGE::String RefType::getName() const {
     return PGE::String(baseType->getName(), "@");
+}
+
+bool RefType::isClassType() const {
+    return baseType->isClassType();
 }
 
 bool RefType::isRef() const {

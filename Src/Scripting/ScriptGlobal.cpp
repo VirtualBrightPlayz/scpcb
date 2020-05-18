@@ -16,9 +16,7 @@ ScriptGlobal::ScriptGlobal(ScriptModule* module, int index) {
     name = outName;
     varNamespace = outNamespace;
     isSerialize = outIsSerialize;
-    bool isClass;
-    type = module->typeFromTypeId(outTypeID, isClass);
-    isClassType = isClass;
+    type = module->typeFromTypeId(outTypeID);
 }
 
 bool ScriptGlobal::isSerializable() const {
@@ -32,5 +30,5 @@ void ScriptGlobal::saveXML(tinyxml2::XMLElement* parent, tinyxml2::XMLDocument& 
     }
     parent->InsertEndChild(element);
     
-    module->saveXML(module->getAngelScriptModule()->GetAddressOfGlobalVar(index), type, isClassType, element, doc);
+    module->saveXML(module->getAngelScriptModule()->GetAddressOfGlobalVar(index), type, element, doc);
 }

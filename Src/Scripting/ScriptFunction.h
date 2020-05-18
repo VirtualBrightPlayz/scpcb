@@ -36,7 +36,6 @@ class ScriptFunction {
 
         ScriptModule* scriptModule;
 
-        bool returnsClassType;
         ScriptObject* returnedObject;
 
     public:

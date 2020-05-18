@@ -41,6 +41,10 @@ ScriptClass::ScriptClass(ScriptModule* module, asITypeInfo* tInfo) {
     }
 }
 
+bool ScriptClass::isClassType() const {
+    return true;
+}
+
 const std::vector<ScriptClass::Property>& ScriptClass::getProperties() const {
     return properties;
 }

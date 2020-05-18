@@ -63,7 +63,7 @@ ScriptFunction::ScriptFunction(ScriptModule* module, asIScriptFunction* asScript
         signature.arguments.push_back(Signature::Argument(type, name));
     }
 
-    signature.returnType = scriptModule->typeFromTypeId(scriptFunction->GetReturnTypeId(), returnsClassType);
+    signature.returnType = scriptModule->typeFromTypeId(scriptFunction->GetReturnTypeId());
 
     scriptContext = asModule->GetEngine()->CreateContext();
     if (scriptContext->Prepare(scriptFunction) < 0) { throw std::runtime_error("ptooey!"); }
@@ -128,7 +128,7 @@ void ScriptFunction::execute() {
     scriptContext->Execute();
     if (scriptContext->Prepare(scriptFunction) < 0) { throw std::runtime_error("ptooey!"); }
 
-    if (returnsClassType) {
+    if (signature.returnType->isClassType()) {
         asIScriptObject* asObj = nullptr;
         ScriptClass* returnClass = nullptr;
         if (signature.returnType->isRef()) {

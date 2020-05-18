@@ -49,10 +49,9 @@ void ScriptObject::saveXML(tinyxml2::XMLElement* element, tinyxml2::XMLDocument&
         element->InsertEndChild(propertyElement);
 
         int typeID = angelScriptObject->GetPropertyTypeId(i);
-        bool isClassType;
-        Type* type = module->typeFromTypeId(typeID, isClassType);
+        Type* type = module->typeFromTypeId(typeID);
 
-        module->saveXML(angelScriptObject->GetAddressOfProperty(i), type, isClassType, propertyElement, doc);
+        module->saveXML(angelScriptObject->GetAddressOfProperty(i), type, propertyElement, doc);
     }
 }
 

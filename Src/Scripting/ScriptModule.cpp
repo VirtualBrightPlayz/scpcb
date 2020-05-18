@@ -8,6 +8,8 @@
 
 #include <stdexcept>
 #include <Math/Vector.h>
+#include "AngelScriptAddons/scriptarray/scriptarray.h"
+#include <iostream>
 
 ScriptModule::ScriptModule(ScriptManager* mgr, const PGE::String& nm) {
     scriptManager = mgr;
@@ -90,11 +92,6 @@ ScriptFunction* ScriptModule::getFunctionByName(const PGE::String& name) const {
 }
 
 Type* ScriptModule::typeFromTypeId(int typeId) const {
-    bool discard;
-    return typeFromTypeId(typeId, discard);
-}
-
-Type* ScriptModule::typeFromTypeId(int typeId, bool& isClssType) const {
     asIScriptModule* module = scriptModule;
     asIScriptEngine* engine = module->GetEngine();
 
@@ -108,7 +105,6 @@ Type* ScriptModule::typeFromTypeId(int typeId, bool& isClssType) const {
     bool isTemplate = (typeId & asTYPEID_TEMPLATE) != 0;
     typeId = typeId & (~asTYPEID_OBJHANDLE) & (~asTYPEID_TEMPLATE);
 
-    isClssType = false;
     Type* type = nullptr;
     switch (typeId) {
     case asTYPEID_INT32: {
@@ -148,7 +144,6 @@ Type* ScriptModule::typeFromTypeId(int typeId, bool& isClssType) const {
             ScriptClass* clss = getClassByTypeId(typeId);
             if (clss == nullptr) { clss = scriptManager->getSharedClassByTypeId(typeId); }
             type = clss;
-            isClssType = true;
         }
     } break;
     }
@@ -175,26 +170,26 @@ void ScriptModule::save(tinyxml2::XMLDocument& doc) const {
     }
 }
 
-void ScriptModule::saveXML(void* ref, Type* type, bool isClassType, tinyxml2::XMLElement* element, tinyxml2::XMLDocument& doc) const {
-    if (!isClassType) {
-        // TODO: Arrays.
+void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* element, tinyxml2::XMLDocument& doc) const {
+    std::cout << type->getName() << std::endl;
+    if (!type->isClassType() && !type->isArrayType()) {
         PGE::String strValue;
         if (type == Type::String) {
             PGE::String* str = (PGE::String*)ref;
             strValue = PGE::String(str->cstr());
-        } else if (type == Type::Float || type == Type::Double) {
-            float fValue = 0;
-            memcpy(&fValue, ref, type->getSize());
-
-            strValue = PGE::String(fValue);
+        } else if (type == Type::Float) {
+            float* fValue = (float*)ref;
+            strValue = PGE::String(*fValue);
+        } else if (type == Type::Double) {
+            double* dValue = (double*)ref;
+            strValue = PGE::String(*dValue);
         } else if (type == Type::Vector3f) {
-            PGE::Vector3f vectValue;
-            memcpy(&vectValue, ref, type->getSize());
+            PGE::Vector3f* vectValue = (PGE::Vector3f*)ref;
 
             strValue =
-                PGE::String(vectValue.x) + ","
-                + PGE::String(vectValue.y) + ","
-                + PGE::String(vectValue.z);
+                PGE::String(vectValue->x) + ","
+                + PGE::String(vectValue->y) + ","
+                + PGE::String(vectValue->z);
         } else {
             int iValue = 0;
             memcpy(&iValue, ref, type->getSize());
@@ -203,12 +198,24 @@ void ScriptModule::saveXML(void* ref, Type* type, bool isClassType, tinyxml2::XM
         }
 
         element->SetAttribute("value", strValue);
+    } else if (type->isArrayType()) {
+            CScriptArray* arr = (CScriptArray*)ref;
+            ArrayType* arrayType = (ArrayType*)type;
+            Type* elementType = arrayType->getElementType();
+
+            int arrayLength = arr->GetSize();
+            for (int i = 0; i < arrayLength; i++) {
+                const void* index = arr->At(i);
+                tinyxml2::XMLElement* indexElement = doc.NewElement("arrayElement");
+                
+                saveXML(index, elementType, indexElement, doc);
+            }
     } else {
+        RefType* refType = (RefType*)type;
+        ScriptClass* clss = (ScriptClass*)refType->getBaseType();
+
         void** objectRef = (void**)ref;
         asIScriptObject* obj = (asIScriptObject*)(*objectRef);
-
-        RefType* refTyp = (RefType*)type;
-        ScriptClass* clss = (ScriptClass*)refTyp->getBaseType();
 
         ScriptObject classObject = ScriptObject(clss, obj);
         classObject.saveXML(element, doc, this);

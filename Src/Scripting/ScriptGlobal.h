@@ -18,7 +18,6 @@ private:
     bool isSerialize;
 
     Type* type;
-    bool isClassType;
 
 public:
     ScriptGlobal(ScriptModule* module, int index);

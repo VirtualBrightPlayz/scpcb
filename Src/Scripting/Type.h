@@ -27,7 +27,9 @@ class Type {
         ~Type();
 
         virtual PGE::String getName() const;
+        virtual bool isClassType() const;
         virtual ArrayType* getArrayType();
+        virtual bool isArrayType() const;
         virtual RefType* asRef() const;
         virtual bool isRef() const;
 
@@ -51,6 +53,7 @@ class ArrayType : public Type {
         ArrayType(Type* type);
 
         PGE::String getName() const override;
+        bool isArrayType() const override;
         Type* getElementType() const;
 };
 
@@ -61,6 +64,7 @@ class RefType : public Type {
         RefType(Type* type);
 
         PGE::String getName() const override;
+        bool isClassType() const override;
         bool isRef() const override;
         Type* getBaseType() const;
 };

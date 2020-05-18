@@ -53,6 +53,8 @@ class ScriptClass : public Type {
     public:
         ScriptClass(ScriptModule* module, asITypeInfo* tInfo);
 
+        bool isClassType() const override;
+
         const std::vector<Property>& getProperties() const;
         ScriptModule* getScriptModule() const;
         int getTypeId() const;
