@@ -1,9 +1,9 @@
 #include "Type.h"
 
-Type Type::int32Private = Type("int32");
-Type Type::uint32Private = Type("uint32");
-Type Type::floatPrivate = Type("float");
-Type Type::doublePrivate = Type("double");
+Type Type::int32Private = Type("int32", 4);
+Type Type::uint32Private = Type("uint32", 4);
+Type Type::floatPrivate = Type("float", 4);
+Type Type::doublePrivate = Type("double", 8);
 Type Type::stringPrivate = Type("string");
 Type Type::voidPrivate = Type("void");
 Type Type::unsupportedPrivate = Type("!!unsupported!!");
@@ -22,8 +22,9 @@ Type::Type() {
     arrayType = nullptr;
 }
 
-Type::Type(const PGE::String& name) {
+Type::Type(const PGE::String& name, int size) {
     typeName = name;
+    this->size = size;
     refType = new RefType(this);
     arrayType = nullptr;
 }
@@ -47,6 +48,10 @@ ArrayType* Type::getArrayType() {
 
 RefType* Type::asRef() const {
     return refType;
+}
+
+int Type::getSize() const {
+    return size;
 }
 
 ArrayType::ArrayType(Type* type) {

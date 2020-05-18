@@ -6,8 +6,9 @@
 #include <Misc/String.h>
 #include <map>
 #include <inttypes.h>
-#include "Type.h"
+#include <tinyxml2.h>
 
+class Type;
 class ScriptManager;
 class ScriptFunction;
 class ScriptClass;
@@ -42,6 +43,9 @@ class ScriptModule {
 
         Type* typeFromTypeId(int typeId) const;
         Type* typeFromTypeId(int typeId, bool& isClssType) const;
+
+        void save(tinyxml2::XMLDocument& doc) const;
+        void saveXML(void* ref, Type* type, bool isClassType, tinyxml2::XMLElement* element, tinyxml2::XMLDocument& doc) const;
 };
 
 #endif

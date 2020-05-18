@@ -56,6 +56,7 @@ class ScriptClass : public Type {
         const std::vector<Property>& getProperties() const;
         ScriptModule* getScriptModule() const;
         int getTypeId() const;
+        int getSize() const;
 
         void finalizeInitialization();
         ScriptObject* createNewObject();

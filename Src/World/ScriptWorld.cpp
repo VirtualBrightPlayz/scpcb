@@ -41,6 +41,8 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, const Config* config, float 
 
     const std::vector<PGE::String>& enabledMods = config->getEnabledMods();
 
+    tinyxml2::XMLDocument doc;
+
     for (int i = 0; i < enabledMods.size(); i++) {
         PGE::FilePath directory = PGE::FilePath::fromStr(enabledMods[i] + "/");
         PGE::FilePath depsFile = PGE::FilePath(directory, "dependencies.cfg");
@@ -76,7 +78,11 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, const Config* config, float 
         if (mainFunction != nullptr) {
             mainFunction->execute();
         }
+
+        scriptModule->save(doc);
     }
+
+    doc.SaveFile("juanIsntReal.xml");
 }
 
 ScriptWorld::~ScriptWorld() {

@@ -2161,11 +2161,16 @@ void XMLDocument::DeepCopy(XMLDocument* target) const
 	}
 }
 
-XMLElement* XMLDocument::NewElement( const char* name )
+XMLElement* XMLDocument::NewElement(const char* name)
 {
-    XMLElement* ele = CreateUnlinkedNode<XMLElement>( _elementPool );
-    ele->SetName( name );
+    XMLElement* ele = CreateUnlinkedNode<XMLElement>(_elementPool);
+    ele->SetName(name);
     return ele;
+}
+
+XMLElement* XMLDocument::NewElement(const PGE::String& name)
+{
+    return NewElement(name.cstr());
 }
 
 

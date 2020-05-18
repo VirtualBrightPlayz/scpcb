@@ -3,8 +3,10 @@
 
 #include <Misc/String.h>
 #include <angelscript.h>
+#include <tinyxml2.h>
 
 class ScriptClass;
+class ScriptModule;
 
 class ScriptObject {
     private:
@@ -20,6 +22,8 @@ class ScriptObject {
 
         PGE::String getPropertyString(const PGE::String& propertyName) const;
         void setProperty(const PGE::String& propertyName, const PGE::String& val) const;
+
+        void saveXML(tinyxml2::XMLElement* element, tinyxml2::XMLDocument& doc, const ScriptModule* module) const;
 };
 
 #endif

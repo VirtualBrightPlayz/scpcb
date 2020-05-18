@@ -1,5 +1,6 @@
-EntranceZone@ entranceZone;
-int why = 17;
+serialize EntranceZone@ entranceZone;
+serialize int why = 17;
+serialize string uh = "aaah";
 
 external shared enum RoomType;
 

@@ -16,17 +16,20 @@ class Type {
         static Type unsupportedPrivate;
     protected:
         PGE::String typeName;
+        int size;
         RefType* refType = nullptr;
         ArrayType* arrayType = nullptr;
     public:
         Type();
-        Type(const PGE::String& name);
+        Type(const PGE::String& name, int size = 0);
         ~Type();
 
         virtual PGE::String getName() const;
         virtual ArrayType* getArrayType();
         virtual RefType* asRef() const;
         virtual bool isRef() const;
+
+        int getSize() const;
 
         static Type* const Int32;
         static Type* const UInt32;

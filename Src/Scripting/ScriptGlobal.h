@@ -24,7 +24,9 @@ public:
     ScriptGlobal(ScriptModule* module, int index);
     ~ScriptGlobal()=default;
 
-    void SaveXML(tinyxml2::XMLElement* element) const;
+    bool isSerializable() const;
+
+    void saveXML(tinyxml2::XMLElement* element, tinyxml2::XMLDocument& doc) const;
 };
 
 #endif // GLOBAL_H_INCLUDED

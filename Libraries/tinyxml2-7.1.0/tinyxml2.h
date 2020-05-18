@@ -41,6 +41,7 @@ distribution.
 #   include <cstring>
 #endif
 #include <stdint.h>
+#include <Misc/String.h>
 
 /*
    TODO: intern strings instead of allocation.
@@ -1451,10 +1452,14 @@ public:
 		return QueryFloatAttribute( name, value );
 	}
 
-	/// Sets the named attribute to value.
-    void SetAttribute( const char* name, const char* value )	{
-        XMLAttribute* a = FindOrCreateAttribute( name );
-        a->SetAttribute( value );
+    /// Sets the named attribute to value.
+    void SetAttribute(const char* name, const char* value) {
+        XMLAttribute* a = FindOrCreateAttribute(name);
+        a->SetAttribute(value);
+    }
+    /// Sets the named attribute to value.
+    void SetAttribute(const char* name, const PGE::String& value) {
+        SetAttribute(name, value.cstr());
     }
     /// Sets the named attribute to value.
     void SetAttribute( const char* name, int value )			{
@@ -1807,11 +1812,18 @@ public:
     virtual bool Accept( XMLVisitor* visitor ) const;
 
     /**
-    	Create a new Element associated with
-    	this Document. The memory for the Element
-    	is managed by the Document.
+        Create a new Element associated with
+        this Document. The memory for the Element
+        is managed by the Document.
     */
     XMLElement* NewElement( const char* name );
+
+    /**
+        Create a new Element associated with
+        this Document. The memory for the Element
+        is managed by the Document.
+    */
+    XMLElement* NewElement( const PGE::String& name );
     /**
     	Create a new Comment associated with
     	this Document. The memory for the Comment

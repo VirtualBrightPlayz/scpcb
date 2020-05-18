@@ -1,6 +1,7 @@
 #include "ScriptModule.h"
 #include "Script.h"
 #include "ScriptClass.h"
+#include "ScriptObject.h"
 #include "ScriptFunction.h"
 #include "ScriptGlobal.h"
 #include "ScriptManager.h"
@@ -54,7 +55,6 @@ void ScriptModule::build() {
     int globalCount = scriptModule->GetGlobalVarCount();
     for (int i = 0; i < globalCount; i++) {
         ScriptGlobal* newGlobal = new ScriptGlobal(this, i);
-
         globals.push_back(newGlobal);
     }
 }
@@ -155,4 +155,47 @@ Type* ScriptModule::typeFromTypeId(int typeId, bool& isClssType) const {
     }
 
     return type;
+}
+
+void ScriptModule::save(tinyxml2::XMLDocument& doc) const {
+    tinyxml2::XMLElement* moduleElement = doc.NewElement(name);
+    doc.InsertEndChild(moduleElement);
+
+    for (int i = 0; i < (int)globals.size(); i++) {
+        if (globals[i]->isSerializable()) {
+            globals[i]->saveXML(moduleElement, doc);
+        }
+    }
+}
+
+void ScriptModule::saveXML(void* ref, Type* type, bool isClassType, tinyxml2::XMLElement* element, tinyxml2::XMLDocument& doc) const {
+    if (!isClassType) {
+        // TODO: Arrays.
+        PGE::String strValue;
+        if (type == Type::String) {
+            PGE::String* str = (PGE::String*)ref;
+            strValue = PGE::String(str->cstr());
+        } else if (type == Type::Float || type == Type::Double) {
+            float fValue = 0;
+            memcpy(&fValue, ref, type->getSize());
+
+            strValue = PGE::String(fValue);
+        } else {
+            int iValue = 0;
+            memcpy(&iValue, ref, type->getSize());
+
+            strValue = PGE::String(iValue);
+        }
+
+        element->SetAttribute("value", strValue);
+    } else {
+        void** objectRef = (void**)ref;
+        asIScriptObject* obj = (asIScriptObject*)(*objectRef);
+
+        RefType* refTyp = (RefType*)type;
+        ScriptClass* clss = (ScriptClass*)refTyp->getBaseType();
+
+        ScriptObject classObject = ScriptObject(clss, obj);
+        classObject.saveXML(element, doc, this);
+    }
 }
