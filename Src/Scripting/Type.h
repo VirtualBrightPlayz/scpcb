@@ -12,6 +12,8 @@ class Type {
         static Type floatPrivate;
         static Type doublePrivate;
         static Type stringPrivate;
+        static Type vector3fPrivate;
+        static Type matrix4x4fPrivate;
         static Type voidPrivate;
         static Type unsupportedPrivate;
     protected:
@@ -36,6 +38,8 @@ class Type {
         static Type* const Float;
         static Type* const Double;
         static Type* const String;
+        static Type* const Vector3f;
+        static Type* const Matrix4x4f;
         static Type* const Void;
         static Type* const Unsupported;
 };

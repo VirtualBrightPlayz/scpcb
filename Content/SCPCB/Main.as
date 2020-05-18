@@ -1,5 +1,6 @@
 serialize EntranceZone@ entranceZone;
 serialize int why = 17;
+serialize Vector3f whVy = Vector3f(17, 14, 14);
 serialize string uh = "aaah";
 
 external shared enum RoomType;

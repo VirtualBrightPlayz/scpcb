@@ -27,7 +27,9 @@ bool ScriptGlobal::isSerializable() const {
 
 void ScriptGlobal::saveXML(tinyxml2::XMLElement* parent, tinyxml2::XMLDocument& doc) const {
     tinyxml2::XMLElement* element = doc.NewElement(name);
-    element->SetAttribute("namespace", varNamespace);
+    if (!varNamespace.isEmpty()) {
+        element->SetAttribute("namespace", varNamespace);
+    }
     parent->InsertEndChild(element);
     
     module->saveXML(module->getAngelScriptModule()->GetAddressOfGlobalVar(index), type, isClassType, element, doc);

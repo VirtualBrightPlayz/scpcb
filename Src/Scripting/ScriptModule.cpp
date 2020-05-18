@@ -7,6 +7,7 @@
 #include "ScriptManager.h"
 
 #include <stdexcept>
+#include <Math/Vector.h>
 
 ScriptModule::ScriptModule(ScriptManager* mgr, const PGE::String& nm) {
     scriptManager = mgr;
@@ -99,6 +100,8 @@ Type* ScriptModule::typeFromTypeId(int typeId, bool& isClssType) const {
 
     int stringFactoryTypeId = engine->GetStringFactoryReturnTypeId();
     int arrayTypeId = engine->GetDefaultArrayTypeId();
+    int vector3fTypeID = engine->GetTypeIdByDecl("Vector3f");
+    int matrix4x4fTypeID = engine->GetTypeIdByDecl("Matrix4x4f");
 
     int originalTypeId = typeId;
     bool isRef = (typeId & asTYPEID_OBJHANDLE) != 0;
@@ -126,6 +129,10 @@ Type* ScriptModule::typeFromTypeId(int typeId, bool& isClssType) const {
     default: {
         if (typeId == stringFactoryTypeId) {
             type = Type::String;
+        } else if (typeId == vector3fTypeID) {
+            type = Type::Vector3f;
+        } else if (typeId == matrix4x4fTypeID) {
+            type = Type::Matrix4x4f;
         }
         else if (isTemplate) {
             if (scriptManager->isArrayTypeId(originalTypeId)) {
@@ -180,6 +187,14 @@ void ScriptModule::saveXML(void* ref, Type* type, bool isClassType, tinyxml2::XM
             memcpy(&fValue, ref, type->getSize());
 
             strValue = PGE::String(fValue);
+        } else if (type == Type::Vector3f) {
+            PGE::Vector3f vectValue;
+            memcpy(&vectValue, ref, type->getSize());
+
+            strValue =
+                PGE::String(vectValue.x) + ","
+                + PGE::String(vectValue.y) + ","
+                + PGE::String(vectValue.z);
         } else {
             int iValue = 0;
             memcpy(&iValue, ref, type->getSize());
