@@ -131,7 +131,7 @@ void ScriptFunction::execute() {
     if (signature.returnType->isClassType()) {
         asIScriptObject* asObj = nullptr;
         ScriptClass* returnClass = nullptr;
-        if (signature.returnType->isRef()) {
+        if (signature.returnType->isRefType()) {
             returnClass = (ScriptClass*)(((RefType*)signature.returnType)->getBaseType());
             asObj = *(asIScriptObject**)scriptContext->GetAddressOfReturnValue();
         } else {

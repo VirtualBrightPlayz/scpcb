@@ -46,7 +46,7 @@ bool Type::isClassType() const {
     return false;
 }
 
-bool Type::isRef() const {
+bool Type::isRefType() const {
     return false;
 }
 
@@ -99,7 +99,7 @@ bool RefType::isClassType() const {
     return baseType->isClassType();
 }
 
-bool RefType::isRef() const {
+bool RefType::isRefType() const {
     return true;
 }
 

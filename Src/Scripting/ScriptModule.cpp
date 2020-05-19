@@ -173,25 +173,62 @@ void ScriptModule::save(tinyxml2::XMLDocument& doc) const {
 
 void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* element, tinyxml2::XMLDocument& doc) const {
     std::cout << type->getName() << std::endl;
-    if (!type->isClassType() && !type->isArrayType()) {
+    if (type->isArrayType()) {
+        CScriptArray* arr = (CScriptArray*)ref;
+        ArrayType* arrayType = (ArrayType*)type;
+        Type* elementType = arrayType->getElementType();
+
+        int arrayLength = arr->GetSize();
+        for (int i = 0; i < arrayLength; i++) {
+            const void* index = arr->At(i);
+            tinyxml2::XMLElement* indexElement = doc.NewElement("arrayElement");
+            element->InsertEndChild(indexElement);
+                
+            saveXML(index, elementType, indexElement, doc);
+        }
+    } else if (type->isClassType()) {
+        asIScriptObject* obj;
+        ScriptClass* clss;
+
+        if (type->isRefType()) {
+            void** objectRef = (void**)ref;
+            obj = (asIScriptObject*)(*objectRef);
+
+            RefType* refType = (RefType*)type;
+            clss = (ScriptClass*)refType->getBaseType();
+        }
+        else {
+            obj = (asIScriptObject*)ref;
+            clss = (ScriptClass*)type;
+        }
+
+        if (obj == nullptr) { return; }
+
+        ScriptObject classObject = ScriptObject(clss, obj);
+        classObject.saveXML(element, doc, this);
+    } else {
         PGE::String strValue;
         if (type == Type::String) {
             PGE::String* str = (PGE::String*)ref;
             strValue = PGE::String(str->cstr());
-        } else if (type == Type::Float) {
+        }
+        else if (type == Type::Float) {
             float* fValue = (float*)ref;
             strValue = PGE::String(*fValue);
-        } else if (type == Type::Double) {
+        }
+        else if (type == Type::Double) {
             double* dValue = (double*)ref;
             strValue = PGE::String(*dValue);
-        } else if (type == Type::Vector3f) {
+        }
+        else if (type == Type::Vector3f) {
             PGE::Vector3f* vectValue = (PGE::Vector3f*)ref;
 
             strValue =
                 PGE::String(vectValue->x) + ","
                 + PGE::String(vectValue->y) + ","
                 + PGE::String(vectValue->z);
-        } else if (type == Type::Matrix4x4f) {
+        }
+        else if (type == Type::Matrix4x4f) {
             PGE::Matrix4x4f* matValue = (PGE::Matrix4x4f*)ref;
 
             strValue =
@@ -211,7 +248,8 @@ void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* el
                 + PGE::String(matValue->elements[3][1]) + ","
                 + PGE::String(matValue->elements[3][2]) + ","
                 + PGE::String(matValue->elements[3][3]);
-        } else {
+        }
+        else {
             int iValue = 0;
             memcpy(&iValue, ref, type->getSize());
 
@@ -219,26 +257,5 @@ void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* el
         }
 
         element->SetAttribute("value", strValue);
-    } else if (type->isArrayType()) {
-            CScriptArray* arr = (CScriptArray*)ref;
-            ArrayType* arrayType = (ArrayType*)type;
-            Type* elementType = arrayType->getElementType();
-
-            int arrayLength = arr->GetSize();
-            for (int i = 0; i < arrayLength; i++) {
-                const void* index = arr->At(i);
-                tinyxml2::XMLElement* indexElement = doc.NewElement("arrayElement");
-                
-                saveXML(index, elementType, indexElement, doc);
-            }
-    } else {
-        RefType* refType = (RefType*)type;
-        ScriptClass* clss = (ScriptClass*)refType->getBaseType();
-
-        void** objectRef = (void**)ref;
-        asIScriptObject* obj = (asIScriptObject*)(*objectRef);
-
-//        ScriptObject classObject = ScriptObject(clss, obj);
-//        classObject.saveXML(element, doc, this);
     }
 }

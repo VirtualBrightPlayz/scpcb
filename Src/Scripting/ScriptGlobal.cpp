@@ -24,6 +24,7 @@ bool ScriptGlobal::isSerializable() const {
 }
 
 void ScriptGlobal::saveXML(tinyxml2::XMLElement* parent, tinyxml2::XMLDocument& doc) const {
+    // TODO: Check for empty entries.
     tinyxml2::XMLElement* element = doc.NewElement(name);
     if (!varNamespace.isEmpty()) {
         element->SetAttribute("namespace", varNamespace);
