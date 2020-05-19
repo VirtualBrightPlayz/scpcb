@@ -298,7 +298,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     inFile.close();
 }
 
-void RM2::render(PGE::Matrix4x4f modelMatrix) {
+void RM2::render(const PGE::Matrix4x4f& modelMatrix) {
     opaqueModelMatrixConstant->setValue(modelMatrix);
     opaqueNormalMapModelMatrixConstant->setValue(modelMatrix);
     for (int i = 0; i < opaqueMeshes.size(); i++) {

@@ -24,7 +24,7 @@ void RM2Definitions::registerToEngine(ScriptManager* mgr) {
     engine->RegisterGlobalFunction("void delete(RM2@ rm2)", asMETHOD(RM2Definitions, deleteRM2), asCALL_THISCALL_ASGLOBAL, this);
     engine->SetDefaultNamespace("");
     
-    engine->RegisterObjectMethod("RM2", "void render(Matrix4x4f matrix)", asMETHOD(RM2, render), asCALL_THISCALL);
+    engine->RegisterObjectMethod("RM2", "void render(const Matrix4x4f&in matrix)", asMETHOD(RM2, render), asCALL_THISCALL);
 }
 
 void RM2Definitions::cleanup() {

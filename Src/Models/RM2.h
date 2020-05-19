@@ -76,7 +76,7 @@ class RM2 {
 
         //RM2Error getError() const;
 
-        void render(PGE::Matrix4x4f modelMatrix);
+        void render(const PGE::Matrix4x4f& modelMatrix);
 
         const std::vector<CollisionMesh*>& getCollisionMeshes() const;
         //const std::vector<PointLight>& getPointLights() const;
