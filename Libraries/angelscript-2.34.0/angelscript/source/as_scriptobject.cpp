@@ -793,15 +793,23 @@ const char *asCScriptObject::GetPropertyName(asUINT prop) const
 	return objType->properties[prop]->name.AddressOf();
 }
 
-void *asCScriptObject::GetAddressOfProperty(asUINT prop)
+bool asCScriptObject::IsPropertySerializable(asUINT prop) const
 {
-	if( prop >= objType->properties.GetLength() )
+	if (prop >= objType->properties.GetLength())
+		return 0;
+
+	return objType->properties[prop]->isSerialize;
+}
+
+void* asCScriptObject::GetAddressOfProperty(asUINT prop)
+{
+	if (prop >= objType->properties.GetLength())
 		return 0;
 
 	// Objects are stored by reference, so this must be dereferenced
-	asCDataType *dt = &objType->properties[prop]->type;
-	if( dt->IsObject() && !dt->IsObjectHandle() &&
-		(dt->IsReference() || dt->GetTypeInfo()->flags & asOBJ_REF) )
+	asCDataType* dt = &objType->properties[prop]->type;
+	if (dt->IsObject() && !dt->IsObjectHandle() &&
+		(dt->IsReference() || dt->GetTypeInfo()->flags & asOBJ_REF))
 		return *(void**)(((char*)this) + objType->properties[prop]->byteOffset);
 
 	return (void*)(((char*)this) + objType->properties[prop]->byteOffset);

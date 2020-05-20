@@ -23,13 +23,14 @@ bool ScriptGlobal::isSerializable() const {
     return isSerialize;
 }
 
-void ScriptGlobal::saveXML(tinyxml2::XMLElement* parent, tinyxml2::XMLDocument& doc) const {
-    // TODO: Check for empty entries.
-    tinyxml2::XMLElement* element = doc.NewElement(name);
+void ScriptGlobal::saveXML(tinyxml2::XMLElement* parent) const {
+    tinyxml2::XMLElement* element = parent->GetDocument()->NewElement(name);
     if (!varNamespace.isEmpty()) {
         element->SetAttribute("namespace", varNamespace);
     }
-    parent->InsertEndChild(element);
     
-    module->saveXML(module->getAngelScriptModule()->GetAddressOfGlobalVar(index), type, element, doc);
+    module->saveXML(module->getAngelScriptModule()->GetAddressOfGlobalVar(index), type, element);
+    if (!element->IsEmpty()) {
+        parent->InsertEndChild(element);
+    }
 }

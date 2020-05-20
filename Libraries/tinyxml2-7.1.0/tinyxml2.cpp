@@ -2046,6 +2046,12 @@ bool XMLElement::Accept( XMLVisitor* visitor ) const
     return visitor->VisitExit( *this );
 }
 
+bool XMLElement::IsEmpty() const {
+    return this->GetText() == nullptr
+        && this->NoChildren()
+        && this->FirstAttribute() == 0;
+}
+
 
 // --------- XMLDocument ----------- //
 

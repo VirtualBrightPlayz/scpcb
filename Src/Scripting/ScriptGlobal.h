@@ -25,7 +25,7 @@ public:
 
     bool isSerializable() const;
 
-    void saveXML(tinyxml2::XMLElement* element, tinyxml2::XMLDocument& doc) const;
+    void saveXML(tinyxml2::XMLElement* element) const;
 };
 
 #endif // GLOBAL_H_INCLUDED

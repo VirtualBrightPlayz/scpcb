@@ -1011,6 +1011,7 @@ public:
 	virtual asUINT      GetPropertyCount() const = 0;
 	virtual int         GetPropertyTypeId(asUINT prop) const = 0;
 	virtual const char *GetPropertyName(asUINT prop) const = 0;
+	virtual bool        IsPropertySerializable(asUINT prop) const = 0;
 	virtual void       *GetAddressOfProperty(asUINT prop) = 0;
 
 	// Miscellaneous

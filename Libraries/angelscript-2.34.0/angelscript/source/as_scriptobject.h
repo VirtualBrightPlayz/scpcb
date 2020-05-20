@@ -90,6 +90,7 @@ public:
 	asUINT      GetPropertyCount() const;
 	int         GetPropertyTypeId(asUINT prop) const;
 	const char *GetPropertyName(asUINT prop) const;
+	bool        IsPropertySerializable(asUINT prop) const;
 	void       *GetAddressOfProperty(asUINT prop);
 
 	// Miscellaneous

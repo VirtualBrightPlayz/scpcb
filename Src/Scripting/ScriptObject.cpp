@@ -42,18 +42,20 @@ void ScriptObject::setProperty(const PGE::String& propertyName, const PGE::Strin
     *((PGE::String*)obj) = val;
 }
 
-void ScriptObject::saveXML(tinyxml2::XMLElement* element, tinyxml2::XMLDocument& doc, const ScriptModule* module) const {
+void ScriptObject::saveXML(tinyxml2::XMLElement* element, const ScriptModule* module) const {
     int propertyCount = angelScriptObject->GetPropertyCount();
-    for (int i = 0; i < propertyCount; i++) {
-        // TODO: Check for empty properties.
-        // TODO: Check for serializable properties.
-        tinyxml2::XMLElement* propertyElement = doc.NewElement(angelScriptObject->GetPropertyName(i));
-        element->InsertEndChild(propertyElement);
 
+    for (int i = 0; i < propertyCount; i++) {
+        if (!angelScriptObject->IsPropertySerializable(i)) { continue; }
+
+        tinyxml2::XMLElement* propertyElement = element->GetDocument()->NewElement(angelScriptObject->GetPropertyName(i));
         int typeID = angelScriptObject->GetPropertyTypeId(i);
         Type* type = module->typeFromTypeId(typeID);
 
-        module->saveXML(angelScriptObject->GetAddressOfProperty(i), type, propertyElement, doc);
+        module->saveXML(angelScriptObject->GetAddressOfProperty(i), type, propertyElement);
+        if (!propertyElement->IsEmpty()) {
+            element->InsertEndChild(propertyElement);
+        }
     }
 }
 

@@ -162,16 +162,18 @@ Type* ScriptModule::typeFromTypeId(int typeId) const {
 
 void ScriptModule::save(tinyxml2::XMLDocument& doc) const {
     tinyxml2::XMLElement* moduleElement = doc.NewElement(name);
-    doc.InsertEndChild(moduleElement);
-
     for (int i = 0; i < (int)globals.size(); i++) {
         if (globals[i]->isSerializable()) {
-            globals[i]->saveXML(moduleElement, doc);
+            globals[i]->saveXML(moduleElement);
         }
+    }
+
+    if (!moduleElement->IsEmpty()) {
+        doc.InsertEndChild(moduleElement);
     }
 }
 
-void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* element, tinyxml2::XMLDocument& doc) const {
+void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* element) const {
     std::cout << type->getName() << std::endl;
     if (type->isArrayType()) {
         CScriptArray* arr = (CScriptArray*)ref;
@@ -181,10 +183,10 @@ void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* el
         int arrayLength = arr->GetSize();
         for (int i = 0; i < arrayLength; i++) {
             const void* index = arr->At(i);
-            tinyxml2::XMLElement* indexElement = doc.NewElement("arrayElement");
+            tinyxml2::XMLElement* indexElement = element->GetDocument()->NewElement("arrayElement");
             element->InsertEndChild(indexElement);
                 
-            saveXML(index, elementType, indexElement, doc);
+            saveXML(index, elementType, indexElement);
         }
     } else if (type->isClassType()) {
         asIScriptObject* obj;
@@ -205,7 +207,7 @@ void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* el
         if (obj == nullptr) { return; }
 
         ScriptObject classObject = ScriptObject(clss, obj);
-        classObject.saveXML(element, doc, this);
+        classObject.saveXML(element, this);
     } else {
         PGE::String strValue;
         if (type == Type::String) {
