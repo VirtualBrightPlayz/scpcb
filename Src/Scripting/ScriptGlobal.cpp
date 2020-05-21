@@ -19,6 +19,14 @@ ScriptGlobal::ScriptGlobal(ScriptModule* module, int index) {
     type = module->typeFromTypeId(outTypeID);
 }
 
+PGE::String ScriptGlobal::getName() const {
+    return name;
+}
+
+PGE::String ScriptGlobal::getNamespace() const {
+    return varNamespace;
+}
+
 bool ScriptGlobal::isSerializable() const {
     return isSerialize;
 }
@@ -33,4 +41,10 @@ void ScriptGlobal::saveXML(tinyxml2::XMLElement* parent) const {
     if (!element->IsEmpty()) {
         parent->InsertEndChild(element);
     }
+}
+
+void ScriptGlobal::loadXML(tinyxml2::XMLElement* element) const {
+    void* ref = module->getAngelScriptModule()->GetAddressOfGlobalVar(index);
+
+    module->loadXML(ref, type, element);
 }

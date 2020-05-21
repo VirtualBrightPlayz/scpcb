@@ -173,6 +173,20 @@ void ScriptModule::save(tinyxml2::XMLDocument& doc) const {
     }
 }
 
+void ScriptModule::load(tinyxml2::XMLElement* moduleElement) const {
+    for (tinyxml2::XMLElement* element = moduleElement->FirstChildElement(); element != NULL; element = element->NextSiblingElement()) {
+        PGE::String name = element->Name();
+        const char* namespaceAttrib = element->Attribute("namespace");
+        PGE::String varNamespace = namespaceAttrib == nullptr ? "" : PGE::String(namespaceAttrib);
+
+        for (int i = 0; i < (int)globals.size(); i++) {
+            if (globals[i]->getName().equals(name) && (globals[i]->getNamespace().isEmpty()|| varNamespace.equals(globals[i]->getNamespace())) && globals[i]->isSerializable()) {
+                globals[i]->loadXML(element);
+            }
+        }
+    }
+}
+
 void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* element) const {
     std::cout << type->getName() << std::endl;
     if (type->isArrayType()) {
@@ -261,3 +275,91 @@ void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* el
         element->SetAttribute("value", strValue);
     }
 }
+
+void ScriptModule::loadXML(void* ref, Type* type, tinyxml2::XMLElement* element) const {
+    if (type->isArrayType()) {
+        //CScriptArray* arr = (CScriptArray*)ref;
+        //ArrayType* arrayType = (ArrayType*)type;
+        //Type* elementType = arrayType->getElementType();
+
+        //int arrayLength = arr->GetSize();
+        //for (int i = 0; i < arrayLength; i++) {
+        //    const void* index = arr->At(i);
+        //    tinyxml2::XMLElement* indexElement = element->GetDocument()->NewElement("arrayElement");
+        //    element->InsertEndChild(indexElement);
+
+        //    saveXML(index, elementType, indexElement);
+        //}
+    }
+    else if (type->isClassType()) {
+        //asIScriptObject* obj;
+        //ScriptClass* clss;
+
+        //if (type->isRefType()) {
+        //    void** objectRef = (void**)ref;
+        //    obj = (asIScriptObject*)(*objectRef);
+
+        //    RefType* refType = (RefType*)type;
+        //    clss = (ScriptClass*)refType->getBaseType();
+        //}
+        //else {
+        //    obj = (asIScriptObject*)ref;
+        //    clss = (ScriptClass*)type;
+        //}
+
+        //if (obj == nullptr) { return; }
+
+        //ScriptObject classObject = ScriptObject(clss, obj);
+        //classObject.saveXML(element, this);
+    }
+    else {
+        if (type == Type::String) {
+            // TODO: Find a better method of doign this?
+            const char* str = element->Attribute("value");
+            PGE::String* strValue = str == nullptr ? new PGE::String("") : new PGE::String(str);
+            memcpy(ref, strValue, type->getSize());
+        }
+        else if (type == Type::Float) {
+            float fValue = element->FloatAttribute("value", 0.0f);
+            memcpy(ref, &fValue, type->getSize());
+        }
+        else if (type == Type::Double) {
+            double dValue = element->DoubleAttribute("value", 0.0);
+            memcpy(ref, &dValue, type->getSize());
+        }
+        else if (type == Type::Vector3f) {
+            //PGE::Vector3f* vectValue = (PGE::Vector3f*)ref;
+
+            //strValue =
+            //    PGE::String(vectValue->x) + ","
+            //    + PGE::String(vectValue->y) + ","
+            //    + PGE::String(vectValue->z);
+        }
+        else if (type == Type::Matrix4x4f) {
+            //PGE::Matrix4x4f* matValue = (PGE::Matrix4x4f*)ref;
+
+            //strValue =
+            //    PGE::String(matValue->elements[0][0]) + ","
+            //    + PGE::String(matValue->elements[0][1]) + ","
+            //    + PGE::String(matValue->elements[0][2]) + ","
+            //    + PGE::String(matValue->elements[0][3]) + ","
+            //    + PGE::String(matValue->elements[1][0]) + ","
+            //    + PGE::String(matValue->elements[1][1]) + ","
+            //    + PGE::String(matValue->elements[1][2]) + ","
+            //    + PGE::String(matValue->elements[1][3]) + ","
+            //    + PGE::String(matValue->elements[2][0]) + ","
+            //    + PGE::String(matValue->elements[2][1]) + ","
+            //    + PGE::String(matValue->elements[2][2]) + ","
+            //    + PGE::String(matValue->elements[2][3]) + ","
+            //    + PGE::String(matValue->elements[3][0]) + ","
+            //    + PGE::String(matValue->elements[3][1]) + ","
+            //    + PGE::String(matValue->elements[3][2]) + ","
+            //    + PGE::String(matValue->elements[3][3]);
+        }
+        else {
+            int iValue = element->IntAttribute("value", 0);
+            memcpy(ref, &iValue, type->getSize());
+        }
+    }
+}
+

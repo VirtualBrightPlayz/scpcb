@@ -23,9 +23,12 @@ public:
     ScriptGlobal(ScriptModule* module, int index);
     ~ScriptGlobal()=default;
 
+    PGE::String getName() const;
+    PGE::String getNamespace() const;
     bool isSerializable() const;
 
     void saveXML(tinyxml2::XMLElement* element) const;
+    void loadXML(tinyxml2::XMLElement* element) const;
 };
 
 #endif // GLOBAL_H_INCLUDED

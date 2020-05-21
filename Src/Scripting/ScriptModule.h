@@ -44,7 +44,9 @@ class ScriptModule {
         Type* typeFromTypeId(int typeId) const;
 
         void save(tinyxml2::XMLDocument& doc) const;
+        void load(tinyxml2::XMLElement* moduleElement) const;
         void saveXML(const void* ref, Type* type, tinyxml2::XMLElement* element) const;
+        void loadXML(void* ref, Type* type, tinyxml2::XMLElement* element) const;
 };
 
 #endif
