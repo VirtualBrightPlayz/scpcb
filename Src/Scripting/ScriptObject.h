@@ -24,6 +24,7 @@ class ScriptObject {
         void setProperty(const PGE::String& propertyName, const PGE::String& val) const;
 
         void saveXML(tinyxml2::XMLElement* element, const ScriptModule* module) const;
+        void loadXML(tinyxml2::XMLElement* element, const ScriptModule* module) const;
 };
 
 #endif

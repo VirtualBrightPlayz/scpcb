@@ -59,5 +59,19 @@ void ScriptObject::saveXML(tinyxml2::XMLElement* element, const ScriptModule* mo
     }
 }
 
+void ScriptObject::loadXML(tinyxml2::XMLElement* element, const ScriptModule* module) const {
+    for (tinyxml2::XMLElement* propertyElement = element->FirstChildElement(); element != nullptr; element = element->NextSiblingElement()) {
+        PGE::String propName = propertyElement->Name();
+        int index = getPropertyIndex(propName);
+
+        if (!angelScriptObject->IsPropertySerializable(index)) { continue; }
+
+        int typeID = angelScriptObject->GetPropertyTypeId(index);
+        Type* type = module->typeFromTypeId(typeID);
+
+        module->loadXML(angelScriptObject->GetAddressOfProperty(index), type, propertyElement);
+    }
+}
+
 
 

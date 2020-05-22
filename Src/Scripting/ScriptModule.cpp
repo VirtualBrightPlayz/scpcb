@@ -188,7 +188,7 @@ void ScriptModule::load(tinyxml2::XMLElement* moduleElement) const {
 }
 
 void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* element) const {
-    std::cout << type->getName() << std::endl;
+    std::cout << "Serializing: " << type->getName() << std::endl;
     if (type->isArrayType()) {
         CScriptArray* arr = (CScriptArray*)ref;
         ArrayType* arrayType = (ArrayType*)type;
@@ -217,7 +217,7 @@ void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* el
             obj = (asIScriptObject*)ref;
             clss = (ScriptClass*)type;
         }
-
+        
         if (obj == nullptr) { return; }
 
         ScriptObject classObject = ScriptObject(clss, obj);
@@ -278,39 +278,55 @@ void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* el
 
 void ScriptModule::loadXML(void* ref, Type* type, tinyxml2::XMLElement* element) const {
     if (type->isArrayType()) {
-        //CScriptArray* arr = (CScriptArray*)ref;
-        //ArrayType* arrayType = (ArrayType*)type;
-        //Type* elementType = arrayType->getElementType();
+        ArrayType* arrayType = (ArrayType*)type;
+        Type* elementType = arrayType->getElementType();
 
-        //int arrayLength = arr->GetSize();
-        //for (int i = 0; i < arrayLength; i++) {
-        //    const void* index = arr->At(i);
-        //    tinyxml2::XMLElement* indexElement = element->GetDocument()->NewElement("arrayElement");
-        //    element->InsertEndChild(indexElement);
+        int arraySize = 0;
+        for (tinyxml2::XMLElement* child = element->FirstChildElement(); child; child = child->NextSiblingElement()) {
+            arraySize++;
+        }
 
-        //    saveXML(index, elementType, indexElement);
-        //}
+        CScriptArray* arr;
+        if (ref == nullptr) {
+            asITypeInfo* asType = getAngelScriptModule()->GetEngine()->GetTypeInfoByName((elementType->getName().cstr()));
+            arr = CScriptArray::Create(asType, arraySize);
+        }
+        else {
+            arr = (CScriptArray*)ref;
+            arr->Resize(arraySize);
+        }
+
+        tinyxml2::XMLElement* indexElement = element->FirstChildElement();
+        for (int i = 0; i < arraySize; i++) {
+            void* index = arr->At(i);
+
+            loadXML(index, elementType, indexElement);
+            indexElement = indexElement->NextSiblingElement();
+        }
     }
     else if (type->isClassType()) {
-        //asIScriptObject* obj;
-        //ScriptClass* clss;
+        asIScriptObject* obj;
+        ScriptClass* clss;
 
-        //if (type->isRefType()) {
-        //    void** objectRef = (void**)ref;
-        //    obj = (asIScriptObject*)(*objectRef);
+        if (type->isRefType()) {
+            void** objectRef = (void**)ref;
+            obj = (asIScriptObject*)(*objectRef);
 
-        //    RefType* refType = (RefType*)type;
-        //    clss = (ScriptClass*)refType->getBaseType();
-        //}
-        //else {
-        //    obj = (asIScriptObject*)ref;
-        //    clss = (ScriptClass*)type;
-        //}
+            RefType* refType = (RefType*)type;
+            clss = (ScriptClass*)refType->getBaseType();
+        }
+        else {
+            obj = (asIScriptObject*)ref;
+            clss = (ScriptClass*)type;
+        }
 
-        //if (obj == nullptr) { return; }
+        if (obj == nullptr) { 
+            PGE::String error = PGE::String("Unexpected uninitialized variable: ") + element->Name();
+            throw std::runtime_error(error.cstr());
+        }
 
-        //ScriptObject classObject = ScriptObject(clss, obj);
-        //classObject.saveXML(element, this);
+        ScriptObject classObject = ScriptObject(clss, obj);
+        classObject.loadXML(element, this);
     }
     else {
         if (type == Type::String) {

@@ -82,6 +82,9 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, const Config* config, float 
             mainFunction->execute();
         }
 
+        //scriptModule->save(doc);
+        //doc.LoadFile("juanIsntReal.xml");
+        //scriptModule->load(doc.FirstChildElement());
         scriptModule->save(doc);
     }
 
