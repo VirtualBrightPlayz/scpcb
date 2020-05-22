@@ -330,10 +330,9 @@ void ScriptModule::loadXML(void* ref, Type* type, tinyxml2::XMLElement* element)
     }
     else {
         if (type == Type::String) {
-            // TODO: Find a better method of doign this?
+            PGE::String* prop = (PGE::String*)ref;
             const char* str = element->Attribute("value");
-            PGE::String* strValue = str == nullptr ? new PGE::String("") : new PGE::String(str);
-            memcpy(ref, strValue, type->getSize());
+            *prop = str == nullptr ? "" : str;
         }
         else if (type == Type::Float) {
             float fValue = element->FloatAttribute("value", 0.0f);
