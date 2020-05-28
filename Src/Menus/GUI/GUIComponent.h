@@ -41,7 +41,6 @@ class GUIComponent {
         virtual void updateInternal(PGE::Vector2f mousePos) =0;
         virtual void renderInternal() =0;
 
-        GUIComponent() {}
     public:
         virtual ~GUIComponent();
 

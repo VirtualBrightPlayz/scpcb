@@ -27,7 +27,6 @@ class GUIButton : public GUIComponent {
         void updateInternal(PGE::Vector2f mousePos) override;
         void renderInternal() override;
 
-        GUIButton() {}
     public:
         // Whether this button can be clicked.
         bool locked;

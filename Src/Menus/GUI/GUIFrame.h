@@ -12,7 +12,6 @@ class GUIFrame : public GUIComponent {
         void updateInternal(PGE::Vector2f mousePos) override;
         void renderInternal() override;
 
-        GUIFrame() {}
     public:
         GUIFrame(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment = Alignment::CenterXY);
 };
