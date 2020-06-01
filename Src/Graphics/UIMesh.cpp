@@ -18,6 +18,8 @@ UIMesh::UIMesh(GraphicsResources* gr) {
     shaderTexturelessColorConstant->setValue(color);
 
     startedRender = false;
+    textureless = false;
+    tiled = false;
 
     PGE::Matrix4x4f orthoMat = gr->getOrthoMat();
 

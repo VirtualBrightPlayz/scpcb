@@ -64,7 +64,7 @@
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
@@ -107,6 +107,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <PreprocessorDefinitions>WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -135,6 +136,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Graphics\UIMesh.h" />
     <ClInclude Include="..\Src\Input\Input.h" />
     <ClInclude Include="..\Src\Input\KeyBinds.h" />
+    <ClInclude Include="..\Src\Menus\Console.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIComponent.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIButton.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIFrame.h" />
@@ -187,6 +189,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Input\Input.cpp" />
     <ClCompile Include="..\Src\Input\KeyBinds.cpp" />
     <ClCompile Include="..\Src\Main.cpp" />
+    <ClCompile Include="..\Src\Menus\Console.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIComponent.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIFrame.cpp" />

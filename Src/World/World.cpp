@@ -155,8 +155,8 @@ void World::runTick(float timeStep, Input input) {
         menuGraveyard = nullptr;
     }
 
-    bool prevMenu = currMenu != nullptr;
-    if (!prevMenu) {
+    bool menuWasOpened = currMenu != nullptr;
+    if (!menuWasOpened) {
         updatePlaying(timeStep, input);
     } else {
         currMenu->update(mousePosition);
@@ -177,10 +177,10 @@ void World::runTick(float timeStep, Input input) {
     }
 
     // If a menu was closed this tick then reset the mouse position.
-    if (prevMenu && currMenu == nullptr) {
+    if (menuWasOpened && currMenu == nullptr) {
         io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
         io->setMouseVisibility(false);
-    } else if (!prevMenu && currMenu != nullptr) {
+    } else if (!menuWasOpened && currMenu != nullptr) {
         io->setMouseVisibility(true);
     }
 }
