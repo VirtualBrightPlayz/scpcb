@@ -11,6 +11,7 @@
 #include "../Graphics/Camera.h"
 #include "../Graphics/GraphicsResources.h"
 #include "../Menus/PauseMenu.h"
+#include "../Menus/Console.h"
 #include "../Menus/Menu.h"
 #include "../Save/Config.h"
 #include "../Menus/GUI/GUIComponent.h"
@@ -47,11 +48,14 @@ World::World() {
     io->setMouseVisibility(false);
     io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
     pauseMenu = new PauseMenu(this, uiMesh, largeFont, keyBinds, config, txtMngt, io);
+    console = new Console(this, uiMesh, largeFont, keyBinds, config, txtMngt, io);
 
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
 
     scripting = new ScriptWorld(gfxRes, config, timing->getTimeStep());
+
+    applyConfig(config);
 
 #ifdef DEBUG
     mouseTxtX =  new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -5.f, Alignment::Bottom | Alignment::Left);
@@ -63,6 +67,7 @@ World::World() {
 
 World::~World() {
     delete pauseMenu;
+    delete console;
     delete uiMesh;
     delete keyBinds;
     delete spriteMesh;
@@ -79,6 +84,16 @@ World::~World() {
 
     delete io;
     delete graphics;
+}
+
+void World::applyConfig(const Config* config) {
+    std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>> keyboardMappings = config->getKeyboardBindings();
+    std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>>::const_iterator it;
+    for (it = keyboardMappings.begin(); it != keyboardMappings.end(); it++) {
+        for (int i = 0; i < (int)it->second.size(); i++) {
+            keyBinds->bindInput(it->first, it->second[i]);
+        }
+    }
 }
 
 void World::activateMenu(Menu *mu) {
@@ -106,11 +121,12 @@ bool World::run() {
     }
 
     keyBinds->update();
-    Input input = keyBinds->getFiredInputs();
+    Input downInputs = keyBinds->getDownInputs();
+    Input hitInputs = keyBinds->getHitInputs();
 
     // Game logic updates first, use accumulator.
     while (timing->tickReady()) {
-        runTick((float)timing->getTimeStep(), input);
+        runTick((float)timing->getTimeStep(), downInputs, hitInputs);
         timing->subtractTick();
     }
 
@@ -129,7 +145,7 @@ bool World::run() {
     return graphics->getWindow()->isOpen();
 }
 
-void World::runTick(float timeStep, Input input) {
+void World::runTick(float timeStep, Input downInputs, Input hitInputs) {
     SysEvents::update();
     io->update();
 
@@ -145,7 +161,7 @@ void World::runTick(float timeStep, Input input) {
     mousePosition.y -= GUIComponent::SCALE_MAGNITUDE;
 
 #ifdef DEBUG
-    mouseTxtX->text = PGE::String("MouseX: ", PGE::String(mousePosition.x));
+    mouseTxtX->text = PGE::String("MouseX: ", PGE::String((int)downInputs));
     mouseTxtY->text = PGE::String("MouseY: ", PGE::String(mousePosition.y));
 #endif
 
@@ -157,12 +173,12 @@ void World::runTick(float timeStep, Input input) {
 
     bool menuWasOpened = currMenu != nullptr;
     if (!menuWasOpened) {
-        updatePlaying(timeStep, input);
+        updatePlaying(timeStep, downInputs, hitInputs);
     } else {
         currMenu->update(mousePosition);
     }
 
-    scripting->update(input);
+    scripting->update(downInputs);
 
     if (keyBinds->escape->isHit()) {
         // If a text input is active then escape de-selects it.
@@ -173,6 +189,13 @@ void World::runTick(float timeStep, Input input) {
             currMenu->onEscapeHit();
         } else {
             activateMenu(pauseMenu);
+        }
+    } else if (inputWasFired(hitInputs, Input::ToggleConsole)) {
+        if (currMenu == nullptr) {
+            activateMenu(console);
+        }
+        else {
+            console->onEscapeHit();
         }
     }
 
@@ -208,7 +231,7 @@ void World::draw() {
     graphics->swap(config->isVsync());
 }
 
-void World::updatePlaying(float timeStep, Input input) {
+void World::updatePlaying(float timeStep, Input downInputs, Input hitInputs) {
     int centerX = config->getWidth() / 2;
     int centerY = config->getHeight() / 2;
 

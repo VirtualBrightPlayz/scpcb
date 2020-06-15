@@ -29,10 +29,17 @@ PGE::String getBindingName(const Input& input) {
         case Input::Inventory: {
             return PGE::String("Inventory");
         } break;
+        case Input::ToggleConsole: {
+            return PGE::String("Toggle console");
+        } break;
         default: {
             return PGE::String("None");
         }
     }
+}
+
+bool inputWasFired(const Input& input, const Input& firedInput) {
+    return (input & firedInput) == firedInput;
 }
 
 const Input operator&(const Input& a, const Input& b) {

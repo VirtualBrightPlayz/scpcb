@@ -23,7 +23,7 @@ public:
     const PGE::String& getType() const;
     
     // What should the menu do when escape is pressed.
-    virtual void onEscapeHit()=0;
+    virtual void onEscapeHit();
     
     virtual void update(const PGE::Vector2f& mousePosition)=0;
     virtual void render() const=0;

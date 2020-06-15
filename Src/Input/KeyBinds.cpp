@@ -1,7 +1,8 @@
 #include "KeyBinds.h"
 
 KeyBinds::KeyBinds(PGE::IO* inIo) {
-    currInputs = Input::None;
+    downInputs = Input::None;
+    hitInputs = Input::None;
 
     io = inIo;
 
@@ -120,23 +121,31 @@ bool KeyBinds::redoIsHit() const {
 }
 
 void KeyBinds::update() {
-    currInputs = Input::None;
+    downInputs = Input::None;
+    hitInputs = Input::None;
 
     std::map<Input, std::vector<UserInput>>::const_iterator it;
     for (it = bindings.begin(); it != bindings.end(); it++) {
         // Check if any of the assigned inputs are down.
         for (int i = 0; i < (int)it->second.size(); i++) {
-            // If one of them is down then the input is active.
+            // If one of them is down/hit then the input is active.
             if (it->second[i].input->isDown()) {
-                currInputs = currInputs | it->first;
-                break;
+                downInputs = downInputs | it->first;
+            }
+            
+            if (it->second[i].input->isHit()) {
+                hitInputs = hitInputs | it->first;
             }
         }
     }
 }
 
-Input KeyBinds::getFiredInputs() const {
-    return currInputs;
+Input KeyBinds::getDownInputs() const {
+    return downInputs;
+}
+
+Input KeyBinds::getHitInputs() const {
+    return hitInputs;
 }
 
 void KeyBinds::bindInput(Input input, UserInput key) {

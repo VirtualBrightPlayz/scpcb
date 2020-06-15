@@ -10,8 +10,15 @@
 
 class KeyBinds {
     private:
-        // Current inputs for this tick.
-        Input currInputs;
+        /// <summary>
+        /// Inputs that are down for this tick.
+        /// </summary>
+        Input downInputs;
+
+        /// <summary>
+        /// Inputs that are in the hit state for this tick.
+        /// </summary>
+        Input hitInputs;
 
         class UserInput {
             public:
@@ -71,7 +78,8 @@ class KeyBinds {
 
         // Iterate through the keybinds and find out which ones fired this tick.
         void update();
-        Input getFiredInputs() const;
+        Input getDownInputs() const;
+        Input getHitInputs() const;
 };
 
 #endif // KEYBINDS_H_INCLUDED

@@ -26,6 +26,7 @@ void Config::genDefaultKeyboardBindings() {
     kbBinds[Input::Blink] = { PGE::KeyboardInput::SCANCODE::SPACE };
     kbBinds[Input::Interact] = { PGE::KeyboardInput::SCANCODE::E };
     kbBinds[Input::Inventory] = { PGE::KeyboardInput::SCANCODE::TAB };
+    kbBinds[Input::ToggleConsole] = { PGE::KeyboardInput::SCANCODE::F3 };
 }
 
 PGE::String defaultModules = "RootScript|SCPCB";
@@ -183,10 +184,14 @@ float Config::getAspectRatio() const {
     return aspectRatio;
 }
 
-const std::vector<PGE::String>& Config::getEnabledMods() const {
-    return enabledMods;
+std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>> Config::getKeyboardBindings() const {
+    return kbBinds;
 }
 
 float Config::isVsync() const {
     return vsync;
+}
+
+const std::vector<PGE::String>& Config::getEnabledMods() const {
+    return enabledMods;
 }

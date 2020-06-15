@@ -40,6 +40,11 @@ private:
     // Determines if the box should track the mouse's movement as a drag action for selecting text.
     bool draggable;
 
+    /// <summary>
+    /// Whether the text should be aligned to the left side of the input box.
+    /// </summary>
+    bool leftAlignedText;
+
     // Current position of the caret relative to the text.
     int caretPosition;
     // X coordinate of the caret.
@@ -50,6 +55,12 @@ private:
     int selectionEndPosition;
     bool anyTextSelected() const;
 
+    /// <summary>
+    /// Passes the XY coordinates of the text's starting point to the parameters by reference.
+    /// </summary>
+    /// <param name="outTextX">The X coordinate of the text.</param>
+    /// <param name="outTextY">The Y coordinate of the text.</param>
+    void fillTextCoordinates(float& outTextX, float& outTextY) const;
     // Returns an index corresponding to where the caret should be based on the provided X coordinate.
     int getCaretPosition(float mouseX);
     void setCaretPositionFromMouse(float mouseX);
@@ -77,14 +88,18 @@ private:
     void renderInternal() override;
 
 public:
-    GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, const PGE::String& defaultText = "", int limit = INT_MAX, const PGE::String& pattern = "", Alignment alignment = Alignment::CenterXY);
+    GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, bool alignLeft = false, const PGE::String& defaultText = "", int limit = INT_MAX, const PGE::String& pattern = "", Alignment alignment = Alignment::CenterXY);
 
     void setText(const PGE::String& txt);
     PGE::String getText() const;
 
-    // Select this textbox.
+    /// <summary>
+    /// Select this textbox.
+    /// </summary>
     void select();
-    // Deselect this textbox;
+    /// <summary>
+    /// Deselect this textbox
+    /// </summary>
     void deselect();
 
     static bool hasSubscriber();

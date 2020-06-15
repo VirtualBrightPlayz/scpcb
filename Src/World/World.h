@@ -22,6 +22,7 @@ class Timing;
 class GraphicsResources;
 class TxtManager;
 class PauseMenu;
+class Console;
 class FPSCounter;
 class GUIText;
 class Menu;
@@ -57,6 +58,7 @@ class World {
         TxtManager* txtMngt;
 
         PauseMenu* pauseMenu;
+        Console* console;
 
         FPSCounter* fps;
 
@@ -64,13 +66,15 @@ class World {
 
         bool shutdownRequested;
 
+        void applyConfig(const Config* config);
+
         //-- Update/Draw code.
 
         // Goes through the update phase of a single tick.
-        void runTick(float timeStep, Input input);
+        void runTick(float timeStep, Input downInputs, Input hitInputs);
 
         // Update code for GameState::Playing game state.
-        void updatePlaying(float timeStep, Input input);
+        void updatePlaying(float timeStep, Input downInputs, Input hitInputs);
         // Draw code for GameState::Playing game state.
         void drawPlaying();
         void destroyPlaying();

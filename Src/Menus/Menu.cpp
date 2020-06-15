@@ -18,3 +18,7 @@ void Menu::detach() {
 const PGE::String& Menu::getType() const {
     return type;
 }
+
+void Menu::onEscapeHit() {
+    detach();
+}

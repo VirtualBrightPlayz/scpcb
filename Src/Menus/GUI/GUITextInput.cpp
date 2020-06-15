@@ -6,7 +6,7 @@
 
 GUITextInput* GUITextInput::subscriber = nullptr;
 
-GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, const PGE::String& defaultText, int limit, const PGE::String& pattern, Alignment alignment)
+GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, bool alignLeft, const PGE::String& defaultText, int limit, const PGE::String& pattern, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment) {
     menuwhite = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menuwhite.jpg");
     menublack = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menublack.jpg");
@@ -27,6 +27,7 @@ GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE
 
     characterLimit = limit;
     draggable = false;
+    leftAlignedText = alignLeft;
 
     caretPosition = 0;
     selectionStartPosition = 0;
@@ -81,8 +82,19 @@ bool GUITextInput::hasSubscriber() {
     return subscriber != nullptr;
 }
 
+void GUITextInput::fillTextCoordinates(float& outTextX, float& outTextY) const {
+    font->centerTextCoords(outTextX, outTextY, text, getX(), getY(), width, height, txtScale);
+    if (leftAlignedText) {
+        outTextX = getX();
+    }
+}
+
 int GUITextInput::getCaretPosition(float mouseX) {
-    float caretX = getX() + width / 2.f + font->stringWidth(text, txtScale) / 2.f;
+    float textWidth = font->stringWidth(text, txtScale);
+    float textX = 0.f; float textY = 0.f;
+    fillTextCoordinates(textX, textY);
+    
+    float caretX = textX + textWidth;
     for (int newCaret = text.size(); newCaret > 0; newCaret--) {
         float charWidth = font->stringWidth(text.charAt(newCaret - 1), txtScale);
         if (mouseX > caretX - charWidth / 2.f) {
@@ -101,10 +113,11 @@ void GUITextInput::setCaretPositionFromMouse(float mouseX) {
 }
 
 void GUITextInput::updateCaretX() {
-    if (text.isEmpty()) {
-        caretX = getX() + width / 2;
-    } else {
-        caretX = getX() + width / 2 - font->stringWidth(text, txtScale) / 2;
+    float textX = 0.f; float textY = 0.f;
+    fillTextCoordinates(textX, textY);
+
+    caretX = textX;
+    if (!text.isEmpty()) {
         caretX += font->stringWidth(text.substr(0, caretPosition), txtScale);
     }
 }
@@ -434,8 +447,10 @@ void GUITextInput::renderInternal() {
         // Render anything buffered so the text doesn't get overlapped.
         uiMesh->endRender();
         uiMesh->startRender();
-        float txtX; float txtY;
-        font->centerTextCoords(txtX, txtY, text, getX(), getY(), width, height, txtScale);
+
+        float txtX = 0.f;
+        float txtY = 0.f;
+        fillTextCoordinates(txtX, txtY);
 
         font->draw(text, PGE::Vector2f(txtX, txtY), txtScale);
     }

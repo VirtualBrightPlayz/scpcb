@@ -10,8 +10,10 @@ class Font;
 class KeyBinds;
 class Config;
 class TxtManager;
+class GUIFrame;
+class GUITextInput;
 
-class Console : Menu {
+class Console : public Menu {
 private:
     class InternalCommand {
     public:
@@ -19,12 +21,18 @@ private:
         virtual void execute(Console* console) const = 0;
     };
 
+    GUIFrame* frame;
+    GUITextInput* input;
+
+    UIMesh* uiMesh;
+    Font* font;
+
 public:
     Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io);
     ~Console() = default;
 
-    /*void update(const PGE::Vector2f& mousePosition) override;
-    void render() const override;*/
+    void update(const PGE::Vector2f& mousePosition) override;
+    void render() const override;
 
 private:
     class TestCommand : InternalCommand {

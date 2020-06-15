@@ -45,7 +45,6 @@ class Config {
 
         void loadFile();
         void saveFile() const;
-        void saveBindings(Input input) const;
 
     public:
         Config(const PGE::String& optionsFile);
@@ -64,9 +63,11 @@ class Config {
         int getHeight() const;
         float getAspectRatio() const;
 
-        const std::vector<PGE::String>& getEnabledMods() const;
-
         float isVsync() const;
+
+        std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>> getKeyboardBindings() const;
+
+        const std::vector<PGE::String>& getEnabledMods() const;
 };
 
 #endif // CONFIG_H_INCLUDED

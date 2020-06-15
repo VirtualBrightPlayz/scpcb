@@ -17,10 +17,13 @@ enum class Input {
     // Inventory Hotkeys.
     Inventory = 0x100,
     ToggleSiteNavigator = 0x200,
-    ToggleRadio = 0x400
+    ToggleRadio = 0x400,
+
+    ToggleConsole = 0x800
 };
 
 PGE::String getBindingName(const Input& input);
+bool inputWasFired(const Input& input, const Input& firedInput);
 
 const Input operator&(const Input& a, const Input& b);
 const Input operator|(const Input& a, const Input& b);
