@@ -12,7 +12,6 @@ void PlayerControllerDefinitions::playerControllerAddRef(PlayerController* contr
 }
 
 void PlayerControllerDefinitions::playerControllerRelease(PlayerController* controller) {
-    void* a = this;
     refCount[controller]--;
 
     if (refCount[controller] <= 0) { refCount.erase(controller); delete controller; }

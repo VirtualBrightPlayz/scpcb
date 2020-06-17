@@ -23,7 +23,6 @@ void CollisionDefinitions::collisionMeshAddRef(CollisionMesh* mesh) {
 }
 
 void CollisionDefinitions::collisionMeshRelease(CollisionMesh* mesh) {
-    void* a = this;
     refCount[mesh]--;
 
     if (refCount[mesh] <= 0) { refCount.erase(mesh); delete mesh; }
