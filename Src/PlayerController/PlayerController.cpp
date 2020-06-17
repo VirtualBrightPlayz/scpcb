@@ -28,7 +28,7 @@ Vector3f PlayerController::getPosition() const {
     return position;
 }
 
-void PlayerController::setPosition(Vector3f pos) {
+void PlayerController::setPosition(const Vector3f& pos) {
     position = pos;
 }
 

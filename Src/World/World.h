@@ -71,10 +71,10 @@ class World {
         //-- Update/Draw code.
 
         // Goes through the update phase of a single tick.
-        void runTick(float timeStep, Input downInputs, Input hitInputs);
+        void runTick(float timeStep);
 
         // Update code for GameState::Playing game state.
-        void updatePlaying(float timeStep, Input downInputs, Input hitInputs);
+        void updatePlaying(float timeStep);
         // Draw code for GameState::Playing game state.
         void drawPlaying();
         void destroyPlaying();

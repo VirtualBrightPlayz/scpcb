@@ -1,13 +1,11 @@
 #ifndef SCRIPTWORLD_H_INCLUDED
 #define SCRIPTWORLD_H_INCLUDED
 
-
-#include "../Input/Input.h"
-
 class ScriptManager;
 class MathDefinitions;
 class RM2Definitions;
 class CollisionDefinitions;
+class PlayerControllerDefinitions;
 class EventDefinition;
 class ScriptModule;
 class GraphicsResources;
@@ -20,6 +18,7 @@ private:
     MathDefinitions* mathDefinitions;
     RM2Definitions* rm2Definitions;
     CollisionDefinitions* collisionDefinitions;
+    PlayerControllerDefinitions* playerControllerDefinitions;
 
     EventDefinition* perTickEventDefinition;
     EventDefinition* perFrameEventDefinition;
@@ -30,7 +29,7 @@ public:
     ScriptWorld(GraphicsResources* gfxRes, const Config* config, float timestep);
     ~ScriptWorld();
 
-    void update(Input input);
+    void update();
     void draw(float interpolation);
 
 };

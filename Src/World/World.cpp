@@ -120,13 +120,9 @@ bool World::run() {
         return false;
     }
 
-    keyBinds->update();
-    Input downInputs = keyBinds->getDownInputs();
-    Input hitInputs = keyBinds->getHitInputs();
-
     // Game logic updates first, use accumulator.
     while (timing->tickReady()) {
-        runTick((float)timing->getTimeStep(), downInputs, hitInputs);
+        runTick((float)timing->getTimeStep());
         timing->subtractTick();
     }
 
@@ -145,9 +141,13 @@ bool World::run() {
     return graphics->getWindow()->isOpen();
 }
 
-void World::runTick(float timeStep, Input downInputs, Input hitInputs) {
+void World::runTick(float timeStep) {
     SysEvents::update();
     io->update();
+    keyBinds->update();
+
+    Input downInputs = keyBinds->getDownInputs();
+    Input hitInputs = keyBinds->getHitInputs();
 
     // Get mouse position and convert it to screen coordinates.
 
@@ -173,12 +173,12 @@ void World::runTick(float timeStep, Input downInputs, Input hitInputs) {
 
     bool menuWasOpened = currMenu != nullptr;
     if (!menuWasOpened) {
-        updatePlaying(timeStep, downInputs, hitInputs);
+        updatePlaying(timeStep);
     } else {
         currMenu->update(mousePosition);
     }
 
-    scripting->update(downInputs);
+    scripting->update();
 
     if (keyBinds->escape->isHit()) {
         // If a text input is active then escape de-selects it.
@@ -231,7 +231,7 @@ void World::draw() {
     graphics->swap(config->isVsync());
 }
 
-void World::updatePlaying(float timeStep, Input downInputs, Input hitInputs) {
+void World::updatePlaying(float timeStep) {
     int centerX = config->getWidth() / 2;
     int centerY = config->getHeight() / 2;
 

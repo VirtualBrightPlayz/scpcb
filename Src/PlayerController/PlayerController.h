@@ -17,7 +17,7 @@ class PlayerController {
         void update(float angle, float angleY, Input input);
 
         PGE::Vector3f getPosition() const;
-        void setPosition(PGE::Vector3f pos);
+        void setPosition(const PGE::Vector3f& pos);
 
         float getCamAnimState() const;
     private:
