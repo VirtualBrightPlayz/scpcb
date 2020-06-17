@@ -17,20 +17,16 @@
 
 ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, const Config* config, float timestep) {
     manager = new ScriptManager();
-    mathDefinitions = new MathDefinitions();
-    mathDefinitions->registerToEngine(manager);
-    rm2Definitions = new RM2Definitions(gfxRes);
-    rm2Definitions->registerToEngine(manager);
-    collisionDefinitions = new CollisionDefinitions();
-    collisionDefinitions->registerToEngine(manager);
+    mathDefinitions = new MathDefinitions(manager);
+    rm2Definitions = new RM2Definitions(manager, gfxRes);
+    collisionDefinitions = new CollisionDefinitions(manager);
 
     ScriptFunction::Signature perTickSignature;
     perTickSignature.functionName = "PerTick";
     perTickSignature.returnType = Type::Void;
     perTickSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "deltaTime"));
 
-    perTickEventDefinition = new EventDefinition("PerTick", perTickSignature);
-    perTickEventDefinition->registerToEngine(manager);
+    perTickEventDefinition = new EventDefinition(manager, "PerTick", perTickSignature);
     perTickEventDefinition->setArgument("deltaTime", timestep);
 
     ScriptFunction::Signature perFrameSignature;
@@ -38,8 +34,7 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, const Config* config, float 
     perFrameSignature.returnType = Type::Void;
     perFrameSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "interpolation"));
 
-    perFrameEventDefinition = new EventDefinition("PerFrame", perFrameSignature);
-    perFrameEventDefinition->registerToEngine(manager);
+    perFrameEventDefinition = new EventDefinition(manager, "PerFrame", perFrameSignature);
     perFrameEventDefinition->setArgument("interpolation", 1.0f);
 
     const std::vector<PGE::String>& enabledMods = config->getEnabledMods();
@@ -101,6 +96,7 @@ ScriptWorld::~ScriptWorld() {
 
     delete mathDefinitions;
     delete rm2Definitions;
+    delete collisionDefinitions;
 
     delete manager;
 }

@@ -3,10 +3,6 @@
 
 class ScriptManager;
 
-class NativeDefinition {
-    public:
-        virtual void registerToEngine(ScriptManager* mgr) = 0;
-        virtual void cleanup() = 0;
-};
+class NativeDefinition { };
 
 #endif

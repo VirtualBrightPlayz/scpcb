@@ -29,18 +29,12 @@ void CollisionDefinitions::collisionMeshRelease(CollisionMesh* mesh) {
     if (refCount[mesh] <= 0) { refCount.erase(mesh); delete mesh; }
 }
 
-void CollisionDefinitions::registerToEngine(ScriptManager* mgr) {
-    asIScriptEngine* engine = mgr->getAngelScriptEngine();
+CollisionDefinitions::CollisionDefinitions(ScriptManager* mgr) {
+    engine = mgr->getAngelScriptEngine();
 
-    //Vector3f
-    engine->RegisterObjectType("CollisionMesh", sizeof(PGE::Vector3f), asOBJ_REF);
+    engine->RegisterObjectType("CollisionMesh", sizeof(CollisionMesh), asOBJ_REF);
     engine->RegisterObjectBehaviour("CollisionMesh", asBEHAVE_FACTORY, "CollisionMesh@ f(const array<Vector3f>&in verts, const array<int>&in inds)",
                                     asMETHOD(CollisionDefinitions, collisionMeshFactory), asCALL_THISCALL_ASGLOBAL, this);
     engine->RegisterObjectBehaviour("CollisionMesh", asBEHAVE_ADDREF, "void f()", asMETHOD(CollisionDefinitions,collisionMeshAddRef), asCALL_THISCALL_OBJLAST, this);
     engine->RegisterObjectBehaviour("CollisionMesh", asBEHAVE_RELEASE, "void f()", asMETHOD(CollisionDefinitions,collisionMeshRelease), asCALL_THISCALL_OBJLAST, this);
-
-}
-
-void CollisionDefinitions::cleanup() {
-    //TODO: implement
 }

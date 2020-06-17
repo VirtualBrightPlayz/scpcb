@@ -20,6 +20,10 @@ ScriptModule::ScriptModule(ScriptManager* mgr, const PGE::String& nm) {
     built = false;
 }
 
+ScriptModule::~ScriptModule() {
+    scriptModule->Discard();
+}
+
 void ScriptModule::addScript(const PGE::String& sectionName, Script* script) {
     if (built) { throw std::runtime_error("Module already built!"); }
 

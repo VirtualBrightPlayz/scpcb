@@ -15,7 +15,7 @@ EventDefinition::Argument::Value::Value() {
     d = 0;
 }
 
-EventDefinition::EventDefinition(const PGE::String& nm, const ScriptFunction::Signature& sgntr) {
+EventDefinition::EventDefinition(ScriptManager* mgr, const PGE::String& nm, const ScriptFunction::Signature& sgntr) {
     name = nm;
     signature = sgntr;
     signature.returnType = Type::Void;
@@ -25,6 +25,22 @@ EventDefinition::EventDefinition(const PGE::String& nm, const ScriptFunction::Si
         Argument arg = Argument(sgntr.arguments[i].name, sgntr.arguments[i].type);
         arguments.push_back(arg);
     }
+
+    engine = mgr->getAngelScriptEngine();
+
+    engine->RegisterFuncdef(signature.toString().cstr());
+
+    engine->SetDefaultNamespace(name.cstr());
+
+    PGE::String declaration = "void register(" + signature.functionName + "@ callback)";
+    engine->RegisterGlobalFunction(declaration.cstr(), asMETHOD(EventDefinition, registerCallback), asCALL_THISCALL_ASGLOBAL, this);
+
+    declaration = "void unregister(" + signature.functionName + "@ callback)";
+    engine->RegisterGlobalFunction(declaration.cstr(), asMETHOD(EventDefinition, unregisterCallback), asCALL_THISCALL_ASGLOBAL, this);
+
+    engine->SetDefaultNamespace("");
+
+    scriptContext = engine->CreateContext();
 }
 
 void EventDefinition::setArgument(const PGE::String& argument, int32_t i32) {
@@ -81,28 +97,6 @@ void EventDefinition::execute() {
 
         scriptContext->Execute();
     }
-}
-
-void EventDefinition::registerToEngine(ScriptManager* mgr) {
-    asIScriptEngine* engine = mgr->getAngelScriptEngine();
-
-    engine->RegisterFuncdef(signature.toString().cstr());
-
-    engine->SetDefaultNamespace(name.cstr());
-
-    PGE::String declaration = "void register(" + signature.functionName + "@ callback)";
-    engine->RegisterGlobalFunction(declaration.cstr(), asMETHOD(EventDefinition, registerCallback), asCALL_THISCALL_ASGLOBAL, this);
-
-    declaration = "void unregister(" + signature.functionName + "@ callback)";
-    engine->RegisterGlobalFunction(declaration.cstr(), asMETHOD(EventDefinition, unregisterCallback), asCALL_THISCALL_ASGLOBAL, this);
-
-    engine->SetDefaultNamespace("");
-
-    scriptContext = engine->CreateContext();
-}
-
-void EventDefinition::cleanup() {
-    //TODO: implement
 }
 
 void EventDefinition::registerCallback(asIScriptFunction* f) {

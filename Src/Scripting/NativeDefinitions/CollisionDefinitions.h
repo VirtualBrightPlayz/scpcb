@@ -10,14 +10,15 @@ class CollisionMesh;
 class CScriptArray;
 
 class CollisionDefinitions : public NativeDefinition {
-private:
-    std::map<CollisionMesh*,int> refCount;
-    CollisionMesh* collisionMeshFactory(CScriptArray* verts, CScriptArray* inds);
-    void collisionMeshAddRef(CollisionMesh* mesh);
-    void collisionMeshRelease(CollisionMesh* mesh);
-public:
-    void registerToEngine(ScriptManager* mgr) override;
-    void cleanup() override;
+    private:
+        std::map<CollisionMesh*,int> refCount;
+        CollisionMesh* collisionMeshFactory(CScriptArray* verts, CScriptArray* inds);
+        void collisionMeshAddRef(CollisionMesh* mesh);
+        void collisionMeshRelease(CollisionMesh* mesh);
+
+        asIScriptEngine* engine;
+    public:
+        CollisionDefinitions(ScriptManager* mgr);
 };
 
 #endif

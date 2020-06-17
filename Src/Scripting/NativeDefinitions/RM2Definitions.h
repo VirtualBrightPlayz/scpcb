@@ -15,10 +15,9 @@ class RM2Definitions : public NativeDefinition {
         void deleteRM2(RM2* rm2);
 
         GraphicsResources* graphicsResources;
+        asIScriptEngine* engine;
     public:
-        RM2Definitions(GraphicsResources* gfxRes);
-        void registerToEngine(ScriptManager* mgr) override;
-        void cleanup() override;
+        RM2Definitions(ScriptManager* mgr, GraphicsResources* gfxRes);
 };
 
 #endif

@@ -29,10 +29,12 @@ class EventDefinition : public NativeDefinition {
                 double d;
             } value;
             Argument(const PGE::String& nm, Type* t);
-        }; 
+        };
         std::vector<Argument> arguments;
+
+        asIScriptEngine* engine;
     public:
-        EventDefinition(const PGE::String& nm, const ScriptFunction::Signature& sgntr);
+        EventDefinition(ScriptManager* mgr, const PGE::String& nm, const ScriptFunction::Signature& sgntr);
 
         void setArgument(const PGE::String& argument, int32_t i32);
         void setArgument(const PGE::String& argument, uint32_t u32);
@@ -42,9 +44,6 @@ class EventDefinition : public NativeDefinition {
         void setArgument(const PGE::String& argument, ScriptObject* srcObj);
         void setArgumentNative(const PGE::String& argument, void* natObj);*/
         void execute();
-
-        void registerToEngine(ScriptManager* mgr) override;
-        void cleanup() override;
 };
 
 #endif

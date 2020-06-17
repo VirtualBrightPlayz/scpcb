@@ -30,8 +30,8 @@ void matrixDestructor(void* memory) {
     ((PGE::Matrix4x4f*)memory)->~Matrix4x4f();
 }
 
-void MathDefinitions::registerToEngine(ScriptManager* mgr) {
-    asIScriptEngine* engine = mgr->getAngelScriptEngine();
+MathDefinitions::MathDefinitions(ScriptManager* mgr) {
+    engine = mgr->getAngelScriptEngine();
 
     //Vector3f
     engine->RegisterObjectType("Vector3f", sizeof(PGE::Vector3f), asOBJ_VALUE | asOBJ_APP_CLASS_ALLFLOATS | asGetTypeTraits<PGE::Vector3f>());
@@ -86,8 +86,4 @@ void MathDefinitions::registerToEngine(ScriptManager* mgr) {
     engine->RegisterGlobalFunction("Matrix4x4f constructPerspectiveMat(float horizontalfov, float aspectRatio, float nearZ, float farZ)", asFUNCTION(PGE::Matrix4x4f::constructPerspectiveMat), asCALL_CDECL, this);
     engine->RegisterGlobalFunction("Matrix4x4f constructOrthographicMat(float width, float height, float nearZ, float farZ)", asFUNCTION(PGE::Matrix4x4f::constructOrthographicMat), asCALL_CDECL, this);
     engine->SetDefaultNamespace("");
-}
-
-void MathDefinitions::cleanup() {
-    //TODO: implement
 }

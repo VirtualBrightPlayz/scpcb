@@ -11,9 +11,10 @@
 #include <Math/Rectangle.h>
 
 class MathDefinitions : public NativeDefinition {
+    private:
+        asIScriptEngine* engine;
     public:
-        void registerToEngine(ScriptManager* mgr) override;
-        void cleanup() override;
+        MathDefinitions(ScriptManager* mgr);
 };
 
 #endif

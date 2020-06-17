@@ -29,6 +29,7 @@ class ScriptModule {
 
     public:
         ScriptModule(ScriptManager* mgr, const PGE::String& nm);
+        ~ScriptModule();
 
         void addScript(const PGE::String& sectionName, Script* script);
         void build();
