@@ -2,8 +2,12 @@
 
 using namespace PGE;
 
-CollisionMeshCollection::Instance::Instance(CollisionMesh* msh,Matrix4x4f mtrx) {
+CollisionMeshCollection::Instance::Instance(CollisionMeshCollection* coll,CollisionMesh* msh,Matrix4x4f mtrx, int id) {
+    collection = coll;
+    
     mesh = msh; matrix = mtrx;
+
+    identifier = id;
 
     const std::vector<Vector3f>& verts = mesh->getVertices();
 
@@ -18,23 +22,33 @@ Collision CollisionMeshCollection::Instance::checkCollision(Line3f line, float h
     return mesh->checkCollision(matrix, line, height, radius);
 }
 
+CollisionMeshCollection* CollisionMeshCollection::Instance::getCollection() const {
+    return collection;
+}
+
+CollisionMesh* CollisionMeshCollection::Instance::getMesh() const {
+    return mesh;
+}
+
 AABBox CollisionMeshCollection::Instance::getBBox() const {
     return bbox;
 }
 
-CollisionMeshCollection::Instance* CollisionMeshCollection::addInstance(CollisionMesh* mesh,Matrix4x4f matrix) {
-    Instance* instance = new Instance(mesh, matrix);
-    instances.push_back(instance);
-
-    return instance;
+int CollisionMeshCollection::Instance::getId() const {
+    return identifier;
 }
 
-void CollisionMeshCollection::removeInstance(Instance* instance) {
-    for (int i=0; i<instances.size(); i++) {
-        if (instances[i] == instance) {
-            instances.erase(instances.begin()+i);
-            return;
-        }
+int CollisionMeshCollection::addInstance(CollisionMesh* mesh,Matrix4x4f matrix) {
+    lastInstanceId++;
+    Instance instance(this, mesh, matrix, lastInstanceId);
+    instances.emplace(lastInstanceId, instance);
+
+    return instance.getId();
+}
+
+void CollisionMeshCollection::removeInstance(int instance) {
+    if (instances.find(instance) != instances.end()) {
+        instances.erase(instance);
     }
 }
 
@@ -45,10 +59,10 @@ Collision CollisionMeshCollection::checkCollision(Line3f line, float height, flo
     lineBox.addPoint(lineBox.getMin().add(Vector3f(-radius,-height*0.5f,-radius)));
     lineBox.addPoint(lineBox.getMax().add(Vector3f(radius,height*0.5f,radius)));
 
-    for (int i=0;i<instances.size();i++) {
-        AABBox bbox = instances[i]->getBBox();
+    for (std::map<int, Instance>::const_iterator it=instances.begin();it!=instances.end();it++) {
+        AABBox bbox = it->second.getBBox();
         if (!bbox.intersects(lineBox)) { continue; }
-        Collision coll = instances[i]->checkCollision(line,height,radius);
+        Collision coll = it->second.checkCollision(line,height,radius);
         if (coll.hit) {
             if (!retVal.hit || retVal.coveredAmount>coll.coveredAmount) {
                 retVal = coll;

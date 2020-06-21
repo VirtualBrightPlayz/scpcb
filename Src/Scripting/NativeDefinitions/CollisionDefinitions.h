@@ -7,14 +7,17 @@
 #include <map>
 
 class CollisionMesh;
+class CollisionMeshCollection;
 class CScriptArray;
 
 class CollisionDefinitions : public NativeDefinition {
     private:
-        std::map<CollisionMesh*,int> refCount;
-        CollisionMesh* collisionMeshFactory(CScriptArray* verts, CScriptArray* inds);
-        void collisionMeshAddRef(CollisionMesh* mesh);
-        void collisionMeshRelease(CollisionMesh* mesh);
+        std::map<CollisionMesh*,int> meshRefCount;
+        std::map<CollisionMeshCollection*,int> collectionRefCount;
+        CollisionMesh* meshFactory(CScriptArray* verts, CScriptArray* inds);
+        CollisionMeshCollection* collectionFactory();
+        void addRef(void* mesh);
+        void release(void* mesh);
 
         asIScriptEngine* engine;
     public:
