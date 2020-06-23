@@ -2,6 +2,7 @@
 #define RM2_H_INCLUDED
 
 #include <vector>
+#include <map>
 #include <Math/Matrix.h>
 #include <Mesh/Mesh.h>
 #include <Graphics/Graphics.h>
@@ -45,8 +46,15 @@ class RM2 {
         const static PGE::FilePath opaqueNormalMapShaderPath;
         const static PGE::FilePath alphaShaderPath;
 
-        std::vector<PGE::Material*> materials;
-        std::vector<PGE::Texture*> textures;
+        std::map<unsigned short, PGE::Material*> materials;
+
+        struct TextureEntry {
+            PGE::Texture* texture;
+            PGE::Texture* normalMap;
+            PGE::Shader* shader;
+        };
+
+        std::vector<TextureEntry> textures;
         GraphicsResources* graphicsResources;
 
         PGE::Shader* opaqueShader;

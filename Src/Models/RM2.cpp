@@ -83,6 +83,9 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
         error = RM2Error::UnexpectedChunk;
     }
 
+    UCharByte lmCount;
+    inFile.read(&lmCount.c, 1);
+
     UCharByte textureCount;
     inFile.read(&textureCount.c, 1);
 
@@ -96,16 +99,26 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
 
     //alphaShader = gfxRes->getShader(alphaShaderPath, true);
 
-    PGE::Texture* lightmapTextures[3];
-    for (int i = 0; i < 3; i++) {
-        const PGE::String lightmapSuffix = "_lm" + PGE::String(i) + ".png";
-        PGE::String lightmapName = filename.substr(0, filename.size() - extension.size()) + lightmapSuffix;
-        lightmapTextures[i] = gfxRes->getTexture(PGE::FilePath::fromStr(lightmapName));
+    std::vector<PGE::Texture*> lightmapTextures[3];
+    if (lmCount.u == 1) {
+        for (int i = 0; i < 3; i++) {
+            const PGE::String lightmapSuffix = "_lm" + PGE::String(i) + ".png";
+            PGE::String lightmapName = filename.substr(0, filename.size() - extension.size()) + lightmapSuffix;
+            lightmapTextures[i].push_back(gfxRes->getTexture(PGE::FilePath::fromStr(lightmapName)));
+        }
+    } else {
+        for (int n = 0; n < lmCount.u; n++) {
+            for (int i = 0; i < 3; i++) {
+                const PGE::String lightmapSuffix = "_lm" + PGE::String(i) + "_" + PGE::String(n) + ".png";
+                PGE::String lightmapName = filename.substr(0, filename.size() - extension.size()) + lightmapSuffix;
+                lightmapTextures[i].push_back(gfxRes->getTexture(PGE::FilePath::fromStr(lightmapName)));
+            }
+        }
     }
 
-    std::vector<PGE::Texture*> materialTextures;
-
     for (int i = 0; i < (int)textureCount.u; i++) {
+        TextureEntry textureEntry;
+
         PGE::String textureName = readByteString(inFile);
 
         PGE::FilePath textureFilePath = PGE::FilePath::fromStr(texturePath + textureName + ".jpg");
@@ -114,40 +127,30 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
         }
 
         PGE::Texture* texture = gfxRes->getTexture(textureFilePath);
+        textureEntry.texture = texture;
 
         char flag = 0;
         inFile.read(&flag, 1);
 
         bool isOpaque = (TextureLoadFlag)flag == TextureLoadFlag::Opaque;
 
-        PGE::Shader* shader = alphaShader;
+        textureEntry.shader = alphaShader;
+        textureEntry.normalMap = nullptr;
         if (isOpaque) {
+            textureEntry.shader = opaqueShader;
+
             PGE::FilePath normalMapFilePath = PGE::FilePath::fromStr(texturePath + textureName + "_n.jpg");
             if (!normalMapFilePath.exists()) {
                 normalMapFilePath = PGE::FilePath::fromStr(texturePath + textureName + "_n.png");
             }
 
             if (normalMapFilePath.exists()) {
-                materialTextures.resize(5);
-                materialTextures[4] = gfxRes->getTexture(normalMapFilePath);
-                shader = opaqueNormalMapShader;
-            } else {
-                materialTextures.resize(4);
-                shader = opaqueShader;
+                textureEntry.normalMap = gfxRes->getTexture(normalMapFilePath);
+                textureEntry.shader = opaqueNormalMapShader;
             }
-
-            materialTextures[0] = lightmapTextures[0];
-            materialTextures[1] = lightmapTextures[1];
-            materialTextures[2] = lightmapTextures[2];
-            materialTextures[3] = texture;
-        } else {
-            materialTextures.resize(1);
-            materialTextures[0] = texture;
         }
 
-        PGE::Material* material = new PGE::Material(shader, materialTextures, isOpaque);
-
-        materials.push_back(material);
+        textures.push_back(textureEntry);
     }
 
     //everything else
@@ -161,6 +164,33 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
             case FileSections::VisibleGeometry: {
                 UCharByte textureIndex;
                 inFile.read(&textureIndex.c, 1);
+
+                UCharByte lmIndex; lmIndex.u = 0;
+                if (lmCount.u > 1 && textures[textureIndex.u].shader != alphaShader) {
+                    inFile.read(&lmIndex.c, 1);
+                }
+
+                UShortBytes materialKey;
+                materialKey.c[0] = textureIndex.c;
+                materialKey.c[1] = lmIndex.c;
+
+                std::map<unsigned short, PGE::Material*>::iterator materialIter = materials.find(materialKey.i);
+                if (materialIter == materials.end()) {
+                    std::vector<PGE::Texture*> materialTextures;
+                    PGE::Shader* shader = textures[textureIndex.u].shader;
+                    materialTextures.push_back(lightmapTextures[0][lmIndex.u]);
+                    materialTextures.push_back(lightmapTextures[1][lmIndex.u]);
+                    materialTextures.push_back(lightmapTextures[2][lmIndex.u]);
+                    materialTextures.push_back(textures[textureIndex.u].texture);
+                    if (textures[textureIndex.u].normalMap != nullptr) {
+                        materialTextures.push_back(textures[textureIndex.u].normalMap);
+                    }
+
+                    PGE::Material* material = new PGE::Material(shader, materialTextures, shader != alphaShader);
+
+                    materials.emplace(materialKey.i, material);
+                    materialIter = materials.find(materialKey.i);
+                }
 
                 UShortBytes vertexCount;
                 inFile.read(vertexCount.c, 2);
@@ -227,7 +257,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
 
                 PGE::Mesh* mesh = PGE::Mesh::create(gfxRes->getGraphics(), PGE::Primitive::TYPE::TRIANGLE);
 
-                mesh->setMaterial(materials[textureIndex.u]);
+                mesh->setMaterial(materialIter->second);
                 mesh->setGeometry((int)vertices.size(), vertices, (int)primitives.size(), primitives);
 
                 if (materials[textureIndex.u]->isOpaque())
