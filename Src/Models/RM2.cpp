@@ -315,3 +315,12 @@ void RM2::render(const PGE::Matrix4x4f& modelMatrix) {
 const std::vector<CollisionMesh*>& RM2::getCollisionMeshes() const {
     return collisionMeshes;
 }
+
+CollisionMesh* RM2::getCollisionMesh(int index) const {
+    return collisionMeshes[index];
+}
+
+int RM2::collisionMeshCount() const {
+    return collisionMeshes.size();
+}
+

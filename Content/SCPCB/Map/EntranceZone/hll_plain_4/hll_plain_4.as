@@ -2,7 +2,7 @@ external shared class Room;
 
 class hll_plain_4 : Room {
     hll_plain_4(Zone@ zone) {
-        @mesh = zone.getMesh("hll_plain_4");
+        @_mesh = zone.getMesh("hll_plain_4");
     }
 }
 

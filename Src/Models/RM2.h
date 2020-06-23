@@ -79,6 +79,8 @@ class RM2 {
         void render(const PGE::Matrix4x4f& modelMatrix);
 
         const std::vector<CollisionMesh*>& getCollisionMeshes() const;
+        CollisionMesh* getCollisionMesh(int index) const;
+        int collisionMeshCount() const;
         //const std::vector<PointLight>& getPointLights() const;
         //const std::vector<Spotlight>& getSpotlights() const;
         //const std::vector<Waypoint>& getWaypoints() const;

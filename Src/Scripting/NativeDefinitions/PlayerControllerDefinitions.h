@@ -6,6 +6,7 @@
 #include <map>
 
 class PlayerController;
+class Camera;
 
 class PlayerControllerDefinitions : public NativeDefinition {
     private:
@@ -14,9 +15,12 @@ class PlayerControllerDefinitions : public NativeDefinition {
         void playerControllerAddRef(PlayerController* controller);
         void playerControllerRelease(PlayerController* controller);
 
+        Camera* tempCamera;
+        void __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller);
+
         asIScriptEngine* engine;
     public:
-        PlayerControllerDefinitions(ScriptManager* mgr);
+        PlayerControllerDefinitions(ScriptManager* mgr, Camera* cam);
 };
 
 #endif

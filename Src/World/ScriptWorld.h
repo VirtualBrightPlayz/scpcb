@@ -10,6 +10,7 @@ class EventDefinition;
 class ScriptModule;
 class GraphicsResources;
 class Config;
+class Camera;
 
 class ScriptWorld {
 private:
@@ -26,7 +27,7 @@ private:
     std::vector<ScriptModule*> modules;
 
 public:
-    ScriptWorld(GraphicsResources* gfxRes, const Config* config, float timestep);
+    ScriptWorld(GraphicsResources* gfxRes, Camera* camera, const Config* config, float timestep);
     ~ScriptWorld();
 
     void update();

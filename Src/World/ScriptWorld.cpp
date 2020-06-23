@@ -16,12 +16,12 @@
 #include "../Scripting/NativeDefinitions/PlayerControllerDefinitions.h"
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 
-ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, const Config* config, float timestep) {
+ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, const Config* config, float timestep) {
     manager = new ScriptManager();
     mathDefinitions = new MathDefinitions(manager);
-    rm2Definitions = new RM2Definitions(manager, gfxRes);
     collisionDefinitions = new CollisionDefinitions(manager);
-    playerControllerDefinitions = new PlayerControllerDefinitions(manager);
+    rm2Definitions = new RM2Definitions(manager, gfxRes);
+    playerControllerDefinitions = new PlayerControllerDefinitions(manager, camera);
 
     ScriptFunction::Signature perTickSignature;
     perTickSignature.functionName = "PerTick";

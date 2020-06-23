@@ -1,5 +1,11 @@
 shared abstract class Room {
-    protected RM2@ mesh;
+    protected RM2@ _mesh;
+    RM2@ mesh {
+        get {
+            return _mesh;
+        }
+    }
+
     protected Zone@ zone;
 
     protected Vector3f _position;
@@ -23,10 +29,15 @@ shared abstract class Room {
         }
     }
 
-    protected Matrix4x4f worldMatrix;
+    protected Matrix4x4f _worldMatrix;
+    Matrix4x4f worldMatrix {
+        get {
+            return _worldMatrix;
+        }
+    }
 
     protected void recalculateWorldMatrix() {
-        worldMatrix = Matrix4x4f::constructWorldMat(position, Vector3f(0.1, 0.1, 0.1), Vector3f(0.0, rotation, 0.0));
+        _worldMatrix = Matrix4x4f::constructWorldMat(position, Vector3f(0.1, 0.1, 0.1), Vector3f(0.0, rotation, 0.0));
     }
 
     void update(float deltaTime) {}
