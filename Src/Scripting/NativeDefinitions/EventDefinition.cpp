@@ -96,6 +96,7 @@ void EventDefinition::execute() {
         }
 
         scriptContext->Execute();
+        scriptContext->Unprepare();
     }
 }
 

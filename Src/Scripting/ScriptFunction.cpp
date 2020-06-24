@@ -66,7 +66,6 @@ ScriptFunction::ScriptFunction(ScriptModule* module, asIScriptFunction* asScript
     signature.returnType = scriptModule->typeFromTypeId(scriptFunction->GetReturnTypeId());
 
     scriptContext = asModule->GetEngine()->CreateContext();
-    if (scriptContext->Prepare(scriptFunction) < 0) { throw std::runtime_error("ptooey!"); }
 }
 
 ScriptFunction::~ScriptFunction() {
@@ -125,8 +124,8 @@ void ScriptFunction::setArgumentNative(const PGE::String& argument, void* obj) {
 }
 
 void ScriptFunction::execute() {
-    scriptContext->Execute();
     if (scriptContext->Prepare(scriptFunction) < 0) { throw std::runtime_error("ptooey!"); }
+    scriptContext->Execute();
 
     if (signature.returnType->isClassType()) {
         asIScriptObject* asObj = nullptr;
@@ -140,6 +139,8 @@ void ScriptFunction::execute() {
         }
         returnedObject = new ScriptObject(returnClass, asObj);
     }
+
+    scriptContext->Unprepare();
 }
 
 int32_t ScriptFunction::getReturnInt32() const {

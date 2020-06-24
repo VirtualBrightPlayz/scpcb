@@ -16,12 +16,16 @@ void PlayerControllerDefinitions::playerControllerAddRef(PlayerController* contr
 void PlayerControllerDefinitions::playerControllerRelease(PlayerController* controller) {
     refCount[controller]--;
 
-    if (refCount[controller] <= 0) { refCount.erase(controller); delete controller; }
+    if (refCount[controller] <= 0) {
+        refCount.erase(controller); delete controller;
+    }
 }
 
 void PlayerControllerDefinitions::__UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller) {
     controller->update(tempCamera->getYawAngle(), tempCamera->getPitchAngle(), Input::Forward);
     tempCamera->setPosition(controller->getPosition().add(PGE::Vector3f(0.f, 1.5f, 0.f)));
+
+    playerControllerRelease(controller);
 }
 
 PlayerControllerDefinitions::PlayerControllerDefinitions(ScriptManager* mgr, Camera* cam) {
