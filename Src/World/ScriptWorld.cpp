@@ -10,6 +10,7 @@
 #include "../Scripting/ScriptFunction.h"
 #include "../Scripting/ScriptClass.h"
 
+#include "../Scripting/NativeDefinitions/RefCounter.h"
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
 #include "../Scripting/NativeDefinitions/RM2Definitions.h"
 #include "../Scripting/NativeDefinitions/CollisionDefinitions.h"
@@ -18,10 +19,13 @@
 
 ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, const Config* config, float timestep) {
     manager = new ScriptManager();
+
+    refCounterManager = new RefCounterManager();
+
     mathDefinitions = new MathDefinitions(manager);
-    collisionDefinitions = new CollisionDefinitions(manager);
+    collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);
     rm2Definitions = new RM2Definitions(manager, gfxRes);
-    playerControllerDefinitions = new PlayerControllerDefinitions(manager, camera);
+    playerControllerDefinitions = new PlayerControllerDefinitions(manager, refCounterManager, camera);
 
     ScriptFunction::Signature perTickSignature;
     perTickSignature.functionName = "PerTick";
@@ -100,6 +104,8 @@ ScriptWorld::~ScriptWorld() {
     delete rm2Definitions;
     delete collisionDefinitions;
     delete playerControllerDefinitions;
+
+    delete refCounterManager;
 
     delete manager;
 }

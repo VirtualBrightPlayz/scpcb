@@ -13,8 +13,8 @@ external shared enum RoomType;
 void main() {
     @entranceZone = EntranceZone();
     @testCollCollection = Collision::Collection();
-    @testController = PlayerController(1.0, 3.0);
-    testController.setPosition(Vector3f(0,3,0));
+    @testController = PlayerController(5.0, 15.0);
+    testController.setPosition(Vector3f(0,16,0));
     testController.setCollisionCollection(testCollCollection);
     entranceZone.registerRoom("hll_plain_4", Room4, hll_plain_4::construct);
     entranceZone.generate();

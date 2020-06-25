@@ -14,12 +14,14 @@ CollisionMesh* CollisionDefinitions::meshFactory(CScriptArray* verts, CScriptArr
     }
     CollisionMesh* newMesh = new CollisionMesh(vecVerts, vecInds);
     meshRefCount.emplace(newMesh, 1);
+    refCounterManager->linkPtrToCounter(newMesh, this);
     return newMesh;
 }
 
 CollisionMeshCollection* CollisionDefinitions::collectionFactory() {
     CollisionMeshCollection* newMeshCollection = new CollisionMeshCollection();
     collectionRefCount.emplace(newMeshCollection, 1);
+    refCounterManager->linkPtrToCounter(newMeshCollection, this);
     return newMeshCollection;
 }
 
@@ -37,18 +39,28 @@ void CollisionDefinitions::release(void* ptr) {
         CollisionMesh* castPtr = (CollisionMesh*)ptr;
         meshRefCount[castPtr]--;
 
-        if (meshRefCount[castPtr] <= 0) { meshRefCount.erase(castPtr); delete castPtr; }
+        if (meshRefCount[castPtr] <= 0) {
+            meshRefCount.erase(castPtr);
+            refCounterManager->unlinkPtr(castPtr);
+            delete castPtr;
+        }
     }
     if (collectionRefCount.find((CollisionMeshCollection*)ptr) != collectionRefCount.end()) {
         CollisionMeshCollection* castPtr = (CollisionMeshCollection*)ptr;
         collectionRefCount[castPtr]--;
 
-        if (collectionRefCount[castPtr] <= 0) { collectionRefCount.erase(castPtr); delete castPtr; }
+        if (collectionRefCount[castPtr] <= 0) {
+            collectionRefCount.erase(castPtr);
+            refCounterManager->unlinkPtr(castPtr);
+            delete castPtr;
+        }
     }
 }
 
-CollisionDefinitions::CollisionDefinitions(ScriptManager* mgr) {
+CollisionDefinitions::CollisionDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr) {
     engine = mgr->getAngelScriptEngine();
+
+    refCounterManager = rcMgr;
 
     engine->SetDefaultNamespace("Collision");
 

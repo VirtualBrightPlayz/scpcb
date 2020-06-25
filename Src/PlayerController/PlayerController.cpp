@@ -24,6 +24,10 @@ void PlayerController::setCollisionMeshCollection(CollisionMeshCollection* colle
     collisionMeshCollection = collection;
 }
 
+CollisionMeshCollection* PlayerController::getCollisionMeshCollection() const {
+    return collisionMeshCollection;
+}
+
 Vector3f PlayerController::getPosition() const {
     return position;
 }

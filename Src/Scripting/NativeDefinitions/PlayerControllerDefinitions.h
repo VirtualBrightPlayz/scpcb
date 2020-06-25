@@ -2,25 +2,29 @@
 #define PLAYERCONTROLLERDEFINITIONS_H_INCLUDED
 
 #include "../ScriptManager.h"
-#include "../NativeDefinition.h"
+#include "RefCounter.h"
 #include <map>
 
 class PlayerController;
 class Camera;
+class CollisionMeshCollection;
 
-class PlayerControllerDefinitions : public NativeDefinition {
+class PlayerControllerDefinitions : public RefCounter {
     private:
         std::map<PlayerController*,int> refCount;
         PlayerController* playerControllerFactory(float radius, float height);
-        void playerControllerAddRef(PlayerController* controller);
-        void playerControllerRelease(PlayerController* controller);
+        void addRef(void* ptr) override;
+        void release(void* ptr) override;
+
+        void setCollisionCollection(PlayerController* controller, CollisionMeshCollection* collection);
 
         Camera* tempCamera;
         void __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller);
 
         asIScriptEngine* engine;
+        RefCounterManager* refCounterManager;
     public:
-        PlayerControllerDefinitions(ScriptManager* mgr, Camera* cam);
+        PlayerControllerDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr, Camera* cam);
 };
 
 #endif

@@ -11,10 +11,13 @@ class ScriptModule;
 class GraphicsResources;
 class Config;
 class Camera;
+class RefCounterManager;
 
 class ScriptWorld {
 private:
     ScriptManager* manager;
+
+    RefCounterManager* refCounterManager;
 
     MathDefinitions* mathDefinitions;
     RM2Definitions* rm2Definitions;

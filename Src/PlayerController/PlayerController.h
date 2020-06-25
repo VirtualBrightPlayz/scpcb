@@ -14,6 +14,7 @@ class PlayerController {
         bool noclip;
     
         void setCollisionMeshCollection(CollisionMeshCollection* collection);
+        CollisionMeshCollection* getCollisionMeshCollection() const;
         void update(float angle, float angleY, Input input);
 
         PGE::Vector3f getPosition() const;
