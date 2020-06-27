@@ -5,6 +5,7 @@
 #include "RefCounter.h"
 #include <map>
 
+enum class Input;
 class PlayerController;
 class Camera;
 class CollisionMeshCollection;
@@ -19,10 +20,7 @@ class PlayerControllerDefinitions : public RefCounter {
         void setCollisionCollection(PlayerController* controller, CollisionMeshCollection* collection);
 
         Camera* tempCamera;
-        void __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller);
-
-        asIScriptEngine* engine;
-        RefCounterManager* refCounterManager;
+        void __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller, Input input);
     public:
         PlayerControllerDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr, Camera* cam);
 };

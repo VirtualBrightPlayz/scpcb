@@ -31,8 +31,6 @@ class EventDefinition : public NativeDefinition {
             Argument(const PGE::String& nm, Type* t);
         };
         std::vector<Argument> arguments;
-
-        asIScriptEngine* engine;
     public:
         EventDefinition(ScriptManager* mgr, const PGE::String& nm, const ScriptFunction::Signature& sgntr);
 

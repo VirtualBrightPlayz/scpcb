@@ -53,7 +53,7 @@ World::World() {
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
 
-    scripting = new ScriptWorld(gfxRes, camera, config, timing->getTimeStep());
+    scripting = new ScriptWorld(gfxRes, camera, keyBinds, config, timing->getTimeStep());
 
     applyConfig(config);
 

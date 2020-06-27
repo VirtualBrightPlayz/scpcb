@@ -6,9 +6,11 @@ class MathDefinitions;
 class RM2Definitions;
 class CollisionDefinitions;
 class PlayerControllerDefinitions;
+class InputDefinitions;
 class EventDefinition;
 class ScriptModule;
 class GraphicsResources;
+class KeyBinds;
 class Config;
 class Camera;
 class RefCounterManager;
@@ -19,6 +21,7 @@ private:
 
     RefCounterManager* refCounterManager;
 
+    InputDefinitions* inputDefinitions;
     MathDefinitions* mathDefinitions;
     RM2Definitions* rm2Definitions;
     CollisionDefinitions* collisionDefinitions;
@@ -30,7 +33,7 @@ private:
     std::vector<ScriptModule*> modules;
 
 public:
-    ScriptWorld(GraphicsResources* gfxRes, Camera* camera, const Config* config, float timestep);
+    ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, const Config* config, float timestep);
     ~ScriptWorld();
 
     void update();

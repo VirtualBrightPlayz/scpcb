@@ -40,8 +40,8 @@ void PlayerControllerDefinitions::setCollisionCollection(PlayerController* contr
     controller->setCollisionMeshCollection(collection);
 }
 
-void PlayerControllerDefinitions::__UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller) {
-    controller->update(tempCamera->getYawAngle(), tempCamera->getPitchAngle(), Input::Forward);
+void PlayerControllerDefinitions::__UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller, Input input) {
+    controller->update(tempCamera->getYawAngle(), tempCamera->getPitchAngle(), input);
     tempCamera->setPosition(controller->getPosition().add(PGE::Vector3f(0.f, 15.f, 0.f)));
 
     release(controller);
@@ -61,9 +61,9 @@ PlayerControllerDefinitions::PlayerControllerDefinitions(ScriptManager* mgr, Ref
     engine->RegisterObjectBehaviour("PlayerController", asBEHAVE_RELEASE, "void f()", asMETHOD(PlayerControllerDefinitions,release), asCALL_THISCALL_OBJLAST, this);
 
     engine->RegisterObjectMethod("PlayerController", "void setCollisionCollection(Collision::Collection@ coll)", asMETHOD(PlayerControllerDefinitions,setCollisionCollection), asCALL_THISCALL_OBJFIRST, this);
-    engine->RegisterObjectMethod("PlayerController", "void update(float yaw, float pitch, int inputs)", asMETHOD(PlayerController,update), asCALL_THISCALL);
+    engine->RegisterObjectMethod("PlayerController", "void update(float yaw, float pitch, Input inputs)", asMETHOD(PlayerController,update), asCALL_THISCALL);
 
-    engine->RegisterGlobalFunction("void __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController@ controller)", asMETHOD(PlayerControllerDefinitions, __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterGlobalFunction("void __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController@ controller, Input input)", asMETHOD(PlayerControllerDefinitions, __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE), asCALL_THISCALL_ASGLOBAL, this);
 
     engine->RegisterObjectMethod("PlayerController", "void setPosition(const Vector3f&in pos)", asMETHOD(PlayerController, setPosition), asCALL_THISCALL);
 }

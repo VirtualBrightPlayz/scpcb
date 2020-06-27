@@ -4,7 +4,12 @@
 #include <map>
 #include "../NativeDefinition.h"
 
+class RefCounter;
+class RefCounterManager;
+
 class RefCounter : public NativeDefinition {
+    protected:
+        RefCounterManager* refCounterManager;
     public:
         virtual void addRef(void* ptr) = 0;
         virtual void release(void* ptr) = 0;

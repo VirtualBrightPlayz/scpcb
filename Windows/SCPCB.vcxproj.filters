@@ -190,6 +190,9 @@
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\RefCounter.h">
       <Filter>Src\Scripting\NativeDefinitions</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.h">
+      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SCPCB.rc">
@@ -338,6 +341,9 @@
       <Filter>Src\Scripting\NativeDefinitions</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\RefCounter.cpp">
+      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.cpp">
       <Filter>Src\Scripting\NativeDefinitions</Filter>
     </ClCompile>
   </ItemGroup>

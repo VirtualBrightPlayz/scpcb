@@ -15,7 +15,6 @@ class RM2Definitions : public NativeDefinition {
         void deleteRM2(RM2* rm2);
 
         GraphicsResources* graphicsResources;
-        asIScriptEngine* engine;
     public:
         RM2Definitions(ScriptManager* mgr, GraphicsResources* gfxRes);
 };

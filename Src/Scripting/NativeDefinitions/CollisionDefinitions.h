@@ -18,9 +18,6 @@ class CollisionDefinitions : public RefCounter {
         CollisionMeshCollection* collectionFactory();
         void addRef(void* mesh);
         void release(void* mesh);
-
-        asIScriptEngine* engine;
-        RefCounterManager* refCounterManager;
     public:
         CollisionDefinitions(ScriptManager* scriptMgr, RefCounterManager* rcMgr);
 };

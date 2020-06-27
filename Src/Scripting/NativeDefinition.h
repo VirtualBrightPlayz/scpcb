@@ -1,8 +1,11 @@
 #ifndef NATIVEDEFINITION_H_INCLUDED
 #define NATIVEDEFINITION_H_INCLUDED
 
-class ScriptManager;
+#include <angelscript.h>
 
-class NativeDefinition { };
+class NativeDefinition {
+    protected:
+        asIScriptEngine* engine;
+};
 
 #endif

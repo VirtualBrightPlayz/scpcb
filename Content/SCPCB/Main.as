@@ -23,7 +23,7 @@ void main() {
 }
 
 void update(float deltaTime) {
-    __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController);
+    __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown());
 }
 
 void render(float interpolation) {

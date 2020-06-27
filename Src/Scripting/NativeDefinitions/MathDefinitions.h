@@ -11,8 +11,6 @@
 #include <Math/Rectangle.h>
 
 class MathDefinitions : public NativeDefinition {
-    private:
-        asIScriptEngine* engine;
     public:
         MathDefinitions(ScriptManager* mgr);
 };
