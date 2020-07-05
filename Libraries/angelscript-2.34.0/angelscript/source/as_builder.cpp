@@ -2566,128 +2566,162 @@ void asCBuilder::CompileGlobalVariables()
 			if( gvar->isCompiled )
 				continue;
 
-			if ( gvar->isExternal )
+			bool sharingError = false;
+
+			if (gvar->isShared)
 			{
-				gvar->property = engine->GetSharedGlobalProperty(gvar->name);
-				//TODO: error checking
+				asASSERT(gvar->declaredAtNode != nullptr);
 
-				module->externalGlobals.Put(gvar->property);
-
-				compileSucceeded = true;
-				gvar->isCompiled = true;
-
-				continue;
-			}
-
-			asCByteCode init(engine);
-			numWarnings = 0;
-			numErrors = 0;
-			outBuffer.Clear();
-
-			// Skip this for now if we're not compiling complex types yet
-			if( compilingPrimitives && !gvar->datatype.IsPrimitive() )
-				continue;
-
-			if( gvar->declaredAtNode )
-			{
 				int r, c;
 				gvar->script->ConvertPosToRowCol(gvar->declaredAtNode->tokenPos, &r, &c);
-				asCString str = gvar->datatype.Format(gvar->ns);
-				str += " " + gvar->name;
-				str.Format(TXT_COMPILING_s, str.AddressOf());
-				WriteInfo(gvar->script->name, str, r, c, true);
+
+				if (!gvar->datatype.IsPrimitive() &&
+					gvar->datatype != engine->stringType && 
+					!gvar->datatype.GetTypeInfo()->IsShared())
+				{
+					WriteError(gvar->script->name, "Data type is not shared", r, c);
+					sharingError = true;
+				}
 			}
 
-			if( gvar->isEnumValue )
+			if ( gvar->isExternal )
 			{
-				int r;
-				if( gvar->initializationNode )
+				asASSERT(gvar->declaredAtNode != nullptr);
+
+				int r, c;
+				gvar->script->ConvertPosToRowCol(gvar->declaredAtNode->tokenPos, &r, &c);
+
+				gvar->property = engine->GetSharedGlobalProperty(gvar->name);
+
+				if (gvar->property->type != gvar->datatype)
 				{
-					asCCompiler comp(engine);
-					asCScriptFunction func(engine, module, asFUNC_SCRIPT);
-
-					// Set the namespace that should be used during the compilation
-					func.nameSpace = gvar->datatype.GetTypeInfo()->nameSpace;
-
-					// Temporarily switch the type of the variable to int so it can be compiled properly
-					asCDataType saveType;
-					saveType = gvar->datatype;
-					gvar->datatype = asCDataType::CreatePrimitive(ttInt, true);
-					r = comp.CompileGlobalVariable(this, gvar->script, gvar->initializationNode, gvar, &func);
-					gvar->datatype = saveType;
-
-					// Make the function a dummy so it doesn't try to release objects while destroying the function
-					func.funcType = asFUNC_DUMMY;
+					WriteError(gvar->script->name, "Type of external declaration does not match shared declaration", r, c);
+					sharingError = true;
 				}
-				else
+
+				if (!sharingError)
 				{
-					r = 0;
+					module->externalGlobals.Put(gvar->property);
 
-					// When there is no assignment the value is the last + 1
-					int enumVal = 0;
-					asCSymbolTable<sGlobalVariableDescription>::iterator prev_it = it;
-					prev_it--;
-					if( prev_it )
+					compileSucceeded = true;
+					gvar->isCompiled = true;
+
+					continue;
+				}
+			}
+
+			if (!sharingError)
+			{
+				asCByteCode init(engine);
+				numWarnings = 0;
+				numErrors = 0;
+				outBuffer.Clear();
+
+				// Skip this for now if we're not compiling complex types yet
+				if( compilingPrimitives && !gvar->datatype.IsPrimitive() )
+					continue;
+
+				if( gvar->declaredAtNode )
+				{
+					int r, c;
+					gvar->script->ConvertPosToRowCol(gvar->declaredAtNode->tokenPos, &r, &c);
+					asCString str = gvar->datatype.Format(gvar->ns);
+					str += " " + gvar->name;
+					str.Format(TXT_COMPILING_s, str.AddressOf());
+					WriteInfo(gvar->script->name, str, r, c, true);
+				}
+
+				if( gvar->isEnumValue )
+				{
+					int r;
+					if( gvar->initializationNode )
 					{
-						sGlobalVariableDescription *gvar2 = *prev_it;
-						if(gvar2->datatype == gvar->datatype )
+						asCCompiler comp(engine);
+						asCScriptFunction func(engine, module, asFUNC_SCRIPT);
+
+						// Set the namespace that should be used during the compilation
+						func.nameSpace = gvar->datatype.GetTypeInfo()->nameSpace;
+
+						// Temporarily switch the type of the variable to int so it can be compiled properly
+						asCDataType saveType;
+						saveType = gvar->datatype;
+						gvar->datatype = asCDataType::CreatePrimitive(ttInt, true);
+						r = comp.CompileGlobalVariable(this, gvar->script, gvar->initializationNode, gvar, &func);
+						gvar->datatype = saveType;
+
+						// Make the function a dummy so it doesn't try to release objects while destroying the function
+						func.funcType = asFUNC_DUMMY;
+					}
+					else
+					{
+						r = 0;
+
+						// When there is no assignment the value is the last + 1
+						int enumVal = 0;
+						asCSymbolTable<sGlobalVariableDescription>::iterator prev_it = it;
+						prev_it--;
+						if( prev_it )
 						{
-							enumVal = int(gvar2->constantValue) + 1;
-
-							if( !gvar2->isCompiled )
+							sGlobalVariableDescription *gvar2 = *prev_it;
+							if(gvar2->datatype == gvar->datatype )
 							{
-								int row, col;
-								gvar->script->ConvertPosToRowCol(gvar->declaredAtNode->tokenPos, &row, &col);
+								enumVal = int(gvar2->constantValue) + 1;
 
-								asCString str = gvar->datatype.Format(gvar->ns);
-								str += " " + gvar->name;
-								str.Format(TXT_COMPILING_s, str.AddressOf());
-								WriteInfo(gvar->script->name, str, row, col, true);
+								if( !gvar2->isCompiled )
+								{
+									int row, col;
+									gvar->script->ConvertPosToRowCol(gvar->declaredAtNode->tokenPos, &row, &col);
 
-								str.Format(TXT_UNINITIALIZED_GLOBAL_VAR_s, gvar2->name.AddressOf());
-								WriteError(gvar->script->name, str, row, col);
-								r = -1;
+									asCString str = gvar->datatype.Format(gvar->ns);
+									str += " " + gvar->name;
+									str.Format(TXT_COMPILING_s, str.AddressOf());
+									WriteInfo(gvar->script->name, str, row, col, true);
+
+									str.Format(TXT_UNINITIALIZED_GLOBAL_VAR_s, gvar2->name.AddressOf());
+									WriteError(gvar->script->name, str, row, col);
+									r = -1;
+								}
 							}
 						}
+
+						gvar->constantValue = enumVal;
 					}
 
-					gvar->constantValue = enumVal;
-				}
-
-				if( r >= 0 )
-				{
-					// Set the value as compiled
-					gvar->isCompiled = true;
-					compileSucceeded = true;
-				}
-			}
-			else
-			{
-				// Compile the global variable
-				initFunc = asNEW(asCScriptFunction)(engine, module, asFUNC_SCRIPT);
-				if( initFunc == 0 )
-				{
-					// Out of memory
-					return;
-				}
-
-				// Set the namespace that should be used for this function
-				initFunc->nameSpace = gvar->ns;
-
-				asCCompiler comp(engine);
-				int r = comp.CompileGlobalVariable(this, gvar->script, gvar->initializationNode, gvar, initFunc);
-				if( r >= 0 )
-				{
-					// Compilation succeeded
-					gvar->isCompiled = true;
-					compileSucceeded = true;
+					if( r >= 0 )
+					{
+						// Set the value as compiled
+						gvar->isCompiled = true;
+						compileSucceeded = true;
+					}
 				}
 				else
 				{
-					// Compilation failed
-					initFunc->funcType = asFUNC_DUMMY;
-					asDELETE(initFunc, asCScriptFunction);
-					initFunc = 0;
+					// Compile the global variable
+					initFunc = asNEW(asCScriptFunction)(engine, module, asFUNC_SCRIPT);
+					if( initFunc == 0 )
+					{
+						// Out of memory
+						return;
+					}
+
+					// Set the namespace that should be used for this function
+					initFunc->nameSpace = gvar->ns;
+
+					asCCompiler comp(engine);
+					int r = comp.CompileGlobalVariable(this, gvar->script, gvar->initializationNode, gvar, initFunc);
+					if( r >= 0 )
+					{
+						// Compilation succeeded
+						gvar->isCompiled = true;
+						compileSucceeded = true;
+					}
+					else
+					{
+						// Compilation failed
+						initFunc->funcType = asFUNC_DUMMY;
+						asDELETE(initFunc, asCScriptFunction);
+						initFunc = 0;
+					}
 				}
 			}
 
