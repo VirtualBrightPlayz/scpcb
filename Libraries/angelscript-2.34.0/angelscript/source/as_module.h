@@ -220,6 +220,8 @@ public:
 
 	// This array holds the global variables declared in the script
 	asCSymbolTable<asCGlobalProperty> scriptGlobals; // increases ref count
+	asCSymbolTable<asCGlobalProperty> externalGlobals; // doesn't increase ref count
+	asCArray<void*>                   externalPtrs;
 	bool                              isGlobalVarInitialized;
 
 	// This array holds class and interface types

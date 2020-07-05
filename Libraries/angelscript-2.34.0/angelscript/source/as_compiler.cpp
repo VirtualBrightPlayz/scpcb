@@ -1235,6 +1235,7 @@ int asCCompiler::CompileGlobalVariable(asCBuilder *in_builder, asCScriptCode *in
 	{
 		in_gvar->property = builder->module->AllocateGlobalProperty(in_gvar->name.AddressOf(), in_gvar->datatype, in_gvar->ns);
 		in_gvar->property->isSerialize = in_gvar->isSerialize;
+		in_gvar->property->isShared = in_gvar->isShared;
 		in_gvar->index = in_gvar->property->id;
 	}
 
@@ -9936,7 +9937,7 @@ int asCCompiler::CompileVariableAccess(const asCString &name, const asCString &s
 				// too are shared, e.g. application registered vars
 				if (outFunc->IsShared())
 				{
-					if (!isAppProp)
+					if (!isAppProp && !prop->isShared)
 					{
 						asCString str;
 						str.Format(TXT_SHARED_CANNOT_ACCESS_NON_SHARED_VAR_s, prop->name.AddressOf());

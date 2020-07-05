@@ -95,7 +95,7 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
 }
 
 ScriptWorld::~ScriptWorld() {
-    for (int i = 0; i < (int)modules.size(); i++) {
+    for (int i = (int)modules.size()-1; i >= 0; i--) {
         delete modules[i];
     }
 

@@ -34,6 +34,10 @@ shared abstract class Zone {
     }
 
     void render(float interpolation) {
+        testCounter++;
+        if (testCounter > 60000) {
+            @test_shared_global = null;
+        }
         for (int x=0;x<rooms.length();x++) {
             for (int y=0;y<rooms[x].length();y++) {
                 rooms[x][y].render(interpolation);
@@ -41,3 +45,6 @@ shared abstract class Zone {
         }
     }
 }
+
+shared int testCounter = 0;
+shared Zone@ test_shared_global;

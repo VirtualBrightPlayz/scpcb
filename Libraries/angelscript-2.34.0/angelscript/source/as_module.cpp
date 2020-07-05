@@ -804,7 +804,8 @@ void asCModule::InternalReset()
 	globIt = scriptGlobals.List();
 	while( globIt )
 	{
-		engine->RemoveGlobalProperty(*globIt);
+		asCGlobalProperty* prop = *globIt;
+		engine->RemoveGlobalProperty(prop);
 		asASSERT( (*globIt)->refCount.get() == 1 );
 		(*globIt)->Release();
 		globIt++;

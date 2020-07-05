@@ -87,6 +87,7 @@ public:
 	asUINT             id;
 	asSNameSpace      *nameSpace;
 	bool               isSerialize;
+	bool               isShared;
 
 	void SetInitFunc(asCScriptFunction *initFunc);
 	asCScriptFunction *GetInitFunc();

@@ -98,6 +98,7 @@ ScriptFunction* ScriptModule::getFunctionByName(const PGE::String& name) const {
 
 Type* ScriptModule::typeFromTypeId(int typeId) const {
     asIScriptModule* module = scriptModule;
+
     asIScriptEngine* engine = module->GetEngine();
 
     int stringFactoryTypeId = engine->GetStringFactoryReturnTypeId();

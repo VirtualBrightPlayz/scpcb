@@ -2563,6 +2563,7 @@ int asCScriptEngine::RegisterGlobalProperty(const char *declaration, void *point
 	prop->type        = type;
 	prop->accessMask  = defaultAccessMask;
 	prop->isSerialize = false;
+	prop->isShared    = false;
 
 	prop->SetRegisteredAddress(pointer);
 	varAddressMap.Insert(prop->GetAddressOfValue(), prop);
@@ -2597,6 +2598,22 @@ asCGlobalProperty *asCScriptEngine::AllocateGlobalProperty()
 	prop->id = (asUINT)globalProperties.GetLength();
 	globalProperties.PushLast(prop);
 	return prop;
+}
+
+// internal
+asCGlobalProperty *asCScriptEngine::GetSharedGlobalProperty(asCString name)
+{
+	for (asUINT i=0;i<globalProperties.GetLength();i++)
+	{
+		asCGlobalProperty *prop = globalProperties[i];
+		if( prop->name==name && prop->isShared )
+		{
+			//asASSERT(prop->memoryAllocated);
+			return prop;
+		}
+
+	}
+	return nullptr;
 }
 
 // internal

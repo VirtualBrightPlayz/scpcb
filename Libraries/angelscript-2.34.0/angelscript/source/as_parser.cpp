@@ -2706,9 +2706,21 @@ bool asCParser::IsVarDecl()
 	GetToken(&t);
 	RewindTo(&t);
 
+	sToken t1;
+
+	bool isSharedOrExternal = false;
+	GetToken(&t1);
+	while (IdentifierIs(t1, SHARED_TOKEN) ||
+		   IdentifierIs(t1, EXTERNAL_TOKEN))
+	{
+		isSharedOrExternal = true;
+
+		GetToken(&t1);
+	}
+	RewindTo(&t1);
+
 	// A class property decl can be preceded by 'private' or 'protected'
 
-	sToken t1;
 	for (int k = 0; k < 2; k++)
 	{
 		GetToken(&t1);
@@ -3863,19 +3875,44 @@ asCScriptNode *asCParser::ParseDeclaration(bool isClassProp, bool isGlobalVar)
 
 	sToken t;
 
-	// A class property can be preceeded by private
-	for (int k = 0; k < 2; k++)
+	bool isExternal = false;
+	bool isSharedOrExternal = false;
+	if (isGlobalVar && !isClassProp)
 	{
 		GetToken(&t);
 		RewindTo(&t);
-		if (t.type == ttPrivate && isClassProp)
-			node->AddChildLast(ParseToken(ttPrivate));
-		else if (t.type == ttProtected && isClassProp)
-			node->AddChildLast(ParseToken(ttProtected));
-		else if (t.type == ttSerialize && (isClassProp || isGlobalVar))
-			node->AddChildLast(ParseToken(ttSerialize));
-		else
-			break;
+		while (IdentifierIs(t, SHARED_TOKEN) ||
+			   IdentifierIs(t, EXTERNAL_TOKEN))
+		{
+			isSharedOrExternal = true;
+			if (IdentifierIs(t, EXTERNAL_TOKEN))
+			{
+				isExternal = true;
+			}
+			node->AddChildLast(ParseIdentifier());
+			if (isSyntaxError) return node;
+
+			GetToken(&t);
+			RewindTo(&t);
+		}
+	}
+
+	// A class property can be preceeded by private
+	if (!isSharedOrExternal)
+	{
+		for (int k = 0; k < 2; k++)
+		{
+			GetToken(&t);
+			RewindTo(&t);
+			if (t.type == ttPrivate && isClassProp)
+				node->AddChildLast(ParseToken(ttPrivate));
+			else if (t.type == ttProtected && isClassProp)
+				node->AddChildLast(ParseToken(ttProtected));
+			else if (t.type == ttSerialize && (isClassProp || isGlobalVar))
+				node->AddChildLast(ParseToken(ttSerialize));
+			else
+				break;
+		}
 	}
 
 	// Parse data type
@@ -3895,6 +3932,14 @@ asCScriptNode *asCParser::ParseDeclaration(bool isClassProp, bool isGlobalVar)
 			RewindTo(&t);
 			if( t.type == ttAssignment || t.type == ttOpenParanthesis )
 			{
+				if (isExternal)
+				{
+					asCString str;
+					str.Format(TXT_EXPECTED_s, ";");
+					Error(str, &t);
+
+					return node;
+				}
 				node->AddChildLast(SuperficiallyParseVarInit());
 				if( isSyntaxError ) return node;
 			}

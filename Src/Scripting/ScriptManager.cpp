@@ -41,12 +41,12 @@ class StringFactory : public asIStringFactory {
 
             asAcquireExclusiveLock();
 
-            PGE::String deref = *((PGE::String*)str);
-            std::map<long long, StringPoolEntry>::iterator poolEntry = strPool.find(deref.getHashCode());
+            PGE::String* deref = ((PGE::String*)str);
+            std::map<long long, StringPoolEntry>::iterator poolEntry = strPool.find(deref->getHashCode());
             if (poolEntry != strPool.end()) {
                 poolEntry->second.refCount--;
                 if (poolEntry->second.refCount <= 0) {
-                    strPool.erase(deref.getHashCode());
+                    strPool.erase(deref->getHashCode());
                 }
             }
 

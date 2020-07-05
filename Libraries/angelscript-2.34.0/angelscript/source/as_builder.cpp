@@ -1127,7 +1127,7 @@ bool asCBuilder::DoesGlobalPropertyExist(const char *prop, asSNameSpace *ns, asC
 #ifndef AS_NO_COMPILER
 	// Check properties being compiled now
 	sGlobalVariableDescription* desc = globVariables.GetFirst(ns, prop);
-	if( desc && !desc->isEnumValue )
+	if( desc && !desc->isEnumValue && !desc->isExternal )
 	{
 		if( outProp ) *outProp = desc->property;
 		if( outDesc ) *outDesc = desc;
@@ -1139,6 +1139,14 @@ bool asCBuilder::DoesGlobalPropertyExist(const char *prop, asSNameSpace *ns, asC
 	if( module )
 	{
 		globProp = module->scriptGlobals.GetFirst(ns, prop);
+		if ( !globProp ) 
+		{
+			globProp = module->externalGlobals.GetFirst(ns, prop);
+			if (globProp)
+			{
+				globProp++; globProp--;
+			}
+		}
 		if( globProp )
 		{
 			if( outProp ) *outProp = globProp;
@@ -2006,6 +2014,22 @@ int asCBuilder::RegisterGlobalVar(asCScriptNode *node, asCScriptCode *file, asSN
 
 	asCScriptNode *n = node->firstChild;
 
+	bool isShared = false;
+	bool isExternal = false;
+	if (n->tokenType == ttIdentifier)
+	{
+		if (file->TokenEquals(n->tokenPos, n->tokenLength, SHARED_TOKEN))
+		{
+			isShared = true;
+			n = n->next;
+		}
+		else if (file->TokenEquals(n->tokenPos, n->tokenLength, EXTERNAL_TOKEN))
+		{
+			isExternal = true;
+			n = n->next;
+		}
+	}
+
 	bool isSerialize = false;
 	if (n->tokenType == ttSerialize)
 	{
@@ -2052,6 +2076,8 @@ int asCBuilder::RegisterGlobalVar(asCScriptNode *node, asCScriptCode *file, asSN
 		gvar->datatype    = type;
 		gvar->isEnumValue = false;
 		gvar->isSerialize = isSerialize;
+		gvar->isShared    = isShared;
+		gvar->isExternal  = isExternal;
 		gvar->ns          = ns;
 
 		// TODO: Give error message if wrong
@@ -2540,6 +2566,19 @@ void asCBuilder::CompileGlobalVariables()
 			if( gvar->isCompiled )
 				continue;
 
+			if ( gvar->isExternal )
+			{
+				gvar->property = engine->GetSharedGlobalProperty(gvar->name);
+				//TODO: error checking
+
+				module->externalGlobals.Put(gvar->property);
+
+				compileSucceeded = true;
+				gvar->isCompiled = true;
+
+				continue;
+			}
+
 			asCByteCode init(engine);
 			numWarnings = 0;
 			numErrors = 0;
@@ -2764,6 +2803,13 @@ void asCBuilder::CompileGlobalVariables()
 		// variables must be preserved.
 		if( module->scriptGlobals.GetSize() == initOrder.GetSize() )
 			module->scriptGlobals.SwapWith(initOrder);
+	}
+
+	asCSymbolTableIterator<asCGlobalProperty> externalIt = module->externalGlobals.List();
+	while (externalIt)
+	{
+		module->externalPtrs.PushLast((*externalIt)->GetAddressOfValue());
+		externalIt++;
 	}
 
 	CleanupEnumValues();
@@ -4492,6 +4538,8 @@ int asCBuilder::RegisterEnum(asCScriptNode *node, asCScriptCode *file, asSNameSp
 				gvar->isPureConstant     = true;
 				gvar->isEnumValue        = true;
 				gvar->isSerialize        = false;
+				gvar->isShared           = false;
+				gvar->isExternal         = false;
 				gvar->constantValue      = 0xdeadbeef;
 
 				// Allocate dummy property so we can compile the value.

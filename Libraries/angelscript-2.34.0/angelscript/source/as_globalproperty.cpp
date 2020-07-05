@@ -100,7 +100,7 @@ void asCGlobalProperty::AllocateMemory()
 		memory = asNEWARRAYALIGNED(asDWORD, type.GetSizeOnStackDWords(), type.GetAlignment()); 
 #endif
 		memoryAllocated = true; 
-	} 
+	}
 }
 
 void asCGlobalProperty::SetRegisteredAddress(void *p) 

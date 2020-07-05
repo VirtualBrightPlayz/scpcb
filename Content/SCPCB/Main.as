@@ -10,8 +10,12 @@ Collision::Collection@ testCollCollection;
 
 external shared enum RoomType;
 
+external Zone@ test_shared_global;
+external int testCounter;
+
 void main() {
     @entranceZone = EntranceZone();
+    @test_shared_global = @entranceZone;
     @testCollCollection = Collision::Collection();
     @testController = PlayerController(5.0, 15.0);
     testController.setPosition(Vector3f(0,16,0));
@@ -23,9 +27,10 @@ void main() {
 }
 
 void update(float deltaTime) {
-    __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown());
+    __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, testCounter / 60);
 }
 
 void render(float interpolation) {
-    entranceZone.render(interpolation);
+    if (test_shared_global == null) { return; }
+    test_shared_global.render(interpolation);
 }
