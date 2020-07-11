@@ -1,6 +1,7 @@
 # Containment Breach
 [Ss]aves/*
 exception*.txt
+options.ini
 
 # Visual Studio
 [Dd]ebug
