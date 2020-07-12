@@ -23,8 +23,8 @@ void main() {
     @testController = PlayerController(5.0, 15.0);
     testController.setPosition(Vector3f(0,16,0));
     testController.setCollisionCollection(testCollCollection);
-    entranceZone.registerRoom("hll_plain_4_a", Room4, hll_plain_4_a::construct);
-    entranceZone.registerRoom("hll_plain_2_a", Room2, hll_plain_2_a::construct);
+    entranceZone.registerRoom("hll_plain_4_a", Room4);
+    entranceZone.registerRoom("hll_plain_2_a", Room2);
     entranceZone.generate();
     PerTick::register(update);
     PerFrame::register(render);

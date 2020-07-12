@@ -1,11 +1,5 @@
-class hll_plain_2_a : Room {
-    hll_plain_2_a(Zone@ zone) {
-        @_mesh = zone.getMesh("hll_plain_2_a");
+shared class hll_plain_2_a : Room {
+    hll_plain_2_a(string name, Zone@ zone) {
+        super(name, zone);
     }
-}
-
-namespace hll_plain_2_a {
-    Room@ construct(Zone@ zone) {
-        return hll_plain_2_a(zone);
-    }    
 }

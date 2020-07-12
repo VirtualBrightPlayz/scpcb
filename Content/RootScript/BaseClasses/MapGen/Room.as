@@ -1,4 +1,8 @@
-shared abstract class Room {
+shared class Room {
+    Room(string name, Zone@ zone_) {
+        @_mesh = zone_.getMesh(name);
+    }
+
     protected RM2@ _mesh;
     RM2@ mesh {
         get {

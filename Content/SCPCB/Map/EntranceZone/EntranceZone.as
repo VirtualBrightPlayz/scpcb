@@ -8,14 +8,14 @@ class EntranceZone : Zone {
             for (int y=0;y<10;y++) {
                 if (y % 2 == 0) {
                     if (x % 2 == 0) {
-                        @rooms[x][y] = mapGenEntries[0].roomConstructor(this);
+                        @rooms[x][y] = createRoom("hll_plain_4_a");
                     } else {
-                        @rooms[x][y] = mapGenEntries[1].roomConstructor(this);
+                        @rooms[x][y] = createRoom("hll_plain_2_a");
                         rooms[x][y].rotation = 90;
                     }
                 } else {
                     if (x % 2 == 0) {
-                        @rooms[x][y] = mapGenEntries[1].roomConstructor(this);
+                        @rooms[x][y] = createRoom("hll_plain_2_a");
                     } else {
                         // Do nothing
                     }

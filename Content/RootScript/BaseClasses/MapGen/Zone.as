@@ -2,12 +2,19 @@ shared abstract class Zone {
     protected array<MapGenEntry> mapGenEntries;
     protected array<array<Room@>> rooms;
 
-    void registerRoom(const string name, const RoomType type, RoomConstructor@ constructor) {
+    void registerRoom(const string name, const RoomType type) {
         MapGenEntry entry;
         entry.roomName = name;
         entry.roomType = type;
-        @entry.roomConstructor = constructor;
         mapGenEntries.insertLast(entry);
+    }
+
+    Room@ createRoom(string name) {
+        if (name == "hll_plain_2_a") {
+            return hll_plain_2_a(name, this);
+        } else {
+            return Room(name, this);
+        }
     }
 
     RM2@ getMesh(const string name) {
