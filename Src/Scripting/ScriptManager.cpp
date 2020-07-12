@@ -173,6 +173,7 @@ void ScriptManager::messageCallback(const asSMessageInfo* msg, void* param) {
 }
 
 asIScriptEngine* ScriptManager::getAngelScriptEngine() const {
+    engine->SetDefaultNamespace("");
     return engine;
 }
 

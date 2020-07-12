@@ -1,4 +1,8 @@
-shared abstract class Room {
+shared class Room {
+    Room(string name, Zone@ zone_) {
+        @_mesh = zone_.getMesh(name);
+    }
+
     protected RM2@ _mesh;
     RM2@ mesh {
         get {
@@ -18,6 +22,8 @@ shared abstract class Room {
             recalculateWorldMatrix();
         }
     }
+
+    // in degrees
     protected float _rotation;
     float rotation {
         get {
@@ -37,7 +43,7 @@ shared abstract class Room {
     }
 
     protected void recalculateWorldMatrix() {
-        _worldMatrix = Matrix4x4f::constructWorldMat(position, Vector3f(0.1, 0.1, 0.1), Vector3f(0.0, rotation, 0.0));
+        _worldMatrix = Matrix4x4f::constructWorldMat(position, Vector3f(0.1, 0.1, 0.1), Vector3f(0.0, Math::degToRad(rotation), 0.0));
     }
 
     void update(float deltaTime) {}

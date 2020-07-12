@@ -28,7 +28,5 @@ InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb) {
     engine->RegisterGlobalFunction("Input getDown()", asMETHOD(KeyBinds, getDownInputs), asCALL_THISCALL_ASGLOBAL, keyBinds);
     engine->RegisterGlobalFunction("Input getHit()", asMETHOD(KeyBinds, getHitInputs), asCALL_THISCALL_ASGLOBAL, keyBinds);
 
-    engine->SetDefaultNamespace("");
-
     keyBinds->getDownInputs();
 }

@@ -10,6 +10,7 @@
 #include "../Scripting/ScriptFunction.h"
 #include "../Scripting/ScriptClass.h"
 
+#include "../Scripting/NativeDefinitions/GeneralDefinitions.h"
 #include "../Scripting/NativeDefinitions/InputDefinitions.h"
 #include "../Scripting/NativeDefinitions/RefCounter.h"
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
@@ -23,6 +24,7 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
 
     refCounterManager = new RefCounterManager();
 
+    generalDefinitions = new GeneralDefinitions(manager);
     inputDefinitions = new InputDefinitions(manager, keyBinds);
     mathDefinitions = new MathDefinitions(manager);
     collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);
@@ -102,6 +104,7 @@ ScriptWorld::~ScriptWorld() {
     delete perTickEventDefinition;
     delete perFrameEventDefinition;
 
+    delete generalDefinitions;
     delete inputDefinitions;
     delete mathDefinitions;
     delete rm2Definitions;
