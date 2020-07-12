@@ -38,6 +38,7 @@ class ScriptFunction {
 
         ScriptObject* returnedObject;
 
+        void exceptionCallback(asIScriptContext* context);
     public:
         ScriptFunction(ScriptModule* module,asIScriptFunction* asScriptFunction,asIScriptFunction* asFuncWithSignature=nullptr);
         ~ScriptFunction();

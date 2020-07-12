@@ -66,6 +66,7 @@ ScriptFunction::ScriptFunction(ScriptModule* module, asIScriptFunction* asScript
     signature.returnType = scriptModule->typeFromTypeId(scriptFunction->GetReturnTypeId());
 
     scriptContext = asModule->GetEngine()->CreateContext();
+    scriptContext->SetExceptionCallback(asMETHOD(ScriptFunction, exceptionCallback), this, asCALL_THISCALL);
 }
 
 ScriptFunction::~ScriptFunction() {
@@ -121,6 +122,15 @@ void ScriptFunction::setArgumentNative(const PGE::String& argument, void* obj) {
     int index = getArgumentIndex(argument);
 
     scriptContext->SetArgObject(index, obj);
+}
+
+void ScriptFunction::exceptionCallback(asIScriptContext* context) {
+    asSMessageInfo info;
+    info.message = context->GetExceptionString();
+    int line = context->GetExceptionLineNumber(&info.row, &info.section);
+    info.col = 0; //TODO: fix?
+    info.type = asEMsgType::asMSGTYPE_ERROR;
+    scriptModule->getScriptManager()->messageCallback(&info, nullptr);
 }
 
 void ScriptFunction::execute() {
