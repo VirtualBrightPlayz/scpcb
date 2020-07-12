@@ -2,6 +2,7 @@
 #define SCRIPTWORLD_H_INCLUDED
 
 class ScriptManager;
+class GeneralDefinitions;
 class MathDefinitions;
 class RM2Definitions;
 class CollisionDefinitions;
@@ -21,6 +22,7 @@ private:
 
     RefCounterManager* refCounterManager;
 
+    GeneralDefinitions* generalDefinitions;
     InputDefinitions* inputDefinitions;
     MathDefinitions* mathDefinitions;
     RM2Definitions* rm2Definitions;

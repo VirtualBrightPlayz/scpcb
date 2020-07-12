@@ -16,6 +16,7 @@ external Zone@ test_shared_global;
 external int testCounter;
 
 void main() {
+	Debug::Log("Starting up!");
     @entranceZone = EntranceZone();
     @test_shared_global = @entranceZone;
     @testCollCollection = Collision::Collection();

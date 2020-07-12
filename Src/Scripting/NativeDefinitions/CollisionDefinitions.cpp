@@ -79,6 +79,4 @@ CollisionDefinitions::CollisionDefinitions(ScriptManager* mgr, RefCounterManager
     engine->RegisterObjectBehaviour("Collection", asBEHAVE_RELEASE, "void f()", asMETHOD(CollisionDefinitions,release), asCALL_THISCALL_OBJLAST, this);
     engine->RegisterObjectMethod("Collection", "Instance addInstance(Mesh@ mesh, Matrix4x4f matrix)", asMETHOD(CollisionMeshCollection, addInstance), asCALL_THISCALL);
     engine->RegisterObjectMethod("Collection", "void removeInstance(Instance instance)", asMETHOD(CollisionMeshCollection, removeInstance), asCALL_THISCALL);
-
-    engine->SetDefaultNamespace("");
 }

@@ -38,8 +38,6 @@ EventDefinition::EventDefinition(ScriptManager* mgr, const PGE::String& nm, cons
     declaration = "void unregister(" + signature.functionName + "@ callback)";
     engine->RegisterGlobalFunction(declaration.cstr(), asMETHOD(EventDefinition, unregisterCallback), asCALL_THISCALL_ASGLOBAL, this);
 
-    engine->SetDefaultNamespace("");
-
     scriptContext = engine->CreateContext();
 }
 
