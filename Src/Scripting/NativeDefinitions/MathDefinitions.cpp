@@ -1,4 +1,5 @@
 #include "MathDefinitions.h"
+#include "../../Utils/MathUtil.h"
 
 void vector3fConstructor(void* memory) {
     new(memory) PGE::Vector3f();
