@@ -28,6 +28,7 @@ shared abstract class Zone {
     void update(float deltaTime) {
         for (int x=0;x<rooms.length();x++) {
             for (int y=0;y<rooms[x].length();y++) {
+                if (rooms[x][y] == null) { continue; }
                 rooms[x][y].update(deltaTime);
             }
         }
@@ -40,6 +41,7 @@ shared abstract class Zone {
         }
         for (int x=0;x<rooms.length();x++) {
             for (int y=0;y<rooms[x].length();y++) {
+                if (rooms[x][y] == null) { continue; }
                 rooms[x][y].render(interpolation);
             }
         }
