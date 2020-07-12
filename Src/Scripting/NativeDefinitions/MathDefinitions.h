@@ -9,6 +9,7 @@
 #include <Math/Plane.h>
 #include <Math/AABBox.h>
 #include <Math/Rectangle.h>
+#include "../../Utils/MathUtil.h"
 
 class MathDefinitions : public NativeDefinition {
     public:

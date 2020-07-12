@@ -1,3 +1,5 @@
+external shared class Room;
+
 serialize EntranceZone@ entranceZone;
 
 // TODO: remove these globals, they only exist for testing purposes
@@ -21,13 +23,14 @@ void main() {
     testController.setPosition(Vector3f(0,16,0));
     testController.setCollisionCollection(testCollCollection);
     entranceZone.registerRoom("hll_plain_4", Room4, hll_plain_4::construct);
+    entranceZone.registerRoom("hll_plain_2", Room2, hll_plain_2::construct);
     entranceZone.generate();
     PerTick::register(update);
     PerFrame::register(render);
 }
 
 void update(float deltaTime) {
-    __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, testCounter / 60);
+    __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown());
 }
 
 void render(float interpolation) {

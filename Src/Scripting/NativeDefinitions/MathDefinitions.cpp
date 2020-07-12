@@ -85,5 +85,10 @@ MathDefinitions::MathDefinitions(ScriptManager* mgr) {
     engine->RegisterGlobalFunction("Matrix4x4f constructViewMat(const Vector3f&in position, const Vector3f&in target, const Vector3f&in upVector)", asFUNCTION(PGE::Matrix4x4f::constructViewMat), asCALL_CDECL, this);
     engine->RegisterGlobalFunction("Matrix4x4f constructPerspectiveMat(float horizontalfov, float aspectRatio, float nearZ, float farZ)", asFUNCTION(PGE::Matrix4x4f::constructPerspectiveMat), asCALL_CDECL, this);
     engine->RegisterGlobalFunction("Matrix4x4f constructOrthographicMat(float width, float height, float nearZ, float farZ)", asFUNCTION(PGE::Matrix4x4f::constructOrthographicMat), asCALL_CDECL, this);
+    
+    engine->SetDefaultNamespace("Math");
+    engine->RegisterGlobalFunction("float degToRad(float degrees)", asFUNCTION(MathUtil::degToRad), asCALL_CDECL, this);
+    engine->RegisterGlobalFunction("float radToDeg(float radians)", asFUNCTION(MathUtil::radToDeg), asCALL_CDECL, this);
+    
     engine->SetDefaultNamespace("");
 }
