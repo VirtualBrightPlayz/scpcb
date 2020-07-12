@@ -16,6 +16,7 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     rightShift = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RSHIFT);
     backspace = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::BACKSPACE);
     del = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::DELETE);
+    enter = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RETURN);
 
 #ifdef __APPLE__
     leftShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LGUI);
@@ -41,6 +42,7 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     io->trackInput(rightShift);
     io->trackInput(backspace);
     io->trackInput(del);
+    io->trackInput(enter);
     io->trackInput(leftShortcutKey);
     io->trackInput(rightShortcutKey);
     io->trackInput(keyC);
@@ -62,6 +64,7 @@ KeyBinds::~KeyBinds() {
     io->untrackInput(rightShift);
     io->untrackInput(backspace);
     io->untrackInput(del);
+    io->untrackInput(enter);
     io->untrackInput(leftShortcutKey);
     io->untrackInput(rightShortcutKey);
     io->untrackInput(keyC);

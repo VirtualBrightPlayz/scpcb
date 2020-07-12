@@ -51,6 +51,7 @@ class KeyBinds {
         bool anyShiftDown() const;
         PGE::KeyboardInput* backspace;
         PGE::KeyboardInput* del;
+        PGE::KeyboardInput* enter;
 
         // Shortcuts.
         PGE::KeyboardInput* leftShortcutKey;
