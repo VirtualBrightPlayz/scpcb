@@ -3,7 +3,6 @@
 #include "GUI/GUIComponent.h"
 #include "GUI/GUIFrame.h"
 #include "GUI/GUITextInput.h"
-#include "GUI/GUIText.h"
 #include "../Utils/MathUtil.h"
 
 float Console::Message::lineHeight;
@@ -45,6 +44,8 @@ void Console::update(const PGE::Vector2f& mousePosition) {
     bool windowChanged = false;
     if (keyBinds->enter->isHit() && !input->getText().equals("")) {
         executeCommand(input->getText());
+        input->setText("");
+
         windowChanged = true;
     }
 
@@ -82,7 +83,6 @@ void Console::executeCommand(const PGE::String& in) {
     std::vector<PGE::String> vect = in.split(" ", true);
     PGE::String command = vect[0];
     vect.erase(vect.begin());
-    input->setText("");
     for (int i = 0; i < (int)interCommands.size(); i++) {
         if (command.equals(interCommands[i]->getName())) {
             interCommands[i]->execute(this, vect);
