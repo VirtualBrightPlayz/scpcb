@@ -11,9 +11,10 @@ class MathUtil {
         static float radToDeg(float radians);
     
         static bool eqFloats(float p1, float p2);
-    
-        // Clamps an integer between a min and max inclusively.
-        static int clamp(int val, int min, int max);
+
+        static int maxInt(int val, int pther);
+        static int minInt(int val, int pther);
+        static int clampInt(int val, int min, int max);
 };
 
 #endif // MATH_H_INCLUDED

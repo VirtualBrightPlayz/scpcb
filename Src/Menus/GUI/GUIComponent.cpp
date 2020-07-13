@@ -3,9 +3,19 @@
 #include "../../Save/Config.h"
 
 GUIComponent::GUIComponent(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment)
-    : uiMesh(um), keyBinds(kb), config(con), x(x), y(y), width(width), height(height), alignment(alignment) { }
+    : uiMesh(um), keyBinds(kb), config(con), x(x), y(y), width(width), height(height), alignment(alignment) { 
+    mouseDown = false;
+}
 
 GUIComponent::~GUIComponent() { }
+
+void GUIComponent::setX(float x) {
+    this->x = x;
+}
+
+void GUIComponent::setY(float y) {
+    this->y = y;
+}
 
 float GUIComponent::getX() const {
     float trueX = x;

@@ -256,7 +256,7 @@ void GUITextInput::updateArrowActions() {
                 caretPosition = right ? selectionEndPosition : selectionStartPosition;
             } else {
                 // Shift caret position.
-                caretPosition = MathUtil::clamp(right ? caretPosition+1 : caretPosition-1, 0, text.size());
+                caretPosition = MathUtil::clampInt(right ? caretPosition+1 : caretPosition-1, 0, text.size());
             }
             selectionStartPosition = caretPosition;
             selectionEndPosition = caretPosition;

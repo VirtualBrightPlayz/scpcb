@@ -22,6 +22,9 @@ class GUIText : public GUIComponent {
         RichText rt;
 
         GUIText(UIMesh* um, KeyBinds* kb, Config* con, Font* font, float x, float y, Alignment alignment = Alignment::CenterXY);
+
+        using GUIComponent::setX;
+        using GUIComponent::setY;
     
         void setScale(float sc);
 };

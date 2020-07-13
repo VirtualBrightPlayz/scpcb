@@ -14,7 +14,17 @@ bool MathUtil::eqFloats(float p1, float p2) {
     return fabs(p1 - p2) < MARGIN_ERROR;
 }
 
-int MathUtil::clamp(int val, int min, int max) {
+int MathUtil::maxInt(int val, int other) {
+    if (val > other) { return val; }
+    return other;
+}
+
+int MathUtil::minInt(int val, int other) {
+    if (val < other) { return val; }
+    return other;
+}
+
+int MathUtil::clampInt(int val, int min, int max) {
     if (val <= min) { return min; }
     if (val >= max) { return max; }
     return val;
