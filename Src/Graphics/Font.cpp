@@ -227,6 +227,10 @@ float Font::stringWidth(const PGE::String& text, PGE::Vector2f scale) {
     return width * scale.x;
 }
 
+float Font::getHeight() const {
+    return (float)height;
+}
+
 void Font::centerTextCoords(float& txtX, float& txtY, const PGE::String& text, float x, float y, float w, float h, PGE::Vector2f scale) {
     float txtWidth = stringWidth(text, scale);
     float txtHeight = height * scale.y;
