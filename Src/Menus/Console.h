@@ -5,6 +5,7 @@
 #include <Color/Color.h>
 
 #include "Menu.h"
+#include "GUI/GUIText.h"
 
 class UIMesh;
 class Font;
