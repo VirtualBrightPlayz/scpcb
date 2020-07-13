@@ -3,7 +3,6 @@
 #include "GUI/GUIComponent.h"
 #include "GUI/GUIFrame.h"
 #include "GUI/GUITextInput.h"
-#include "GUI/GUIText.h"
 
 Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io) : Menu(wrld, "console") {
     //TODO: Figure out alignment issues and simplify this.
@@ -43,6 +42,7 @@ void Console::update(const PGE::Vector2f& mousePosition) {
 
     if (keyBinds->enter->isHit() && !input->getText().equals("")) {
         executeCommand(input->getText());
+        input->setText("");
     }
 
     if (keyBinds->upArrow->isHit() || keyBinds->downArrow->isHit()) {
@@ -75,7 +75,6 @@ void Console::executeCommand(const PGE::String& in) {
     std::vector<PGE::String> vect = in.split(" ", true);
     PGE::String command = vect[0];
     vect.erase(vect.begin());
-    input->setText("");
     for (int i = 0; i < (int)interCommands.size(); i++) {
         if (command.equals(interCommands[i]->getName())) {
             interCommands[i]->execute(this, vect);
