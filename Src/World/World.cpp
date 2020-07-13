@@ -161,8 +161,8 @@ void World::runTick(float timeStep) {
     mousePosition.y -= GUIComponent::SCALE_MAGNITUDE;
 
 #ifdef DEBUG
-    mouseTxtX->text = PGE::String("MouseX: ", PGE::String((int)downInputs));
-    mouseTxtY->text = PGE::String("MouseY: ", PGE::String(mousePosition.y));
+    mouseTxtX->rt.text = PGE::String("MouseX: ", PGE::String((int)downInputs));
+    mouseTxtY->rt.text = PGE::String("MouseY: ", PGE::String(mousePosition.y));
 #endif
 
     // If a menu is in the graveyard then remove it.

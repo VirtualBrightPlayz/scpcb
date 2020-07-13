@@ -15,5 +15,5 @@ void GUIText::updateInternal(PGE::Vector2f mousePos) { }
 
 void GUIText::renderInternal() {
     PGE::Vector2f txtScale = PGE::Vector2f(0.1388f * scale);
-    font->draw(text, PGE::Vector2f(getX(), getY()), txtScale);
+    font->draw(rt.text, PGE::Vector2f(getX(), getY()), txtScale, rt.rotation, rt.color);
 }

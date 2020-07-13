@@ -12,6 +12,8 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     escape = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::ESCAPE);
     leftArrow = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LEFT);
     rightArrow = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RIGHT);
+    upArrow = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::UP);
+    downArrow = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::DOWN);
     leftShift = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LSHIFT);
     rightShift = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RSHIFT);
     backspace = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::BACKSPACE);
@@ -38,6 +40,8 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     io->trackInput(escape);
     io->trackInput(leftArrow);
     io->trackInput(rightArrow);
+    io->trackInput(upArrow);
+    io->trackInput(downArrow);
     io->trackInput(leftShift);
     io->trackInput(rightShift);
     io->trackInput(backspace);
@@ -60,6 +64,8 @@ KeyBinds::~KeyBinds() {
     io->untrackInput(escape);
     io->untrackInput(leftArrow);
     io->untrackInput(rightArrow);
+    io->untrackInput(upArrow);
+    io->untrackInput(downArrow);
     io->untrackInput(leftShift);
     io->untrackInput(rightShift);
     io->untrackInput(backspace);

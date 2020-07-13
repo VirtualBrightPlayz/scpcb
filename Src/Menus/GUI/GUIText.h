@@ -14,7 +14,12 @@ class GUIText : public GUIComponent {
         void renderInternal() override;
 
     public:
-        PGE::String text;
+        struct RichText {
+            PGE::String text = "";
+            PGE::Color color = PGE::Color::White;
+            float rotation = 0.f;
+        };
+        RichText rt;
 
         GUIText(UIMesh* um, KeyBinds* kb, Config* con, Font* font, float x, float y, Alignment alignment = Alignment::CenterXY);
     

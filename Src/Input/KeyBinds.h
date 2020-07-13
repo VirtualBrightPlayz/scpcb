@@ -45,6 +45,8 @@ class KeyBinds {
         // Text input keys.
         PGE::KeyboardInput* leftArrow;
         PGE::KeyboardInput* rightArrow;
+        PGE::KeyboardInput* upArrow;
+        PGE::KeyboardInput* downArrow;
         PGE::KeyboardInput* leftShift;
         PGE::KeyboardInput* rightShift;
         // Checks if any of the shift keys are held down.
