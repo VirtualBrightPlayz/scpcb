@@ -11,7 +11,8 @@ shared abstract class Zone {
 
     Room@ createRoom(string name) {
         if (name == "hll_plain_2_a") {
-            return hll_plain_2_a(name, this);
+            return Room(name, this);
+            //return hll_plain_2_a(name, this);
         } else {
             return Room(name, this);
         }
