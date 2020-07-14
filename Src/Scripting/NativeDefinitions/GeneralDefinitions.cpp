@@ -1,5 +1,8 @@
 #include "GeneralDefinitions.h"
-#include <iostream>
+#ifdef DEBUG
+    #include <iostream>
+#endif
+#include "../../Menus/Console.h"
 
 GeneralDefinitions::GeneralDefinitions(ScriptManager* mgr) {
     engine = mgr->getAngelScriptEngine();
@@ -12,15 +15,13 @@ GeneralDefinitions::GeneralDefinitions(ScriptManager* mgr) {
 void GeneralDefinitions::Log(PGE::String content) {
     #ifdef DEBUG
         std::cout << "Debug::Log: " << content << std::endl;
-    #else
-        // TODO log file maybe
     #endif
+    Console::getConsole()->addConsoleMessage("Debug::Log: " + content, PGE::Color::Green);
 }
 
 void GeneralDefinitions::Err(PGE::String content) {
     #ifdef DEBUG
         std::cerr << "Debug::Err: " << content << std::endl; // TODO error throwing
-    #else
-        // TODO log file maybe
     #endif
+    Console::getConsole()->addConsoleMessage("Debug::Err: " + content, PGE::Color::Red);
 }

@@ -8,6 +8,8 @@
 float Console::Message::lineHeight;
 float Console::Message::bottomOfConsoleWindow;
 
+Console* Console::_console;
+
 Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io) : Menu(wrld, "console") {
     //TODO: Figure out alignment issues and simplify this.
     float frameX = -GUIComponent::SCALE_MAGNITUDE * con->getAspectRatio();
@@ -15,19 +17,24 @@ Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con,
     float frameWidth = GUIComponent::SCALE_MAGNITUDE * 2.f * con->getAspectRatio();
     float frameHeight = GUIComponent::SCALE_MAGNITUDE;
     frame = new GUIFrame(um, kb, con, frameX, frameY, frameWidth, frameHeight);
-    Message::bottomOfConsoleWindow = frameY + frameHeight;
 
     float inputY = frameY + frameHeight;
     input = new GUITextInput(um, font, kb, con, io, frameX, inputY, frameWidth, 5.f, true);
 
-    Message::lineHeight = con->getHeight();
-    consoleWindowLineCount = (frameHeight - 3.f) / (font->getHeight() / con->getHeight() * GUIComponent::SCALE_MAGNITUDE + 2.f);
+    windowMaxLineCount = (frameHeight - 3.f) / (font->getHeight() / con->getHeight() * GUIComponent::SCALE_MAGNITUDE + 2.f);
+
+    Message::lineHeight = (font->getHeight() / con->getHeight() * frameHeight + 2.f);
+    Message::bottomOfConsoleWindow = windowMaxLineCount * Message::lineHeight + 1.f;
     commandHistoryIndex = -1;
+
+    windowScrollOffset = 0.f;
 
     this->uiMesh = um;
     this->font = font;
     this->keyBinds = kb;
     this->config = con;
+
+    _console = this;
 
     registerInternalCommands();
 }
@@ -49,7 +56,7 @@ void Console::update(const PGE::Vector2f& mousePosition) {
         windowChanged = true;
     }
 
-    if (keyBinds->upArrow->isHit() || keyBinds->downArrow->isHit()) {
+    /*if (keyBinds->upArrow->isHit() || keyBinds->downArrow->isHit()) {
         int newIndex = keyBinds->upArrow->isHit() ? commandHistoryIndex + 1 : commandHistoryIndex - 1;
         if (newIndex < -1) {
             commandHistoryIndex = commandHistory.size() - 1;
@@ -66,6 +73,15 @@ void Console::update(const PGE::Vector2f& mousePosition) {
             input->setText("");
         }
         windowChanged = true;
+    }*/
+
+    if ((keyBinds->upArrow->isHit() || keyBinds->downArrow->isHit())) {
+        //Scroll only in the area of existing messages available.
+        windowScrollOffset = MathUtil::clampFloat(
+                windowScrollOffset + (keyBinds->upArrow->isHit() ? 0.5f : -0.5f),
+                -MathUtil::maxInt(0, messageHistory.size() - windowMaxLineCount),
+                0.f);
+        windowChanged = true;
     }
 
     if (windowChanged) {
@@ -79,9 +95,10 @@ void Console::render() const {
     frame->render();
     input->render();
 
-    /*for (int i = 0; i < outputCompsSize; i++) {
-        outputComps[i]->render();
-    }*/
+    int lowestDrawn = messageHistory.size() - MathUtil::floor(MathUtil::absFloat(windowScrollOffset));
+    for (int i = MathUtil::maxInt(0, lowestDrawn - windowMaxLineCount); i < lowestDrawn; i++) {
+        messageHistory[i].text->render();
+    }
 
     uiMesh->endRender();
 }
@@ -103,29 +120,26 @@ void Console::executeCommand(const PGE::String& in) {
     addConsoleMessage("No command found :(((", PGE::Color::Red);
 }
 
-Console::Message::Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt) {
-    text = new GUIText(um, kb, con, fnt, 0.f, 0.f, Alignment::Left);
-    setLinePositionFromBottom(0.f);
+Console::Message::Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, const PGE::String& resp, const PGE::Color& color) {
+    text = new GUIText(um, kb, con, fnt, 3.f / con->getAspectRatio(), 0.f, Alignment::Left | Alignment::Top);
+    text->rt = { resp, color };
 }
 
 void Console::Message::setLinePositionFromBottom(float line) {
     linePositionFromBottom = line;
-    text->setY(bottomOfConsoleWindow + (lineHeight * line));
+    text->setY(bottomOfConsoleWindow - line * lineHeight);
 }
 
 void Console::addConsoleMessage(const PGE::String& resp, const PGE::Color& color) {
-    messageHistory.push_back(Message(uiMesh, keyBinds, config, font));
+    messageHistory.push_back(Message(uiMesh, keyBinds, config, font, resp, color));
     updateMessageWindow();
+    windowScrollOffset = 0;
 }
 
 void Console::updateMessageWindow() {
-    /*for (int i = outputCompsSize - 1; i >= 0; i--) {
-        if (i < outputLines.size() - lowestLine) {
-            outputComps[i]->rt = outputLines[outputLines.size() - i - 1 - lowestLine];
-        } else {
-            outputComps[i]->rt = {};
-        }
-    }*/
+    for (int i = 0; i < messageHistory.size(); i++) {
+        messageHistory[i].setLinePositionFromBottom(windowScrollOffset + messageHistory.size()-1-i);
+    }
 }
 
 void Console::todo_test() {
@@ -181,4 +195,8 @@ public:
 void Console::registerInternalCommands() {
     interCommands.push_back(new TestCommand());
     interCommands.push_back(new HelpCommand());
+}
+
+Console* Console::getConsole() {
+    return _console;
 }

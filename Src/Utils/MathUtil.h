@@ -15,6 +15,12 @@ class MathUtil {
         static int maxInt(int val, int pther);
         static int minInt(int val, int pther);
         static int clampInt(int val, int min, int max);
+        static float clampFloat(float val, float min, float max);
+
+        static float absFloat(float val);
+
+        static int floor(float val);
+        static int ceil(float val);
 };
 
 #endif // MATH_H_INCLUDED

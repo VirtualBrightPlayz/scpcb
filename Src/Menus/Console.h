@@ -35,7 +35,7 @@ private:
         float linePositionFromBottom;
 
     public:
-        Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt);
+        Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, const PGE::String& resp, const PGE::Color& color);
 
         GUIText* text;
 
@@ -45,12 +45,14 @@ private:
         static float bottomOfConsoleWindow;
     };
 
-    int consoleWindowLineCount;
     std::vector<Message> messageHistory;
     void updateMessageWindow();
 
     int commandHistoryIndex;
     std::deque<PGE::String> commandHistory;
+
+    int windowMaxLineCount;
+    float windowScrollOffset;
     
     UIMesh* uiMesh;
     Font* font;
@@ -61,6 +63,8 @@ private:
     void registerInternalCommands();
 
     void executeCommand(const PGE::String& in);
+
+    static Console* _console;
 
 public:
     Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io);
@@ -74,6 +78,8 @@ public:
     void todo_test();
     void showHelp(const PGE::String& com);
     void showHelp();
+
+    static Console* getConsole();
 };
 
 #endif // CONSOLE_H_INCLUDED
