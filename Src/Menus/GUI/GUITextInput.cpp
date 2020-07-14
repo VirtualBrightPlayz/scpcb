@@ -53,7 +53,7 @@ bool GUITextInput::anyTextSelected() const {
 }
 
 int GUITextInput::nextShortcutJump(bool right) const {
-    int jumpPos = std::max(caretPosition - (right ? 0 : 1), 0);
+    int jumpPos = MathUtil::maxInt(caretPosition - (right ? 0 : 1), 0);
     while (text.charAt(jumpPos) == ' ' && ((right && jumpPos < text.size()) || (!right && jumpPos >= 0))) { //If left jumpPos may reach -1 because in the end +1 is always added.
         jumpPos = jumpPos + (right ? 1 : -1);
     }
@@ -286,7 +286,7 @@ void GUITextInput::updateArrowActions() {
                 if (keyBinds->anyShortcutDown()) {
                     caretPosition = nextShortcutJump(right);
                 } else {
-                    caretPosition = MathUtil::clamp(right ? caretPosition + 1 : caretPosition - 1, 0, text.size());
+                    caretPosition = MathUtil::clampInt(right ? caretPosition + 1 : caretPosition - 1, 0, text.size());
                 }
             }
             selectionStartPosition = caretPosition;
