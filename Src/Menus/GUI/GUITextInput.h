@@ -55,8 +55,8 @@ private:
     int selectionEndPosition;
     bool anyTextSelected() const;
 
-    // Returns the next position jumped to when holding down the shortcut key.
-    int nextShortcutJump(bool right) const;
+    int getFirstLeftWordBoundary(int startingPosition) const;
+    int getFirstRightWordBoundary(int startingPosition) const;
 
     /// <summary>
     /// Passes the XY coordinates of the text's starting point to the parameters by reference.
@@ -79,7 +79,7 @@ private:
     // Update input text with any new characters that were inputted.
     void updateTextActions();
     // Deletion actions.
-    void updateDeleleKeyActions();
+    void updateDeleteKeyActions();
     // Arrow keys actions.
     void updateArrowActions();
     // Mouse click/drag actions.

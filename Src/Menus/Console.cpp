@@ -117,7 +117,7 @@ void Console::executeCommand(const PGE::String& in) {
             return;
         }
     }
-    addConsoleMessage("No command found :(((", PGE::Color::Red);
+    addConsoleMessage("No command found", PGE::Color::Red);
 }
 
 Console::Message::Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, const PGE::String& resp, const PGE::Color& color) {

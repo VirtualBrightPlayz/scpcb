@@ -36,6 +36,8 @@ GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE
 
 // Regex stuff.
 std::regex word("\\w");
+std::regex leftBoundWord("^.*(\\b)\\w+\\s*$");
+std::regex rightBoundWord("\\s*\\w+(\\b)");
 
 void GUITextInput::setText(const PGE::String& txt) {
     text = txt;
@@ -52,20 +54,28 @@ bool GUITextInput::anyTextSelected() const {
     return selectionStartPosition != selectionEndPosition;
 }
 
-int GUITextInput::nextShortcutJump(bool right) const {
-    int jumpPos = MathUtil::maxInt(caretPosition - (right ? 0 : 1), 0);
-    while (text.charAt(jumpPos) == ' ' && ((right && jumpPos < text.size()) || (!right && jumpPos >= 0))) { //If left jumpPos may reach -1 because in the end +1 is always added.
-        jumpPos = jumpPos + (right ? 1 : -1);
+int GUITextInput::getFirstLeftWordBoundary(int startingPosition) const {
+    if (caretPosition > 0) {
+        PGE::String leftmostString = getText().substr(0, startingPosition);
+        std::cmatch matches = leftmostString.regexMatch(leftBoundWord);
+        int position = matches.position(matches.size() - 1); // Last match.
+
+        return position;
     }
-    while (text.charAt(jumpPos) != ' ' && ((right && jumpPos < text.size()) || (!right && jumpPos >= 0))) { //Through some Xor stuff these two while loops could be merged, but it doesn't worth it.
-        jumpPos = jumpPos + (right ? 1 : -1);
+
+    return caretPosition;
+}
+
+int GUITextInput::getFirstRightWordBoundary(int startingPosition) const {
+    if (caretPosition < getText().size()) {
+        PGE::String rightmostString = getText().substr(startingPosition, getText().size() - startingPosition);
+        std::cmatch matches = rightmostString.regexMatch(rightBoundWord);
+        int position = matches.position(1) + startingPosition;
+
+        return position;
     }
-    if (right) {
-        while (text.charAt(jumpPos) == ' ' && jumpPos < text.size()) {
-            jumpPos++;
-        }
-    }
-    return right ? jumpPos : jumpPos + 1;
+
+    return caretPosition;
 }
 
 void GUITextInput::select() {
@@ -199,7 +209,7 @@ void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
         }
     } else {
         updateTextActions();
-        updateDeleleKeyActions();
+        updateDeleteKeyActions();
         updateArrowActions();
         updateMouseActions(mousePos);
         updateShortcutActions();
@@ -238,7 +248,7 @@ void GUITextInput::updateTextActions() {
     }
 }
 
-void GUITextInput::updateDeleleKeyActions() {
+void GUITextInput::updateDeleteKeyActions() {
     if (keyBinds->backspace->isHit() || keyBinds->del->isHit()) {
         // Delete selected text.
         if (anyTextSelected()) {
@@ -248,9 +258,9 @@ void GUITextInput::updateDeleleKeyActions() {
             if (keyBinds->backspace->isHit() && caretPosition > 0) {
                 PGE::String newText;
                 if (keyBinds->anyShortcutDown()) {
-                    int delPos = nextShortcutJump(false);
-                    newText = text.substr(0, delPos) + text.substr(caretPosition);
-                    caretPosition -= caretPosition - delPos;
+                    int deletionStart = getFirstLeftWordBoundary(caretPosition);
+                    newText = text.substr(0, deletionStart) + text.substr(caretPosition);
+                    caretPosition = deletionStart;
                 } else {
                     newText = text.substr(0, caretPosition - 1) + text.substr(caretPosition);
                     caretPosition--;
@@ -261,7 +271,7 @@ void GUITextInput::updateDeleleKeyActions() {
             } else if (keyBinds->del->isHit() && caretPosition < text.size()) {
                 PGE::String newText;
                 if (keyBinds->anyShortcutDown()) {
-                    newText = text.substr(0, caretPosition) + text.substr(nextShortcutJump(true));
+                    newText = text.substr(0, caretPosition) + text.substr(getFirstRightWordBoundary(caretPosition));
                 } else {
                     newText = text.substr(0, caretPosition) + text.substr(caretPosition + 1);
                 }
@@ -284,7 +294,11 @@ void GUITextInput::updateArrowActions() {
             } else {
                 // Shift caret position.
                 if (keyBinds->anyShortcutDown()) {
-                    caretPosition = nextShortcutJump(right);
+                    if (right) {
+                        caretPosition = getFirstRightWordBoundary(caretPosition);
+                    } else {
+                        caretPosition = getFirstLeftWordBoundary(caretPosition);
+                    }
                 } else {
                     caretPosition = MathUtil::clampInt(right ? caretPosition + 1 : caretPosition - 1, 0, text.size());
                 }
@@ -303,28 +317,11 @@ void GUITextInput::updateArrowActions() {
 #endif
             // Shift the selection index.
             if (keyBinds->anyShortcutDown()) {
-                int prevCaret = caretPosition;
-                int jumpTo;
-                if (selectionStartPosition == caretPosition) {
-                    caretPosition = selectionEndPosition;
-                    jumpTo = nextShortcutJump(right);
-                    if (jumpTo < selectionStartPosition) {
-                        selectionStartPosition = jumpTo;
-                        selectionEndPosition = prevCaret;
-                    } else {
-                        selectionEndPosition = jumpTo;
-                    }
+                if (right) {
+                    selectionEndPosition = getFirstRightWordBoundary(selectionEndPosition);
                 } else {
-                    caretPosition = selectionStartPosition;
-                    jumpTo = nextShortcutJump(right);
-                    if (jumpTo > selectionEndPosition) {
-                        selectionEndPosition = jumpTo;
-                        selectionStartPosition = prevCaret;
-                    } else {
-                        selectionStartPosition = jumpTo;
-                    }
+                    selectionStartPosition = getFirstLeftWordBoundary(selectionStartPosition);
                 }
-                caretPosition = prevCaret;
             } else {
                 if (right) {
                     if (selectionStartPosition != caretPosition) {
