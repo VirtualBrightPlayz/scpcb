@@ -3,6 +3,10 @@
 #include "GUI/GUIComponent.h"
 #include "GUI/GUIFrame.h"
 #include "GUI/GUITextInput.h"
+#include "../Utils/MathUtil.h"
+
+float Console::Message::lineHeight;
+float Console::Message::bottomOfConsoleWindow;
 
 Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io) : Menu(wrld, "console") {
     //TODO: Figure out alignment issues and simplify this.
@@ -11,17 +15,14 @@ Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con,
     float frameWidth = GUIComponent::SCALE_MAGNITUDE * 2.f * con->getAspectRatio();
     float frameHeight = GUIComponent::SCALE_MAGNITUDE;
     frame = new GUIFrame(um, kb, con, frameX, frameY, frameWidth, frameHeight);
+    Message::bottomOfConsoleWindow = frameY + frameHeight;
 
     float inputY = frameY + frameHeight;
     input = new GUITextInput(um, font, kb, con, io, frameX, inputY, frameWidth, 5.f, true);
 
-    outputCompsSize = (frameHeight - 3.f) / (font->getHeight() / con->getHeight() * GUIComponent::SCALE_MAGNITUDE + 2.f);
-    outputComps = new GUIText*[outputCompsSize];
-    lowestLine = 0;
-
-    for (int i = 0; i < outputCompsSize; i++) {
-        outputComps[i] = new GUIText(um, kb, con, font, 3.f / con->getAspectRatio(), (outputCompsSize - i) * (font->getHeight() / con->getHeight() * frameHeight + 2.f) + 1.f, Alignment::Left | Alignment::Top);
-    }
+    Message::lineHeight = con->getHeight();
+    consoleWindowLineCount = (frameHeight - 3.f) / (font->getHeight() / con->getHeight() * GUIComponent::SCALE_MAGNITUDE + 2.f);
+    commandHistoryIndex = -1;
 
     this->uiMesh = um;
     this->font = font;
@@ -40,19 +41,35 @@ Console::~Console() {
 void Console::update(const PGE::Vector2f& mousePosition) {
     input->update(mousePosition);
 
+    bool windowChanged = false;
     if (keyBinds->enter->isHit() && !input->getText().equals("")) {
         executeCommand(input->getText());
         input->setText("");
+
+        windowChanged = true;
     }
 
     if (keyBinds->upArrow->isHit() || keyBinds->downArrow->isHit()) {
-        lowestLine = std::clamp(lowestLine + (keyBinds->upArrow->isHit() ? 2 : -2), 0, std::max((int)outputLines.size(), 0));
-        if (lowestLine > 0) {
-            input->setText(outputLines[outputLines.size() - lowestLine].text.substr(2));
+        int newIndex = keyBinds->upArrow->isHit() ? commandHistoryIndex + 1 : commandHistoryIndex - 1;
+        if (newIndex < -1) {
+            commandHistoryIndex = commandHistory.size() - 1;
+        } else if (newIndex >= commandHistory.size()) {
+            commandHistoryIndex = -1;
+        }
+        else {
+            commandHistoryIndex = newIndex;
+        }
+
+        if (commandHistoryIndex > -1) {
+            input->setText(commandHistory[commandHistoryIndex]);
         } else {
             input->setText("");
         }
-        updateOutput();
+        windowChanged = true;
+    }
+
+    if (windowChanged) {
+        updateMessageWindow();
     }
 }
 
@@ -62,16 +79,18 @@ void Console::render() const {
     frame->render();
     input->render();
 
-    for (int i = 0; i < outputCompsSize; i++) {
+    /*for (int i = 0; i < outputCompsSize; i++) {
         outputComps[i]->render();
-    }
+    }*/
 
     uiMesh->endRender();
 }
 
 void Console::executeCommand(const PGE::String& in) {
-    lowestLine = 0;
-    addResponse("> " + in, PGE::Color::Yellow);
+    commandHistoryIndex = -1;
+    addConsoleMessage("> " + in, PGE::Color::Yellow);
+    commandHistory.push_front(in);
+
     std::vector<PGE::String> vect = in.split(" ", true);
     PGE::String command = vect[0];
     vect.erase(vect.begin());
@@ -81,38 +100,48 @@ void Console::executeCommand(const PGE::String& in) {
             return;
         }
     }
-    addResponse("No command found :(((", PGE::Color::Red);
+    addConsoleMessage("No command found :(((", PGE::Color::Red);
 }
 
-void Console::addResponse(const PGE::String& resp, const PGE::Color& color) {
-    outputLines.push_back({ resp, color });
-    updateOutput();
+Console::Message::Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt) {
+    text = new GUIText(um, kb, con, fnt, 0.f, 0.f, Alignment::Left);
+    setLinePositionFromBottom(0.f);
 }
 
-void Console::updateOutput() {
-    for (int i = outputCompsSize - 1; i >= 0; i--) {
+void Console::Message::setLinePositionFromBottom(float line) {
+    linePositionFromBottom = line;
+    text->setY(bottomOfConsoleWindow + (lineHeight * line));
+}
+
+void Console::addConsoleMessage(const PGE::String& resp, const PGE::Color& color) {
+    messageHistory.push_back(Message(uiMesh, keyBinds, config, font));
+    updateMessageWindow();
+}
+
+void Console::updateMessageWindow() {
+    /*for (int i = outputCompsSize - 1; i >= 0; i--) {
         if (i < outputLines.size() - lowestLine) {
             outputComps[i]->rt = outputLines[outputLines.size() - i - 1 - lowestLine];
         } else {
             outputComps[i]->rt = {};
         }
-    }
+    }*/
 }
 
 void Console::todo_test() {
-    addResponse("hey gotem", PGE::Color::Green);
+    addConsoleMessage("hey gotem", PGE::Color::Green);
 }
 
 void Console::showHelp(const PGE::String& com) {
     for (int i = 0; i < (int)interCommands.size(); i++) {
         if (com.equals(interCommands[i]->getName())) {
-            addResponse(interCommands[i]->getHelpText());
+            addConsoleMessage(interCommands[i]->getHelpText());
         }
     }
 }
 
 void Console::showHelp() {
-    addResponse("Noone can help you now");
+    addConsoleMessage("Noone can help you now");
 }
 
 class TestCommand : public InternalCommand {

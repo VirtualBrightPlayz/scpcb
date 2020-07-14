@@ -3,6 +3,7 @@
 
 #include <IO/IO.h>
 #include <Color/Color.h>
+#include <stack>
 
 #include "Menu.h"
 #include "GUI/GUIText.h"
@@ -29,11 +30,27 @@ private:
     GUIFrame* frame;
     GUITextInput* input;
 
-    int outputCompsSize;
-    GUIText** outputComps;
-    int lowestLine;
-    std::vector<GUIText::RichText> outputLines;
-    void updateOutput();
+    class Message {
+    private:
+        float linePositionFromBottom;
+
+    public:
+        Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt);
+
+        GUIText* text;
+
+        void setLinePositionFromBottom(float line);
+
+        static float lineHeight;
+        static float bottomOfConsoleWindow;
+    };
+
+    int consoleWindowLineCount;
+    std::vector<Message> messageHistory;
+    void updateMessageWindow();
+
+    int commandHistoryIndex;
+    std::deque<PGE::String> commandHistory;
     
     UIMesh* uiMesh;
     Font* font;
@@ -52,7 +69,7 @@ public:
     void update(const PGE::Vector2f& mousePosition) override;
     void render() const override;
 
-    void addResponse(const PGE::String& resp, const PGE::Color& color = PGE::Color::White);
+    void addConsoleMessage(const PGE::String& resp, const PGE::Color& color = PGE::Color::White);
 
     void todo_test();
     void showHelp(const PGE::String& com);
