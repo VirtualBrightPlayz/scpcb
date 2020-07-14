@@ -58,7 +58,7 @@ class PauseMenu : public Menu {
 
         void onEscapeHit() override;
 
-        void update(const PGE::Vector2f& mousePosition) override;
+        void update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mouseWheelDelta) override;
         void render() const override;
 
         GUITextInput* inputTest; //TODO: remove

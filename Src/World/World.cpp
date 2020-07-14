@@ -160,9 +160,11 @@ void World::runTick(float timeStep) {
     mousePosition.x -= GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio();
     mousePosition.y -= GUIComponent::SCALE_MAGNITUDE;
 
+    PGE::Vector2i mouseWheelDelta = io->getMouseWheelDelta();
+
 #ifdef DEBUG
-    mouseTxtX->rt.text = PGE::String("MouseX: ", PGE::String((int)downInputs));
-    mouseTxtY->rt.text = PGE::String("MouseY: ", PGE::String(mousePosition.y));
+    mouseTxtX->rt.text = PGE::String("DownInputs: ", PGE::String((int)downInputs));
+    mouseTxtY->rt.text = PGE::String("MouseWheelX: ", PGE::String(io->getMouseWheelDelta().y));
 #endif
 
     // If a menu is in the graveyard then remove it.
@@ -175,7 +177,7 @@ void World::runTick(float timeStep) {
     if (!menuWasOpened) {
         updatePlaying(timeStep);
     } else {
-        currMenu->update(mousePosition);
+        currMenu->update(mousePosition, mouseWheelDelta);
     }
 
     scripting->update();
