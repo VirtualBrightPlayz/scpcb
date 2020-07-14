@@ -22,7 +22,7 @@ Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con,
 
     Message::lineHeight = con->getHeight();
     consoleWindowLineCount = (frameHeight - 3.f) / (font->getHeight() / con->getHeight() * GUIComponent::SCALE_MAGNITUDE + 2.f);
-    lowestLine = 0;
+    commandHistoryIndex = -1;
 
     this->uiMesh = um;
     this->font = font;
@@ -50,12 +50,21 @@ void Console::update(const PGE::Vector2f& mousePosition) {
     }
 
     if (keyBinds->upArrow->isHit() || keyBinds->downArrow->isHit()) {
-        lowestLine = MathUtil::clampInt(lowestLine + (keyBinds->upArrow->isHit() ? 2 : -2), 0, MathUtil::maxInt((int)commandHistory.size(), 0));
-        /*if (lowestLine > 0) {
-            input->setText(outputLines[outputLines.size() - lowestLine].text.substr(2));
+        int newIndex = keyBinds->upArrow->isHit() ? commandHistoryIndex + 1 : commandHistoryIndex - 1;
+        if (newIndex < -1) {
+            commandHistoryIndex = commandHistory.size() - 1;
+        } else if (newIndex >= commandHistory.size()) {
+            commandHistoryIndex = -1;
+        }
+        else {
+            commandHistoryIndex = newIndex;
+        }
+
+        if (commandHistoryIndex > -1) {
+            input->setText(commandHistory[commandHistoryIndex]);
         } else {
             input->setText("");
-        }*/
+        }
         windowChanged = true;
     }
 
@@ -78,8 +87,10 @@ void Console::render() const {
 }
 
 void Console::executeCommand(const PGE::String& in) {
-    lowestLine = 0;
+    commandHistoryIndex = -1;
     addConsoleMessage("> " + in, PGE::Color::Yellow);
+    commandHistory.push_front(in);
+
     std::vector<PGE::String> vect = in.split(" ", true);
     PGE::String command = vect[0];
     vect.erase(vect.begin());

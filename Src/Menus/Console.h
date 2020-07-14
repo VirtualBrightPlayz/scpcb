@@ -3,6 +3,7 @@
 
 #include <IO/IO.h>
 #include <Color/Color.h>
+#include <stack>
 
 #include "Menu.h"
 #include "GUI/GUIText.h"
@@ -46,9 +47,10 @@ private:
 
     int consoleWindowLineCount;
     std::vector<Message> messageHistory;
-    int lowestLine;
-    std::vector<GUIText::RichText> commandHistory;
     void updateMessageWindow();
+
+    int commandHistoryIndex;
+    std::deque<PGE::String> commandHistory;
     
     UIMesh* uiMesh;
     Font* font;
