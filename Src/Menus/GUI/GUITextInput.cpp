@@ -52,6 +52,22 @@ bool GUITextInput::anyTextSelected() const {
     return selectionStartPosition != selectionEndPosition;
 }
 
+int GUITextInput::nextShortcutJump(bool right) const {
+    int jumpPos = std::max(caretPosition - (right ? 0 : 1), 0);
+    while (text.charAt(jumpPos) == ' ' && ((right && jumpPos < text.size()) || (!right && jumpPos >= 0))) { //If left jumpPos may reach -1 because in the end +1 is always added.
+        jumpPos = jumpPos + (right ? 1 : -1);
+    }
+    while (text.charAt(jumpPos) != ' ' && ((right && jumpPos < text.size()) || (!right && jumpPos >= 0))) { //Through some Xor stuff these two while loops could be merged, but it doesn't worth it.
+        jumpPos = jumpPos + (right ? 1 : -1);
+    }
+    if (right) {
+        while (text.charAt(jumpPos) == ' ' && jumpPos < text.size()) {
+            jumpPos++;
+        }
+    }
+    return right ? jumpPos : jumpPos + 1;
+}
+
 void GUITextInput::select() {
     if (subscriber != nullptr) {
         subscriber->deselect();
@@ -230,14 +246,25 @@ void GUITextInput::updateDeleleKeyActions() {
         } else {
             // Remove preceeding character if backspace, suceeding if delete.
             if (keyBinds->backspace->isHit() && caretPosition > 0) {
-                PGE::String newText = text.substr(0, caretPosition - 1) + text.substr(caretPosition);
-                updateText(newText);
-
-                caretPosition--;
+                PGE::String newText;
+                if (keyBinds->anyShortcutDown()) {
+                    int delPos = nextShortcutJump(false);
+                    newText = text.substr(0, delPos) + text.substr(caretPosition);
+                    caretPosition -= caretPosition - delPos;
+                } else {
+                    newText = text.substr(0, caretPosition - 1) + text.substr(caretPosition);
+                    caretPosition--;
+                }
                 selectionStartPosition = caretPosition;
                 selectionEndPosition = caretPosition;
+                updateText(newText);
             } else if (keyBinds->del->isHit() && caretPosition < text.size()) {
-                PGE::String newText = text.substr(0, caretPosition) + text.substr(caretPosition + 1);
+                PGE::String newText;
+                if (keyBinds->anyShortcutDown()) {
+                    newText = text.substr(0, caretPosition) + text.substr(nextShortcutJump(true));
+                } else {
+                    newText = text.substr(0, caretPosition) + text.substr(caretPosition + 1);
+                }
                 updateText(newText);
             }
         }
@@ -256,7 +283,11 @@ void GUITextInput::updateArrowActions() {
                 caretPosition = right ? selectionEndPosition : selectionStartPosition;
             } else {
                 // Shift caret position.
-                caretPosition = MathUtil::clamp(right ? caretPosition+1 : caretPosition-1, 0, text.size());
+                if (keyBinds->anyShortcutDown()) {
+                    caretPosition = nextShortcutJump(right);
+                } else {
+                    caretPosition = MathUtil::clamp(right ? caretPosition + 1 : caretPosition - 1, 0, text.size());
+                }
             }
             selectionStartPosition = caretPosition;
             selectionEndPosition = caretPosition;
@@ -271,17 +302,42 @@ void GUITextInput::updateArrowActions() {
             }
 #endif
             // Shift the selection index.
-            if (right) {
-                if (selectionStartPosition != caretPosition) {
-                    selectionStartPosition++;
+            if (keyBinds->anyShortcutDown()) {
+                int prevCaret = caretPosition;
+                int jumpTo;
+                if (selectionStartPosition == caretPosition) {
+                    caretPosition = selectionEndPosition;
+                    jumpTo = nextShortcutJump(right);
+                    if (jumpTo < selectionStartPosition) {
+                        selectionStartPosition = jumpTo;
+                        selectionEndPosition = prevCaret;
+                    } else {
+                        selectionEndPosition = jumpTo;
+                    }
                 } else {
-                    selectionEndPosition++;
+                    caretPosition = selectionStartPosition;
+                    jumpTo = nextShortcutJump(right);
+                    if (jumpTo > selectionEndPosition) {
+                        selectionEndPosition = jumpTo;
+                        selectionStartPosition = prevCaret;
+                    } else {
+                        selectionStartPosition = jumpTo;
+                    }
                 }
+                caretPosition = prevCaret;
             } else {
-                if (selectionEndPosition != caretPosition) {
-                    selectionEndPosition--;
+                if (right) {
+                    if (selectionStartPosition != caretPosition) {
+                        selectionStartPosition++;
+                    } else {
+                        selectionEndPosition++;
+                    }
                 } else {
-                    selectionStartPosition--;
+                    if (selectionEndPosition != caretPosition) {
+                        selectionEndPosition--;
+                    } else {
+                        selectionStartPosition--;
+                    }
                 }
             }
             if (selectionStartPosition < 0) { selectionStartPosition = 0; }

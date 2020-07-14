@@ -55,6 +55,9 @@ private:
     int selectionEndPosition;
     bool anyTextSelected() const;
 
+    // Returns the next position jumped to when holding down the shortcut key.
+    int nextShortcutJump(bool right) const;
+
     /// <summary>
     /// Passes the XY coordinates of the text's starting point to the parameters by reference.
     /// </summary>

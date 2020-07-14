@@ -82,7 +82,7 @@ KeyBinds::~KeyBinds() {
 #endif
 
     delete mouse1; delete mouse2; delete escape;
-    delete leftArrow; delete rightArrow; delete leftShift; delete rightShift;
+    delete leftArrow; delete rightArrow; delete upArrow; delete downArrow; delete leftShift; delete rightShift;
     delete backspace; delete del;
     delete leftShortcutKey; delete rightShortcutKey;
     delete keyC; delete keyX; delete keyV; delete keyZ;
@@ -103,6 +103,10 @@ KeyBinds::~KeyBinds() {
 
 bool KeyBinds::anyShiftDown() const {
     return leftShift->isDown() || rightShift->isDown();
+}
+
+bool KeyBinds::anyShortcutDown() const {
+    return leftShortcutKey->isDown() || rightShortcutKey->isDown();
 }
 
 bool KeyBinds::copyIsHit() const {

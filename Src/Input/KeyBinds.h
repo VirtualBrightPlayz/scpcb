@@ -58,6 +58,8 @@ class KeyBinds {
         // Shortcuts.
         PGE::KeyboardInput* leftShortcutKey;
         PGE::KeyboardInput* rightShortcutKey;
+        // Checks if any of the shortcut keys are held down.
+        bool anyShortcutDown() const;
         PGE::KeyboardInput* keyC;
         PGE::KeyboardInput* keyX;
         PGE::KeyboardInput* keyV;
