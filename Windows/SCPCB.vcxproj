@@ -156,7 +156,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\CollisionDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\EventDefinition.h" />
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\GeneralDefinitions.h" />
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinition.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.h" />
@@ -213,7 +213,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\CollisionDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\EventDefinition.cpp" />
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\GeneralDefinitions.cpp" />
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinition.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.cpp" />

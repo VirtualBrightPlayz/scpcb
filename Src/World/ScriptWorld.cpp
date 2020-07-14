@@ -10,7 +10,7 @@
 #include "../Scripting/ScriptFunction.h"
 #include "../Scripting/ScriptClass.h"
 
-#include "../Scripting/NativeDefinitions/GeneralDefinitions.h"
+#include "../Scripting/NativeDefinitions/ConsoleDefinition.h"
 #include "../Scripting/NativeDefinitions/InputDefinitions.h"
 #include "../Scripting/NativeDefinitions/RefCounter.h"
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
@@ -19,12 +19,12 @@
 #include "../Scripting/NativeDefinitions/PlayerControllerDefinitions.h"
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 
-ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, const Config* config, float timestep) {
+ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, const Config* config, float timestep, Console* con) {
     manager = new ScriptManager();
 
     refCounterManager = new RefCounterManager();
 
-    generalDefinitions = new GeneralDefinitions(manager);
+    consoleDefinition = new ConsoleDefinition(manager, con);
     inputDefinitions = new InputDefinitions(manager, keyBinds);
     mathDefinitions = new MathDefinitions(manager);
     collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);
@@ -104,7 +104,7 @@ ScriptWorld::~ScriptWorld() {
     delete perTickEventDefinition;
     delete perFrameEventDefinition;
 
-    delete generalDefinitions;
+    delete consoleDefinition;
     delete inputDefinitions;
     delete mathDefinitions;
     delete rm2Definitions;

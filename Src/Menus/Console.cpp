@@ -8,8 +8,6 @@
 float Console::Message::lineHeight;
 float Console::Message::bottomOfConsoleWindow;
 
-Console* Console::_console;
-
 Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io) : Menu(wrld, "console") {
     //TODO: Figure out alignment issues and simplify this.
     float frameX = -GUIComponent::SCALE_MAGNITUDE * con->getAspectRatio();
@@ -34,8 +32,6 @@ Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con,
     this->keyBinds = kb;
     this->config = con;
 
-    _console = this;
-
     registerInternalCommands();
 }
 
@@ -56,14 +52,13 @@ void Console::update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mo
         windowChanged = true;
     }
 
-    /*if (keyBinds->upArrow->isHit() || keyBinds->downArrow->isHit()) {
+    if (keyBinds->upArrow->isHit() || keyBinds->downArrow->isHit()) {
         int newIndex = keyBinds->upArrow->isHit() ? commandHistoryIndex + 1 : commandHistoryIndex - 1;
         if (newIndex < -1) {
             commandHistoryIndex = commandHistory.size() - 1;
         } else if (newIndex >= commandHistory.size()) {
             commandHistoryIndex = -1;
-        }
-        else {
+        } else {
             commandHistoryIndex = newIndex;
         }
 
@@ -73,7 +68,7 @@ void Console::update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mo
             input->setText("");
         }
         windowChanged = true;
-    }*/
+    }
 
     if (mouseWheelDelta.y != 0) {
         //Scroll only in the area of existing messages available.
@@ -136,6 +131,14 @@ void Console::addConsoleMessage(const PGE::String& resp, const PGE::Color& color
     windowScrollOffset = 0;
 }
 
+void Console::logWarning(const PGE::String& resp) {
+    addConsoleMessage(resp, PGE::Color::Yellow);
+}
+
+void Console::logError(const PGE::String& resp) {
+    addConsoleMessage(resp, PGE::Color::Red);
+}
+
 void Console::updateMessageWindow() {
     for (int i = 0; i < messageHistory.size(); i++) {
         messageHistory[i].setLinePositionFromBottom(windowScrollOffset + messageHistory.size()-1-i);
@@ -195,8 +198,4 @@ public:
 void Console::registerInternalCommands() {
     interCommands.push_back(new TestCommand());
     interCommands.push_back(new HelpCommand());
-}
-
-Console* Console::getConsole() {
-    return _console;
 }

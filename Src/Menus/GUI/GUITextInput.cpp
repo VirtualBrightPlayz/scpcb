@@ -36,8 +36,8 @@ GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE
 
 // Regex stuff.
 std::regex word("\\w");
-std::regex leftBoundWord("^.*(\\b)\\w+\\s*$");
-std::regex rightBoundWord("\\s*\\w+(\\b)");
+std::regex leftBoundWord("(\\b)\\w+$|\\w(\\b)\\W+$");
+std::regex rightBoundWord("^\\w+(\\b)|^\\W+(\\b)\\w");
 
 void GUITextInput::setText(const PGE::String& txt) {
     text = txt;
@@ -58,7 +58,7 @@ int GUITextInput::getFirstLeftWordBoundary(int startingPosition) const {
     if (caretPosition > 0) {
         PGE::String leftmostString = getText().substr(0, startingPosition);
         std::cmatch matches = leftmostString.regexMatch(leftBoundWord);
-        int position = matches.position(matches.size() - 1); // Last match.
+        int position = matches[1].matched ? matches.position(1) : matches.position(2);
 
         return position;
     }
@@ -70,9 +70,9 @@ int GUITextInput::getFirstRightWordBoundary(int startingPosition) const {
     if (caretPosition < getText().size()) {
         PGE::String rightmostString = getText().substr(startingPosition, getText().size() - startingPosition);
         std::cmatch matches = rightmostString.regexMatch(rightBoundWord);
-        int position = matches.position(1) + startingPosition;
+        int position = matches[1].matched ? matches.position(1) : matches.position(2);
 
-        return position;
+        return position + startingPosition;
     }
 
     return caretPosition;
@@ -318,9 +318,24 @@ void GUITextInput::updateArrowActions() {
             // Shift the selection index.
             if (keyBinds->anyShortcutDown()) {
                 if (right) {
-                    selectionEndPosition = getFirstRightWordBoundary(selectionEndPosition);
+                    if (selectionStartPosition != caretPosition) {
+                        selectionStartPosition = getFirstRightWordBoundary(selectionStartPosition);
+                    } else {
+                        selectionEndPosition = getFirstRightWordBoundary(selectionEndPosition);
+                    }
                 } else {
-                    selectionStartPosition = getFirstLeftWordBoundary(selectionStartPosition);
+                    if (selectionEndPosition != caretPosition) {
+                        selectionEndPosition = getFirstLeftWordBoundary(selectionEndPosition);
+                    } else {
+                        selectionStartPosition = getFirstLeftWordBoundary(selectionStartPosition);
+                    }
+                }
+
+                // If the selection areas overlapped while looking for boundaries swap them.
+                if (selectionStartPosition > selectionEndPosition) {
+                    int buff = selectionStartPosition;
+                    selectionStartPosition = selectionEndPosition;
+                    selectionEndPosition = buff;
                 }
             } else {
                 if (right) {

@@ -2,7 +2,7 @@
 #define SCRIPTWORLD_H_INCLUDED
 
 class ScriptManager;
-class GeneralDefinitions;
+class ConsoleDefinition;
 class MathDefinitions;
 class RM2Definitions;
 class CollisionDefinitions;
@@ -14,6 +14,7 @@ class GraphicsResources;
 class KeyBinds;
 class Config;
 class Camera;
+class Console;
 class RefCounterManager;
 
 class ScriptWorld {
@@ -22,7 +23,7 @@ private:
 
     RefCounterManager* refCounterManager;
 
-    GeneralDefinitions* generalDefinitions;
+    ConsoleDefinition* consoleDefinition;
     InputDefinitions* inputDefinitions;
     MathDefinitions* mathDefinitions;
     RM2Definitions* rm2Definitions;
@@ -35,7 +36,7 @@ private:
     std::vector<ScriptModule*> modules;
 
 public:
-    ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, const Config* config, float timestep);
+    ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, const Config* config, float timestep, Console* con);
     ~ScriptWorld();
 
     void update();

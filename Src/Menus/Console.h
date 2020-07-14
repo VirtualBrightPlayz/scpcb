@@ -64,8 +64,6 @@ private:
 
     void executeCommand(const PGE::String& in);
 
-    static Console* _console;
-
 public:
     Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io);
     ~Console();
@@ -74,12 +72,12 @@ public:
     void render() const override;
 
     void addConsoleMessage(const PGE::String& resp, const PGE::Color& color = PGE::Color::White);
+    void logWarning(const PGE::String& resp);
+    void logError(const PGE::String& resp);
 
     void todo_test();
     void showHelp(const PGE::String& com);
     void showHelp();
-
-    static Console* getConsole();
 };
 
 #endif // CONSOLE_H_INCLUDED

@@ -193,7 +193,7 @@
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.h">
       <Filter>Src\Scripting\NativeDefinitions</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\GeneralDefinitions.h">
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinition.h">
       <Filter>Src\Scripting\NativeDefinitions</Filter>
     </ClInclude>
   </ItemGroup>
@@ -349,7 +349,7 @@
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.cpp">
       <Filter>Src\Scripting\NativeDefinitions</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\GeneralDefinitions.cpp">
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinition.cpp">
       <Filter>Src\Scripting\NativeDefinitions</Filter>
     </ClCompile>
   </ItemGroup>
