@@ -59,7 +59,7 @@ void PauseMenu::onEscapeHit() {
     }
 }
 
-void PauseMenu::update(const PGE::Vector2f& mousePosition) {
+void PauseMenu::update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mouseWheelDelta) {
     switch (currState) {
         case SubState::Main: {
             newgame->update(mousePosition);

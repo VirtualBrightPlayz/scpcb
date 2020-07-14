@@ -45,7 +45,7 @@ Console::~Console() {
     }
 }
 
-void Console::update(const PGE::Vector2f& mousePosition) {
+void Console::update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mouseWheelDelta) {
     input->update(mousePosition);
 
     bool windowChanged = false;
@@ -75,10 +75,10 @@ void Console::update(const PGE::Vector2f& mousePosition) {
         windowChanged = true;
     }*/
 
-    if ((keyBinds->upArrow->isHit() || keyBinds->downArrow->isHit())) {
+    if (mouseWheelDelta.y != 0) {
         //Scroll only in the area of existing messages available.
         windowScrollOffset = MathUtil::clampFloat(
-                windowScrollOffset + (keyBinds->upArrow->isHit() ? 0.5f : -0.5f),
+                windowScrollOffset + (mouseWheelDelta.y * 0.3f),
                 -MathUtil::maxInt(0, messageHistory.size() - windowMaxLineCount),
                 0.f);
         windowChanged = true;

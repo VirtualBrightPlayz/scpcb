@@ -25,7 +25,7 @@ public:
     // What should the menu do when escape is pressed.
     virtual void onEscapeHit();
     
-    virtual void update(const PGE::Vector2f& mousePosition)=0;
+    virtual void update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mouseWheelDelta)=0;
     virtual void render() const=0;
 };
 

@@ -70,7 +70,7 @@ public:
     Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io);
     ~Console();
 
-    void update(const PGE::Vector2f& mousePosition) override;
+    void update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mouseWheelDelta) override;
     void render() const override;
 
     void addConsoleMessage(const PGE::String& resp, const PGE::Color& color = PGE::Color::White);
