@@ -55,7 +55,7 @@ bool GUITextInput::anyTextSelected() const {
 }
 
 int GUITextInput::getFirstLeftWordBoundary(int startingPosition) const {
-    if (caretPosition > 0) {
+    if (startingPosition > 0) {
         PGE::String leftmostString = getText().substr(0, startingPosition);
         std::cmatch matches = leftmostString.regexMatch(leftBoundWord);
         int position = matches[1].matched ? matches.position(1) : matches.position(2);
@@ -63,11 +63,11 @@ int GUITextInput::getFirstLeftWordBoundary(int startingPosition) const {
         return position;
     }
 
-    return caretPosition;
+    return startingPosition;
 }
 
 int GUITextInput::getFirstRightWordBoundary(int startingPosition) const {
-    if (caretPosition < getText().size()) {
+    if (startingPosition < getText().size()) {
         PGE::String rightmostString = getText().substr(startingPosition, getText().size() - startingPosition);
         std::cmatch matches = rightmostString.regexMatch(rightBoundWord);
         int position = matches[1].matched ? matches.position(1) : matches.position(2);
@@ -75,7 +75,7 @@ int GUITextInput::getFirstRightWordBoundary(int startingPosition) const {
         return position + startingPosition;
     }
 
-    return caretPosition;
+    return startingPosition;
 }
 
 void GUITextInput::select() {
