@@ -162,7 +162,7 @@ void Console::showHelp() {
     addConsoleMessage("Noone can help you now");
 }
 
-class TestCommand : public InternalCommand {
+class TestCommand : public Command {
 public:
     PGE::String getName() const override {
         return "test";
@@ -177,7 +177,7 @@ public:
     }
 };
 
-class HelpCommand : public InternalCommand {
+class HelpCommand : public Command {
 public:
     PGE::String getName() const override {
         return "help";
@@ -196,28 +196,100 @@ public:
     }
 };
 
-class ScriptCommand : public InternalCommand {
+class ListCommand : public Command {
+public:
+    PGE::String getName() const override {
+        return "list";
+    }
+
+    PGE::String getHelpText() const override {
+        return "Lists all commands";
+    }
+
+    void execute(Console* console, const std::vector<PGE::String>& params) const override {
+        //TODO: How do I get access to the commands? :(
+    }
+};
+
+class ScriptCommand : public Command {
 private:
     asIScriptFunction* func;
     asIScriptContext* scriptContext;
 
+    PGE::String helpText;
 
 public:
-    ScriptCommand(asIScriptFunction* f, asIScriptContext* context) {
+    bool duplicateName = false;
+
+    ScriptCommand(asIScriptFunction* f, asIScriptContext* context, const PGE::String& helpText) {
         func = f;
         scriptContext = context;
+        this->helpText = helpText;
     }
 
     PGE::String getName() const override {
-        return func->GetName();
+        if (duplicateName) {
+            return PGE::String(func->GetModuleName()) + ":" + func->GetName();
+        } else {
+            return func->GetName();
+        }
     }
 
     PGE::String getHelpText() const override {
-        return "No help available for this command.";
+        return helpText.isEmpty() ? "No help available for this command." : helpText;
     }
 
     void execute(Console* console, const std::vector<PGE::String>& params) const override {
-        scriptContext->Prepare(func);
+        if (func->GetParamCount() != params.size()) {
+            console->addConsoleMessage("ARGUMENT SIZE MISMATCH", PGE::Color::Red);
+            return;
+        }
+        if (scriptContext->Prepare(func) < 0) { throw std::runtime_error("ptooey! 2"); }
+        PGE::String errMsg;
+        int* paramTypeId = (int*) malloc(sizeof(int));
+        for (int i = 0; i < func->GetParamCount(); i++) {
+            if (func->GetParam(i, paramTypeId) >= 0) {
+                if (*paramTypeId == asTYPEID_BOOL) {
+                    if (params[i].toLower().equals("true") || params[i].equals("1")) {
+                        scriptContext->SetArgByte(i, 1);
+                    } else if (params[i].toLower().equals("false") || params[i].equals("0")) {
+                        scriptContext->SetArgByte(i, 0);
+                    } else {
+                        errMsg = "NOT BOOL";
+                        break;
+                    }
+                } else if (*paramTypeId == asTYPEID_INT32) {
+                    try {
+                        int arg = std::stoi(params[i].cstr());
+                        scriptContext->SetArgDWord(i, arg);
+                        if (!MathUtil::eqFloats(arg, std::stof(params[i].cstr()))) { //If the end user enters a float.
+                            console->addConsoleMessage("Loss of data!", PGE::Color::Yellow);
+                        }
+                    } catch (std::invalid_argument) {
+                        errMsg = "STINKYINT";
+                        break;
+                    }
+                } else if (*paramTypeId == asTYPEID_FLOAT) {
+                    try {
+                        scriptContext->SetArgFloat(i, std::stof(params[i].cstr()));
+                    } catch (std::invalid_argument) {
+                        errMsg = "STINKYFLOAT";
+                        break;
+                    }
+                } else if (*paramTypeId == scriptContext->GetEngine()->GetStringFactoryReturnTypeId()) {
+                    scriptContext->SetArgObject(i, (void*) &params[i]);
+                }
+            } else {
+                throw std::runtime_error("ptooey! 3");
+            }
+        }
+        free(paramTypeId);
+        if (errMsg.isEmpty()) {
+            scriptContext->Execute();
+        } else {
+            console->addConsoleMessage(errMsg, PGE::Color::Red);
+        }
+        scriptContext->Unprepare();
     }
 };
 
@@ -226,6 +298,37 @@ void Console::registerInternalCommands() {
     interCommands.push_back(new HelpCommand());
 }
 
-void Console::registerExternalCommand(asIScriptFunction* f, asIScriptContext* context) {
-    interCommands.push_back(new ScriptCommand(f, context));
+#include <iostream>
+
+void Console::registerExternalCommand(asIScriptFunction* f, asIScriptContext* context, const PGE::String& helpText) {
+    int* paramTypeId = (int*)malloc(sizeof(int));
+    for (int i = 0; i < f->GetParamCount(); i++) {
+        if (f->GetParam(i, paramTypeId) < 0) {
+            free(paramTypeId);
+            throw std::runtime_error("ptooey?");
+        } else {
+            if (*paramTypeId != asTYPEID_BOOL && *paramTypeId != asTYPEID_INT32 && *paramTypeId != asTYPEID_FLOAT && *paramTypeId != context->GetEngine()->GetStringFactoryReturnTypeId()) {
+                free(paramTypeId);
+                throw std::runtime_error("STINKY INVALID TYPE");
+            }
+        }
+    }
+    free(paramTypeId);
+    ScriptCommand* newCommand = new ScriptCommand(f, context, helpText);
+    ScriptCommand* otherCommand;
+    for (int i = 0; i < interCommands.size(); i++) {
+        otherCommand = dynamic_cast<ScriptCommand*>(interCommands[i]);
+        if (otherCommand != nullptr) {
+            if (otherCommand->getName().equals(otherCommand->duplicateName ? PGE::String(f->GetModuleName()) + ":" + f->GetName() : f->GetName())) { //This will also catch a command that already has had its name changed.
+                otherCommand->duplicateName = true;
+                newCommand->duplicateName = true;
+                if (otherCommand->getName().equals(newCommand->getName())) { throw std::runtime_error("lol double command"); }
+                break;
+            }
+        } else if (interCommands[i]->getName().equals(f->GetName())) { //Check if name is occupied by a vanilla command.
+            newCommand->duplicateName = true;
+        }
+    }
+    std::cout << newCommand->getName() << std::endl;
+    interCommands.push_back(newCommand);
 }

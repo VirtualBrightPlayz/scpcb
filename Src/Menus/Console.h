@@ -19,7 +19,7 @@ class GUITextInput;
 
 class Console;
 
-class InternalCommand {
+class Command {
 public:
     virtual PGE::String getName() const = 0;
     virtual PGE::String getHelpText() const = 0;
@@ -60,7 +60,7 @@ private:
     KeyBinds* keyBinds;
     Config* config;
 
-    std::vector<InternalCommand*> interCommands;
+    std::vector<Command*> interCommands;
     void registerInternalCommands();
 
     void executeCommand(const PGE::String& in);
@@ -80,7 +80,7 @@ public:
     void showHelp(const PGE::String& com);
     void showHelp();
 
-    void registerExternalCommand(asIScriptFunction* f, asIScriptContext* context);
+    void registerExternalCommand(asIScriptFunction* f, asIScriptContext* context, const PGE::String& helpText);
 };
 
 #endif // CONSOLE_H_INCLUDED

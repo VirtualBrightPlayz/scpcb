@@ -15,13 +15,13 @@ external shared enum RoomType;
 external Zone@ test_shared_global;
 external int testCounter;
 
-void Testtest() {
-    Debug::log("TEST");
+void Test(string testString) {
+    Debug::log(testString);
 }
 
 void main() {
     Debug::log("Starting up!");
-    registerCommand(Testtest);
+    registerCommand(Test, "THIS COMKMAND IS VERY EPIC");
     @entranceZone = EntranceZone();
     @test_shared_global = @entranceZone;
     @testCollCollection = Collision::Collection();

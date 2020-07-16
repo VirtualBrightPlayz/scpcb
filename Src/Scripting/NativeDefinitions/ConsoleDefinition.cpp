@@ -7,19 +7,18 @@
 ConsoleDefinition::ConsoleDefinition(ScriptManager* mgr, Console* con) {
     engine = mgr->getAngelScriptEngine();
     console = con;
+    scriptContext = engine->CreateContext();
 
-    engine->RegisterGlobalFunction("void registerCommand(?&in command)", asMETHOD(ConsoleDefinition, registerCommand), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterGlobalFunction("void registerCommand(?&in command, const string&in helpText=\"\")", asMETHOD(ConsoleDefinition, registerCommand), asCALL_THISCALL_ASGLOBAL, this);
 
     engine->SetDefaultNamespace("Debug");
     engine->RegisterGlobalFunction("void log(const string&in content)", asMETHOD(ConsoleDefinition, log), asCALL_THISCALL_ASGLOBAL, this);
     engine->RegisterGlobalFunction("void warning(const string&in content)", asMETHOD(ConsoleDefinition, warning), asCALL_THISCALL_ASGLOBAL, this);
     engine->RegisterGlobalFunction("void error(const string&in content)", asMETHOD(ConsoleDefinition, error), asCALL_THISCALL_ASGLOBAL, this);
-
-    scriptContext = engine->CreateContext();
 }
 
-void ConsoleDefinition::registerCommand(asIScriptFunction** f) {
-    console->registerExternalCommand(*f, scriptContext);
+void ConsoleDefinition::registerCommand(asIScriptFunction** f, const PGE::String& helpText) {
+    console->registerExternalCommand(*f, scriptContext, helpText);
 }
 
 void ConsoleDefinition::log(const PGE::String& content) {
