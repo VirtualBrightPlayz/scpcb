@@ -4,8 +4,6 @@
 #endif
 #include "../../Menus/Console.h"
 
-asIScriptContext* ConsoleDefinition::scriptContext;
-
 ConsoleDefinition::ConsoleDefinition(ScriptManager* mgr, Console* con) {
     engine = mgr->getAngelScriptEngine();
     console = con;
@@ -20,8 +18,8 @@ ConsoleDefinition::ConsoleDefinition(ScriptManager* mgr, Console* con) {
     scriptContext = engine->CreateContext();
 }
 
-void ConsoleDefinition::registerCommand(asIScriptFunction* f) {
-    console->registerExternalCommand(f);
+void ConsoleDefinition::registerCommand(asIScriptFunction** f) {
+    console->registerExternalCommand(*f, scriptContext);
 }
 
 void ConsoleDefinition::log(const PGE::String& content) {

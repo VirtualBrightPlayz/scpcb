@@ -80,7 +80,7 @@ public:
     void showHelp(const PGE::String& com);
     void showHelp();
 
-    void registerExternalCommand(asIScriptFunction* f);
+    void registerExternalCommand(asIScriptFunction* f, asIScriptContext* context);
 };
 
 #endif // CONSOLE_H_INCLUDED

@@ -199,10 +199,13 @@ public:
 class ScriptCommand : public InternalCommand {
 private:
     asIScriptFunction* func;
+    asIScriptContext* scriptContext;
+
 
 public:
-    ScriptCommand(asIScriptFunction* func) {
-        this->func = func;
+    ScriptCommand(asIScriptFunction* f, asIScriptContext* context) {
+        func = f;
+        scriptContext = context;
     }
 
     PGE::String getName() const override {
@@ -214,7 +217,7 @@ public:
     }
 
     void execute(Console* console, const std::vector<PGE::String>& params) const override {
-        ConsoleDefinition::scriptContext->Prepare(func);
+        scriptContext->Prepare(func);
     }
 };
 
@@ -223,6 +226,6 @@ void Console::registerInternalCommands() {
     interCommands.push_back(new HelpCommand());
 }
 
-void Console::registerExternalCommand(asIScriptFunction* f) {
-    interCommands.push_back(new ScriptCommand(f));
+void Console::registerExternalCommand(asIScriptFunction* f, asIScriptContext* context) {
+    interCommands.push_back(new ScriptCommand(f, context));
 }
