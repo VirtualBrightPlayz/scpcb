@@ -17,7 +17,9 @@ ConsoleDefinition::ConsoleDefinition(ScriptManager* mgr, Console* con) {
     engine->RegisterGlobalFunction("void error(const string&in content)", asMETHOD(ConsoleDefinition, error), asCALL_THISCALL_ASGLOBAL, this);
 }
 
-void ConsoleDefinition::registerCommand(asIScriptFunction** f, const PGE::String& helpText) {
+void ConsoleDefinition::registerCommand(asIScriptFunction** f, int typeId, const PGE::String& helpText) {
+    if (engine->GetTypeInfoById(typeId)->GetFuncdefSignature() == nullptr) { throw std::runtime_error("Argument is not a function"); }
+
     console->registerExternalCommand(*f, scriptContext, helpText);
 }
 
