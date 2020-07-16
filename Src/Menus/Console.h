@@ -7,6 +7,7 @@
 
 #include "Menu.h"
 #include "GUI/GUIText.h"
+#include <angelscript.h>
 
 class UIMesh;
 class Font;
@@ -78,6 +79,8 @@ public:
     void todo_test();
     void showHelp(const PGE::String& com);
     void showHelp();
+
+    void registerExternalCommand(asIScriptFunction* f);
 };
 
 #endif // CONSOLE_H_INCLUDED

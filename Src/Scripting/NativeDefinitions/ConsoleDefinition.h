@@ -10,11 +10,15 @@ class ConsoleDefinition : public NativeDefinition {
     private:
         Console* console;
 
+        void registerCommand(asIScriptFunction* f);
+
         void log(const PGE::String& content);
         void warning(const PGE::String& content);
         void error(const PGE::String& content);
     public:
         ConsoleDefinition(ScriptManager* mgr, Console* con);
+
+        static asIScriptContext* scriptContext;
 };
 
 #endif

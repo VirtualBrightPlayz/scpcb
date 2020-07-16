@@ -4,6 +4,7 @@
 #include "GUI/GUIFrame.h"
 #include "GUI/GUITextInput.h"
 #include "../Utils/MathUtil.h"
+#include "../Scripting/NativeDefinitions/ConsoleDefinition.h"
 
 float Console::Message::lineHeight;
 float Console::Message::bottomOfConsoleWindow;
@@ -195,7 +196,33 @@ public:
     }
 };
 
+class ScriptCommand : public InternalCommand {
+private:
+    asIScriptFunction* func;
+
+public:
+    ScriptCommand(asIScriptFunction* func) {
+        this->func = func;
+    }
+
+    PGE::String getName() const override {
+        return func->GetName();
+    }
+
+    PGE::String getHelpText() const override {
+        return "No help available for this command.";
+    }
+
+    void execute(Console* console, const std::vector<PGE::String>& params) const override {
+        ConsoleDefinition::scriptContext->Prepare(func);
+    }
+};
+
 void Console::registerInternalCommands() {
     interCommands.push_back(new TestCommand());
     interCommands.push_back(new HelpCommand());
+}
+
+void Console::registerExternalCommand(asIScriptFunction* f) {
+    interCommands.push_back(new ScriptCommand(f));
 }
