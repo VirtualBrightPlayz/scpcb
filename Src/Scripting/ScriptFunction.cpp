@@ -67,41 +67,56 @@ ScriptFunction::ScriptFunction(ScriptModule* module, asIScriptFunction* asScript
 
     scriptContext = asModule->GetEngine()->CreateContext();
     scriptContext->SetExceptionCallback(asMETHOD(ScriptFunction, exceptionCallback), this, asCALL_THISCALL);
+
+    isPrepared = false;
 }
 
 ScriptFunction::~ScriptFunction() {
     scriptContext->Release();
 }
 
+void ScriptFunction::prepare() {
+    if (isPrepared) { return; }
+    scriptContext->Prepare(scriptFunction);
+    isPrepared = true;
+}
+
 void ScriptFunction::setObject(ScriptObject* obj) {
+    prepare();
     scriptContext->SetObject(obj->getAngelScriptObject());
 }
 
 void ScriptFunction::setObjectNative(void* obj) {
+    prepare();
     scriptContext->SetObject(obj);
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, int32_t i32) {
+    prepare();
     int index = getArgumentIndex(argument);
     scriptContext->SetArgDWord(index, i32);
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, uint32_t u32) {
+    prepare();
     int index = getArgumentIndex(argument);
     scriptContext->SetArgDWord(index, u32);
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, float f) {
+    prepare();
     int index = getArgumentIndex(argument);
     scriptContext->SetArgFloat(index, f);
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, double d) {
+    prepare();
     int index = getArgumentIndex(argument);
     scriptContext->SetArgDouble(index, d);
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, const PGE::String& s) {
+    prepare();
     int index = getArgumentIndex(argument);
 
     if (stringArgs.find(index) == stringArgs.end()) {
@@ -113,12 +128,14 @@ void ScriptFunction::setArgument(const PGE::String& argument, const PGE::String&
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, ScriptObject* obj) {
+    prepare();
     int index = getArgumentIndex(argument);
 
     scriptContext->SetArgObject(index, obj->getAngelScriptObject());
 }
 
 void ScriptFunction::setArgumentNative(const PGE::String& argument, void* obj) {
+    prepare();
     int index = getArgumentIndex(argument);
 
     scriptContext->SetArgObject(index, obj);
@@ -134,7 +151,7 @@ void ScriptFunction::exceptionCallback(asIScriptContext* context) {
 }
 
 void ScriptFunction::execute() {
-    if (scriptContext->Prepare(scriptFunction) < 0) { throw std::runtime_error("ptooey!"); }
+    prepare();
     scriptContext->Execute();
 
     if (signature.returnType->isClassType()) {
@@ -151,6 +168,7 @@ void ScriptFunction::execute() {
     }
 
     scriptContext->Unprepare();
+    isPrepared = false;
 }
 
 int32_t ScriptFunction::getReturnInt32() const {
