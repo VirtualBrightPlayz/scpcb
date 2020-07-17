@@ -38,7 +38,7 @@ int CollisionMeshCollection::Instance::getId() const {
     return identifier;
 }
 
-int CollisionMeshCollection::addInstance(CollisionMesh* mesh,Matrix4x4f matrix) {
+int CollisionMeshCollection::addInstance(CollisionMesh* mesh, Matrix4x4f matrix) {
     lastInstanceId++;
     Instance instance(this, mesh, matrix, lastInstanceId);
     instances.emplace(lastInstanceId, instance);
