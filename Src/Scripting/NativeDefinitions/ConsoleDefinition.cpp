@@ -9,8 +9,7 @@ ConsoleDefinition::ConsoleDefinition(ScriptManager* mgr, Console* con) {
     console = con;
     scriptContext = engine->CreateContext();
 
-    engine->RegisterGlobalFunction("void registerCommand(const string&in name, const string&in helpText, bool caseSensitive, function&in command)", asMETHOD(ConsoleDefinition, registerCommand), asCALL_THISCALL_ASGLOBAL, this);
-    engine->RegisterGlobalFunction("void registerCommand(const string&in name, const string&in helpText, function&in command)", asMETHOD(ConsoleDefinition, registerCommandCaseInsensitive), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterGlobalFunction("void registerCommand(const string&in name, const string&in helpText, function&in command)", asMETHOD(ConsoleDefinition, registerCommand), asCALL_THISCALL_ASGLOBAL, this);
     engine->RegisterGlobalFunction("void registerCommand(const string&in name, function&in command)", asMETHOD(ConsoleDefinition, registerCommandNoHelp), asCALL_THISCALL_ASGLOBAL, this);
 
     engine->SetDefaultNamespace("Debug");
@@ -19,17 +18,13 @@ ConsoleDefinition::ConsoleDefinition(ScriptManager* mgr, Console* con) {
     engine->RegisterGlobalFunction("void error(const string&in content)", asMETHOD(ConsoleDefinition, error), asCALL_THISCALL_ASGLOBAL, this);
 }
 
-void ConsoleDefinition::registerCommand(const PGE::String& name, const PGE::String& helpText, bool caseSensitive, void* f, int typeId) {
+void ConsoleDefinition::registerCommand(const PGE::String& name, const PGE::String& helpText, void* f, int typeId) {
     asIScriptFunction* func = (asIScriptFunction*)(((typeId & asTYPEID_OBJHANDLE) != 0) ? *((void**)f) : f);
-    console->registerExternalCommand(name, helpText, func, scriptContext, caseSensitive);
-}
-
-void ConsoleDefinition::registerCommandCaseInsensitive(const PGE::String& name, const PGE::String& helpText, void* f, int typeId) {
-    registerCommand(name, helpText, false, f, typeId);
+    console->registerExternalCommand(name, helpText, func, scriptContext);
 }
 
 void ConsoleDefinition::registerCommandNoHelp(const PGE::String& name, void* f, int typeId) {
-    registerCommand(name, "", false, f, typeId);
+    registerCommand(name, "", f, typeId);
 }
 
 void ConsoleDefinition::log(const PGE::String& content) {
