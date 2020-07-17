@@ -25,7 +25,7 @@ Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con,
     float inputY = frameY + frameHeight;
     input = new GUITextInput(um, font, kb, con, io, frameX, inputY, frameWidth, 5.f, true);
 
-    windowMaxLineCount = (frameHeight - 3.f) / (font->getHeight() / con->getHeight() * GUIComponent::SCALE_MAGNITUDE + 2.f);
+    windowMaxLineCount = (int) ((frameHeight - 3.f) / (font->getHeight() / con->getHeight() * GUIComponent::SCALE_MAGNITUDE + 2.f));
 
     Message::lineHeight = (font->getHeight() / con->getHeight() * frameHeight + 2.f);
     Message::bottomOfConsoleWindow = windowMaxLineCount * Message::lineHeight + 1.f;
@@ -65,7 +65,7 @@ void Console::update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mo
     if (keyBinds->upArrow->isHit() || keyBinds->downArrow->isHit()) {
         int newIndex = keyBinds->upArrow->isHit() ? commandHistoryIndex + 1 : commandHistoryIndex - 1;
         if (newIndex < -1) {
-            commandHistoryIndex = commandHistory.size() - 1;
+            commandHistoryIndex = (int)commandHistory.size() - 1;
         } else if (newIndex >= commandHistory.size()) {
             commandHistoryIndex = -1;
         } else {
@@ -84,7 +84,7 @@ void Console::update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mo
         //Scroll only in the area of existing messages available.
         windowScrollOffset = MathUtil::clampFloat(
                 windowScrollOffset + (mouseWheelDelta.y * 0.3f),
-                -MathUtil::maxInt(0, messageHistory.size() - windowMaxLineCount),
+                (float)-MathUtil::maxInt(0, (int)messageHistory.size() - windowMaxLineCount),
                 0.f);
         windowChanged = true;
     }
@@ -100,7 +100,7 @@ void Console::render() const {
     frame->render();
     input->render();
 
-    int lowestDrawn = messageHistory.size() - MathUtil::floor(MathUtil::absFloat(windowScrollOffset));
+    int lowestDrawn = (int)messageHistory.size() - MathUtil::floor(MathUtil::absFloat(windowScrollOffset));
     for (int i = MathUtil::maxInt(0, lowestDrawn - windowMaxLineCount); i < lowestDrawn; i++) {
         messageHistory[i].text->render();
     }
@@ -155,10 +155,6 @@ void Console::updateMessageWindow() {
     }
 }
 
-void Console::todo_test() {
-    addConsoleMessage("hey gotem", PGE::Color::Green);
-}
-
 void Console::showHelp(const PGE::String& com) {
     for (int i = 0; i < (int)commands.size(); i++) {
         if (com.equals(commands[i]->getName())) {
@@ -167,24 +163,18 @@ void Console::showHelp(const PGE::String& com) {
     }
 }
 
-void Console::showHelp() {
-    addConsoleMessage("Noone can help you now");
+void Console::listCommands() {
+    for (int i = 0; i < (int)commands.size(); i++) {
+        addConsoleMessage(commands[i]->getName());
+    }
 }
 
-class TestCommand : public Command {
-public:
-    PGE::String getName() const override {
-        return "test";
-    }
-
-    PGE::String getHelpText() const override {
-        return "AAAAAAAAAAAAA";
-    }
-
-    void execute(Console* console, const std::vector<PGE::String>& params) const override {
-        console->todo_test();
-    }
-};
+void Console::clear() {
+    messageHistory.clear();
+    commandHistory.clear();
+    commandHistoryIndex = 0;
+    updateMessageWindow();
+}
 
 class HelpCommand : public Command {
 public:
@@ -193,17 +183,37 @@ public:
     }
 
     PGE::String getHelpText() const override {
-        return "You really need help";
+        return "Provides a description of a specified command. Use it with no parameters to list all commands.";
     }
 
     void execute(Console* console, const std::vector<PGE::String>& params) const override {
         if (params.size() > 0) {
             console->showHelp(params.front());
         } else {
-            console->showHelp();
+            console->listCommands();
         }
     }
 };
+
+class ClearCommand : public Command {
+public:
+    PGE::String getName() const override {
+        return "clear";
+    }
+
+    PGE::String getHelpText() const override {
+        return "Clears the console.";
+    }
+
+    void execute(Console* console, const std::vector<PGE::String>& params) const override {
+        console->clear();
+    }
+};
+
+void Console::registerInternalCommands() {
+    commands.push_back(new HelpCommand());
+    commands.push_back(new ClearCommand());
+}
 
 class ScriptCommand : public Command {
 private:
@@ -213,6 +223,7 @@ private:
     ScriptFunction* executeFunc;
 
     int stringTypeID;
+    bool duplicateName; // TODO: Re-implement.
 
 public:
     ScriptCommand(ScriptClass* clss) {
@@ -253,7 +264,7 @@ public:
         }
 
         PGE::String errMsg;
-        for (int i = 0; i < func->GetParamCount(); i++) {
+        for (int i = 0; i < (int)func->GetParamCount(); i++) {
             int paramTypeId;
             if (func->GetParam(i, &paramTypeId) >= 0) {
                 if (paramTypeId == asTYPEID_BOOL) {
@@ -269,8 +280,8 @@ public:
                 else if (paramTypeId == asTYPEID_INT32) {
                     try {
                         int arg = std::stoi(params[i].cstr());
-                        // If the end user enters a float
-                        if (!MathUtil::eqFloats(arg, std::stof(params[i].cstr()))) {
+                        // If the user enters a float
+                        if (!MathUtil::eqFloats((float)arg, std::stof(params[i].cstr()))) {
                             errMsg = "NOT INT";
                             break;
                         }
@@ -304,11 +315,6 @@ public:
         }
     }
 };
-
-void Console::registerInternalCommands() {
-    commands.push_back(new TestCommand());
-    commands.push_back(new HelpCommand());
-}
 
 void Console::registerExternalCommands(const std::vector<ScriptClass*>& commandClasses) {
     for (int i = 0; i < (int)commandClasses.size(); i++) {

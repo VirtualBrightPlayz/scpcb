@@ -81,10 +81,10 @@ public:
     void addConsoleMessage(const PGE::String& resp, const PGE::Color& color = PGE::Color::White);
     void logWarning(const PGE::String& resp);
     void logError(const PGE::String& resp);
-
-    void todo_test();
+    
     void showHelp(const PGE::String& com);
-    void showHelp();
+    void listCommands();
+    void clear();
 };
 
 #endif // CONSOLE_H_INCLUDED
