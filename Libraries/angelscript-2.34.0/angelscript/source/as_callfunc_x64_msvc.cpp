@@ -139,7 +139,7 @@ asQWORD CallSystemFunctionNative(asCContext *context, asCScriptFunction *descr, 
 				paramSize += qwords;
 			}
 		}
-		else if( dt.GetTokenType() == ttQuestion )
+		else if( dt.GetTokenType() == ttQuestion || dt.GetTokenType() == ttFunction )
 		{
 			// Copy the reference and the type id
 			allArgBuffer[dpos++] = *(asQWORD*)&args[spos];

@@ -496,7 +496,7 @@ asQWORD GetReturnedDouble()
 // returns true if the given parameter is a 'variable argument'
 inline bool IsVariableArgument( asCDataType type )
 {
-	return (type.GetTokenType() == ttQuestion) ? true : false;
+	return (type.GetTokenType() == ttQuestion || type.GetTokenType() == ttFunction) ? true : false;
 }
 
 asQWORD CallSystemFunctionNative(asCContext *context, asCScriptFunction *descr, void *obj, asDWORD *args, void *retPointer, asQWORD &/*retQW2*/, void */*secondObject*/)

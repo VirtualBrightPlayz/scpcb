@@ -9,7 +9,9 @@ ConsoleDefinition::ConsoleDefinition(ScriptManager* mgr, Console* con) {
     console = con;
     scriptContext = engine->CreateContext();
 
-    engine->RegisterGlobalFunction("void registerCommand(?&in command, const string&in helpText=\"\", bool caseSensitive=false)", asMETHOD(ConsoleDefinition, registerCommand), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterGlobalFunction("void registerCommand(const string&in name, const string&in helpText, bool caseSensitive, function&in command)", asMETHOD(ConsoleDefinition, registerCommand), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterGlobalFunction("void registerCommand(const string&in name, const string&in helpText, function&in command)", asMETHOD(ConsoleDefinition, registerCommandCaseInsensitive), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterGlobalFunction("void registerCommand(const string&in name, function&in command)", asMETHOD(ConsoleDefinition, registerCommandNoHelp), asCALL_THISCALL_ASGLOBAL, this);
 
     engine->SetDefaultNamespace("Debug");
     engine->RegisterGlobalFunction("void log(const string&in content)", asMETHOD(ConsoleDefinition, log), asCALL_THISCALL_ASGLOBAL, this);
@@ -17,10 +19,17 @@ ConsoleDefinition::ConsoleDefinition(ScriptManager* mgr, Console* con) {
     engine->RegisterGlobalFunction("void error(const string&in content)", asMETHOD(ConsoleDefinition, error), asCALL_THISCALL_ASGLOBAL, this);
 }
 
-void ConsoleDefinition::registerCommand(asIScriptFunction** f, int typeId, const PGE::String& helpText, bool caseSensitive) {
-    if (engine->GetTypeInfoById(typeId)->GetFuncdefSignature() == nullptr) { throw std::runtime_error("Argument is not a function"); }
+void ConsoleDefinition::registerCommand(const PGE::String& name, const PGE::String& helpText, bool caseSensitive, void* f, int typeId) {
+    asIScriptFunction* func = (asIScriptFunction*)(((typeId & asTYPEID_OBJHANDLE) != 0) ? *((void**)f) : f);
+    console->registerExternalCommand(name, helpText, func, scriptContext, caseSensitive);
+}
 
-    console->registerExternalCommand(*f, scriptContext, helpText, caseSensitive);
+void ConsoleDefinition::registerCommandCaseInsensitive(const PGE::String& name, const PGE::String& helpText, void* f, int typeId) {
+    registerCommand(name, helpText, false, f, typeId);
+}
+
+void ConsoleDefinition::registerCommandNoHelp(const PGE::String& name, void* f, int typeId) {
+    registerCommand(name, "", false, f, typeId);
 }
 
 void ConsoleDefinition::log(const PGE::String& content) {

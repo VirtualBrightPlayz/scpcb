@@ -355,6 +355,7 @@ protected:
 	void   ImplicitConversionConstant(asCExprContext *ctx, const asCDataType &to, asCScriptNode *node, EImplicitConv convType);
 	void   ImplicitConvObjectToBestMathType(asCExprContext *ctx, asCScriptNode *node);
 	asUINT ImplicitConvLambdaToFunc(asCExprContext *ctx, const asCDataType &to, asCScriptNode *node, EImplicitConv convType, bool generateCode = true);
+	asUINT ImplicitConvLambdaToNewFunc(asCExprContext *ctx, asCScriptNode *node, EImplicitConv convType, bool generateCode = true);
 
 	void LineInstr(asCByteCode *bc, size_t pos);
 

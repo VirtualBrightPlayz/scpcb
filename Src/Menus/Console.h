@@ -81,7 +81,7 @@ public:
     void listCommands();
     void clear();
 
-    void registerExternalCommand(asIScriptFunction* f, asIScriptContext* context, const PGE::String& helpText, bool caseSensitive);
+    void registerExternalCommand(const PGE::String& name, const PGE::String& helpText, asIScriptFunction* f, asIScriptContext* context, bool caseSensitive);
 };
 
 #endif // CONSOLE_H_INCLUDED

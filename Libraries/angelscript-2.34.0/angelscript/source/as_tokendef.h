@@ -177,7 +177,8 @@ enum eTokenType
 	ttMixin,               // mixin
 	ttAuto,                // auto
 	ttTry,                 // try
-	ttCatch                // catch
+	ttCatch,               // catch
+	ttFunction             // function
 };
 
 struct sTokenWord
@@ -299,6 +300,7 @@ sTokenWord const tokenWords[] =
 	asTokenDef("void"      , ttVoid),
 	asTokenDef("while"     , ttWhile),
 	asTokenDef("xor"       , ttXor),
+	asTokenDef("function"  , ttFunction)
 };
 
 const unsigned int numTokenWords = sizeof(tokenWords)/sizeof(sTokenWord);
@@ -317,7 +319,6 @@ const char * const OVERRIDE_TOKEN  = "override";
 const char * const GET_TOKEN       = "get";
 const char * const SET_TOKEN       = "set";
 const char * const ABSTRACT_TOKEN  = "abstract";
-const char * const FUNCTION_TOKEN  = "function";
 const char * const IF_HANDLE_TOKEN = "if_handle_then_const";
 const char * const EXTERNAL_TOKEN  = "external";
 const char * const EXPLICIT_TOKEN  = "explicit";

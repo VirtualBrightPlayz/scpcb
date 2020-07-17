@@ -1302,6 +1302,10 @@ int asCBuilder::ParseFunctionDeclaration(asCObjectType *objType, const char *dec
 			!type.IsReference() )
 			return asINVALID_DECLARATION;
 
+		if( type.GetTokenType() == ttFunction &&
+			!type.IsReference() )
+			return asINVALID_DECLARATION;
+
 		// Move to next parameter
 		n = n->next->next;
 		if( n && n->nodeType == snIdentifier )

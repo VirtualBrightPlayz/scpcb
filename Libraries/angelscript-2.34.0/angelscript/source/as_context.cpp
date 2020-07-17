@@ -1110,7 +1110,7 @@ int asCContext::SetArgVarType(asUINT arg, void *ptr, int typeId)
 
 	// Verify the type of the argument
 	asCDataType *dt = &m_initialFunction->parameterTypes[arg];
-	if( dt->GetTokenType() != ttQuestion )
+	if( dt->GetTokenType() != ttQuestion && dt->GetTokenType() != ttFunction )
 	{
 		m_status = asEXECUTION_ERROR;
 		return asINVALID_TYPE;

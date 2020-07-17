@@ -3168,7 +3168,7 @@ int asCReader::SListAdjuster::AdjustOffset(int offset)
 	else if( patternNode->type == asLPT_TYPE )
 	{
 		const asCDataType &dt = reinterpret_cast<asSListPatternDataTypeNode*>(patternNode)->dataType;
-		if( dt.GetTokenType() == ttQuestion )
+		if( dt.GetTokenType() == ttQuestion || dt.GetTokenType() == ttFunction )
 		{
 			if( nextTypeId != -1 )
 			{
@@ -5438,7 +5438,7 @@ int asCWriter::SListAdjuster::AdjustOffset(int offset, asCObjectType *listPatter
 	else if( patternNode->type == asLPT_TYPE )
 	{
 		const asCDataType &dt = reinterpret_cast<asSListPatternDataTypeNode*>(patternNode)->dataType;
-		if( dt.GetTokenType() == ttQuestion )
+		if( dt.GetTokenType() == ttQuestion || dt.GetTokenType() == ttFunction )
 		{
 			// The bytecode need to inform the type that will
 			// come next and then adjust that position too before
@@ -5545,8 +5545,9 @@ void asCWriter::SListAdjuster::SetRepeatCount(asUINT rc)
 void asCWriter::SListAdjuster::SetNextType(int typeId)
 {
 	// Make sure the list is expecting a type at this location
+	eTokenType tokenType = reinterpret_cast<asSListPatternDataTypeNode*>(patternNode)->dataType.GetTokenType();
 	asASSERT( patternNode->type == asLPT_TYPE &&
-	          reinterpret_cast<asSListPatternDataTypeNode*>(patternNode)->dataType.GetTokenType() == ttQuestion );
+		(tokenType == ttQuestion || tokenType == ttFunction) );
 
 	// Inform the type id for the next adjustment
 	nextTypeId = typeId;

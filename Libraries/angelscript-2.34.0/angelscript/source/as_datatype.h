@@ -100,7 +100,7 @@ public:
 	bool IsHandleToConst()        const;
 	bool IsArrayType()            const;
 	bool IsEnumType()             const;
-	bool IsAnyType()              const {return tokenType == ttQuestion;}
+	bool IsAnyType()              const {return tokenType == ttQuestion || tokenType == ttFunction;}
 	bool IsHandleToAsHandleType() const {return isHandleToAsHandleType;}
 	bool IsAbstractClass()        const;
 	bool IsInterface()            const;

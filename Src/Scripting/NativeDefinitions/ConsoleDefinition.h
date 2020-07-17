@@ -12,7 +12,9 @@ class ConsoleDefinition : public NativeDefinition {
 
         asIScriptContext* scriptContext;
 
-        void registerCommand(asIScriptFunction** f, int typeId, const PGE::String& helpText, bool caseSensitive);
+        void registerCommand(const PGE::String& name, const PGE::String& helpText, bool caseSensitive, void* f, int typeId);
+        void registerCommandCaseInsensitive(const PGE::String& name, const PGE::String& helpText, void* f, int typeId);
+        void registerCommandNoHelp(const PGE::String& name, void* f, int typeId);
 
         void log(const PGE::String& content);
         void warning(const PGE::String& content);

@@ -311,7 +311,7 @@ int asCGeneric::GetArgTypeId(asUINT arg, asDWORD *flags) const
 	}
 
 	asCDataType *dt = &sysFunction->parameterTypes[arg];
-	if( dt->GetTokenType() != ttQuestion )
+	if( dt->GetTokenType() != ttQuestion && dt->GetTokenType() != ttFunction )
 		return engine->GetTypeIdFromDataType(*dt);
 	else
 	{

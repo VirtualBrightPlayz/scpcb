@@ -16,12 +16,19 @@ external Zone@ test_shared_global;
 external int testCounter;
 
 void Test(string testString) {
-    Debug::log(testString);
+    Debug::log("Parameter: "+testString);
 }
 
 void main() {
     Debug::log("Starting up!");
-    registerCommand(Test, "THIS COMKMAND IS VERY EPIC");
+    registerCommand("mytest", "THIS COMKMAND IS VERY EPIC", Test);
+    registerCommand(
+        "teleport",
+        "Teleports the player to the coordinates sent as input",
+        function(float x,float y,float z) {
+            Debug::log("Called teleport!");
+            testController.setPosition(Vector3f(x,y,z));
+        });
     @entranceZone = EntranceZone();
     @test_shared_global = @entranceZone;
     @testCollCollection = Collision::Collection();

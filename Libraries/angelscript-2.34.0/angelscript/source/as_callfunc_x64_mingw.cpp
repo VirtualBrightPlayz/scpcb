@@ -268,7 +268,7 @@ asQWORD CallSystemFunctionNative(asCContext *context, asCScriptFunction *descr, 
 				paramSize += qwords;
 			}
 		}
-		else if( descr->parameterTypes[n].GetTokenType() == ttQuestion )
+		else if( descr->parameterTypes[n].GetTokenType() == ttQuestion || descr->parameterTypes[n].GetTokenType() == ttFunction )
 		{
 			// Copy the reference and the type id
 			allArgBuffer[dpos++] = *(asQWORD*)&args[spos];

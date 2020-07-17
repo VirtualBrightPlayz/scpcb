@@ -653,7 +653,7 @@ asCScriptNode *asCParser::ParseDataType(bool allowVariableType, bool allowAuto)
 	sToken t1;
 
 	GetToken(&t1);
-	if( !IsDataType(t1) && !(allowVariableType && t1.type == ttQuestion) && !(allowAuto && t1.type == ttAuto) )
+	if( !IsDataType(t1) && !(allowVariableType && (t1.type == ttQuestion || t1.type == ttFunction)) && !(allowAuto && t1.type == ttAuto) )
 	{
 		if( t1.type == ttIdentifier )
 		{
@@ -1499,59 +1499,53 @@ asCScriptNode *asCParser::ParseExprValue()
 	// 'void' is a special expression that doesn't do anything (normally used for skipping output arguments)
 	if( t1.type == ttVoid )
 		node->AddChildLast(ParseToken(ttVoid));
+	else if ( t1.type == ttFunction )
+		node->AddChildLast(ParseLambda());
 	else if( IsRealType(t1.type) )
 		node->AddChildLast(ParseConstructCall());
 	else if( t1.type == ttIdentifier || t1.type == ttScope )
 	{
-		// Check if the expression is an anonymous function
-		if( IsLambda() )
+		// Determine the last identifier in order to check if it is a type
+		sToken t;
+		if( t1.type == ttScope ) t = t2; else t = t1;
+		RewindTo(&t);
+		GetToken(&t2);
+		while( t.type == ttIdentifier )
 		{
-			node->AddChildLast(ParseLambda());
-		}
-		else
-		{
-			// Determine the last identifier in order to check if it is a type
-			sToken t;
-			if( t1.type == ttScope ) t = t2; else t = t1;
-			RewindTo(&t);
-			GetToken(&t2);
-			while( t.type == ttIdentifier )
-			{
-				t2 = t;
+			t2 = t;
+			GetToken(&t);
+			if( t.type == ttScope )
 				GetToken(&t);
-				if( t.type == ttScope )
-					GetToken(&t);
-				else
-					break;
-			}
-
-			bool isDataType = IsDataType(t2);
-			bool isTemplateType = false;
-			if( isDataType )
-			{
-				// Is this a template type?
-				tempString.Assign(&script->code[t2.pos], t2.length);
-				if( engine->IsTemplateType(tempString.AddressOf()) )
-					isTemplateType = true;
-			}
-
-			GetToken(&t2);
-
-			// Rewind so the real parsing can be done, after deciding what to parse
-			RewindTo(&t1);
-
-			// Check if this is a construct call
-			// Just 'type()' isn't considered a construct call, because type may just be a function/method name.
-			// The compiler will have to sort this out, since the parser doesn't have enough information.
-			if( isDataType && (t.type == ttOpenBracket && t2.type == ttCloseBracket) )      // type[]()
-				node->AddChildLast(ParseConstructCall());
-			else if( isTemplateType && t.type == ttLessThan )  // type<t>()
-				node->AddChildLast(ParseConstructCall());
-			else if( IsFunctionCall() )
-				node->AddChildLast(ParseFunctionCall());
 			else
-				node->AddChildLast(ParseVariableAccess());
+				break;
 		}
+
+		bool isDataType = IsDataType(t2);
+		bool isTemplateType = false;
+		if( isDataType )
+		{
+			// Is this a template type?
+			tempString.Assign(&script->code[t2.pos], t2.length);
+			if( engine->IsTemplateType(tempString.AddressOf()) )
+				isTemplateType = true;
+		}
+
+		GetToken(&t2);
+
+		// Rewind so the real parsing can be done, after deciding what to parse
+		RewindTo(&t1);
+
+		// Check if this is a construct call
+		// Just 'type()' isn't considered a construct call, because type may just be a function/method name.
+		// The compiler will have to sort this out, since the parser doesn't have enough information.
+		if( isDataType && (t.type == ttOpenBracket && t2.type == ttCloseBracket) )      // type[]()
+			node->AddChildLast(ParseConstructCall());
+		else if( isTemplateType && t.type == ttLessThan )  // type<t>()
+			node->AddChildLast(ParseConstructCall());
+		else if( IsFunctionCall() )
+			node->AddChildLast(ParseFunctionCall());
+		else
+			node->AddChildLast(ParseVariableAccess());
 	}
 	else if( t1.type == ttCast )
 		node->AddChildLast(ParseCast());
@@ -1624,7 +1618,7 @@ bool asCParser::IsLambda()
 	bool isLambda = false;
 	sToken t;
 	GetToken(&t);
-	if( t.type == ttIdentifier && IdentifierIs(t, FUNCTION_TOKEN) )
+	if( t.type == ttFunction )
 	{
 		sToken t2;
 		GetToken(&t2);
@@ -1654,7 +1648,7 @@ asCScriptNode *asCParser::ParseLambda()
 	sToken t;
 	GetToken(&t);
 
-	if( t.type != ttIdentifier || !IdentifierIs(t, FUNCTION_TOKEN) )
+	if( t.type != ttFunction )
 	{
 		Error(ExpectedToken("function"), &t);
 		return node;
@@ -1960,7 +1954,7 @@ asCScriptNode *asCParser::ParseCondition()
 
 	sToken t;
 	GetToken(&t);
-	if( t.type == ttQuestion )
+	if( t.type == ttQuestion || t.type == ttFunction )
 	{
 		node->AddChildLast(ParseAssignment());
 		if( isSyntaxError ) return node;

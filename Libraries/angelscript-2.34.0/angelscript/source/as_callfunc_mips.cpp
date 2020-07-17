@@ -154,7 +154,7 @@ asQWORD CallSystemFunctionNative(asCContext *context, asCScriptFunction *descr, 
 				argOffset += paramType.GetSizeInMemoryDWords();
 			}
 		}
-		else if( paramType.GetTokenType() == ttQuestion )
+		else if( paramType.GetTokenType() == ttQuestion || paramType.GetTokenType() == ttFunction )
 		{
 			// Copy both pointer and type id
 			argBuffer[argOffset++] = args[spos++];
