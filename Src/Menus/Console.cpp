@@ -37,8 +37,8 @@ Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con,
 }
 
 Console::~Console() {
-    for (int i = 0; i < (int)interCommands.size(); i++) {
-        delete interCommands[i];
+    for (int i = 0; i < (int)commands.size(); i++) {
+        delete commands[i];
     }
 }
 
@@ -105,11 +105,11 @@ void Console::executeCommand(const PGE::String& in) {
     commandHistory.push_front(in);
 
     std::vector<PGE::String> vect = in.split(" ", true);
-    PGE::String command = vect[0].toLower();
+    PGE::String command = vect[0];
     vect.erase(vect.begin());
-    for (int i = 0; i < (int)interCommands.size(); i++) {
-        if (command.equals(interCommands[i]->getName())) {
-            interCommands[i]->execute(this, vect);
+    for (int i = 0; i < (int)commands.size(); i++) {
+        if (command.equalsIgnoreCase(commands[i]->getName())) {
+            commands[i]->execute(this, vect);
             return;
         }
     }
@@ -147,16 +147,16 @@ void Console::updateMessageWindow() {
 }
 
 void Console::showHelp(const PGE::String& com) {
-    for (int i = 0; i < (int)interCommands.size(); i++) {
-        if (com.equals(interCommands[i]->getName())) {
-            addConsoleMessage(interCommands[i]->getHelpText());
+    for (int i = 0; i < (int)commands.size(); i++) {
+        if (com.equals(commands[i]->getName())) {
+            addConsoleMessage(commands[i]->getHelpText());
         }
     }
 }
 
 void Console::listCommands() {
-    for (int i = 0; i < (int)interCommands.size(); i++) {
-        addConsoleMessage(interCommands[i]->getName());
+    for (int i = 0; i < (int)commands.size(); i++) {
+        addConsoleMessage(commands[i]->getName());
     }
 }
 
@@ -165,10 +165,6 @@ void Console::clear() {
     commandHistory.clear();
     commandHistoryIndex = 0;
     updateMessageWindow();
-}
-
-void Console::showHelp() {
-    addConsoleMessage("Noone can help you now");
 }
 
 class HelpCommand : public Command {
@@ -184,24 +180,10 @@ public:
     void execute(Console* console, const std::vector<PGE::String>& params) const override {
         if (params.size() > 0) {
             console->showHelp(params.front());
-        } else {
-            console->showHelp();
         }
-    }
-};
-
-class ListCommand : public Command {
-public:
-    PGE::String getName() const override {
-        return "list";
-    }
-
-    PGE::String getHelpText() const override {
-        return "Lists all commands";
-    }
-
-    void execute(Console* console, const std::vector<PGE::String>& params) const override {
-        console->listCommands();
+        else {
+            console->listCommands();
+        }
     }
 };
 
@@ -212,13 +194,18 @@ public:
     }
 
     PGE::String getHelpText() const override {
-        return "Clears the console";
+        return "Clears the console.";
     }
 
     void execute(Console* console, const std::vector<PGE::String>& params) const override {
         console->clear();
     }
 };
+
+void Console::registerInternalCommands() {
+    commands.push_back(new HelpCommand());
+    commands.push_back(new ClearCommand());
+}
 
 class ScriptCommand : public Command {
 private:
@@ -227,12 +214,11 @@ private:
 
     const PGE::String name;
     const PGE::String helpText;
-    const bool caseSensitive;
 
 public:
     bool duplicateName = false;
 
-    ScriptCommand(const PGE::String& nm, const PGE::String& ht, asIScriptFunction* f, asIScriptContext* context, bool cs) : name(nm), helpText(ht), caseSensitive(cs) {
+    ScriptCommand(const PGE::String& nm, const PGE::String& ht, asIScriptFunction* f, asIScriptContext* context) : name(nm), helpText(ht) {
         func = f;
         scriptContext = context;
     }
@@ -256,8 +242,8 @@ public:
         }
         if (scriptContext->Prepare(func) < 0) { throw std::runtime_error("ptooey! 2"); }
         PGE::String errMsg;
-        int paramTypeId;
         for (unsigned int i = 0; i < func->GetParamCount(); i++) {
+            int paramTypeId;
             if (func->GetParam(i, &paramTypeId) >= 0) {
                 if (paramTypeId == asTYPEID_BOOL) {
                     if (params[i].toLower().equals("true") || params[i].equals("1")) {
@@ -270,19 +256,23 @@ public:
                     }
                 } else if (paramTypeId == asTYPEID_INT32) {
                     int arg = std::stoi(params[i].cstr());
-                    scriptContext->SetArgDWord(i, arg);
-                    if (!MathUtil::eqFloats((float)arg, params[i].toFloat())) { //If the end user enters a float.
-                        console->addConsoleMessage("Loss of data!", PGE::Color::Yellow);
+                    // If the user enters a float.
+                    if (!MathUtil::eqFloats((float)arg, params[i].toFloat())) {
+                        errMsg = "NOT INT";
+                        break;
                     }
+
+                    scriptContext->SetArgDWord(i, arg);
                 } else if (paramTypeId == asTYPEID_FLOAT) {
                     scriptContext->SetArgFloat(i, std::stof(params[i].cstr()));
                 } else if (paramTypeId == scriptContext->GetEngine()->GetStringFactoryReturnTypeId()) {
-                    scriptContext->SetArgObject(i, (void*) &(caseSensitive ? params[i] : params[i].toLower()));
+                    scriptContext->SetArgObject(i, (void*) &(params[i]));
                 }
             } else {
                 throw std::runtime_error("ptooey! 3");
             }
         }
+
         if (errMsg.isEmpty()) {
             scriptContext->Execute();
         } else {
@@ -292,13 +282,7 @@ public:
     }
 };
 
-void Console::registerInternalCommands() {
-    interCommands.push_back(new HelpCommand());
-    interCommands.push_back(new ListCommand());
-    interCommands.push_back(new ClearCommand());
-}
-
-void Console::registerExternalCommand(const PGE::String& name, const PGE::String& helpText, asIScriptFunction* f, asIScriptContext* context, bool caseSensitive) {
+void Console::registerExternalCommand(const PGE::String& name, const PGE::String& helpText, asIScriptFunction* f, asIScriptContext* context) {
     for (unsigned int i = 0; i < f->GetParamCount(); i++) {
         int paramTypeId;
         if (f->GetParam(i, &paramTypeId) < 0) {
@@ -309,20 +293,20 @@ void Console::registerExternalCommand(const PGE::String& name, const PGE::String
             }
         }
     }
-    ScriptCommand* newCommand = new ScriptCommand(name, helpText, f, context, caseSensitive);
+    ScriptCommand* newCommand = new ScriptCommand(name, helpText, f, context);
     ScriptCommand* otherCommand;
-    for (int i = 0; i < interCommands.size(); i++) {
-        otherCommand = dynamic_cast<ScriptCommand*>(interCommands[i]);
+    for (int i = 0; i < commands.size(); i++) {
+        otherCommand = dynamic_cast<ScriptCommand*>(commands[i]);
         if (otherCommand != nullptr) {
             if (otherCommand->getName().equals(otherCommand->duplicateName ? (PGE::String(f->GetModuleName()) + ":" + name).toLower() : name.toLower())) { //This will also catch a command that already has had its name changed.
                 otherCommand->duplicateName = true;
                 newCommand->duplicateName = true;
-                if (otherCommand->getName().equals(newCommand->getName())) { throw std::runtime_error("lol double command"); }
+                if (otherCommand->getName().equalsIgnoreCase(newCommand->getName())) { throw std::runtime_error("lol double command"); }
                 break;
             }
-        } else if (interCommands[i]->getName().equals(PGE::String(f->GetName()).toLower())) { //Check if name is occupied by a vanilla command.
+        } else if (commands[i]->getName().equalsIgnoreCase(f->GetName())) { //Check if name is occupied by a vanilla command.
             newCommand->duplicateName = true;
         }
     }
-    interCommands.push_back(newCommand);
+    commands.push_back(newCommand);
 }

@@ -60,7 +60,7 @@ private:
     KeyBinds* keyBinds;
     Config* config;
 
-    std::vector<Command*> interCommands;
+    std::vector<Command*> commands;
     void registerInternalCommands();
 
     void executeCommand(const PGE::String& in);
@@ -77,11 +77,10 @@ public:
     void logError(const PGE::String& resp);
     
     void showHelp(const PGE::String& com);
-    void showHelp();
     void listCommands();
     void clear();
 
-    void registerExternalCommand(const PGE::String& name, const PGE::String& helpText, asIScriptFunction* f, asIScriptContext* context, bool caseSensitive);
+    void registerExternalCommand(const PGE::String& name, const PGE::String& helpText, asIScriptFunction* f, asIScriptContext* context);
 };
 
 #endif // CONSOLE_H_INCLUDED
