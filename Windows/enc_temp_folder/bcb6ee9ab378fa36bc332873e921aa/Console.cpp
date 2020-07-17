@@ -275,7 +275,7 @@ public:
                         console->addConsoleMessage("Loss of data!", PGE::Color::Yellow);
                     }
                 } else if (paramTypeId == asTYPEID_FLOAT) {
-                    scriptContext->SetArgFloat(i, params[i].toFloat());
+                    scriptContext->SetArgFloat(i, std::stof(params[i].cstr()));
                 } else if (paramTypeId == scriptContext->GetEngine()->GetStringFactoryReturnTypeId()) {
                     scriptContext->SetArgObject(i, (void*) &(caseSensitive ? params[i] : params[i].toLower()));
                 }
