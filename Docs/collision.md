@@ -26,7 +26,7 @@ Adds a `Mesh` to the `Collection`.
 
 **Parameters**
 * `mesh` The mesh to add.
-* `matrix` ???
+* `matrix` A matrix representing the rotation, scale and translation to apply when performing collision checks.
 
 **Returns**
 * The `Instance` of the `Mesh` inside the `Collection` (?)
