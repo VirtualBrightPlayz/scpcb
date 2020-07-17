@@ -48,17 +48,17 @@ TxtManager::TxtManager(const PGE::String& langCode) {
     changeLocalization(langCode);
 }
 
-void TxtManager::setMsg(const PGE::String& local, float seconds) {
-    displayMsg = getLocalTxt(local);
-    displayTimer = seconds;
-}
-
 void TxtManager::setDeathMsg(const PGE::String& local) {
     deathMsg = getLocalTxt(local);
 }
 
 PGE::String TxtManager::getDeathMsg() {
     return deathMsg;
+}
+
+void TxtManager::setMsg(const PGE::String& local, float seconds) {
+    displayMsg = getLocalTxt(local);
+    displayTimer = seconds;
 }
 
 void TxtManager::updateMsg(float timestep) {

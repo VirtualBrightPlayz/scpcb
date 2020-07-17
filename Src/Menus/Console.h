@@ -75,12 +75,13 @@ public:
     void addConsoleMessage(const PGE::String& resp, const PGE::Color& color = PGE::Color::White);
     void logWarning(const PGE::String& resp);
     void logError(const PGE::String& resp);
-
-    void todo_test();
+    
     void showHelp(const PGE::String& com);
     void showHelp();
+    void listCommands();
+    void clear();
 
-    void registerExternalCommand(asIScriptFunction* f, asIScriptContext* context, const PGE::String& helpText);
+    void registerExternalCommand(asIScriptFunction* f, asIScriptContext* context, const PGE::String& helpText, bool caseSensitive);
 };
 
 #endif // CONSOLE_H_INCLUDED
