@@ -39,6 +39,9 @@ class ScriptFunction {
         ScriptObject* returnedObject;
 
         void exceptionCallback(asIScriptContext* context);
+
+        bool isPrepared;
+        void prepare();
     public:
         ScriptFunction(ScriptModule* module,asIScriptFunction* asScriptFunction,asIScriptFunction* asFuncWithSignature=nullptr);
         ~ScriptFunction();

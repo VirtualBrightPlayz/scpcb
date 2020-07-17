@@ -264,7 +264,7 @@ public:
 
                     scriptContext->SetArgDWord(i, arg);
                 } else if (paramTypeId == asTYPEID_FLOAT) {
-                    scriptContext->SetArgFloat(i, std::stof(params[i].cstr()));
+                    scriptContext->SetArgFloat(i, params[i].toFloat());
                 } else if (paramTypeId == scriptContext->GetEngine()->GetStringFactoryReturnTypeId()) {
                     scriptContext->SetArgObject(i, (void*) &(params[i]));
                 }

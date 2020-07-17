@@ -13,6 +13,7 @@ options.ini
 *.ilk
 *.vcxproj.user
 .vs
+Windows/enc_temp_folder/*
 
 # Visual Studio Code
 .vscode
