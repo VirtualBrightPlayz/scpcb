@@ -1,4 +1,4 @@
 shared interface ConsoleCommand {
-    // string getName();
+    string getName();
     string getHelp();
 }

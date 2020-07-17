@@ -309,10 +309,11 @@ public:
 
         if (errMsg.isEmpty()) {
             scriptContext->Execute();
-            scriptContext->Unprepare();
         } else {
             console->addConsoleMessage(errMsg, PGE::Color::Red);
         }
+
+        scriptContext->Unprepare();
     }
 };
 
