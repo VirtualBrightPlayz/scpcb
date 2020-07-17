@@ -35,8 +35,6 @@ private:
 
     std::vector<ScriptModule*> modules;
 
-    void registerConsoleCommands(Console* console) const;
-
 public:
     ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, const Config* config, float timestep, Console* con);
     ~ScriptWorld();

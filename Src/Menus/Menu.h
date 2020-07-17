@@ -21,8 +21,7 @@ public:
     void detach();
     bool isMarkedForDeath() const;
     const PGE::String& getType() const;
-
-    virtual void onOpen() {}
+    
     // What should the menu do when escape is pressed.
     virtual void onEscapeHit();
     

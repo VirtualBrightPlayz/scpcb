@@ -2,7 +2,6 @@
 #include "ScriptFunction.h"
 #include "ScriptClass.h"
 #include "ScriptObject.h"
-#include <Exception/Exception.h>
 
 ScriptClass::ScriptClass(ScriptModule* module, asITypeInfo* tInfo) {
     scriptModule = module;
@@ -56,20 +55,6 @@ ScriptModule* ScriptClass::getScriptModule() const {
 
 int ScriptClass::getTypeId() const {
     return angelScriptTypeInfo->GetTypeId();
-}
-
-ScriptFunction* ScriptClass::getMethod(const PGE::String& funcName) const {
-    for (int i = 0; i < (int)methods.size(); i++) {
-        if (methods[i]->getSignature().functionName.equals(funcName)) {
-            return methods[i];
-        }
-    }
-
-    throw PGE::Exception("ScriptClass", PGE::String("Function not found: ", funcName));
-}
-
-bool ScriptClass::implements(asITypeInfo* info) const {
-    return angelScriptTypeInfo->Implements(info);
 }
 
 void ScriptClass::finalizeInitialization() {

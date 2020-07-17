@@ -102,7 +102,6 @@ void World::activateMenu(Menu* mu) {
     }
 
     currMenu = mu;
-    mu->onOpen();
 }
 
 void World::deactivateMenu(Menu* mu) {

@@ -25,13 +25,6 @@ const ScriptFunction::Signature& ScriptFunction::getSignature() const {
     return signature;
 }
 
-asIScriptFunction* ScriptFunction::getAngelScriptFunction() const {
-    return scriptFunction;
-}
-asIScriptContext* ScriptFunction::getFunctionContext() const {
-    return scriptContext;
-}
-
 int ScriptFunction::getArgumentIndex(const PGE::String& argument) const {
     for (int i = 0; i < signature.arguments.size(); i++) {
         if (signature.arguments[i].name.equals(argument)) {
@@ -140,9 +133,8 @@ void ScriptFunction::exceptionCallback(asIScriptContext* context) {
     scriptModule->getScriptManager()->messageCallback(&info, nullptr);
 }
 
-void ScriptFunction::execute(ScriptObject* obj) {
+void ScriptFunction::execute() {
     if (scriptContext->Prepare(scriptFunction) < 0) { throw std::runtime_error("ptooey!"); }
-    if (obj != nullptr) { scriptContext->SetObject(obj->getAngelScriptObject()); }
     scriptContext->Execute();
 
     if (signature.returnType->isClassType()) {
@@ -156,8 +148,6 @@ void ScriptFunction::execute(ScriptObject* obj) {
             asObj = (asIScriptObject*)scriptContext->GetAddressOfReturnValue();
         }
         returnedObject = new ScriptObject(returnClass, asObj);
-    } else if (signature.returnType == Type::String) {
-        returnedString = *((PGE::String*)scriptContext->GetReturnObject());
     }
 
     scriptContext->Unprepare();
@@ -180,7 +170,7 @@ double ScriptFunction::getReturnDouble() const {
 }
 
 PGE::String ScriptFunction::getReturnString() const {
-    return returnedString;
+    return *((PGE::String*)scriptContext->GetReturnObject());
 }
 
 ScriptObject* ScriptFunction::getReturnObject() const {

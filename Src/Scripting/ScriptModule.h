@@ -39,7 +39,6 @@ class ScriptModule {
 
         ScriptClass* getClassByName(const PGE::String& name) const;
         ScriptClass* getClassByTypeId(int typeId) const;
-        std::vector<ScriptClass*> getClassesByImplement(asITypeInfo* interfaceInfo) const;
 
         ScriptFunction* getFunctionByName(const PGE::String& name) const;
 

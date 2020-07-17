@@ -37,7 +37,6 @@ class ScriptFunction {
         ScriptModule* scriptModule;
 
         ScriptObject* returnedObject;
-        PGE::String returnedString;
 
         void exceptionCallback(asIScriptContext* context);
     public:
@@ -48,9 +47,6 @@ class ScriptFunction {
 
         const Signature& getSignature() const;
 
-        asIScriptFunction* getAngelScriptFunction() const;
-        asIScriptContext* getFunctionContext() const;
-
         void setObject(ScriptObject* obj);
         void setObjectNative(void* obj);
         void setArgument(const PGE::String& argument, int32_t i32);
@@ -60,7 +56,7 @@ class ScriptFunction {
         void setArgument(const PGE::String& argument, const PGE::String& s);
         void setArgument(const PGE::String& argument, ScriptObject* obj);
         void setArgumentNative(const PGE::String& argument, void* obj);
-        void execute(ScriptObject* obj = nullptr);
+        void execute();
         int32_t getReturnInt32() const;
         uint32_t getReturnUInt32() const;
         float getReturnFloat() const;

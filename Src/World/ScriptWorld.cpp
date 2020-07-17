@@ -3,7 +3,6 @@
 #include "ScriptWorld.h"
 
 #include "../Save/Config.h"
-#include "../Menus/Console.h"
 
 #include "../Scripting/ScriptManager.h"
 #include "../Scripting/ScriptModule.h"
@@ -95,7 +94,6 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
     }
 
     doc.SaveFile("juanIsntReal.xml");
-    registerConsoleCommands(con);
 }
 
 ScriptWorld::~ScriptWorld() {
@@ -116,24 +114,6 @@ ScriptWorld::~ScriptWorld() {
     delete refCounterManager;
 
     delete manager;
-}
-
-void ScriptWorld::registerConsoleCommands(Console* console) const {
-    ScriptClass* clss = manager->getSharedClassByName("ConsoleCommand");
-    asITypeInfo* type = manager->getAngelScriptEngine()->GetTypeInfoById(clss->getTypeId());
-
-    std::vector<ScriptClass*> commands;
-    for (int i = 0; i < (int)modules.size(); i++) {
-        std::vector<ScriptClass*> moduleCommands = modules[i]->getClassesByImplement(type);
-        if (moduleCommands.size() > 0) {
-            commands.insert(commands.end(),
-                std::make_move_iterator(moduleCommands.begin()),
-                std::make_move_iterator(moduleCommands.end())
-            );
-        }
-    }
-
-    console->registerExternalCommands(commands);
 }
 
 void ScriptWorld::update() {

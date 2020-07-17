@@ -60,9 +60,6 @@ class ScriptClass : public Type {
         int getTypeId() const;
         int getSize() const;
 
-        ScriptFunction* getMethod(const PGE::String& funcName) const;
-        bool implements(asITypeInfo* info) const;
-
         void finalizeInitialization();
         ScriptObject* createNewObject();
 };

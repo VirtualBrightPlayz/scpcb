@@ -16,14 +16,11 @@ class Config;
 class TxtManager;
 class GUIFrame;
 class GUITextInput;
-class ScriptClass;
 
 class Console;
 
 class Command {
 public:
-    virtual ~Command()=default;
-
     virtual PGE::String getName() const = 0;
     virtual PGE::String getHelpText() const = 0;
     virtual void execute(Console* console, const std::vector<PGE::String>& params) const = 0;
@@ -63,7 +60,7 @@ private:
     KeyBinds* keyBinds;
     Config* config;
 
-    std::vector<Command*> commands;
+    std::vector<Command*> interCommands;
     void registerInternalCommands();
 
     void executeCommand(const PGE::String& in);
@@ -71,9 +68,6 @@ private:
 public:
     Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io);
     ~Console();
-
-    void onOpen() override;
-    void registerExternalCommands(const std::vector<ScriptClass*>& commandClasses);
 
     void update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mouseWheelDelta) override;
     void render() const override;
@@ -83,8 +77,11 @@ public:
     void logError(const PGE::String& resp);
     
     void showHelp(const PGE::String& com);
+    void showHelp();
     void listCommands();
     void clear();
+
+    void registerExternalCommand(asIScriptFunction* f, asIScriptContext* context, const PGE::String& helpText, bool caseSensitive);
 };
 
 #endif // CONSOLE_H_INCLUDED
