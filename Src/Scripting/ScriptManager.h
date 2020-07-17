@@ -43,6 +43,7 @@ class ScriptManager {
         asIScriptEngine* getAngelScriptEngine() const;
 
         ScriptClass* getSharedClassByTypeId(int typeId) const;
+        ScriptClass* getSharedClassByName(const PGE::String& name) const;
         void registerSharedClass(ScriptClass* clss);
 
         bool isArrayTypeId(int typeId) const;

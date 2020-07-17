@@ -89,6 +89,16 @@ ScriptClass* ScriptModule::getClassByTypeId(int typeId) const {
     return nullptr;
 }
 
+std::vector<ScriptClass*> ScriptModule::getClassesByImplement(asITypeInfo* interfaceInfo) const {
+    std::vector<ScriptClass*> ret;
+    for (int i = 0; i < (int)classes.size(); i++) {
+        if (classes[i]->implements(interfaceInfo) && classes[i]->getTypeId() != interfaceInfo->GetTypeId()) {
+            ret.push_back(classes[i]);
+        }
+    }
+    return ret;
+}
+
 ScriptFunction* ScriptModule::getFunctionByName(const PGE::String& name) const {
     for (int i = 0; i < functions.size(); i++) {
         if (functions[i]->getSignature().functionName.equals(name)) { return functions[i]; }

@@ -96,15 +96,16 @@ void World::applyConfig(const Config* config) {
     }
 }
 
-void World::activateMenu(Menu *mu) {
+void World::activateMenu(Menu* mu) {
     if (currMenu != nullptr) {
         throw std::runtime_error("Attempted to activate a menu while another was active.");
     }
 
     currMenu = mu;
+    mu->onOpen();
 }
 
-void World::deactivateMenu(Menu *mu) {
+void World::deactivateMenu(Menu* mu) {
     if (mu != currMenu) {
         throw std::runtime_error("Attempted to deactivate a menu that wasn't active.");
     }

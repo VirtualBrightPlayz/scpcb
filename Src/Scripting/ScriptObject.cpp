@@ -42,6 +42,10 @@ void ScriptObject::setProperty(const PGE::String& propertyName, const PGE::Strin
     *((PGE::String*)obj) = val;
 }
 
+ScriptFunction* ScriptObject::getFunction(const PGE::String& name) const {
+    return scriptClass->getMethod(name);
+}
+
 void ScriptObject::saveXML(tinyxml2::XMLElement* element, const ScriptModule* module) const {
     int propertyCount = angelScriptObject->GetPropertyCount();
 

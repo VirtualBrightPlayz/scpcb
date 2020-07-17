@@ -7,6 +7,7 @@
 
 class ScriptClass;
 class ScriptModule;
+class ScriptFunction;
 
 class ScriptObject {
     private:
@@ -22,6 +23,8 @@ class ScriptObject {
 
         PGE::String getPropertyString(const PGE::String& propertyName) const;
         void setProperty(const PGE::String& propertyName, const PGE::String& val) const;
+
+        ScriptFunction* getFunction(const PGE::String& name) const;
 
         void saveXML(tinyxml2::XMLElement* element, const ScriptModule* module) const;
         void loadXML(tinyxml2::XMLElement* element, const ScriptModule* module) const;

@@ -75,6 +75,10 @@ static void constructString(PGE::String* thisPointer) {
     new(thisPointer) PGE::String();
 }
 
+static void constructStringInt(int i, PGE::String* thisPointer) {
+    new(thisPointer) PGE::String(i);
+}
+
 static void copyConstructString(const PGE::String& other, PGE::String* thisPointer) {
     new(thisPointer) PGE::String(other);
 }
@@ -126,7 +130,8 @@ ScriptManager::ScriptManager() {
 
     engine->RegisterObjectType("string", sizeof(PGE::String), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK);
 
-    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f()",asFUNCTION(constructString), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(constructString), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT, "void f(int i)", asFUNCTION(constructStringInt), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f(const string& in)",asFUNCTION(copyConstructString), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("string",asBEHAVE_DESTRUCT,"void f()",asFUNCTION(destructString), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectMethod("string","string &opAssign(const string& in)",asFUNCTION(assignString), asCALL_CDECL_OBJLAST);
@@ -180,6 +185,13 @@ asIScriptEngine* ScriptManager::getAngelScriptEngine() const {
 ScriptClass* ScriptManager::getSharedClassByTypeId(int typeId) const {
     for (int i = 0; i < sharedClasses.size(); i++) {
         if (sharedClasses[i]->getTypeId() == typeId) { return sharedClasses[i]; }
+    }
+    return nullptr;
+}
+
+ScriptClass* ScriptManager::getSharedClassByName(const PGE::String& name) const {
+    for (int i = 0; i < sharedClasses.size(); i++) {
+        if (sharedClasses[i]->getName().equals(name)) { return sharedClasses[i]; }
     }
     return nullptr;
 }
