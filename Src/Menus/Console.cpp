@@ -225,9 +225,9 @@ public:
 
     PGE::String getName() const override {
         if (duplicateName) {
-            return (PGE::String(func->GetModuleName()) + ":" + name).toLower();
+            return (PGE::String(func->GetModuleName()) + ":" + name);
         } else {
-            return PGE::String(name).toLower();
+            return PGE::String(name);
         }
     }
 
@@ -298,7 +298,9 @@ void Console::registerExternalCommand(const PGE::String& name, const PGE::String
     for (int i = 0; i < commands.size(); i++) {
         otherCommand = dynamic_cast<ScriptCommand*>(commands[i]);
         if (otherCommand != nullptr) {
-            if (otherCommand->getName().equals(otherCommand->duplicateName ? (PGE::String(f->GetModuleName()) + ":" + name).toLower() : name.toLower())) { //This will also catch a command that already has had its name changed.
+            // This will also catch a command that already has had its name changed.
+            PGE::String nameWithModule = PGE::String(f->GetModuleName()) + ":" + name;
+            if (otherCommand->getName().equalsIgnoreCase(otherCommand->duplicateName ? nameWithModule : name)) {
                 otherCommand->duplicateName = true;
                 newCommand->duplicateName = true;
                 if (otherCommand->getName().equalsIgnoreCase(newCommand->getName())) { throw std::runtime_error("lol double command"); }
