@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "../Utils/MathUtil.h"
 #include "GraphicsResources.h"
+#include "../World/DataInterpolator.h"
 
 Camera::Camera(GraphicsResources* gr, int w, int h, float fov, float nearZ, float farZ, bool orthographic) {
     gfxRes = gr;
@@ -26,18 +27,27 @@ Camera::Camera(GraphicsResources* gr, int w, int h, float fov, float nearZ, floa
     this->orthographicProj = orthographic;
 
     rotation = PGE::Matrix4x4f::identity;
+    dataInter = new DataInterpolator(position, PGE::Vector3f(-pitchAngle, yawAngle, tilt), PGE::Vector3f::zero);
 
     needsViewUpdate = true;
     needsProjUpdate = true;
+    update();
 }
 
 Camera::Camera(GraphicsResources* gr, int w, int h) : Camera(gr, w, h, MathUtil::degToRad(70.0f)) { }
 
 void Camera::update() {
-    if (needsViewUpdate) {
-        rotation = PGE::Matrix4x4f::rotate(PGE::Vector3f(-pitchAngle, yawAngle, tilt));
+    PGE::Vector3f rotate = PGE::Vector3f(-pitchAngle, yawAngle, tilt);
+    dataInter->update(position, rotate, PGE::Vector3f::zero);
 
-        viewMatrix = PGE::Matrix4x4f::constructViewMat(position, rotation.transform(lookAt), rotation.transform(upDir));
+    needsViewUpdate = true;
+}
+
+void Camera::updateDrawTransform(float interpolation) {
+    if (needsViewUpdate) {
+        rotation = PGE::Matrix4x4f::rotate(dataInter->getInterpolatedRotation(interpolation));
+
+        viewMatrix = PGE::Matrix4x4f::constructViewMat(dataInter->getInterpolatedPosition(interpolation), rotation.transform(lookAt), rotation.transform(upDir));
 
         needsViewUpdate = false;
     }
@@ -63,12 +73,12 @@ void Camera::setPosition(const PGE::Vector3f pos) {
 }
 
 void Camera::setTilt(float rad) {
-    needsViewUpdate = !MathUtil::eqFloats(rad, tilt);
+    needsViewUpdate = !MathUtil::equalFloats(rad, tilt);
     tilt = rad;
 }
 
 void Camera::addAngle(float x, float y) {
-    if (MathUtil::eqFloats(x, 0.f) && MathUtil::eqFloats(y, 0.f)) {
+    if (MathUtil::equalFloats(x, 0.f) && MathUtil::equalFloats(y, 0.f)) {
         return;
     }
 

@@ -244,7 +244,7 @@ public:
         if (duplicateName) {
             return PGE::String(func->GetModuleName()) + ":" + name;
         } else {
-            return PGE::String(name);
+            return name;
         }
     }
 
@@ -280,7 +280,7 @@ public:
                     }
 
                     // If the user enters a float.
-                    if (!MathUtil::eqFloats((float)arg, params[i].toFloat())) {
+                    if (!MathUtil::equalFloats((float)arg, params[i].toFloat())) {
                         console->addConsoleMessage("Loss of data!", PGE::Color::Yellow);
                     }
 

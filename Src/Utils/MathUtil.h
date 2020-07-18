@@ -10,7 +10,7 @@ class MathUtil {
         static float degToRad(float degrees);
         static float radToDeg(float radians);
     
-        static bool eqFloats(float p1, float p2);
+        static bool equalFloats(float p1, float p2);
 
         static int maxInt(int val, int pther);
         static int minInt(int val, int pther);
@@ -18,6 +18,7 @@ class MathUtil {
         static float clampFloat(float val, float min, float max);
 
         static float absFloat(float val);
+        static double absDouble(double val);
 
         static int floor(float val);
         static int ceil(float val);

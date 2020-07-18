@@ -173,6 +173,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Utils\INI.h" />
     <ClInclude Include="..\Src\Utils\MathUtil.h" />
     <ClInclude Include="..\Src\Utils\TextMgmt.h" />
+    <ClInclude Include="..\Src\World\DataInterpolator.h" />
     <ClInclude Include="..\Src\World\FPSCounter.h" />
     <ClInclude Include="..\Src\World\ScriptWorld.h" />
     <ClInclude Include="..\Src\World\Timing.h" />
@@ -230,6 +231,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Utils\INI.cpp" />
     <ClCompile Include="..\Src\Utils\MathUtil.cpp" />
     <ClCompile Include="..\Src\Utils\TextMgmt.cpp" />
+    <ClCompile Include="..\Src\World\DataInterpolator.cpp" />
     <ClCompile Include="..\Src\World\FPSCounter.cpp" />
     <ClCompile Include="..\Src\World\ScriptWorld.cpp" />
     <ClCompile Include="..\Src\World\Timing.cpp" />

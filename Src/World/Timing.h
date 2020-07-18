@@ -11,9 +11,16 @@ private:
     double timeStep;
     double accumulatedSeconds;
 
-    // Total time since the object's initialization.
+    double secondToLastFixedTime;
+    double lastFixedTime;
+
+    /// <summary>
+    /// Total time since the object's initialization.
+    /// </summary>
     std::chrono::high_resolution_clock::time_point initialTime;
-    // Previous time when the last call to getElapsedSeconds() was made.
+    /// <summary>
+    /// Previous time when the last call to getElapsedSeconds() was made.
+    /// </summary>
     std::chrono::high_resolution_clock::time_point prevTime;
 
 public:
@@ -21,16 +28,31 @@ public:
     ~Timing()=default;
 
     double getTimeStep() const;
-    void addSecondsToAccumulator(double seconds);
+    void addSecondsToAccumulator(double secondsPassed);
 
-    // Returns whether enough time is left on the accumulator for another tick.
-    bool tickReady();
-    // Subtracts one tick from the accumlator.
+    /// <summary>
+    /// Returns whether enough time is left on the accumulator for another tick.
+    /// </summary>
+    bool tickReady() const;
+
+    /// <summary>
+    /// Subtracts one tick from the accumlator.
+    /// </summary>
     void subtractTick();
-    // Returns the elapsed seconds since the last call to this function.
+
+    void updateInterpolationFactor();
+
+    double getInterpolationFactor() const;
+
+    /// <summary>
+    /// Returns the total elapsed time since the object's creation.
+    /// </summary>
+    double getTotalElapsedTime() const;
+
+    /// <summary>
+    /// Returns the elapsed seconds since the last call to this function.
+    /// </summary>
     double getElapsedSeconds();
-    // Returns the total elapsed time since the object's creation.
-    double getTotalElapsedTime();
 };
 
 #endif // TIMING_H_INCLUDED

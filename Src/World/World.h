@@ -76,11 +76,11 @@ class World {
         // Update code for GameState::Playing game state.
         void updatePlaying(float timeStep);
         // Draw code for GameState::Playing game state.
-        void drawPlaying();
+        void drawPlaying(float interpolation);
         void destroyPlaying();
 
         // Goes through the draw phase.
-        void draw();
+        void draw(float interpolation);
 
     public:
         World();

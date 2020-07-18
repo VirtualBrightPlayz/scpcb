@@ -6,6 +6,7 @@
 #include <Shader/Shader.h>
 
 class GraphicsResources;
+class DataInterpolator;
 
 class Camera {
     private:
@@ -35,6 +36,7 @@ class Camera {
         PGE::Matrix4x4f viewMatrix;
         PGE::Matrix4x4f projectionMatrix;
         PGE::Matrix4x4f rotation;
+        DataInterpolator* dataInter;
 
         float getAspectRatio() const;
 
@@ -43,6 +45,7 @@ class Camera {
         Camera(GraphicsResources* gr, int w, int h);
 
         void update();
+        void updateDrawTransform(float interpolation);
 
         void setPosition(const PGE::Vector3f pos);
         void setTilt(float rad);

@@ -1,8 +1,11 @@
 #include "Timing.h"
+#include "../Utils/MathUtil.h"
 
 Timing::Timing(int tickrate) {
     timeStep = 1.0 / tickrate;
     accumulatedSeconds = 0.0;
+    secondToLastFixedTime = 1.0;
+    lastFixedTime = 1.0;
 
     initialTime = std::chrono::high_resolution_clock::now();
     prevTime = initialTime;
@@ -21,7 +24,7 @@ void Timing::addSecondsToAccumulator(double seconds) {
     }
 }
 
-bool Timing::tickReady() {
+bool Timing::tickReady() const {
     return accumulatedSeconds >= timeStep;
 }
 
@@ -29,6 +32,19 @@ void Timing::subtractTick() {
     if (accumulatedSeconds <= 0.0) { return; }
 
     accumulatedSeconds -= timeStep;
+}
+
+void Timing::updateInterpolationFactor() {
+    secondToLastFixedTime = lastFixedTime;
+    lastFixedTime = getTotalElapsedTime();
+}
+
+double Timing::getInterpolationFactor() const {
+    if (MathUtil::absDouble(secondToLastFixedTime - lastFixedTime) > MathUtil::MARGIN_ERROR) {
+        return (getTotalElapsedTime() - lastFixedTime) / (lastFixedTime - secondToLastFixedTime);
+    } else {
+        return 1.0;
+    }
 }
 
 
@@ -41,7 +57,7 @@ double Timing::getElapsedSeconds() {
 }
 
 
-double Timing::getTotalElapsedTime() {
+double Timing::getTotalElapsedTime() const {
     std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> timeSpan = std::chrono::duration_cast<std::chrono::duration<double>>(now - initialTime);
 

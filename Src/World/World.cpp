@@ -122,6 +122,7 @@ bool World::run() {
 
     // Game logic updates first, use accumulator.
     while (timing->tickReady()) {
+        timing->updateInterpolationFactor();
         runTick((float)timing->getTimeStep());
         timing->subtractTick();
     }
@@ -131,7 +132,7 @@ bool World::run() {
 
     graphics->clear(PGE::Color(1.f, 0.f, 1.f, 1.f)); // Puke-inducing magenta
 
-    draw();
+    draw((float)timing->getInterpolationFactor());
 
     // Get elapsed seconds since last run.
     double secondsPassed = timing->getElapsedSeconds();
@@ -210,10 +211,10 @@ void World::runTick(float timeStep) {
     }
 }
 
-void World::draw() {
-    drawPlaying();
+void World::draw(float interpolation) {
+    drawPlaying(interpolation);
 
-    scripting->draw(1.0f); // TODO: Pass actual interpolation.
+    scripting->draw(interpolation);
 
     // UI.
     graphics->setDepthTest(false);
@@ -250,7 +251,8 @@ void World::updatePlaying(float timeStep) {
     camera->update();
 }
 
-void World::drawPlaying() {
+void World::drawPlaying(float interpolation) {
+    camera->updateDrawTransform(interpolation);
     gfxRes->setCameraUniforms(camera);
 }
 

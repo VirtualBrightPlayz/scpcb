@@ -1,5 +1,3 @@
-#include <cmath>
-
 #include "MathUtil.h"
 
 float MathUtil::degToRad(float degree) {
@@ -10,8 +8,8 @@ float MathUtil::radToDeg(float radians) {
     return radians * 180.0f / PI;
 }
 
-bool MathUtil::eqFloats(float p1, float p2) {
-    return fabs(p1 - p2) < MARGIN_ERROR;
+bool MathUtil::equalFloats(float p1, float p2) {
+    return absFloat(p1 - p2) < MARGIN_ERROR;
 }
 
 int MathUtil::maxInt(int val, int other) {
@@ -37,6 +35,13 @@ float MathUtil::clampFloat(float val, float min, float max) {
 }
 
 float MathUtil::absFloat(float val) {
+    if (val < 0) {
+        return -val;
+    }
+    return val;
+}
+
+double MathUtil::absDouble(double val) {
     if (val < 0) {
         return -val;
     }
