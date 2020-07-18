@@ -202,9 +202,26 @@ public:
     }
 };
 
+class JorgeCommand : public Command {
+public:
+    PGE::String getName() const override {
+        return "jorge";
+    }
+
+    PGE::String getHelpText() const override {
+        return "There is no help available for that command.";
+    }
+
+    void execute(Console* console, const std::vector<PGE::String>& params) const override {
+        const char j[] = { 74, 111, 114, 103, 101, 32, 104, 97, 115, 32, 98, 101, 101, 110, 32, 101, 120, 112, 101, 99, 116, 105, 110, 103, 32, 121, 111, 117, 46, 0 };
+        console->addConsoleMessage(j, PGE::Color::Orange);
+    }
+};
+
 void Console::registerInternalCommands() {
     commands.push_back(new HelpCommand());
     commands.push_back(new ClearCommand());
+    commands.push_back(new JorgeCommand());
 }
 
 class ScriptCommand : public Command {
@@ -225,7 +242,7 @@ public:
 
     PGE::String getName() const override {
         if (duplicateName) {
-            return (PGE::String(func->GetModuleName()) + ":" + name);
+            return PGE::String(func->GetModuleName()) + ":" + name;
         } else {
             return PGE::String(name);
         }
@@ -299,8 +316,7 @@ void Console::registerExternalCommand(const PGE::String& name, const PGE::String
         otherCommand = dynamic_cast<ScriptCommand*>(commands[i]);
         if (otherCommand != nullptr) {
             // This will also catch a command that already has had its name changed.
-            PGE::String nameWithModule = PGE::String(f->GetModuleName()) + ":" + name;
-            if (otherCommand->getName().equalsIgnoreCase(otherCommand->duplicateName ? nameWithModule : name)) {
+            if (otherCommand->getName().equalsIgnoreCase(otherCommand->duplicateName ? PGE::String(f->GetModuleName()) + ":" + name : name)) {
                 otherCommand->duplicateName = true;
                 newCommand->duplicateName = true;
                 if (otherCommand->getName().equalsIgnoreCase(newCommand->getName())) { throw std::runtime_error("lol double command"); }

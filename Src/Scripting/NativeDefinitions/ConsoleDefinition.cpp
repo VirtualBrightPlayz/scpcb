@@ -42,8 +42,8 @@ void ConsoleDefinition::warning(const PGE::String& content) {
 }
 
 void ConsoleDefinition::error(const PGE::String& content) {
-    #ifdef DEBUG
-        std::cerr << "Debug::Err: " << content << std::endl; //TODO: Error throwing.
-    #endif
-        console->logError("Debug::Err: " + content);
+#ifdef DEBUG
+    std::cerr << "Debug::Err: " << content << std::endl; //TODO: Error throwing.
+#endif
+    console->logError("Debug::Err: " + content);
 }
