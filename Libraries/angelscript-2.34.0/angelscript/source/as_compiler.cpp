@@ -1307,8 +1307,6 @@ void asCCompiler::DetermineSingleFunc(asCExprContext *ctx, asCScriptNode *node)
 	if (ctx->IsLambda())
 	{
 		ImplicitConvLambdaToNewFunc(ctx, node, EImplicitConv::asIC_IMPLICIT_CONV, true);
-		int x = 0;
-		UNUSED_VAR(x);
 	}
 
 	if( !ctx->IsGlobalFunc() )
@@ -1476,13 +1474,6 @@ int asCCompiler::PrepareArgument(asCDataType *paramType, asCExprContext *ctx, as
 	// Need to protect arguments by reference
 	if( isFunction && dt.IsReference() )
 	{
-
-		if ( paramType->GetTokenType() == ttFunction )
-		{
-			bool b = dt.IsFuncdef();
-			UNUSED_VAR(b);
-		}
-
 		// Allocate a temporary variable of the same type as the argument
 		dt.MakeReference(false);
 
