@@ -273,7 +273,7 @@ public:
                     }
                 } else if (paramTypeId == asTYPEID_INT32) {
                     bool success;
-                    int arg = params[i].toInt(&success);
+                    int arg = params[i].toInt(success);
                     if (!success) {
                         errMsg = "NOT INT";
                         break;
@@ -287,7 +287,7 @@ public:
                     scriptContext->SetArgDWord(i, arg);
                 } else if (paramTypeId == asTYPEID_FLOAT) {
                     bool success;
-                    float arg = params[i].toFloat(&success);
+                    float arg = params[i].toFloat(success);
                     if (!success) {
                         errMsg = "NOT FLOAT";
                         break;
