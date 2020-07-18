@@ -27,9 +27,8 @@ Camera::Camera(GraphicsResources* gr, int w, int h, float fov, float nearZ, floa
     this->orthographicProj = orthographic;
 
     rotation = PGE::Matrix4x4f::identity;
-    dataInter = new DataInterpolator(position, PGE::Vector3f(-pitchAngle, yawAngle, tilt), PGE::Vector3f::zero);
+    dataInter = DataInterpolator(position, PGE::Vector3f(-pitchAngle, yawAngle, tilt), PGE::Vector3f::zero);
 
-    needsViewUpdate = true;
     needsProjUpdate = true;
     update();
 }
@@ -38,19 +37,13 @@ Camera::Camera(GraphicsResources* gr, int w, int h) : Camera(gr, w, h, MathUtil:
 
 void Camera::update() {
     PGE::Vector3f rotate = PGE::Vector3f(-pitchAngle, yawAngle, tilt);
-    dataInter->update(position, rotate, PGE::Vector3f::zero);
-
-    needsViewUpdate = true;
+    dataInter.update(position, rotate, PGE::Vector3f::zero);
 }
 
 void Camera::updateDrawTransform(float interpolation) {
-    if (needsViewUpdate) {
-        rotation = PGE::Matrix4x4f::rotate(dataInter->getInterpolatedRotation(interpolation));
+    rotation = PGE::Matrix4x4f::rotate(dataInter.getInterpolatedRotation(interpolation));
 
-        viewMatrix = PGE::Matrix4x4f::constructViewMat(dataInter->getInterpolatedPosition(interpolation), rotation.transform(lookAt), rotation.transform(upDir));
-
-        needsViewUpdate = false;
-    }
+    viewMatrix = PGE::Matrix4x4f::constructViewMat(dataInter.getInterpolatedPosition(interpolation), rotation.transform(lookAt), rotation.transform(upDir));
 
     if (needsProjUpdate) {
         if (!orthographicProj) {
@@ -68,12 +61,10 @@ float Camera::getAspectRatio() const {
 }
 
 void Camera::setPosition(const PGE::Vector3f pos) {
-    needsViewUpdate = true;
     position = pos;
 }
 
 void Camera::setTilt(float rad) {
-    needsViewUpdate = !MathUtil::equalFloats(rad, tilt);
     tilt = rad;
 }
 
@@ -98,8 +89,6 @@ void Camera::addAngle(float x, float y) {
     } else if (yawAngle < -PI_MUL_2) {
         yawAngle += PI_MUL_2;
     }
-
-    needsViewUpdate = true;
 }
 
 const PGE::Matrix4x4f& Camera::getViewMatrix() const {

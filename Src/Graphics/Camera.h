@@ -5,8 +5,9 @@
 #include <Graphics/Graphics.h>
 #include <Shader/Shader.h>
 
+#include "../World/DataInterpolator.h"
+
 class GraphicsResources;
-class DataInterpolator;
 
 class Camera {
     private:
@@ -26,7 +27,6 @@ class Camera {
         // Perspective or Orthographic matrix.
         bool orthographicProj;
 
-        bool needsViewUpdate;
         bool needsProjUpdate;
 
         PGE::Vector3f position;
@@ -36,7 +36,7 @@ class Camera {
         PGE::Matrix4x4f viewMatrix;
         PGE::Matrix4x4f projectionMatrix;
         PGE::Matrix4x4f rotation;
-        DataInterpolator* dataInter;
+        DataInterpolator dataInter;
 
         float getAspectRatio() const;
 

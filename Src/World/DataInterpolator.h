@@ -17,6 +17,7 @@ private:
     TransformData currTransform;
 
 public:
+    DataInterpolator();
     DataInterpolator(const PGE::Vector3f& position, const PGE::Vector3f& rotation, const PGE::Vector3f& scale);
 
     void update(const PGE::Vector3f& position, const PGE::Vector3f& rotation, const PGE::Vector3f& scale);
