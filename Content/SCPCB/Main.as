@@ -15,8 +15,8 @@ external shared enum RoomType;
 external Zone@ test_shared_global;
 external int testCounter;
 
-void Test(string testString) {
-    Debug::log("Parameter: "+testString);
+void Test(int testString) {
+    //Debug::log("Parameter: "+testString);
 }
 
 void main() {

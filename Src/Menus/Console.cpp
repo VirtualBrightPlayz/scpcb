@@ -272,16 +272,28 @@ public:
                         break;
                     }
                 } else if (paramTypeId == asTYPEID_INT32) {
-                    int arg = std::stoi(params[i].cstr());
-                    // If the user enters a float.
-                    if (!MathUtil::eqFloats((float)arg, params[i].toFloat())) {
+                    bool success;
+                    int arg = params[i].toInt(&success);
+                    if (!success) {
                         errMsg = "NOT INT";
                         break;
                     }
 
+                    // If the user enters a float.
+                    if (!MathUtil::eqFloats((float)arg, params[i].toFloat())) {
+                        console->addConsoleMessage("Loss of data!", PGE::Color::Yellow);
+                    }
+
                     scriptContext->SetArgDWord(i, arg);
                 } else if (paramTypeId == asTYPEID_FLOAT) {
-                    scriptContext->SetArgFloat(i, params[i].toFloat());
+                    bool success;
+                    float arg = params[i].toFloat(&success);
+                    if (!success) {
+                        errMsg = "NOT FLOAT";
+                        break;
+                    }
+
+                    scriptContext->SetArgFloat(i, arg);
                 } else if (paramTypeId == scriptContext->GetEngine()->GetStringFactoryReturnTypeId()) {
                     scriptContext->SetArgObject(i, (void*) &(params[i]));
                 }
