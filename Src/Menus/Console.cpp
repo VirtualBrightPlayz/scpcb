@@ -272,7 +272,7 @@ public:
                         break;
                     }
                 } else if (paramTypeId == asTYPEID_INT32) {
-                    int arg = std::stoi(params[i].cstr());
+                    int arg = params[i].toInt();
                     // If the user enters a float.
                     if (!MathUtil::eqFloats((float)arg, params[i].toFloat())) {
                         errMsg = "NOT INT";
