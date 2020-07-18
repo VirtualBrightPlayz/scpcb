@@ -334,7 +334,7 @@ void Console::registerExternalCommand(const PGE::String& name, const PGE::String
                 if (otherCommand->getName().equalsIgnoreCase(newCommand->getName())) { throw std::runtime_error("lol double command"); }
                 break;
             }
-        } else if (commands[i]->getName().equalsIgnoreCase(f->GetName())) { //Check if name is occupied by a vanilla command.
+        } else if (commands[i]->getName().equalsIgnoreCase(name)) { //Check if name is occupied by a vanilla command.
             newCommand->duplicateName = true;
         }
     }

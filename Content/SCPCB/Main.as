@@ -29,6 +29,12 @@ void main() {
             Debug::log("Called teleport!");
             testController.setPosition(Vector3f(x,y,z));
         });
+	registerCommand(
+        "hElP",
+        ":(",
+        function(string s) {
+            Debug::log(s);
+        });
     @entranceZone = EntranceZone();
     @test_shared_global = @entranceZone;
     @testCollCollection = Collision::Collection();
