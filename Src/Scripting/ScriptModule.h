@@ -41,6 +41,7 @@ class ScriptModule {
         ScriptClass* getClassByTypeId(int typeId) const;
 
         ScriptFunction* getFunctionByName(const PGE::String& name) const;
+        ScriptFunction* getFunctionByAngelScriptPtr(asIScriptFunction* f) const;
 
         Type* typeFromTypeId(int typeId) const;
 

@@ -6,31 +6,21 @@
 #include <Misc/String.h>
 #include "../ScriptFunction.h"
 #include "../NativeDefinition.h"
+#include "CachedArgument.h"
 
 class EventDefinition : public NativeDefinition {
     private:
         PGE::String name;
         ScriptFunction::Signature signature;
-        std::vector<asIScriptFunction*> registeredCallbacks;
-        asIScriptContext* scriptContext;
+        std::vector<ScriptFunction*> registeredCallbacks;
         int latestCallbackId;
 
         void registerCallback(asIScriptFunction* f);
         void unregisterCallback(asIScriptFunction* f);
 
-        struct Argument {
-            PGE::String name;
-            Type* type;
-            union Value {
-                Value();
-                int32_t i32;
-                uint32_t u32;
-                float f;
-                double d;
-            } value;
-            Argument(const PGE::String& nm, Type* t);
-        };
-        std::vector<Argument> arguments;
+        std::vector<CachedArgument> arguments;
+
+        ScriptManager* scriptManager;
     public:
         EventDefinition(ScriptManager* mgr, const PGE::String& nm, const ScriptFunction::Signature& sgntr);
 

@@ -18,6 +18,7 @@
 #include "../Scripting/NativeDefinitions/CollisionDefinitions.h"
 #include "../Scripting/NativeDefinitions/PlayerControllerDefinitions.h"
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
+#include "../Scripting/NativeDefinitions/ReflectionDefinitions.h"
 
 ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, const Config* config, float timestep, Console* con) {
     manager = new ScriptManager();
@@ -30,6 +31,7 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
     collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);
     rm2Definitions = new RM2Definitions(manager, gfxRes);
     playerControllerDefinitions = new PlayerControllerDefinitions(manager, refCounterManager, camera);
+    reflectionDefinitions = new ReflectionDefinitions(manager);
 
     ScriptFunction::Signature perTickSignature;
     perTickSignature.functionName = "PerTick";
@@ -84,6 +86,7 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
 
         ScriptFunction* mainFunction = scriptModule->getFunctionByName("main");
         if (mainFunction != nullptr) {
+            mainFunction->prepare();
             mainFunction->execute();
         }
 
@@ -110,6 +113,7 @@ ScriptWorld::~ScriptWorld() {
     delete rm2Definitions;
     delete collisionDefinitions;
     delete playerControllerDefinitions;
+    delete reflectionDefinitions;
 
     delete refCounterManager;
 

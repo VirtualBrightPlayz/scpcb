@@ -8,6 +8,7 @@
 class Script;
 class ScriptClass;
 class ScriptFunction;
+class ScriptModule;
 class NativeFunction;
 
 class ScriptManager {
@@ -31,7 +32,7 @@ class ScriptManager {
         asIStringFactory* stringFactory;
 
         std::vector<ScriptClass*> sharedClasses;
-        std::vector<ScriptFunction*> scriptFunctions;
+        std::vector<ScriptModule*> scriptModules;
 
         std::vector<LogEntry> log;
     public:
@@ -39,29 +40,20 @@ class ScriptManager {
         ~ScriptManager();
 
         void messageCallback(const asSMessageInfo* msg, void* param);
+        void contextExceptionCallback(asIScriptContext* ctx);
 
         asIScriptEngine* getAngelScriptEngine() const;
 
         ScriptClass* getSharedClassByTypeId(int typeId) const;
+        ScriptClass* getClassByTypeId(int typeId) const;
         void registerSharedClass(ScriptClass* clss);
+        const std::vector<ScriptModule*>& getScriptModules() const;
+        void registerScriptModule(ScriptModule* mdl);
+
 
         bool isArrayTypeId(int typeId) const;
 
         const std::vector<LogEntry>& getLog() const;
-
-
-};
-
-struct StringPoolEntry {
-    PGE::String str;
-    int refCount;
-
-    StringPoolEntry() { refCount = 0; }
-
-    StringPoolEntry(const PGE::String& s) {
-        str = s;
-        refCount = 0;
-    }
 };
 
 #endif

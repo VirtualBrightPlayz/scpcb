@@ -21,6 +21,12 @@ void Test(int testString) {
 
 void main() {
     Debug::log("Starting up!");
+
+    Reflection<Zone> reflection;
+    for (int i=0;i<reflection.getDerivedCount();i++) {
+        Debug::log(reflection.getDerivedName(i));
+    }
+
     registerCommand("mytest", "THIS COMKMAND IS VERY EPIC", Test);
     registerCommand(
         "teleport",
@@ -35,6 +41,7 @@ void main() {
         function(string s) {
             Debug::log(s);
         });
+    
     @entranceZone = EntranceZone();
     @test_shared_global = @entranceZone;
     @testCollCollection = Collision::Collection();

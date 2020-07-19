@@ -2,11 +2,20 @@
 #include "ScriptFunction.h"
 #include "ScriptClass.h"
 #include "ScriptObject.h"
+#include "ScriptModule.h"
+#include "ScriptManager.h"
 
 ScriptClass::ScriptClass(ScriptModule* module, asITypeInfo* tInfo) {
     scriptModule = module;
 
     typeName = tInfo->GetName();
+
+    parentClass = nullptr;
+    if (tInfo->GetBaseType() != nullptr) {
+        int parentId = tInfo->GetBaseType()->GetTypeId();
+        parentClass = module->getScriptManager()->getClassByTypeId(parentId);
+        parentClass->registerDerivedClass(this);
+    }
 
     refType = new RefType(this);
     arrayType = nullptr;
@@ -49,12 +58,24 @@ const std::vector<ScriptClass::Property>& ScriptClass::getProperties() const {
     return properties;
 }
 
+const std::vector<ScriptFunction*>& ScriptClass::getConstructors() const {
+    return constructors;
+}
+
 ScriptModule* ScriptClass::getScriptModule() const {
     return scriptModule;
 }
 
 int ScriptClass::getTypeId() const {
     return angelScriptTypeInfo->GetTypeId();
+}
+
+void ScriptClass::registerDerivedClass(ScriptClass* clss) {
+    derivedClasses.push_back(clss);
+}
+
+const std::vector<ScriptClass*>& ScriptClass::getDerivedClasses() const {
+    return derivedClasses;
 }
 
 void ScriptClass::finalizeInitialization() {

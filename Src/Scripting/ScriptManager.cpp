@@ -1,5 +1,7 @@
 #include "ScriptManager.h"
 #include "ScriptClass.h"
+#include "ScriptModule.h"
+#include "StringFactory.h"
 #include <angelscript.h>
 #include <Misc/String.h>
 #include <map>
@@ -7,141 +9,50 @@
 #include <inttypes.h>
 #include "AngelScriptAddons/scriptarray/scriptarray.h"
 
-class StringFactory : public asIStringFactory {
-    private:
-        std::map<long long, StringPoolEntry> strPool;
-    public:
-        const void* GetStringConstant(const char* data, asUINT length) {
-            asAcquireExclusiveLock();
-
-            char* tempBuf = new char[(uint64_t)length + 1];
-            memcpy(tempBuf, data, sizeof(char) * length);
-            tempBuf[length] = '\0';
-
-            PGE::String tempStr = tempBuf;
-            delete[] tempBuf;
-
-            std::map<long long, StringPoolEntry>::iterator poolEntry = strPool.find(tempStr.getHashCode());
-            if (poolEntry != strPool.end()) {
-                poolEntry->second.refCount++;
-            } else {
-                StringPoolEntry newEntry = StringPoolEntry(tempStr);
-                newEntry.refCount = 1;
-                strPool.emplace(tempStr.getHashCode(), newEntry);
-                poolEntry = strPool.find(tempStr.getHashCode());
-            }
-            
-            asReleaseExclusiveLock();
-
-            return &(poolEntry->second.str);
-        }
-
-        int ReleaseStringConstant(const void* str) {
-            int retVal = asSUCCESS;
-
-            asAcquireExclusiveLock();
-
-            PGE::String* deref = ((PGE::String*)str);
-            std::map<long long, StringPoolEntry>::iterator poolEntry = strPool.find(deref->getHashCode());
-            if (poolEntry != strPool.end()) {
-                poolEntry->second.refCount--;
-                if (poolEntry->second.refCount <= 0) {
-                    strPool.erase(deref->getHashCode());
-                }
-            }
-
-            asReleaseExclusiveLock();
-
-            return retVal;
-        }
-
-        int GetRawStringData(const void* str, char* data, asUINT* length) const {
-            if (str == nullptr) { return asERROR; }
-
-            PGE::String deref = *((PGE::String*)str);
-            if (length != nullptr) {
-                asUINT& lengthRef = *length;
-                lengthRef = deref.size();
-            }
-            if (data != nullptr) {
-                memcpy(data, deref.cstr(), sizeof(char)*deref.size());
-            }
-
-            return asSUCCESS;
-        }
+struct ContextPool {
+    std::vector<asIScriptContext*> contexts;
 };
 
-static void constructString(PGE::String* thisPointer) {
-    new(thisPointer) PGE::String();
+std::map<asIScriptEngine*, ContextPool> contextPools;
+asIScriptContext* requestContextCallback(asIScriptEngine* engine, void* param) {
+    if (contextPools.find(engine) == contextPools.end()) {
+        
+    }
+
+    asIScriptContext* ctx = nullptr;
+    if(contextPools[engine].contexts.size() > 0) {
+        ctx = contextPools[engine].contexts[0];
+        contextPools[engine].contexts.pop_back();
+    } else {
+        ctx = engine->CreateContext();
+        ctx->SetExceptionCallback(asMETHOD(ScriptManager, contextExceptionCallback), param, asCALL_THISCALL);
+    }
+
+    return ctx;
 }
 
-static void copyConstructString(const PGE::String& other, PGE::String* thisPointer) {
-    new(thisPointer) PGE::String(other);
-}
+void returnContextToPool(asIScriptEngine* engine, asIScriptContext* ctx, void* param) {
+    if (contextPools.find(engine) == contextPools.end()) {
+        ContextPool newPool;
+        contextPools.emplace(engine, newPool);
+    }
 
-static void destructString(PGE::String* thisPointer) {
-    thisPointer->~String();
-}
+    contextPools[engine].contexts.push_back(ctx);
 
-static PGE::String& assignString(const PGE::String& str, PGE::String& dest) {
-    dest = str;
-    return dest;
-}
-
-static PGE::String& addAssignString(const PGE::String& str, PGE::String& dest) {
-    dest = PGE::String(dest, str);
-    return dest;
-}
-
-static bool stringEquals(const PGE::String& lhs, const PGE::String& rhs) {
-    return lhs.equals(rhs);
-}
-
-static PGE::String stringAdd(const PGE::String& rhs, const PGE::String& lhs) {
-    return PGE::String(lhs, rhs);
-}
-
-static int stringLength(const PGE::String& str) {
-    return str.size();
-}
-
-static long long stringGetHashCode(const PGE::String& str) {
-    return str.getHashCode();
-}
-
-static PGE::String stringSubstrStartLen(int start, int count, const PGE::String& str) {
-    return str.substr(start, count);
-}
-
-static char stringCharAt(int index, const PGE::String& str) {
-    return str.charAt(index);
+    ctx->Unprepare();
 }
 
 ScriptManager::ScriptManager() {
     engine = asCreateScriptEngine();
 
+    ContextPool newPool;
+    contextPools.emplace(engine, newPool);
+
+    engine->SetContextCallbacks(requestContextCallback, returnContextToPool);
+
     engine->SetMessageCallback(asMETHOD(ScriptManager, messageCallback), this, asCALL_THISCALL);
 
-    stringFactory = new StringFactory();
-
-    engine->RegisterObjectType("string", sizeof(PGE::String), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK);
-
-    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f()",asFUNCTION(constructString), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f(const string& in)",asFUNCTION(copyConstructString), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectBehaviour("string",asBEHAVE_DESTRUCT,"void f()",asFUNCTION(destructString), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("string","string &opAssign(const string& in)",asFUNCTION(assignString), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("string","string &opAddAssign(const string& in)",asFUNCTION(addAssignString), asCALL_CDECL_OBJLAST);
-
-    engine->RegisterObjectMethod("string","bool opEquals(const string& in) const",asFUNCTION(stringEquals), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("string","string opAdd(const string& in) const",asFUNCTION(stringAdd), asCALL_CDECL_OBJLAST);
-
-    engine->RegisterObjectMethod("string", "uint length() const", asFUNCTION(stringLength), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("string", "uint64 getHashCode() const", asFUNCTION(stringGetHashCode), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("string","string substr(int start, int end=-1) const",asFUNCTION(stringSubstrStartLen), asCALL_CDECL_OBJLAST);
-
-    engine->RegisterObjectMethod("string","uint8 opIndex(uint) const",asFUNCTION(stringCharAt), asCALL_CDECL_OBJLAST);
-
-    engine->RegisterStringFactory("string", stringFactory);
+    stringFactory = new StringFactory(engine);
 
     RegisterScriptArray(engine, true);
 }
@@ -149,6 +60,15 @@ ScriptManager::ScriptManager() {
 ScriptManager::~ScriptManager() {
     engine->ShutDownAndRelease();
     delete ((StringFactory*)stringFactory);
+}
+
+void ScriptManager::contextExceptionCallback(asIScriptContext* context) {
+    asSMessageInfo info;
+    info.message = context->GetExceptionString();
+    int line = context->GetExceptionLineNumber(&info.row, &info.section);
+    info.col = 0; //TODO: fix?
+    info.type = asEMsgType::asMSGTYPE_ERROR;
+    messageCallback(&info, nullptr);
 }
 
 void ScriptManager::messageCallback(const asSMessageInfo* msg, void* param) {
@@ -184,8 +104,29 @@ ScriptClass* ScriptManager::getSharedClassByTypeId(int typeId) const {
     return nullptr;
 }
 
+ScriptClass* ScriptManager::getClassByTypeId(int typeId) const {
+    ScriptClass* scriptClass = getSharedClassByTypeId(typeId);
+
+    if (scriptClass != nullptr) { return scriptClass; }
+
+    for (int i=0;i<scriptModules.size();i++) {
+        scriptClass = scriptModules[i]->getClassByTypeId(typeId);
+        if (scriptClass != nullptr) { return scriptClass; }
+    }
+
+    return nullptr;
+}
+
 void ScriptManager::registerSharedClass(ScriptClass* clss) {
     sharedClasses.push_back(clss);
+}
+
+const std::vector<ScriptModule*>& ScriptManager::getScriptModules() const {
+    return scriptModules;
+}
+
+void ScriptManager::registerScriptModule(ScriptModule* mdl) {
+    scriptModules.push_back(mdl);
 }
 
 bool ScriptManager::isArrayTypeId(int typeId) const {

@@ -17,6 +17,7 @@ ScriptModule::ScriptModule(ScriptManager* mgr, const PGE::String& nm) {
     asIScriptEngine* engine = scriptManager->getAngelScriptEngine();
     name = nm;
     scriptModule = engine->GetModule(name.cstr(), asGM_ALWAYS_CREATE);
+    mgr->registerScriptModule(this);
     built = false;
 }
 
@@ -40,6 +41,8 @@ void ScriptModule::build() {
     int typeCount = scriptModule->GetObjectTypeCount();
     for (int i = 0; i < typeCount; i++) {
         asITypeInfo* typeInfo = scriptModule->GetObjectTypeByIndex(i);
+
+        if (scriptManager->getSharedClassByTypeId(typeInfo->GetTypeId()) != nullptr) { continue; }
 
         ScriptClass* newClass = new ScriptClass(this, typeInfo);
         classes.push_back(newClass);
@@ -92,6 +95,13 @@ ScriptClass* ScriptModule::getClassByTypeId(int typeId) const {
 ScriptFunction* ScriptModule::getFunctionByName(const PGE::String& name) const {
     for (int i = 0; i < functions.size(); i++) {
         if (functions[i]->getSignature().functionName.equals(name)) { return functions[i]; }
+    }
+    return nullptr;
+}
+
+ScriptFunction* ScriptModule::getFunctionByAngelScriptPtr(asIScriptFunction* f) const {
+    for (int i = 0; i < functions.size(); i++) {
+        if (functions[i]->getAngelScriptFunction() == f) { return functions[i]; }
     }
     return nullptr;
 }

@@ -30,7 +30,6 @@ class ScriptFunction {
         Signature signature;
 
         asIScriptFunction* scriptFunction;
-        asIScriptContext* scriptContext;
 
         std::map<int, PGE::String> stringArgs;
 
@@ -38,18 +37,19 @@ class ScriptFunction {
 
         ScriptObject* returnedObject;
 
-        void exceptionCallback(asIScriptContext* context);
-
-        bool isPrepared;
-        void prepare();
+        asIScriptContext* scriptContext;
+        bool pushedState;
     public:
         ScriptFunction(ScriptModule* module,asIScriptFunction* asScriptFunction,asIScriptFunction* asFuncWithSignature=nullptr);
         ~ScriptFunction();
+
+        asIScriptFunction* getAngelScriptFunction() const;
 
         int getArgumentIndex(const PGE::String& argument) const;
 
         const Signature& getSignature() const;
 
+        void prepare();
         void setObject(ScriptObject* obj);
         void setObjectNative(void* obj);
         void setArgument(const PGE::String& argument, int32_t i32);

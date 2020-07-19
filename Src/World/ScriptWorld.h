@@ -2,6 +2,7 @@
 #define SCRIPTWORLD_H_INCLUDED
 
 class ScriptManager;
+
 class ConsoleDefinition;
 class MathDefinitions;
 class RM2Definitions;
@@ -9,6 +10,8 @@ class CollisionDefinitions;
 class PlayerControllerDefinitions;
 class InputDefinitions;
 class EventDefinition;
+class ReflectionDefinitions;
+
 class ScriptModule;
 class GraphicsResources;
 class KeyBinds;
@@ -29,6 +32,7 @@ private:
     RM2Definitions* rm2Definitions;
     CollisionDefinitions* collisionDefinitions;
     PlayerControllerDefinitions* playerControllerDefinitions;
+    ReflectionDefinitions* reflectionDefinitions;
 
     EventDefinition* perTickEventDefinition;
     EventDefinition* perFrameEventDefinition;

@@ -1,28 +1,19 @@
 #include "EventDefinition.h"
 #include "../Type.h"
 #include "../ScriptManager.h"
+#include "../ScriptModule.h"
 #include <stdexcept>
 
-EventDefinition::Argument::Argument(const PGE::String& nm, Type* t) {
-    name = nm;
-    type = t;
-}
-
-EventDefinition::Argument::Value::Value() {
-    i32 = 0;
-    u32 = 0;
-    f = 0;
-    d = 0;
-}
-
 EventDefinition::EventDefinition(ScriptManager* mgr, const PGE::String& nm, const ScriptFunction::Signature& sgntr) {
+    scriptManager = mgr;
+
     name = nm;
     signature = sgntr;
     signature.returnType = Type::Void;
     signature.functionName = name + "Callback";
 
     for (int i = 0; i < sgntr.arguments.size(); i++) {
-        Argument arg = Argument(sgntr.arguments[i].name, sgntr.arguments[i].type);
+        CachedArgument arg = CachedArgument(sgntr.arguments[i].name, sgntr.arguments[i].type);
         arguments.push_back(arg);
     }
 
@@ -37,8 +28,6 @@ EventDefinition::EventDefinition(ScriptManager* mgr, const PGE::String& nm, cons
 
     declaration = "void unregister(" + signature.functionName + "@ callback)";
     engine->RegisterGlobalFunction(declaration.cstr(), asMETHOD(EventDefinition, unregisterCallback), asCALL_THISCALL_ASGLOBAL, this);
-
-    scriptContext = engine->CreateContext();
 }
 
 void EventDefinition::setArgument(const PGE::String& argument, int32_t i32) {
@@ -79,32 +68,45 @@ void EventDefinition::setArgument(const PGE::String& argument, double d) {
 
 void EventDefinition::execute() {
     for (int i = 0; i < registeredCallbacks.size(); i++) {
-        if (scriptContext->Prepare(registeredCallbacks[i]) < 0) { throw std::runtime_error("ptooey!"); }
+        registeredCallbacks[i]->prepare();
+
+        const ScriptFunction::Signature& signature = registeredCallbacks[i]->getSignature();
 
         for (int j = 0; j < arguments.size(); j++) {
             if (arguments[j].type == Type::Int32) {
-                scriptContext->SetArgDWord(j, arguments[j].value.i32);
+                registeredCallbacks[i]->setArgument(signature.arguments[j].name, arguments[j].value.i32);
             } else if (arguments[j].type == Type::UInt32) {
-                scriptContext->SetArgDWord(j, arguments[j].value.u32);
+                registeredCallbacks[i]->setArgument(signature.arguments[j].name, arguments[j].value.u32);
             } else if(arguments[j].type == Type::Float) {
-                scriptContext->SetArgFloat(j, arguments[j].value.f);
+                registeredCallbacks[i]->setArgument(signature.arguments[j].name, arguments[j].value.f);
             } else if(arguments[j].type == Type::Double) {
-                scriptContext->SetArgDouble(j, arguments[j].value.d);
+                registeredCallbacks[i]->setArgument(signature.arguments[j].name, arguments[j].value.d);
             }
         }
 
-        scriptContext->Execute();
-        scriptContext->Unprepare();
+        registeredCallbacks[i]->execute();
     }
 }
 
 void EventDefinition::registerCallback(asIScriptFunction* f) {
-    registeredCallbacks.push_back(f);
+    ScriptFunction* scriptFunction = nullptr;
+    const std::vector<ScriptModule*>& modules = scriptManager->getScriptModules();
+    for (int i=0;i<modules.size();i++) {
+        scriptFunction = modules[i]->getFunctionByAngelScriptPtr(f);
+        if (scriptFunction != nullptr) { break; }
+    }
+    registeredCallbacks.push_back(scriptFunction);
 }
 
 void EventDefinition::unregisterCallback(asIScriptFunction* f) {
+    ScriptFunction* scriptFunction = nullptr;
+    const std::vector<ScriptModule*>& modules = scriptManager->getScriptModules();
+    for (int i=0;i<modules.size();i++) {
+        scriptFunction = modules[i]->getFunctionByAngelScriptPtr(f);
+        if (scriptFunction != nullptr) { break; }
+    }
     for (int i=registeredCallbacks.size()-1;i>=0;i--) {
-        if (registeredCallbacks[i] == f) {
+        if (registeredCallbacks[i] == scriptFunction) {
             registeredCallbacks.erase(registeredCallbacks.begin() + i);
         }
     }

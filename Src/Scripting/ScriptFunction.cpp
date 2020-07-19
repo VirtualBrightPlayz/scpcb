@@ -25,6 +25,10 @@ const ScriptFunction::Signature& ScriptFunction::getSignature() const {
     return signature;
 }
 
+asIScriptFunction* ScriptFunction::getAngelScriptFunction() const {
+    return scriptFunction;
+}
+
 int ScriptFunction::getArgumentIndex(const PGE::String& argument) const {
     for (int i = 0; i < signature.arguments.size(); i++) {
         if (signature.arguments[i].name.equals(argument)) {
@@ -64,11 +68,6 @@ ScriptFunction::ScriptFunction(ScriptModule* module, asIScriptFunction* asScript
     }
 
     signature.returnType = scriptModule->typeFromTypeId(scriptFunction->GetReturnTypeId());
-
-    scriptContext = asModule->GetEngine()->CreateContext();
-    scriptContext->SetExceptionCallback(asMETHOD(ScriptFunction, exceptionCallback), this, asCALL_THISCALL);
-
-    isPrepared = false;
 }
 
 ScriptFunction::~ScriptFunction() {
@@ -76,47 +75,47 @@ ScriptFunction::~ScriptFunction() {
 }
 
 void ScriptFunction::prepare() {
-    if (isPrepared) { return; }
+    asIScriptContext* activeContext = asGetActiveContext();
+    if (activeContext != nullptr) {
+        pushedState = true;
+        scriptContext = activeContext;
+        scriptContext->PushState();
+    } else {
+        pushedState = false;
+        scriptContext = scriptModule->getAngelScriptModule()->GetEngine()->RequestContext();
+    }
     scriptContext->Prepare(scriptFunction);
-    isPrepared = true;
 }
 
 void ScriptFunction::setObject(ScriptObject* obj) {
-    prepare();
     scriptContext->SetObject(obj->getAngelScriptObject());
 }
 
 void ScriptFunction::setObjectNative(void* obj) {
-    prepare();
     scriptContext->SetObject(obj);
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, int32_t i32) {
-    prepare();
     int index = getArgumentIndex(argument);
     scriptContext->SetArgDWord(index, i32);
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, uint32_t u32) {
-    prepare();
     int index = getArgumentIndex(argument);
     scriptContext->SetArgDWord(index, u32);
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, float f) {
-    prepare();
     int index = getArgumentIndex(argument);
     scriptContext->SetArgFloat(index, f);
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, double d) {
-    prepare();
     int index = getArgumentIndex(argument);
     scriptContext->SetArgDouble(index, d);
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, const PGE::String& s) {
-    prepare();
     int index = getArgumentIndex(argument);
 
     if (stringArgs.find(index) == stringArgs.end()) {
@@ -128,30 +127,18 @@ void ScriptFunction::setArgument(const PGE::String& argument, const PGE::String&
 }
 
 void ScriptFunction::setArgument(const PGE::String& argument, ScriptObject* obj) {
-    prepare();
     int index = getArgumentIndex(argument);
 
     scriptContext->SetArgObject(index, obj->getAngelScriptObject());
 }
 
 void ScriptFunction::setArgumentNative(const PGE::String& argument, void* obj) {
-    prepare();
     int index = getArgumentIndex(argument);
 
     scriptContext->SetArgObject(index, obj);
 }
 
-void ScriptFunction::exceptionCallback(asIScriptContext* context) {
-    asSMessageInfo info;
-    info.message = context->GetExceptionString();
-    int line = context->GetExceptionLineNumber(&info.row, &info.section);
-    info.col = 0; //TODO: fix?
-    info.type = asEMsgType::asMSGTYPE_ERROR;
-    scriptModule->getScriptManager()->messageCallback(&info, nullptr);
-}
-
 void ScriptFunction::execute() {
-    prepare();
     scriptContext->Execute();
 
     if (signature.returnType->isClassType()) {
@@ -167,8 +154,12 @@ void ScriptFunction::execute() {
         returnedObject = new ScriptObject(returnClass, asObj);
     }
 
-    scriptContext->Unprepare();
-    isPrepared = false;
+    if (pushedState) {
+        scriptContext->PopState();
+    } else {
+        scriptModule->getAngelScriptModule()->GetEngine()->ReturnContext(scriptContext);
+    }
+    scriptContext = nullptr;
 }
 
 int32_t ScriptFunction::getReturnInt32() const {

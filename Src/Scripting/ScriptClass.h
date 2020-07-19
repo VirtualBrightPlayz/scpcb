@@ -39,7 +39,6 @@ class ScriptClass : public Type {
                 bool isReference() const;
                 Visibility getVisibility() const;
                 bool isSerializable() const;
-                int getArrayDims() const;
         };
     private:
         asITypeInfo* angelScriptTypeInfo;
@@ -48,7 +47,10 @@ class ScriptClass : public Type {
         std::vector<ScriptFunction*> methods;
         std::vector<ScriptFunction*> constructors;
 
+        std::vector<ScriptClass*> derivedClasses;
+
         ScriptModule* scriptModule;
+        ScriptClass* parentClass;
 
     public:
         ScriptClass(ScriptModule* module, asITypeInfo* tInfo);
@@ -56,9 +58,12 @@ class ScriptClass : public Type {
         bool isClassType() const override;
 
         const std::vector<Property>& getProperties() const;
+        const std::vector<ScriptFunction*>& getConstructors() const;
         ScriptModule* getScriptModule() const;
         int getTypeId() const;
-        int getSize() const;
+
+        void registerDerivedClass(ScriptClass* clss);
+        const std::vector<ScriptClass*>& getDerivedClasses() const;
 
         void finalizeInitialization();
         ScriptObject* createNewObject();

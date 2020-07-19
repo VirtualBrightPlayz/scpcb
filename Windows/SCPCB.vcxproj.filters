@@ -199,6 +199,15 @@
     <ClInclude Include="..\Src\World\DataInterpolator.h">
       <Filter>Src\World</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.h">
+      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\CachedArgument.h">
+      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\StringFactory.h">
+      <Filter>Src\Scripting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SCPCB.rc">
@@ -357,6 +366,15 @@
     </ClCompile>
     <ClCompile Include="..\Src\World\DataInterpolator.cpp">
       <Filter>Src\World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.cpp">
+      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\CachedArgument.cpp">
+      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\StringFactory.cpp">
+      <Filter>Src\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
