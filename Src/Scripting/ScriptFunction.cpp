@@ -158,6 +158,7 @@ void ScriptFunction::execute() {
             returnClass = (ScriptClass*)signature.returnType;
             asObj = (asIScriptObject*)scriptContext->GetAddressOfReturnValue();
         }
+        if (returnedObject != nullptr) { delete returnedObject; }
         returnedObject = new ScriptObject(returnClass, asObj);
     }
 

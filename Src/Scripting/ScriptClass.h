@@ -67,7 +67,6 @@ class ScriptClass : public Type {
         const std::vector<ScriptClass*>& getDerivedClasses() const;
 
         void finalizeInitialization();
-        ScriptObject* createNewObject();
 };
 
 #endif

@@ -8,13 +8,9 @@
 ScriptObject::ScriptObject(ScriptClass* clss, asIScriptObject* asObj) {
     scriptClass = clss;
     angelScriptObject = asObj;
-
-    angelScriptObject->AddRef();
 }
 
-ScriptObject::~ScriptObject() {
-    angelScriptObject->Release();
-}
+ScriptObject::~ScriptObject() { }
 
 asIScriptObject* ScriptObject::getAngelScriptObject() const {
     return angelScriptObject;

@@ -3,6 +3,7 @@ shared abstract class Zone {
     protected array<array<Room@>> rooms;
 
     void registerRoom(const string name, const RoomType type) {
+        Debug::log("Registering "+name);
         MapGenEntry entry;
         entry.roomName = name;
         entry.roomType = type;
@@ -10,13 +11,16 @@ shared abstract class Zone {
     }
 
     Room@ createRoom(string name) {
+        Debug::log("Creating room "+name);
         Reflection<Room> reflection;
         reflection.setConstructorArgument(0, name);
         reflection.setConstructorArgument(1, this);
         Room@ result = reflection.callConstructor(name);
         if (result == null) {
+            Debug::log("Constructor found");
             return Room(name, this);
         }
+        Debug::log("Constructor not found");
         return result;
     }
 
@@ -51,6 +55,7 @@ shared abstract class Zone {
         }
         for (int x=0;x<rooms.length();x++) {
             for (int y=0;y<rooms[x].length();y++) {
+                //Debug::log("DRAW "+toString(x)+" "+toString(y));
                 if (rooms[x][y] == null) { continue; }
                 rooms[x][y].render(interpolation);
             }

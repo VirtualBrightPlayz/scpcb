@@ -109,12 +109,6 @@ void ScriptClass::finalizeInitialization() {
     }
 }
 
-ScriptObject* ScriptClass::createNewObject() {
-    //TODO: don't hardcode use of first constructor
-    constructors[0]->execute();
-    return constructors[0]->getReturnObject();
-}
-
 ScriptClass::Property::Property(const PGE::String& n, int off, int tId, bool ref, ScriptClass::Visibility vis, bool isSerial) {
     name = n; offset = off; typeId = tId; isRef = ref; visibility = vis; isSerialize = isSerial;
 }

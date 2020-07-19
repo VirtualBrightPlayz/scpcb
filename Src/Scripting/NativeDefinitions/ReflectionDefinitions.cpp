@@ -168,7 +168,9 @@ class Reflection {
                             }
                         }
                         constructors[j]->execute();
-                        return constructors[j]->getReturnObject()->getAngelScriptObject();
+                        asIScriptObject* result = constructors[j]->getReturnObject()->getAngelScriptObject();
+                        result->AddRef();
+                        return result;
                     }
 
                     break;

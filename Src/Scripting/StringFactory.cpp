@@ -105,6 +105,14 @@ static char stringCharAt(int index, const PGE::String& str) {
     return str.charAt(index);
 }
 
+static PGE::String intToString(int i) {
+    return PGE::String(i);
+}
+
+static PGE::String floatToString(float f) {
+    return PGE::String(f);
+}
+
 StringFactory::StringFactory(asIScriptEngine* engine) {
     engine->RegisterObjectType("string", sizeof(PGE::String), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK);
 
@@ -124,4 +132,7 @@ StringFactory::StringFactory(asIScriptEngine* engine) {
     engine->RegisterObjectMethod("string","uint8 opIndex(uint) const",asFUNCTION(stringCharAt), asCALL_CDECL_OBJLAST);
 
     engine->RegisterStringFactory("string", this);
+
+    engine->RegisterGlobalFunction("string toString(int i)", asFUNCTION(intToString), asCALL_CDECL);
+    engine->RegisterGlobalFunction("string toString(float f)", asFUNCTION(floatToString), asCALL_CDECL);
 }

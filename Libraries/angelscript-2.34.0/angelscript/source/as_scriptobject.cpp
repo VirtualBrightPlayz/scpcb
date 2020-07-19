@@ -589,6 +589,7 @@ int asCScriptObject::AddRef() const
 	// This may happen for example if the application calls a method on the class while it is
 	// being destroyed. The application shouldn't do this because it may cause application
 	// crashes if members that have already been destroyed are accessed accidentally.
+
 	if( hasRefCountReachedZero )
 	{
 		if( objType && objType->engine )
@@ -633,6 +634,7 @@ int asCScriptObject::Release() const
 
 	// Now do the actual releasing
 	int r = refCount.atomicDec();
+
 	if( r == 0 )
 	{
 		// Flag this object as being destroyed so the application

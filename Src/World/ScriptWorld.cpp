@@ -83,6 +83,10 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
         }
         scriptModule->build();
         modules.push_back(scriptModule);
+    }
+
+    for (int i=0;i<modules.size();i++) {
+        ScriptModule* scriptModule = modules[i];
 
         ScriptFunction* mainFunction = scriptModule->getFunctionByName("main");
         if (mainFunction != nullptr) {

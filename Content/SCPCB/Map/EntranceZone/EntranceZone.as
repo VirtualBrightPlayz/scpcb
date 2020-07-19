@@ -4,8 +4,10 @@ class EntranceZone : Zone {
     void generate() {
         rooms = array<array<Room@>>(10);
         for (int x=0;x<10;x++) {
+            Debug::log("Creating column "+toString(x));
             rooms[x] = array<Room@>(10);
             for (int y=0;y<10;y++) {
+                Debug::log("Creating element "+toString(x)+","+toString(y));
                 if (y % 2 == 0) {
                     if (x % 2 == 0) {
                         @rooms[x][y] = createRoom("hll_plain_4_a");
