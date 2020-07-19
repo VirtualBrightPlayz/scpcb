@@ -23,8 +23,9 @@ void main() {
     Debug::log("Starting up!");
 
     Reflection<Zone> reflection;
-    for (int i=0;i<reflection.getDerivedCount();i++) {
-        Debug::log(reflection.getDerivedName(i));
+    array<string>@ derivedNames = reflection.getDerivedNames();
+    for (int i=0;i<derivedNames.length();i++) {
+        Debug::log(derivedNames[i]);
     }
 
     registerCommand("mytest", "THIS COMKMAND IS VERY EPIC", Test);

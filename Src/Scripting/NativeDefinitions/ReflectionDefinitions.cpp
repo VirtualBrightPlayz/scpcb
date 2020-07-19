@@ -2,6 +2,7 @@
 #include "../ScriptClass.h"
 #include "../ScriptModule.h"
 #include "CachedArgument.h"
+#include "../AngelScriptAddons/scriptarray/scriptarray.h"
 
 class Reflection {
     private:
@@ -43,12 +44,17 @@ class Reflection {
             scriptClass = mgr->getClassByTypeId(typeId);
         }
 
-        int getDerivedCount() {
-            return scriptClass->getDerivedClasses().size();
-        }
+        CScriptArray* getDerivedNames() {
+            const std::vector<ScriptClass*>& derivedClasses = scriptClass->getDerivedClasses();
 
-        PGE::String getDerivedName(int index) {
-            return scriptClass->getDerivedClasses()[index]->getName();
+            asITypeInfo* arrayTypeInfo = scriptManager->getAngelScriptEngine()->GetTypeInfoByDecl("array<string>");
+
+            CScriptArray* newArray = CScriptArray::Create(arrayTypeInfo, derivedClasses.size());
+            for (int i=0;i<derivedClasses.size();i++) {
+                newArray->SetValue(i, &(derivedClasses[i]->getName()));
+            }
+
+            return newArray;
         }
 
         void clearArguments() {
@@ -109,20 +115,14 @@ ReflectionDefinitions::ReflectionDefinitions(ScriptManager* mgr) {
     engine->RegisterObjectType("Reflection<class T>", sizeof(Reflection), asOBJ_VALUE | asOBJ_APP_CLASS_ALLINTS | asOBJ_TEMPLATE | asGetTypeTraits<Reflection>());
     engine->RegisterObjectBehaviour("Reflection<T>", asBEHAVE_CONSTRUCT, "void f(int&in)", asFUNCTION(reflectionConstructor), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("Reflection<T>", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(reflectionDestructor), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("Reflection<T>", "int getDerivedCount()", asMETHOD(ReflectionDefinitions, getDerivedCount), asCALL_THISCALL_OBJLAST, this);
-    engine->RegisterObjectMethod("Reflection<T>", "string getDerivedName(int index)", asMETHOD(ReflectionDefinitions, getDerivedName), asCALL_THISCALL_OBJLAST, this);
+    engine->RegisterObjectMethod("Reflection<T>", "array<string>@ getDerivedNames()", asMETHOD(ReflectionDefinitions, getDerivedNames), asCALL_THISCALL_OBJLAST, this);
     engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, int val)", asMETHOD(ReflectionDefinitions, setConstructorArgInt), asCALL_THISCALL_OBJLAST, this);
     engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, ?&in val)", asMETHOD(ReflectionDefinitions, setConstructorArgObj), asCALL_THISCALL_OBJLAST, this);
 }
 
-int ReflectionDefinitions::getDerivedCount(Reflection* reflection) {
+CScriptArray* ReflectionDefinitions::getDerivedNames(Reflection* reflection) {
     reflection->initialize(scriptManager);
-    return reflection->getDerivedCount();
-}
-
-PGE::String ReflectionDefinitions::getDerivedName(int index, Reflection* reflection) {
-    reflection->initialize(scriptManager);
-    return reflection->getDerivedName(index);
+    return reflection->getDerivedNames();
 }
 
 void ReflectionDefinitions::setConstructorArgInt(int index, int val, Reflection* reflection) {

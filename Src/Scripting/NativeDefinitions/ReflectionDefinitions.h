@@ -4,6 +4,7 @@
 #include "../ScriptManager.h"
 #include "../NativeDefinition.h"
 
+class CScriptArray;
 class ScriptClass;
 class Reflection;
 class ReflectionDefinitions : NativeDefinition {
@@ -12,8 +13,7 @@ class ReflectionDefinitions : NativeDefinition {
     public:
         ReflectionDefinitions(ScriptManager* mgr);
 
-        int getDerivedCount(Reflection* reflection);
-        PGE::String getDerivedName(int index, Reflection* reflection);
+        CScriptArray* getDerivedNames(Reflection* reflection);
         void setConstructorArgInt(int index, int val, Reflection* reflection);
         void setConstructorArgObj(int index, void* val, int typeId, Reflection* reflection);
 };
