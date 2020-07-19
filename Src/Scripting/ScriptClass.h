@@ -60,6 +60,7 @@ class ScriptClass : public Type {
         const std::vector<Property>& getProperties() const;
         const std::vector<ScriptFunction*>& getConstructors() const;
         ScriptModule* getScriptModule() const;
+        asITypeInfo* getAngelScriptTypeInfo() const;
         int getTypeId() const;
 
         void registerDerivedClass(ScriptClass* clss);

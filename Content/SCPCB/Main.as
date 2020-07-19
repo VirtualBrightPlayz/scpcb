@@ -22,12 +22,6 @@ void Test(int testString) {
 void main() {
     Debug::log("Starting up!");
 
-    Reflection<Zone> reflection;
-    array<string>@ derivedNames = reflection.getDerivedNames();
-    for (int i=0;i<derivedNames.length();i++) {
-        Debug::log(derivedNames[i]);
-    }
-
     registerCommand("mytest", "THIS COMKMAND IS VERY EPIC", Test);
     registerCommand(
         "teleport",
@@ -58,6 +52,7 @@ void main() {
 
 void update(float deltaTime) {
     __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown());
+    entranceZone.update(deltaTime);
 }
 
 void render(float interpolation) {

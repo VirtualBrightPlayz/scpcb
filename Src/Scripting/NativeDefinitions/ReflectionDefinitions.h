@@ -10,12 +10,13 @@ class Reflection;
 class ReflectionDefinitions : NativeDefinition {
     private:
         ScriptManager* scriptManager;
+
+        void reflectionConstructor(asITypeInfo* typeInfo, void* memory);
+        void reflectionDestructor(void* memory);
     public:
         ReflectionDefinitions(ScriptManager* mgr);
 
         CScriptArray* getDerivedNames(Reflection* reflection);
-        void setConstructorArgInt(int index, int val, Reflection* reflection);
-        void setConstructorArgObj(int index, void* val, int typeId, Reflection* reflection);
 };
 
 #endif

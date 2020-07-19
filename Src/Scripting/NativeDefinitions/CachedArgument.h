@@ -15,6 +15,7 @@ struct CachedArgument {
         double d;
         void* ptr;
     } value;
+    PGE::String strValue;
     CachedArgument() { }
     CachedArgument(const PGE::String& nm, Type* t);
 };

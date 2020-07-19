@@ -10,12 +10,14 @@ shared abstract class Zone {
     }
 
     Room@ createRoom(string name) {
-        if (name == "hll_plain_2_a") {
-            return Room(name, this);
-            //return hll_plain_2_a(name, this);
-        } else {
+        Reflection<Room> reflection;
+        reflection.setConstructorArgument(0, name);
+        reflection.setConstructorArgument(1, this);
+        Room@ result = reflection.callConstructor(name);
+        if (result == null) {
             return Room(name, this);
         }
+        return result;
     }
 
     RM2@ getMesh(const string name) {

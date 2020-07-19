@@ -66,6 +66,10 @@ ScriptModule* ScriptClass::getScriptModule() const {
     return scriptModule;
 }
 
+asITypeInfo* ScriptClass::getAngelScriptTypeInfo() const {
+    return angelScriptTypeInfo;
+}
+
 int ScriptClass::getTypeId() const {
     return angelScriptTypeInfo->GetTypeId();
 }

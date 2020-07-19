@@ -1,4 +1,6 @@
 #include "ReflectionDefinitions.h"
+#include "../ScriptFunction.h"
+#include "../ScriptObject.h"
 #include "../ScriptClass.h"
 #include "../ScriptModule.h"
 #include "CachedArgument.h"
@@ -10,10 +12,8 @@ class Reflection {
         ScriptClass* scriptClass;
         ScriptManager* scriptManager;
         asITypeInfo* typeInfo;
-        struct ConstructorParam {
-            Type* type;
-            void* value;
-        };
+
+        std::vector<PGE::String> requiredInterfaces;
 
         int selectedDerivedIndex;
         std::vector<CachedArgument> arguments;
@@ -21,14 +21,41 @@ class Reflection {
         void allocArguments(int index) {
             arguments.resize(index+1);
         }
+
+        std::vector<ScriptClass*> getMatchingDerivedClasses() {
+            std::vector<ScriptClass*> derivedClasses = scriptClass->getDerivedClasses();
+
+            if (requiredInterfaces.size() > 0) {
+                for (int i=derivedClasses.size()-1;i>=0;i--) {
+                    int interfaceCount = 0;
+                    asITypeInfo* ti = derivedClasses[i]->getAngelScriptTypeInfo();
+                    for (int j=0;j<ti->GetInterfaceCount();j++) {
+                        asITypeInfo* itf = ti->GetInterface(j);
+                        for (int k=0;k<requiredInterfaces.size();k++) {
+                            if (requiredInterfaces[k].equalsIgnoreCase(itf->GetName())) {
+                                interfaceCount++;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (interfaceCount < requiredInterfaces.size()) {
+                        derivedClasses.erase(derivedClasses.begin()+i);
+                    }
+                }
+            }
+
+            return derivedClasses;
+        }
     public:
-        Reflection(asITypeInfo* ti) {
+        Reflection(asITypeInfo* ti, ScriptManager* mgr) {
             typeInfo = ti->GetSubType();
             PGE::String typeName = typeInfo->GetName();
             initialized = false;
             scriptClass = nullptr;
             scriptManager = nullptr;
             selectedDerivedIndex = 0;
+            initialize(mgr);
         }
 
         void initialize(ScriptManager* mgr) {
@@ -38,14 +65,21 @@ class Reflection {
 
             scriptManager = mgr;
 
-            PGE::String typeName = typeInfo->GetName();
             int typeId = typeInfo->GetTypeId();
 
             scriptClass = mgr->getClassByTypeId(typeId);
         }
 
+        void requireInterface(const PGE::String& interfaceName) {
+            requiredInterfaces.push_back(interfaceName);
+        }
+
+        void clearRequiredInterfaces() {
+            requiredInterfaces.clear();
+        }
+
         CScriptArray* getDerivedNames() {
-            const std::vector<ScriptClass*>& derivedClasses = scriptClass->getDerivedClasses();
+            std::vector<ScriptClass*> derivedClasses = getMatchingDerivedClasses();
 
             asITypeInfo* arrayTypeInfo = scriptManager->getAngelScriptEngine()->GetTypeInfoByDecl("array<string>");
 
@@ -85,26 +119,72 @@ class Reflection {
             arguments[index].value.d = val;
         }
 
+        void setConstructorArgument(int index, const PGE::String& val) {
+            allocArguments(index);
+            arguments[index].type = Type::String;
+            arguments[index].strValue = val;
+        }
+
         void setConstructorArgument(int index, void* val, int typeId) {
-            ScriptClass* type = scriptManager->getClassByTypeId(typeId);
+            RefType* type = scriptManager->getClassByTypeId(typeId)->asRef();
             
             allocArguments(index);
             arguments[index].type = type;
             arguments[index].value.ptr = val;
         }
 
-        void* callConstructor() {
-            //TODO: implement
+        void* callConstructor(const PGE::String& derivedClassName) {
+            std::vector<ScriptClass*> derivedClasses = getMatchingDerivedClasses();
+            for (int i=0;i<derivedClasses.size();i++) {
+                if (derivedClasses[i]->getName().equals(derivedClassName)) {
+                    const std::vector<ScriptFunction*>& constructors = derivedClasses[i]->getConstructors();
+
+                    for (int j=0;j<constructors.size();j++) {
+                        const ScriptFunction::Signature& signature = constructors[j]->getSignature();
+                        if (signature.arguments.size() != arguments.size()) { continue; }
+                        bool signatureMatches = true;
+                        for (int k=0;k<arguments.size();k++) {
+                            if (signature.arguments[k].type != arguments[k].type) {
+                                signatureMatches = false;
+                                break;
+                            }
+                        }
+                        if (!signatureMatches) { continue; }
+
+                        constructors[j]->prepare();
+                        for (int k=0;k<arguments.size();k++) {
+                            if (arguments[k].type == Type::Int32) {
+                                constructors[j]->setArgument(signature.arguments[k].name, arguments[k].value.i32);
+                            } else if (arguments[k].type == Type::UInt32) {
+                                constructors[j]->setArgument(signature.arguments[k].name, arguments[k].value.u32);
+                            } else if (arguments[k].type == Type::Float) {
+                                constructors[j]->setArgument(signature.arguments[k].name, arguments[k].value.f);
+                            } else if (arguments[k].type == Type::Double) {
+                                constructors[j]->setArgument(signature.arguments[k].name, arguments[k].value.d);
+                            } else if (arguments[k].type == Type::String) {
+                                constructors[j]->setArgument(signature.arguments[k].name, arguments[k].strValue);
+                            } else { 
+                                constructors[j]->setArgumentNative(signature.arguments[k].name, arguments[k].value.ptr);
+                            }
+                        }
+                        constructors[j]->execute();
+                        return constructors[j]->getReturnObject()->getAngelScriptObject();
+                    }
+
+                    break;
+                }
+            }
+
             return nullptr;
         }
 };
 
 
-void reflectionConstructor(asITypeInfo* typeInfo, void* memory) {
-    new(memory) Reflection(typeInfo);
+void ReflectionDefinitions::reflectionConstructor(asITypeInfo* typeInfo, void* memory) {
+    new(memory) Reflection(typeInfo, scriptManager);
 }
 
-void reflectionDestructor(void* memory) {
+void ReflectionDefinitions::reflectionDestructor(void* memory) {
     ((Reflection*)memory)->~Reflection();
 }
 
@@ -113,24 +193,21 @@ ReflectionDefinitions::ReflectionDefinitions(ScriptManager* mgr) {
     scriptManager = mgr;
 
     engine->RegisterObjectType("Reflection<class T>", sizeof(Reflection), asOBJ_VALUE | asOBJ_APP_CLASS_ALLINTS | asOBJ_TEMPLATE | asGetTypeTraits<Reflection>());
-    engine->RegisterObjectBehaviour("Reflection<T>", asBEHAVE_CONSTRUCT, "void f(int&in)", asFUNCTION(reflectionConstructor), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectBehaviour("Reflection<T>", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(reflectionDestructor), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("Reflection<T>", "array<string>@ getDerivedNames()", asMETHOD(ReflectionDefinitions, getDerivedNames), asCALL_THISCALL_OBJLAST, this);
-    engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, int val)", asMETHOD(ReflectionDefinitions, setConstructorArgInt), asCALL_THISCALL_OBJLAST, this);
-    engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, ?&in val)", asMETHOD(ReflectionDefinitions, setConstructorArgObj), asCALL_THISCALL_OBJLAST, this);
+    engine->RegisterObjectBehaviour("Reflection<T>", asBEHAVE_CONSTRUCT, "void f(int&in)", asMETHOD(ReflectionDefinitions, reflectionConstructor), asCALL_THISCALL_OBJLAST, this);
+    engine->RegisterObjectBehaviour("Reflection<T>", asBEHAVE_DESTRUCT, "void f()", asMETHOD(ReflectionDefinitions, reflectionDestructor), asCALL_THISCALL_OBJLAST, this);
+    engine->RegisterObjectMethod("Reflection<T>", "void requireInterface(const string&in interfaceName)", asMETHOD(Reflection, requireInterface), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Reflection<T>", "void clearRequiredInterfaces()", asMETHOD(Reflection, clearRequiredInterfaces), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Reflection<T>", "array<string>@ getDerivedNames()", asMETHOD(Reflection, getDerivedNames), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, int val)", asMETHODPR(Reflection, setConstructorArgument, (int, int), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, uint val)", asMETHODPR(Reflection, setConstructorArgument, (int, unsigned int), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, float val)", asMETHODPR(Reflection, setConstructorArgument, (int, float), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, double val)", asMETHODPR(Reflection, setConstructorArgument, (int, double), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, const string&in val)", asMETHODPR(Reflection, setConstructorArgument, (int, const PGE::String&), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, ?&in val)", asMETHODPR(Reflection, setConstructorArgument, (int, void*, int), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Reflection<T>", "T@ callConstructor(const string&in derivedClassName)", asMETHOD(Reflection, callConstructor), asCALL_THISCALL);
 }
 
 CScriptArray* ReflectionDefinitions::getDerivedNames(Reflection* reflection) {
     reflection->initialize(scriptManager);
     return reflection->getDerivedNames();
-}
-
-void ReflectionDefinitions::setConstructorArgInt(int index, int val, Reflection* reflection) {
-    reflection->initialize(scriptManager);
-    reflection->setConstructorArgument(index, val);
-}
-
-void ReflectionDefinitions::setConstructorArgObj(int index, void* val, int typeId, Reflection* reflection) {
-    reflection->initialize(scriptManager);
-    reflection->setConstructorArgument(index, val, typeId);
 }

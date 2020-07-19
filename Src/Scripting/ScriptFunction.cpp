@@ -61,13 +61,20 @@ ScriptFunction::ScriptFunction(ScriptModule* module, asIScriptFunction* asScript
         asFuncWithSignature->GetParam(i, &typeId, &flags, &name, &defaultArg);
 
         Type* type = scriptModule->typeFromTypeId(typeId);
+        if (type == nullptr) {
+            type = scriptModule->getScriptManager()->getClassByTypeId(typeId);
+        }
 
         if (name == nullptr) { name = ""; }
 
         signature.arguments.push_back(Signature::Argument(type, name));
     }
 
-    signature.returnType = scriptModule->typeFromTypeId(scriptFunction->GetReturnTypeId());
+    int retTypeId = scriptFunction->GetReturnTypeId();
+    signature.returnType = scriptModule->typeFromTypeId(retTypeId);
+    if (signature.returnType == nullptr) {
+        signature.returnType = scriptModule->getScriptManager()->getClassByTypeId(retTypeId);
+    }
 }
 
 ScriptFunction::~ScriptFunction() {
