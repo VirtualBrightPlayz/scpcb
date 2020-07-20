@@ -20,16 +20,19 @@ class CollisionMeshCollection {
                 PGE::AABBox getBBox() const;
                 int getId() const;
 
+                PGE::Matrix4x4f matrix;
+                void recalculateBBox();
+
                 Instance() {};
             private:
                 CollisionMeshCollection* collection;
                 CollisionMesh* mesh;
-                PGE::Matrix4x4f matrix;
                 PGE::AABBox bbox;
                 int identifier;
         };
 
-        int addInstance(CollisionMesh* mesh, PGE::Matrix4x4f matrix);
+        int addInstance(CollisionMesh* mesh, const PGE::Matrix4x4f& matrix);
+        void updateInstance(int instance, const PGE::Matrix4x4f& matrix);
         void removeInstance(int instance);
 
         Collision checkCollision(PGE::Line3f line,float height,float radius) const;

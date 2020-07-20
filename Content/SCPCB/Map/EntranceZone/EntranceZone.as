@@ -1,11 +1,16 @@
 external shared class Zone;
 
 class EntranceZone : Zone {
+    //TODO: refactor
+    array<array<array<Collision::Instance>>> collisionInstances;
+
     void generate() {
         rooms = array<array<Room@>>(10);
+        collisionInstances = array<array<array<Collision::Instance>>>(10);
         for (int x=0;x<10;x++) {
             Debug::log("Creating column "+toString(x));
             rooms[x] = array<Room@>(10);
+            collisionInstances[x] = array<array<Collision::Instance>>(10);
             for (int y=0;y<10;y++) {
                 Debug::log("Creating element "+toString(x)+","+toString(y));
                 if (y % 2 == 0) {
@@ -27,10 +32,23 @@ class EntranceZone : Zone {
                     if (rooms[x][y].rotation == 0) { rooms[x][y].rotation = 0; }
 
                     RM2@ mesh = rooms[x][y].mesh;
+                    collisionInstances[x][y] = array<Collision::Instance>(mesh.collisionMeshCount());
                     Matrix4x4f worldMatrix = rooms[x][y].worldMatrix;
                     for (int i=0;i<mesh.collisionMeshCount();i++) {
-                        testCollCollection.addInstance(mesh.getCollisionMesh(i), worldMatrix);
+                        collisionInstances[x][y][i] = testCollCollection.addInstance(mesh.getCollisionMesh(i), worldMatrix);
                     }
+                }
+            }
+        }
+    }
+
+    void update(float deltaTime) {
+        Zone::update(deltaTime);
+        for (int x=0;x<10;x++) {
+            for (int y=0;y<10;y++) {
+                for (int i=0;i<collisionInstances[x][y].length();i++) {
+                    Matrix4x4f worldMatrix = rooms[x][y].worldMatrix;
+                    testCollCollection.updateInstance(collisionInstances[x][y][i], worldMatrix);
                 }
             }
         }
