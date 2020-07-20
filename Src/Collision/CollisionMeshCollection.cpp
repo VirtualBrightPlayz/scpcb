@@ -9,6 +9,10 @@ CollisionMeshCollection::Instance::Instance(CollisionMeshCollection* coll,Collis
 
     identifier = id;
 
+    recalculateBBox();
+}
+
+void CollisionMeshCollection::Instance::recalculateBBox() {
     const std::vector<Vector3f>& verts = mesh->getVertices();
 
     bbox = AABBox(matrix.transform(verts[0]), matrix.transform(verts[1]));
@@ -38,12 +42,19 @@ int CollisionMeshCollection::Instance::getId() const {
     return identifier;
 }
 
-int CollisionMeshCollection::addInstance(CollisionMesh* mesh, Matrix4x4f matrix) {
+int CollisionMeshCollection::addInstance(CollisionMesh* mesh, const Matrix4x4f& matrix) {
     lastInstanceId++;
     Instance instance(this, mesh, matrix, lastInstanceId);
     instances.emplace(lastInstanceId, instance);
 
     return instance.getId();
+}
+
+void CollisionMeshCollection::updateInstance(int instance, const Matrix4x4f& matrix) {
+    if (instances.find(instance) != instances.end()) {
+        instances[instance].matrix = matrix;
+        instances[instance].recalculateBBox();
+    }
 }
 
 void CollisionMeshCollection::removeInstance(int instance) {
