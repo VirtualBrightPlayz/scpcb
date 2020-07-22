@@ -27,6 +27,7 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     leftShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LCTRL);
     rightShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RCTRL);
 #endif
+    keyA = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::A);
     keyC = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::C);
     keyX = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::X);
     keyV = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::V);
@@ -49,6 +50,7 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     io->trackInput(enter);
     io->trackInput(leftShortcutKey);
     io->trackInput(rightShortcutKey);
+    io->trackInput(keyA);
     io->trackInput(keyC);
     io->trackInput(keyX);
     io->trackInput(keyV);
@@ -73,6 +75,7 @@ KeyBinds::~KeyBinds() {
     io->untrackInput(enter);
     io->untrackInput(leftShortcutKey);
     io->untrackInput(rightShortcutKey);
+    io->untrackInput(keyA);
     io->untrackInput(keyC);
     io->untrackInput(keyX);
     io->untrackInput(keyV);
@@ -85,7 +88,7 @@ KeyBinds::~KeyBinds() {
     delete leftArrow; delete rightArrow; delete upArrow; delete downArrow; delete leftShift; delete rightShift;
     delete backspace; delete del;
     delete leftShortcutKey; delete rightShortcutKey;
-    delete keyC; delete keyX; delete keyV; delete keyZ;
+    delete keyA; delete keyC; delete keyX; delete keyV; delete keyZ;
 #ifndef __APPLE__
     delete keyY;
 #endif
@@ -110,27 +113,30 @@ bool KeyBinds::anyShortcutDown() const {
 }
 
 bool KeyBinds::copyIsHit() const {
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && keyC->isHit();
+    return keyC->isHit() && anyShortcutDown();
 }
 bool KeyBinds::cutIsHit() const {
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && keyX->isHit();
+    return keyX->isHit() && anyShortcutDown();
 }
 bool KeyBinds::pasteIsHit() const {
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && keyV->isHit();
+    return keyV->isHit() && anyShortcutDown();
 }
 bool KeyBinds::undoIsHit() const {
 #ifdef __APPLE__
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && !anyShiftDown() && keyZ->isHit();
+    return keyZ->isHit() && anyShortcutDown() && !anyShiftDown();
 #else
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && keyZ->isHit();
+    return keyZ->isHit() && anyShortcutDown();
 #endif
 }
 bool KeyBinds::redoIsHit() const {
 #ifdef __APPLE__
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && anyShiftDown() && keyZ->isHit();
+    return keyZ->isHit() && anyShortcutDown() && anyShiftDown();
 #else
-    return (leftShortcutKey->isDown() || rightShortcutKey->isDown()) && keyY->isHit();
+    return keyY->isHit() && anyShortcutDown();
 #endif
+}
+bool KeyBinds::selectAllIsHit() const {
+    return keyA->isHit() && anyShortcutDown();
 }
 
 void KeyBinds::update() {

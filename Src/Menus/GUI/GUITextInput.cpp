@@ -507,6 +507,9 @@ void GUITextInput::updateShortcutActions() {
 //        caretPosition = is.caretPosition;
 //        selectionStartPosition = is.selectionStartPosition;
 //        selectionEndPosition = is.selectionEndPosition;
+    } else if (keyBinds->selectAllIsHit()) {
+        selectionStartPosition = 0;
+        selectionEndPosition = text.size();
     }
 }
 
