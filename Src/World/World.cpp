@@ -35,7 +35,7 @@ World::World() {
     txtMngt = new TxtManager(config->getLangCode());
 
     FT_Init_FreeType(&ftLibrary);
-    largeFont = new Font(ftLibrary, gfxRes, config, PGE::FilePath::fromStr("SCPCB/GFX/Font/cour.ttf"), 20);
+    largeFont = new Font(ftLibrary, gfxRes, config, PGE::FilePath::fromStr("SCPCB/GFX/Font/Inconsolata-Regular.ttf"), 20);
     spriteMesh = Sprite::createSpriteMesh(graphics);
     uiMesh = new UIMesh(gfxRes);
     keyBinds = new KeyBinds(io);
