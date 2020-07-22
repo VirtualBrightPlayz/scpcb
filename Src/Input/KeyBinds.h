@@ -60,6 +60,7 @@ class KeyBinds {
         PGE::KeyboardInput* rightShortcutKey;
         // Checks if any of the shortcut keys are held down.
         bool anyShortcutDown() const;
+        PGE::KeyboardInput* keyA;
         PGE::KeyboardInput* keyC;
         PGE::KeyboardInput* keyX;
         PGE::KeyboardInput* keyV;
@@ -73,6 +74,7 @@ class KeyBinds {
         bool pasteIsHit() const;
         bool undoIsHit() const;
         bool redoIsHit() const;
+        bool selectAllIsHit() const;
 
         void bindInput(Input input, PGE::MouseInput::BUTTON key);
         void bindInput(Input input, PGE::KeyboardInput::KEYCODE key);

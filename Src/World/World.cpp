@@ -35,7 +35,7 @@ World::World() {
     txtMngt = new TxtManager(config->getLangCode());
 
     FT_Init_FreeType(&ftLibrary);
-    largeFont = new Font(ftLibrary, gfxRes, config, PGE::FilePath::fromStr("SCPCB/GFX/Font/cour.ttf"), 20);
+    largeFont = new Font(ftLibrary, gfxRes, config, PGE::FilePath::fromStr("SCPCB/GFX/Font/Inconsolata-Regular.ttf"), 20);
     spriteMesh = Sprite::createSpriteMesh(graphics);
     uiMesh = new UIMesh(gfxRes);
     keyBinds = new KeyBinds(io);
@@ -202,10 +202,14 @@ void World::runTick(float timeStep) {
         }
     }
 
+    if (currMenu == nullptr && !graphics->getWindow()->isFocused()) {
+        activateMenu(pauseMenu);
+    }
+
     // If a menu was closed this tick then reset the mouse position.
     if (menuWasOpened && currMenu == nullptr) {
-        io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
         io->setMouseVisibility(false);
+        io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
     } else if (!menuWasOpened && currMenu != nullptr) {
         io->setMouseVisibility(true);
     }

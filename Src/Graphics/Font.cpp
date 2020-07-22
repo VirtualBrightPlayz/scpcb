@@ -227,8 +227,8 @@ float Font::stringWidth(const PGE::String& text, PGE::Vector2f scale) {
     return width * scale.x;
 }
 
-float Font::getHeight() const {
-    return glyphData.find(L'T')->second.srcRect.height() * (float)atlasDims;
+float Font::getHeight(PGE::Vector2f scale) const {
+    return glyphData.find(L'T')->second.srcRect.height() * (float)atlasDims * scale.y;
 }
 
 void Font::centerTextCoords(float& txtX, float& txtY, const PGE::String& text, float x, float y, float w, float h, PGE::Vector2f scale) {
