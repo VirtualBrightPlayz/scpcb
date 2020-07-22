@@ -202,10 +202,14 @@ void World::runTick(float timeStep) {
         }
     }
 
+    if (currMenu == nullptr && !graphics->getWindow()->isFocused()) {
+        activateMenu(pauseMenu);
+    }
+
     // If a menu was closed this tick then reset the mouse position.
     if (menuWasOpened && currMenu == nullptr) {
-        io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
         io->setMouseVisibility(false);
+        io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
     } else if (!menuWasOpened && currMenu != nullptr) {
         io->setMouseVisibility(true);
     }
