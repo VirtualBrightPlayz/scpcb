@@ -24,7 +24,7 @@ class KeyBinds {
             public:
                 PGE::UserInput* input;
                 PGE::MouseInput::BUTTON mouseButton;
-                PGE::KeyboardInput::SCANCODE scancode;
+                PGE::KeyboardInput::KEYCODE keyCode;
                 PGE::ControllerInput::BUTTON controllerButton;
         };
 
@@ -75,10 +75,10 @@ class KeyBinds {
         bool redoIsHit() const;
 
         void bindInput(Input input, PGE::MouseInput::BUTTON key);
-        void bindInput(Input input, PGE::KeyboardInput::SCANCODE key);
+        void bindInput(Input input, PGE::KeyboardInput::KEYCODE key);
         void bindInput(Input input, PGE::ControllerInput::BUTTON key);
         void unbindInput(Input input, PGE::MouseInput::BUTTON key);
-        void unbindInput(Input input, PGE::KeyboardInput::SCANCODE key);
+        void unbindInput(Input input, PGE::KeyboardInput::KEYCODE key);
         void unbindInput(Input input, PGE::ControllerInput::BUTTON key);
 
         // Iterate through the keybinds and find out which ones fired this tick.

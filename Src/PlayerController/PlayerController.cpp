@@ -66,8 +66,11 @@ void PlayerController::updateMovement(float yaw, float pitch, Input input) {
             targetDir = targetDir.add(Vector2f(cosAngle,-sinAngle));
         }
         if (targetDir.lengthSquared() < 0.01f) {
+            //TODO: remove
             position = position.add(Vector3f(0.f,1.f,0.f));
             fallSpeed = 0.f;
+            // -------
+
             stand(); //inputs cancel each other out: we're standing still
         } else {
             targetDir = targetDir.normalize();

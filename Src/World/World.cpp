@@ -87,8 +87,8 @@ World::~World() {
 }
 
 void World::applyConfig(const Config* config) {
-    std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>> keyboardMappings = config->getKeyboardBindings();
-    std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>>::const_iterator it;
+    std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> keyboardMappings = config->getKeyboardBindings();
+    std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>>::const_iterator it;
     for (it = keyboardMappings.begin(); it != keyboardMappings.end(); it++) {
         for (int i = 0; i < (int)it->second.size(); i++) {
             keyBinds->bindInput(it->first, it->second[i]);

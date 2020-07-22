@@ -17,16 +17,16 @@ int defaultHeight = 720;
 bool defaultVsync = false;
 
 void Config::genDefaultKeyboardBindings() {
-    kbBinds[Input::Forward] = { PGE::KeyboardInput::SCANCODE::W };
-    kbBinds[Input::Backward] = { PGE::KeyboardInput::SCANCODE::S };
-    kbBinds[Input::Left] = { PGE::KeyboardInput::SCANCODE::A };
-    kbBinds[Input::Right] = { PGE::KeyboardInput::SCANCODE::D };
-    kbBinds[Input::Sprint] = { PGE::KeyboardInput::SCANCODE::LSHIFT };
-    kbBinds[Input::Crouch] = { PGE::KeyboardInput::SCANCODE::LCTRL };
-    kbBinds[Input::Blink] = { PGE::KeyboardInput::SCANCODE::SPACE };
-    kbBinds[Input::Interact] = { PGE::KeyboardInput::SCANCODE::E };
-    kbBinds[Input::Inventory] = { PGE::KeyboardInput::SCANCODE::TAB };
-    kbBinds[Input::ToggleConsole] = { PGE::KeyboardInput::SCANCODE::F3 };
+    kbBinds[Input::Forward] = { PGE::KeyboardInput::KEYCODE::W };
+    kbBinds[Input::Backward] = { PGE::KeyboardInput::KEYCODE::S };
+    kbBinds[Input::Left] = { PGE::KeyboardInput::KEYCODE::A };
+    kbBinds[Input::Right] = { PGE::KeyboardInput::KEYCODE::D };
+    kbBinds[Input::Sprint] = { PGE::KeyboardInput::KEYCODE::LSHIFT };
+    kbBinds[Input::Crouch] = { PGE::KeyboardInput::KEYCODE::LCTRL };
+    kbBinds[Input::Blink] = { PGE::KeyboardInput::KEYCODE::SPACE };
+    kbBinds[Input::Interact] = { PGE::KeyboardInput::KEYCODE::E };
+    kbBinds[Input::Inventory] = { PGE::KeyboardInput::KEYCODE::TAB };
+    kbBinds[Input::ToggleConsole] = { PGE::KeyboardInput::KEYCODE::F3 };
 }
 
 PGE::String defaultModules = "RootScript|SCPCB";
@@ -124,11 +124,11 @@ void Config::loadKeyboardInput(Input input) {
         return;
     }
 
-    kbBinds[input] = std::vector<PGE::KeyboardInput::SCANCODE>();
+    kbBinds[input] = std::vector<PGE::KeyboardInput::KEYCODE>();
 
     std::vector<PGE::String> bindVect = bindings.split(",", true);
     for (int i = 0; i < (int)bindVect.size(); i++) {
-        kbBinds[input].push_back((PGE::KeyboardInput::SCANCODE)bindVect[i].toInt());
+        kbBinds[input].push_back((PGE::KeyboardInput::KEYCODE)bindVect[i].toInt());
     }
 }
 
@@ -141,7 +141,7 @@ void Config::saveFile() const {
     
     putINIValue(filename, secMod, "enabledmods", PGE::String::join(enabledMods, "|"));
 
-    std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>>::const_iterator it;
+    std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>>::const_iterator it;
     for (it = kbBinds.begin(); it != kbBinds.end(); it++) {
         PGE::String bindName = getBindingName(it->first) + "_keyboard";
 
@@ -184,7 +184,7 @@ float Config::getAspectRatio() const {
     return aspectRatio;
 }
 
-std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>> Config::getKeyboardBindings() const {
+std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> Config::getKeyboardBindings() const {
     return kbBinds;
 }
 

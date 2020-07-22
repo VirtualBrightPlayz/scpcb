@@ -9,30 +9,30 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
     mouse1 = new PGE::MouseInput(PGE::MouseInput::BUTTON::LEFT);
     mouse2 = new PGE::MouseInput(PGE::MouseInput::BUTTON::RIGHT);
 
-    escape = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::ESCAPE);
-    leftArrow = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LEFT);
-    rightArrow = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RIGHT);
-    upArrow = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::UP);
-    downArrow = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::DOWN);
-    leftShift = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LSHIFT);
-    rightShift = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RSHIFT);
-    backspace = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::BACKSPACE);
-    del = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::DELETE);
-    enter = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RETURN);
+    escape = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::ESCAPE);
+    leftArrow = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::LEFT);
+    rightArrow = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::RIGHT);
+    upArrow = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::UP);
+    downArrow = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::DOWN);
+    leftShift = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::LSHIFT);
+    rightShift = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::RSHIFT);
+    backspace = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::BACKSPACE);
+    del = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::DELETE);
+    enter = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::RETURN);
 
 #ifdef __APPLE__
-    leftShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LGUI);
-    rightShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RGUI);
+    leftShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::LGUI);
+    rightShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::RGUI);
 #else
-    leftShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::LCTRL);
-    rightShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::RCTRL);
+    leftShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::LCTRL);
+    rightShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::RCTRL);
 #endif
-    keyC = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::C);
-    keyX = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::X);
-    keyV = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::V);
-    keyZ = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::Z);
+    keyC = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::C);
+    keyX = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::X);
+    keyV = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::V);
+    keyZ = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::Z);
 #ifndef __APPLE__
-    keyY = new PGE::KeyboardInput(PGE::KeyboardInput::SCANCODE::Y);
+    keyY = new PGE::KeyboardInput(PGE::KeyboardInput::KEYCODE::Y);
 #endif
 
     io->trackInput(mouse1);
@@ -184,10 +184,10 @@ void KeyBinds::bindInput(Input input, PGE::MouseInput::BUTTON key) {
     bindInput(input, wrapKey);
 }
 
-void KeyBinds::bindInput(Input input, PGE::KeyboardInput::SCANCODE key) {
+void KeyBinds::bindInput(Input input, PGE::KeyboardInput::KEYCODE key) {
     UserInput wrapKey;
     wrapKey.input = new PGE::KeyboardInput(key);
-    wrapKey.scancode = key;
+    wrapKey.keyCode = key;
 
     bindInput(input, wrapKey);
 }
@@ -214,11 +214,11 @@ void KeyBinds::unbindInput(Input input, PGE::MouseInput::BUTTON key) {
     }
 }
 
-void KeyBinds::unbindInput(Input input, PGE::KeyboardInput::SCANCODE key) {
+void KeyBinds::unbindInput(Input input, PGE::KeyboardInput::KEYCODE key) {
     std::map<Input, std::vector<UserInput>>::iterator it = bindings.find(input);
     if (it != bindings.end()) {
         for (int i = 0; i < (int)it->second.size(); i++) {
-            if (it->second[i].input->getDevice() == PGE::UserInput::DEVICE::KEYBOARD && it->second[i].scancode == key) {
+            if (it->second[i].input->getDevice() == PGE::UserInput::DEVICE::KEYBOARD && it->second[i].keyCode == key) {
                 io->untrackInput(it->second[i].input);
                 delete it->second[i].input;
                 it->second.erase(it->second.begin() + i);

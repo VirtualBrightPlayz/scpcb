@@ -35,7 +35,7 @@ class Config {
 
         bool vsync;
 
-        std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>> kbBinds;
+        std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> kbBinds;
         void loadKeyboardInput(Input input);
         std::map<Input, std::vector<PGE::MouseInput::BUTTON>> msBinds;
 
@@ -65,7 +65,7 @@ class Config {
 
         float isVsync() const;
 
-        std::map<Input, std::vector<PGE::KeyboardInput::SCANCODE>> getKeyboardBindings() const;
+        std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> getKeyboardBindings() const;
 
         const std::vector<PGE::String>& getEnabledMods() const;
 };

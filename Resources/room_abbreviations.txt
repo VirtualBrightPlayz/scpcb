@@ -1,0 +1,11 @@
+; ========= ROOM ABBREVIATIONS =========
+; ======================================
+; HLL  = HALLWAY
+; OFF  = OFFICE
+; STRG = STORAGE
+; CONT = CONTAINMENT CHAMBER
+; TNNL = TNNL
+; SRVR = SERVERS
+; LCK  = LOCKROOM
+; TSL  = TESLA
+; CHCK = CHECKPOINT
