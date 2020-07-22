@@ -45,14 +45,19 @@ private:
     /// </summary>
     bool leftAlignedText;
 
+    // Y coordinate of the text in UI space, used for caret and selection.
+    const float textY;
     // Current position of the caret relative to the text.
     int caretPosition;
-    // X coordinate of the caret.
+    // X coordinate of the caret in UI space.
     float caretX;
     // Current position of the start point of a selection.
     int selectionStartPosition;
     // Current position of the end point of a selection.
     int selectionEndPosition;
+    // Start and end coordinates of the selection in UI space.
+    float selectionStartX;
+    float selectionEndX;
     bool anyTextSelected() const;
 
     int getFirstLeftWordBoundary(int startingPosition) const;
@@ -68,7 +73,7 @@ private:
     int getCaretPosition(float mouseX);
     void setCaretPositionFromMouse(float mouseX);
     // Update caret's X position.
-    void updateCaretX();
+    void updateCoordinates();
     // Updates the display text and stores momentos.
     void updateText(const PGE::String& newText);
     void deleteSelectedText();

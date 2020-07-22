@@ -7,7 +7,7 @@
 GUITextInput* GUITextInput::subscriber = nullptr;
 
 GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, bool alignLeft, const PGE::String& defaultText, int limit, const PGE::String& pattern, Alignment alignment)
-: GUIComponent(um, kb, con, x, y, width, height, alignment) {
+: GUIComponent(um, kb, con, x, y, width, height, alignment), textY(getY() + height / 2.f - 1.f) {
     menuwhite = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menuwhite.jpg");
     menublack = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menublack.jpg");
     hoverColor = PGE::Color(70, 70, 150, 200);
@@ -138,7 +138,7 @@ void GUITextInput::setCaretPositionFromMouse(float mouseX) {
     selectionEndPosition = caretPosition;
 }
 
-void GUITextInput::updateCaretX() {
+void GUITextInput::updateCoordinates() {
     float textX = 0.f; float textY = 0.f;
     fillTextCoordinates(textX, textY);
 
@@ -146,6 +146,13 @@ void GUITextInput::updateCaretX() {
     if (!text.isEmpty()) {
         caretX += font->stringWidth(text.substr(0, caretPosition), txtScale);
     }
+
+    selectionStartX = textX;
+    if (!text.isEmpty()) {
+        selectionStartX += font->stringWidth(text.substr(0, selectionStartPosition), txtScale);
+    }
+
+    selectionEndX = selectionStartX + font->stringWidth(text.substr(selectionStartPosition, selectionEndPosition - selectionStartPosition), txtScale);
 }
 
 void GUITextInput::updateText(const PGE::String& newText) {
@@ -204,7 +211,7 @@ void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
                 // Move caret to mouse position.
                 setCaretPositionFromMouse(mousePos.x);
                 draggable = true;
-                updateCaretX();
+                updateCoordinates();
             }
         }
     } else {
@@ -214,7 +221,7 @@ void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
         updateMouseActions(mousePos);
         updateShortcutActions();
 
-        updateCaretX();
+        updateCoordinates(); // TODO: Optimize this, it doesn't need to run every interval, especially now that it's a tad heavier.
 
 #if DEBUG
         // Debug printing highlighted text.
@@ -511,6 +518,20 @@ void GUITextInput::renderInternal() {
     uiMesh->setTextured(menublack, true);
     uiMesh->addRect(foreground);
 
+    // Render caret.
+    if (selectionStartPosition == selectionEndPosition) {
+        if (subscriber == this) {
+            uiMesh->setTextureless();
+            uiMesh->addRect(PGE::Rectanglef(caretX, textY - 0.1f, caretX + 0.3f, textY + font->getHeight(txtScale) + 0.2f));
+        }
+    // Render selection backdrop.
+    } else {
+        uiMesh->setTextureless();
+        uiMesh->setColor(subscriber == this ? PGE::Color(0.75f, 0.75f, 0.75f, 1.f) : PGE::Color(0.25f, 0.25f, 0.25f, 1.f)); // This is not necessary if deselection automatically resets the selection (which is currently the case as of commit #badafdb4).
+        uiMesh->addRect(PGE::Rectanglef(selectionStartX, textY - 0.1f, selectionEndX, textY + font->getHeight(txtScale) + 0.2f));
+        uiMesh->setColor(PGE::Color::White);
+    }
+
     if (!text.isEmpty()) {
         // Render anything buffered so the text doesn't get overlapped.
         uiMesh->endRender();
@@ -521,15 +542,5 @@ void GUITextInput::renderInternal() {
         fillTextCoordinates(txtX, txtY);
 
         font->draw(text, PGE::Vector2f(txtX, txtY), txtScale);
-    }
-
-    // TODO: Hide caret when any text is highlighted.
-    // Render caret.
-    if (subscriber == this) {
-        float middleOffset = 1.f;
-        float caretY = getY() + height / 2.f - middleOffset;
-
-        uiMesh->setTextureless();
-        uiMesh->addRect(PGE::Rectanglef(caretX, caretY, caretX + 0.3f, caretY + 2.5f));
     }
 }
