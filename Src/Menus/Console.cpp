@@ -48,7 +48,7 @@ void Console::update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mo
     bool windowChanged = false;
     if (keyBinds->enter->isHit() && !input->getText().equals("")) {
         executeCommand(input->getText());
-        input->setText("");
+        input->clearTextAndMementos();
 
         windowChanged = true;
     }

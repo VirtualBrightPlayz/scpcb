@@ -3,20 +3,23 @@
 
 #include "GUITextInput.h"
 #include "../../Utils/MathUtil.h"
+#include "../../Save/Config.h"
 
 GUITextInput* GUITextInput::subscriber = nullptr;
 
-GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, bool alignLeft, const PGE::String& defaultText, int limit, const PGE::String& pattern, Alignment alignment)
+GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, bool alignLeft, int mementoMaxMemSize, const PGE::String& defaultText, int limit, const PGE::String& pattern, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment), textY(getY() + height / 2.f - 1.f) {
     menuwhite = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menuwhite.jpg");
     menublack = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menublack.jpg");
     hoverColor = PGE::Color(70, 70, 150, 200);
     borderThickness = 0.33f;
 
+    mementoManager = new MementoManager(mementoMaxMemSize);
+
     font = fnt;
     io = inIo;
-    text = defaultText;
-    txtScale = PGE::Vector2f(100.f / 720.f);
+    //text = defaultText; TODO: Implement correctly.
+    txtScale = PGE::Vector2f(100.f / con->getHeight());
 
     if (!pattern.isEmpty()) {
         patternMatching = true;
@@ -40,10 +43,20 @@ std::regex leftBoundWord("(\\b)\\w+$|\\w(\\b)\\W+$");
 std::regex rightBoundWord("^\\w+(\\b)|^\\W+(\\b)\\w");
 
 void GUITextInput::setText(const PGE::String& txt) {
+    mementoManager->push(Memento(0, text, false, true));
+    mementoManager->push(Memento(0, txt, true, true));
     text = txt;
     caretPosition = text.size();
     selectionStartPosition = caretPosition;
     selectionEndPosition = caretPosition;
+}
+
+void GUITextInput::clearTextAndMementos() {
+    text = "";
+    caretPosition = 0;
+    selectionStartPosition = 0;
+    selectionEndPosition = 0;
+    mementoManager->clear();
 }
 
 PGE::String GUITextInput::getText() const {
@@ -155,27 +168,6 @@ void GUITextInput::updateCoordinates() {
     selectionEndX = selectionStartX + font->stringWidth(text.substr(selectionStartPosition, selectionEndPosition - selectionStartPosition), txtScale);
 }
 
-void GUITextInput::updateText(const PGE::String& newText) {
-    // TODO: Momentos.
-
-    text = newText;
-}
-
-void GUITextInput::deleteSelectedText() {
-    PGE::String newText = text;
-
-    if (selectionEndPosition >= text.size()) {
-        newText = text.substr(0, selectionStartPosition);
-    } else {
-        newText = text.substr(0, selectionStartPosition) + text.substr(selectionEndPosition);
-    }
-    updateText(newText);
-
-    caretPosition = selectionStartPosition;
-    selectionStartPosition = caretPosition;
-    selectionEndPosition = caretPosition;
-}
-
 void GUITextInput::addText(PGE::String& append) {
     // Truncate the string if it's over the capacity.
     int newSize = text.size() + append.size();
@@ -183,24 +175,37 @@ void GUITextInput::addText(PGE::String& append) {
         append = append.substr(0, characterLimit - text.size());
     }
 
-    PGE::String newText = text;
+    if (selectionStartPosition != selectionEndPosition) {
+        mementoManager->push(Memento(selectionStartPosition, text.substr(selectionStartPosition, selectionEndPosition - selectionStartPosition), false, true));
+    }
+    mementoManager->push(Memento(selectionStartPosition, append, true, selectionStartPosition != selectionEndPosition));
 
     // If any text was selected then delete it.
     if (selectionEndPosition >= text.size()) {
-        newText = text.substr(0, selectionStartPosition) + append;
+        text = text.substr(0, selectionStartPosition) + append;
     } else {
-        newText = text.substr(0, selectionStartPosition) + append + text.substr(selectionEndPosition);
+        text = text.substr(0, selectionStartPosition) + append + text.substr(selectionEndPosition);
     }
 
-    updateText(newText);
     caretPosition = selectionStartPosition + append.size();
     selectionStartPosition = caretPosition;
     selectionEndPosition = caretPosition;
 }
 
-void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
-    // TODO: Undo, redo.
+void GUITextInput::deleteSelectedText() {
+    removeText(selectionStartPosition, selectionEndPosition);
 
+    caretPosition = selectionStartPosition;
+    selectionStartPosition = caretPosition;
+    selectionEndPosition = caretPosition;
+}
+
+void GUITextInput::removeText(int start, int end) {
+    mementoManager->push(Memento(start, text.substr(start, end - start), false));
+    text = text.substr(0, start) + text.substr(end);
+}
+
+void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
     // Are we selected?
     if (subscriber != this) {
         // Check if the mouse selected us.
@@ -263,26 +268,13 @@ void GUITextInput::updateDeleteKeyActions() {
         } else {
             // Remove preceeding character if backspace, suceeding if delete.
             if (keyBinds->backspace->isHit() && caretPosition > 0) {
-                PGE::String newText;
-                if (keyBinds->anyShortcutDown()) {
-                    int deletionStart = getFirstLeftWordBoundary(caretPosition);
-                    newText = text.substr(0, deletionStart) + text.substr(caretPosition);
-                    caretPosition = deletionStart;
-                } else {
-                    newText = text.substr(0, caretPosition - 1) + text.substr(caretPosition);
-                    caretPosition--;
-                }
+                int deletionStart = keyBinds->anyShortcutDown() ? getFirstLeftWordBoundary(caretPosition) : caretPosition - 1;
+                removeText(deletionStart, caretPosition);
+                caretPosition = deletionStart;
                 selectionStartPosition = caretPosition;
                 selectionEndPosition = caretPosition;
-                updateText(newText);
             } else if (keyBinds->del->isHit() && caretPosition < text.size()) {
-                PGE::String newText;
-                if (keyBinds->anyShortcutDown()) {
-                    newText = text.substr(0, caretPosition) + text.substr(getFirstRightWordBoundary(caretPosition));
-                } else {
-                    newText = text.substr(0, caretPosition) + text.substr(caretPosition + 1);
-                }
-                updateText(newText);
+                removeText(caretPosition, keyBinds->anyShortcutDown() ? getFirstRightWordBoundary(caretPosition) : caretPosition + 1);
             }
         }
 #ifdef __APPLE__
@@ -413,7 +405,6 @@ void GUITextInput::updateMouseActions(PGE::Vector2f mousePos) {
             selectionEndPosition = caretPosition;
         }
     } else if (keyBinds->mouse1->getClickCount() == 2) {
-        // TODO: Crt+A cause why not.
         selectionStartPosition = caretPosition;
         selectionEndPosition = caretPosition;
 
@@ -495,18 +486,12 @@ void GUITextInput::updateShortcutActions() {
             selectionWasDraggedOrClicked = false;
 #endif
         }
-    } else if (keyBinds->undoIsHit()) {
-//        InputState is = memento.undo();
-//        text = is.text;
-//        caretPosition = is.caretPosition;
-//        selectionStartPosition = is.selectionStartPosition;
-//        selectionEndPosition = is.selectionEndPosition;
-    } else if (keyBinds->redoIsHit()) {
-//        InputState is = memento.redo();
-//        text = is.text;
-//        caretPosition = is.caretPosition;
-//        selectionStartPosition = is.selectionStartPosition;
-//        selectionEndPosition = is.selectionEndPosition;
+    } else if (keyBinds->undoIsHit() || keyBinds->redoIsHit()) {
+        int pos = caretPosition;
+        text = mementoManager->execute(text, pos, keyBinds->undoIsHit());
+        caretPosition = pos;
+        selectionStartPosition = pos;
+        selectionEndPosition = pos;
     } else if (keyBinds->selectAllIsHit()) {
         selectionStartPosition = 0;
         selectionEndPosition = text.size();

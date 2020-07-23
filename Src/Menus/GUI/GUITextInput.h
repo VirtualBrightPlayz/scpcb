@@ -4,10 +4,13 @@
 #include <regex>
 
 #include "GUIComponent.h"
+#include "MementoManager.h"
 #include "../../Graphics/Font.h"
 
 class GUITextInput : public GUIComponent {
 private:
+    MementoManager* mementoManager;
+
     static GUITextInput* subscriber;
 
     PGE::FilePath menuwhite;
@@ -74,10 +77,10 @@ private:
     void setCaretPositionFromMouse(float mouseX);
     // Update caret's X position.
     void updateCoordinates();
-    // Updates the display text and stores momentos.
-    void updateText(const PGE::String& newText);
-    void deleteSelectedText();
+    // These three functions must be used internally in order for mementos to work correctly.
     void addText(PGE::String& append);
+    void deleteSelectedText();
+    void removeText(int start, int end);
 
     // Split up updateInternal() into these.
 
@@ -96,9 +99,10 @@ private:
     void renderInternal() override;
 
 public:
-    GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, bool alignLeft = false, const PGE::String& defaultText = "", int limit = INT_MAX, const PGE::String& pattern = "", Alignment alignment = Alignment::CenterXY);
+    GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, bool alignLeft = false, int mementoMaxMemSize = 1048576, const PGE::String& defaultText = "", int limit = INT_MAX, const PGE::String& pattern = "", Alignment alignment = Alignment::CenterXY);
 
     void setText(const PGE::String& txt);
+    void clearTextAndMementos();
     PGE::String getText() const;
 
     /// <summary>

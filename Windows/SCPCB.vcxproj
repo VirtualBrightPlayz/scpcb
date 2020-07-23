@@ -146,6 +146,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Menus\GUI\GUIFrame.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIText.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUITextInput.h" />
+    <ClInclude Include="..\Src\Menus\GUI\MementoManager.h" />
     <ClInclude Include="..\Src\Menus\Inventory.h" />
     <ClInclude Include="..\Src\Menus\InvSlot.h" />
     <ClInclude Include="..\Src\Menus\Menu.h" />
@@ -207,6 +208,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Menus\GUI\GUIFrame.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIText.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUITextInput.cpp" />
+    <ClCompile Include="..\Src\Menus\GUI\MementoManager.cpp" />
     <ClCompile Include="..\Src\Menus\Inventory.cpp" />
     <ClCompile Include="..\Src\Menus\InvSlot.cpp" />
     <ClCompile Include="..\Src\Menus\Menu.cpp" />
