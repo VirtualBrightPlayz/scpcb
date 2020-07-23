@@ -76,9 +76,13 @@ void MementoManager::push(Memento m) {
 void MementoManager::removeBack() {
     memSize -= history.back().getSize();
     history.pop_back();
+    if (position >= history.size()) {
+        position = history.size() - 1;
+    }
 }
 
 void MementoManager::removeFront() {
     memSize -= history.front().getSize();
     history.pop_front();
+    position--;
 }
