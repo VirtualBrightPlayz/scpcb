@@ -15,6 +15,7 @@ WindowType defaultWindow = WindowType::Windowed;
 int defaultWidth = 1280;
 int defaultHeight = 720;
 bool defaultVsync = false;
+bool defaultVr = false;
 
 void Config::genDefaultKeyboardBindings() {
     kbBinds[Input::Forward] = { PGE::KeyboardInput::KEYCODE::W };
@@ -46,6 +47,7 @@ Config::Config(const PGE::String& optionsFile) {
     windowType = defaultWindow;
     setResolution(defaultWidth, defaultHeight);
     vsync = defaultVsync;
+    vr = defaultVr;
 
     genDefaultKeyboardBindings();
     
@@ -72,6 +74,7 @@ void Config::loadExistingConfigFile(const Config& src) {
     windowType = src.windowType;
     setResolution(src.width, src.height);
     vsync = src.vsync;
+    vr = src.vr;
 
     kbBinds = src.kbBinds;
     msBinds = src.msBinds;
@@ -103,6 +106,7 @@ void Config::loadFile() {
     int heightINI = getINIInt(filename, secGFX, "height", defaultHeight);
     setResolution(widthINI, heightINI);
     vsync = getINIBool(filename, secGFX, "vsync", defaultVsync);
+    vr = getINIBool(filename, secGFX, "vr", defaultVr);
 
     enabledMods = getINIString(filename, secMod, "enabledmods").split("|", true);
 
@@ -138,6 +142,7 @@ void Config::saveFile() const {
     putINIValue(filename, secGFX, "width", width);
     putINIValue(filename, secGFX, "height", height);
     putINIValue(filename, secGFX, "vsync", vsync);
+    putINIValue(filename, secGFX, "vr", vr);
     
     putINIValue(filename, secMod, "enabledmods", PGE::String::join(enabledMods, "|"));
 
@@ -190,6 +195,10 @@ std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> Config::getKeyboardBin
 
 float Config::isVsync() const {
     return vsync;
+}
+
+bool Config::isVr() const {
+    return vr;
 }
 
 const std::vector<PGE::String>& Config::getEnabledMods() const {

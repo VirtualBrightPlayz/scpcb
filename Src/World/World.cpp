@@ -3,6 +3,7 @@
 #include <Color/Color.h>
 #include <Misc/FileUtil.h>
 #include <filesystem>
+#include <openvr.h>
 
 #include "World.h"
 #include "Timing.h"
@@ -52,6 +53,12 @@ World::World() {
 
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
+
+    vr::EVRInitError e;
+    vr::IVRSystem* vrs = vr::VR_Init(&e, vr::VRApplication_Scene);
+    if (vrs == nullptr || e != vr::VRInitError_None) {
+        throw std::runtime_error("VR failed to initialize! " + e);
+    }
 
     scripting = new ScriptWorld(gfxRes, camera, keyBinds, config, timing->getTimeStep(), console);
 

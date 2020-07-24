@@ -35,6 +35,8 @@ class Config {
 
         bool vsync;
 
+        bool vr;
+
         std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> kbBinds;
         void loadKeyboardInput(Input input);
         std::map<Input, std::vector<PGE::MouseInput::BUTTON>> msBinds;
@@ -64,6 +66,8 @@ class Config {
         float getAspectRatio() const;
 
         float isVsync() const;
+
+        bool isVr() const;
 
         std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> getKeyboardBindings() const;
 
