@@ -1,36 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\Admin\Desktop\cbn\Libraries\openvr-1.12.5\src\openvr_api_public.cpp">
-      <Filter>Src</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\Admin\Desktop\cbn\Libraries\openvr-1.12.5\src\jsoncpp.cpp">
-      <Filter>Src</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\Admin\Desktop\cbn\Libraries\openvr-1.12.5\src\vrcommon\dirtools_public.cpp">
-      <Filter>VRCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\Admin\Desktop\cbn\Libraries\openvr-1.12.5\src\vrcommon\envvartools_public.cpp">
-      <Filter>VRCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\Admin\Desktop\cbn\Libraries\openvr-1.12.5\src\vrcommon\pathtools_public.cpp">
-      <Filter>VRCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\Admin\Desktop\cbn\Libraries\openvr-1.12.5\src\vrcommon\sharedlibtools_public.cpp">
-      <Filter>VRCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\Admin\Desktop\cbn\Libraries\openvr-1.12.5\src\vrcommon\hmderrors_public.cpp">
-      <Filter>VRCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\Admin\Desktop\cbn\Libraries\openvr-1.12.5\src\vrcommon\vrpathregistry_public.cpp">
-      <Filter>VRCommon</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\Admin\Desktop\cbn\Libraries\openvr-1.12.5\src\vrcommon\strtools_public.cpp">
-      <Filter>VRCommon</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="C:\Users\Admin\Desktop\cbn\Libraries\openvr-1.12.5\src\CMakeLists.txt" />
+    <ClCompile Include="$(ProjectDir)openvr_api_public.cpp" />
+    <ClCompile Include="$(ProjectDir)jsoncpp.cpp" />
+    <ClCompile Include="$(ProjectDir)vrcommon\dirtools_public.cpp" />
+    <ClCompile Include="$(ProjectDir)vrcommon\envvartools_public.cpp" />
+    <ClCompile Include="$(ProjectDir)vrcommon\pathtools_public.cpp" />
+    <ClCompile Include="$(ProjectDir)vrcommon\sharedlibtools_public.cpp" />
+    <ClCompile Include="$(ProjectDir)vrcommon\hmderrors_public.cpp" />
+    <ClCompile Include="$(ProjectDir)vrcommon\vrpathregistry_public.cpp" />
+    <ClCompile Include="$(ProjectDir)vrcommon\strtools_public.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Src">
