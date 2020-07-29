@@ -60,6 +60,18 @@ float Camera::getAspectRatio() const {
     return (float)width / height;
 }
 
+void Camera::setUpVector(const PGE::Vector3f upVector) {
+    upDir = upVector;
+}
+
+void Camera::setLookAt(const PGE::Vector3f lookAt) {
+    this->lookAt = lookAt;
+}
+
+void Camera::setMatrix(const PGE::Matrix4x4f mat) {
+    viewMatrix = mat;
+}
+
 void Camera::setPosition(const PGE::Vector3f pos) {
     position = pos;
 }

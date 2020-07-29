@@ -3,7 +3,6 @@
 #include <Color/Color.h>
 #include <Misc/FileUtil.h>
 #include <filesystem>
-#include <openvr.h>
 
 #include "World.h"
 #include "Timing.h"
@@ -25,6 +24,25 @@
 
 World::World() {
     config = new Config("options.ini");
+
+    if (config->isVr()) {
+        if (!vr::VR_IsHmdPresent()) {
+            throw new std::runtime_error("No HMD found.");
+        }
+        if (!vr::VR_IsRuntimeInstalled()) {
+            throw new std::runtime_error("Open VR runtime not installed");
+        }
+        vr::EVRInitError e;
+        vrSystem = vr::VR_Init(&e, vr::VRApplication_Scene);
+        if (vrSystem == nullptr || e != vr::VRInitError_None) {
+            throw std::runtime_error("VR failed to initialize! " + e);
+        }
+        unsigned int width;
+        unsigned int height;
+        vrSystem->GetRecommendedRenderTargetSize(&width, &height);
+        std::cout << "OpenVR recommends a render size of " << width << "x" << height << std::endl;
+        config->setResolution(width, height);
+    }
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
     graphics->setViewport(PGE::Rectanglei(0, 0, config->getWidth(), config->getHeight()));
@@ -54,12 +72,6 @@ World::World() {
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
 
-    vr::EVRInitError e;
-    vr::IVRSystem* vrs = vr::VR_Init(&e, vr::VRApplication_Scene);
-    if (vrs == nullptr || e != vr::VRInitError_None) {
-        throw std::runtime_error("VR failed to initialize! " + e);
-    }
-
     scripting = new ScriptWorld(gfxRes, camera, keyBinds, config, timing->getTimeStep(), console);
 
     applyConfig(config);
@@ -82,6 +94,8 @@ World::~World() {
     delete mouseTxtX;
     delete mouseTxtY;
 #endif
+
+    vr::VR_Shutdown();
 
     delete camera;
     delete timing;
@@ -122,6 +136,8 @@ void World::deactivateMenu(Menu* mu) {
     currMenu = nullptr;
 }
 
+vr::TrackedDevicePose_t tdp[vr::k_unMaxTrackedDeviceCount];
+
 bool World::run() {
     if (shutdownRequested) {
         return false;
@@ -136,6 +152,34 @@ bool World::run() {
 
     // Rendering next, don't use accumulator.
     graphics->update();
+
+    if (config->isVr()) {
+        vr::VRCompositor()->WaitGetPoses(tdp, vr::k_unMaxTrackedDeviceCount, nullptr, 0);
+        for (int i = 0; i < vr::k_unMaxTrackedDeviceCount; i++) {
+            if (tdp[i].bDeviceIsConnected) {
+                std::cout << vrSystem->GetTrackedDeviceClass(i) << std::endl;
+                if (tdp[i].bPoseIsValid) {
+                    vr::HmdMatrix34_t mat = tdp->mDeviceToAbsoluteTracking;
+                    PGE::Matrix4x4f pmat = PGE::Matrix4x4f(
+                        mat.m[0][0], mat.m[1][0], mat.m[2][0], 0,
+                        mat.m[0][1], mat.m[1][1], mat.m[2][1], 0,
+                        mat.m[0][2], mat.m[1][2], mat.m[2][2], 0,
+                        mat.m[0][3], mat.m[1][3], mat.m[2][3], 1
+                    );
+                    system("cls");
+                    std::cout << std::endl << std::endl << std::endl << "Matrix!!!!" << std::endl <<
+                        mat.m[0][0] << std::endl << mat.m[1][0] << std::endl << mat.m[2][0] << std::endl << std::endl << std::endl << "1" << std::endl <<
+                        mat.m[0][1] << std::endl << mat.m[1][1] << std::endl << mat.m[2][1] << std::endl << std::endl << std::endl << "2" << std::endl <<
+                        mat.m[0][2] << std::endl << mat.m[1][2] << std::endl << mat.m[2][2] << std::endl << std::endl << std::endl << "3" << std::endl <<
+                        mat.m[0][3] << std::endl << mat.m[1][3] << std::endl << mat.m[2][3] << std::endl << std::endl << std::endl;
+                    // Inverted looking in both directions, pls fix
+                    camera->setPosition(PGE::Vector3f(mat.m[0][3], mat.m[1][3], mat.m[2][3]).multiply(25.f));
+                    camera->setUpVector(PGE::Vector3f(mat.m[0][1], mat.m[1][1], mat.m[2][1]));
+                    camera->setLookAt(PGE::Vector3f(mat.m[0][2], mat.m[1][2], mat.m[2][2]));
+                }
+            }
+        }
+    }
 
     graphics->clear(PGE::Color(1.f, 0.f, 1.f, 1.f)); // Puke-inducing magenta
 

@@ -47,6 +47,9 @@ class Camera {
         void update();
         void updateDrawTransform(float interpolation);
 
+        void setMatrix(const PGE::Matrix4x4f mat);
+        void setUpVector(const PGE::Vector3f upVector);
+        void setLookAt(const PGE::Vector3f lookAt);
         void setPosition(const PGE::Vector3f pos);
         void setTilt(float rad);
         void addAngle(float yawAngle, float pitchAngle);

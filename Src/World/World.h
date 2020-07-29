@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <ft2build.h>
+#include <openvr.h>
 #include FT_FREETYPE_H
 #include <Graphics/Graphics.h>
 #include <IO/IO.h>
@@ -61,6 +62,8 @@ class World {
         Console* console;
 
         FPSCounter* fps;
+
+        vr::IVRSystem* vrSystem;
 
         ScriptWorld* scripting;
 
