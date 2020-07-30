@@ -10,6 +10,7 @@
 #include "ScriptWorld.h"
 #include "../Graphics/Camera.h"
 #include "../Graphics/GraphicsResources.h"
+#include "../Graphics/DebugGraphics.h"
 #include "../Menus/PauseMenu.h"
 #include "../Menus/Console.h"
 #include "../Menus/Menu.h"
@@ -328,6 +329,9 @@ void World::draw(float interpolation) {
     drawPlaying(interpolation);
 
     scripting->draw(interpolation);
+
+    gfxRes->getDebugGraphics()->draw3DLine(PGE::Line3f(0,10,0,10,10,0), PGE::Color::Green, 1.f);
+    gfxRes->getDebugGraphics()->draw3DLine(PGE::Line3f(0,10,0,0,20,0), PGE::Color::Red, 1.f);
 
     // UI.
     graphics->setDepthTest(false);

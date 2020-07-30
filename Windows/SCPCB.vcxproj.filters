@@ -211,6 +211,9 @@
     <ClInclude Include="..\Src\Menus\GUI\MementoManager.h">
       <Filter>Src\Menus\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\Graphics\DebugGraphics.h">
+      <Filter>Src\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SCPCB.rc">
@@ -381,6 +384,9 @@
     </ClCompile>
     <ClCompile Include="..\Src\Menus\GUI\MementoManager.cpp">
       <Filter>Src\Menus\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Graphics\DebugGraphics.cpp">
+      <Filter>Src\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

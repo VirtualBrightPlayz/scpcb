@@ -7,6 +7,7 @@
 
 class Config;
 class Camera;
+class DebugGraphics;
 
 class GraphicsResources {
     private:
@@ -32,6 +33,8 @@ class GraphicsResources {
 
         PGE::Graphics* graphics;
 
+        DebugGraphics* debugGraphics;
+
     public:
         GraphicsResources(PGE::Graphics* gfx, Config* con);
 
@@ -47,6 +50,8 @@ class GraphicsResources {
         void setCameraUniforms(const Camera* cam) const;
 
         PGE::Graphics* getGraphics() const;
+
+        DebugGraphics* getDebugGraphics() const;
 };
 
 #endif // GRAPHICSRESOURCES_H_INCLUDED
