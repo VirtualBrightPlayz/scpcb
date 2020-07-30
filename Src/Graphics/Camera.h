@@ -29,7 +29,6 @@ class Camera {
 
         bool needsProjUpdate;
 
-        PGE::Vector3f position;
         PGE::Vector3f lookAt;
         PGE::Vector3f upDir;
 
@@ -44,13 +43,14 @@ class Camera {
         Camera(GraphicsResources* gr, int w, int h, float fov, float nearZ = 0.01f, float farZ = 30.f, bool orthographic = false);
         Camera(GraphicsResources* gr, int w, int h);
 
+        PGE::Vector3f position;
+
         void update();
         void updateDrawTransform(float interpolation);
 
         void setMatrix(const PGE::Matrix4x4f mat);
         void setUpVector(const PGE::Vector3f upVector);
         void setLookAt(const PGE::Vector3f lookAt);
-        void setPosition(const PGE::Vector3f pos);
         void setTilt(float rad);
         void addAngle(float yawAngle, float pitchAngle);
 

@@ -22,6 +22,9 @@
 #include "../Utils/MathUtil.h"
 #include "../Scripting/ScriptObject.h"
 
+PGE::Texture* left;
+PGE::Texture* right;
+
 World::World() {
     config = new Config("options.ini");
 
@@ -60,7 +63,7 @@ World::World() {
     keyBinds = new KeyBinds(io);
 
     camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
-    camera->setPosition(PGE::Vector3f(0.f, 10.f, 0.f));
+    camera->position = PGE::Vector3f(0.f, 10.f, 0.f);
     
     currMenu = nullptr;
     menuGraveyard = nullptr;
@@ -82,6 +85,9 @@ World::World() {
 #endif
 
     shutdownRequested = false;
+
+    left = PGE::Texture::create(graphics, config->getWidth(), config->getHeight(), true, new uint8_t[1000 * 1000 * 4], PGE::Texture::FORMAT::RGBA32); // TODO: Condition.
+    right = PGE::Texture::create(graphics, config->getWidth(), config->getHeight(), true, new uint8_t[1000 * 1000 * 4], PGE::Texture::FORMAT::RGBA32);
 }
 
 World::~World() {
@@ -137,6 +143,7 @@ void World::deactivateMenu(Menu* mu) {
 }
 
 vr::TrackedDevicePose_t tdp[vr::k_unMaxTrackedDeviceCount];
+float eyedistance = 0.f;
 
 bool World::run() {
     if (shutdownRequested) {
@@ -157,7 +164,7 @@ bool World::run() {
         vr::VRCompositor()->WaitGetPoses(tdp, vr::k_unMaxTrackedDeviceCount, nullptr, 0);
         for (int i = 0; i < vr::k_unMaxTrackedDeviceCount; i++) {
             if (tdp[i].bDeviceIsConnected) {
-                std::cout << vrSystem->GetTrackedDeviceClass(i) << std::endl;
+                //std::cout << vrSystem->GetTrackedDeviceClass(i) << std::endl;
                 if (tdp[i].bPoseIsValid) {
                     vr::HmdMatrix34_t mat = tdp->mDeviceToAbsoluteTracking;
                     PGE::Matrix4x4f pmat = PGE::Matrix4x4f(
@@ -166,24 +173,73 @@ bool World::run() {
                         mat.m[0][2], mat.m[1][2], mat.m[2][2], 0,
                         mat.m[0][3], mat.m[1][3], mat.m[2][3], 1
                     );
-                    system("cls");
-                    std::cout << std::endl << std::endl << std::endl << "Matrix!!!!" << std::endl <<
-                        mat.m[0][0] << std::endl << mat.m[1][0] << std::endl << mat.m[2][0] << std::endl << std::endl << std::endl << "1" << std::endl <<
-                        mat.m[0][1] << std::endl << mat.m[1][1] << std::endl << mat.m[2][1] << std::endl << std::endl << std::endl << "2" << std::endl <<
-                        mat.m[0][2] << std::endl << mat.m[1][2] << std::endl << mat.m[2][2] << std::endl << std::endl << std::endl << "3" << std::endl <<
-                        mat.m[0][3] << std::endl << mat.m[1][3] << std::endl << mat.m[2][3] << std::endl << std::endl << std::endl;
+                    //system("cls");
+                    //std::cout << std::endl << std::endl << std::endl << "Matrix!!!!" << std::endl <<
+                    //    mat.m[0][0] << std::endl << mat.m[1][0] << std::endl << mat.m[2][0] << std::endl << std::endl << std::endl << "1" << std::endl <<
+                    //    mat.m[0][1] << std::endl << mat.m[1][1] << std::endl << mat.m[2][1] << std::endl << std::endl << std::endl << "2" << std::endl <<
+                    //    mat.m[0][2] << std::endl << mat.m[1][2] << std::endl << mat.m[2][2] << std::endl << std::endl << std::endl << "3" << std::endl <<
+                    //    mat.m[0][3] << std::endl << mat.m[1][3] << std::endl << mat.m[2][3] << std::endl << std::endl << std::endl;
                     // Inverted looking in both directions, pls fix
-                    camera->setPosition(PGE::Vector3f(mat.m[0][3], mat.m[1][3], mat.m[2][3]).multiply(25.f));
-                    camera->setUpVector(PGE::Vector3f(mat.m[0][1], mat.m[1][1], mat.m[2][1]));
-                    camera->setLookAt(PGE::Vector3f(mat.m[0][2], mat.m[1][2], mat.m[2][2]));
+                    camera->position = PGE::Vector3f(mat.m[0][3], mat.m[1][3], mat.m[2][3]).multiply(25.f);
+                    camera->setUpVector(PGE::Vector3f(mat.m[0][1], mat.m[1][1], mat.m[2][1])); // Although flipping both x (exclusive) or z values fixes the horizontal viewing direction there exists
+                    camera->setLookAt(PGE::Vector3f(mat.m[0][2], -mat.m[1][2], mat.m[2][2]));  // a deeper rooted problem that is now causing problems when looking ~45° up/down
                 }
             }
         }
     }
 
-    graphics->clear(PGE::Color(1.f, 0.f, 1.f, 1.f)); // Puke-inducing magenta
+    if (!config->isVr()) {
+        graphics->resetRenderTarget();
+        graphics->clear(PGE::Color(1.f, 0.f, 1.f, 1.f));
+        draw((float)timing->getInterpolationFactor());
+    } else {
+        graphics->setRenderTarget(left);
+        graphics->clear(PGE::Color(0.f, 0.f, 0.f, 1.f));
+        draw(1.f);
 
-    draw((float)timing->getInterpolationFactor());
+        PGE::Vector3f lol = camera->getViewMatrix().extractViewTarget().crossProduct(camera->getViewMatrix().extractViewUp()).normalize().multiply(eyedistance); // Right vector
+        graphics->setRenderTarget(right);
+        camera->position = camera->position.add(lol);
+        camera->update();
+        graphics->clear(PGE::Color(0.f, 0.f, 0.f, 1.f));
+        draw(1.f);
+        camera->position = camera->position.subtract(lol);
+        camera->update();
+
+        graphics->resetRenderTarget();
+        graphics->clear(PGE::Color::Green); // We probably don't need to clear here, but it illustrates the DephTest problem.
+        graphics->setDepthTest(false);
+        uiMesh->setTextured(right, false);
+        uiMesh->addRect(PGE::Rectanglef(-GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio(),
+            -GUIComponent::SCALE_MAGNITUDE,
+            GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio(),
+            GUIComponent::SCALE_MAGNITUDE));
+        uiMesh->endRender();
+        graphics->setDepthTest(true);
+        graphics->swap(config->isVsync());
+
+        vr::Texture_t leftEyeTexture = {
+        left->getNative(),
+#ifdef __APPLE__
+            vr::TextureType_OpenGL,
+#else
+            vr::TextureType_DirectX,
+#endif
+            vr::ColorSpace_Gamma
+        };
+        vr::Texture_t rightEyeTexture = {
+        right->getNative(),
+#ifdef __APPLE__
+            vr::TextureType_OpenGL,
+#else
+            vr::TextureType_DirectX,
+#endif
+         vr::ColorSpace_Gamma
+        };
+
+        vr::VRCompositor()->Submit(vr::Eye_Left, &leftEyeTexture, NULL);
+        vr::VRCompositor()->Submit(vr::Eye_Right, &rightEyeTexture, NULL);
+    }
 
     // Get elapsed seconds since last run.
     double secondsPassed = timing->getElapsedSeconds();
@@ -213,6 +269,8 @@ void World::runTick(float timeStep) {
     mousePosition.y -= GUIComponent::SCALE_MAGNITUDE;
 
     PGE::Vector2i mouseWheelDelta = io->getMouseWheelDelta();
+    eyedistance += mouseWheelDelta.y * 0.1f;
+    std::cout << eyedistance << std::endl;
 
 #ifdef DEBUG
     mouseTxtX->rt.text = PGE::String("DownInputs: ", PGE::String((int)downInputs));

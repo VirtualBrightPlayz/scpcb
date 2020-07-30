@@ -51,6 +51,7 @@ class UIMesh {
         void startRender();
 
         void setTextureless();
+        void setTextured(PGE::Texture* texture, bool tile);
         void setTextured(const PGE::FilePath& texture, bool tile);
 
         void setColor(PGE::Color col);

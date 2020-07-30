@@ -50,12 +50,20 @@ void UIMesh::endRender() {
     vertices.clear(); primitives.clear();
 }
 
-void UIMesh::setTextured(const PGE::FilePath& textureName, bool tile) {
+void UIMesh::setTextured(PGE::Texture* texture, bool tile) {
     endRender();
-
     tiled = tile;
     textureless = false;
 
+    PGE::Material* prevMaterial = material;
+    material = new PGE::Material(shaderTextured, texture);
+    mesh->setMaterial(material);
+    delete prevMaterial;
+
+    startRender();
+}
+
+void UIMesh::setTextured(const PGE::FilePath& textureName, bool tile) {
     loadTexture(textureName);
     PGE::Texture* texture = nullptr;
     for (int i = 0; i < textures.size(); i++) {
@@ -65,12 +73,7 @@ void UIMesh::setTextured(const PGE::FilePath& textureName, bool tile) {
         }
     }
 
-    PGE::Material* prevMaterial = material;
-    material = new PGE::Material(shaderTextured, texture);
-    mesh->setMaterial(material);
-    delete prevMaterial;
-
-    startRender();
+    setTextured(texture, tile);
 }
 
 void UIMesh::setTextureless() {
