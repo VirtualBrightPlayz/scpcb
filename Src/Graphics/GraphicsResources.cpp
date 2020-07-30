@@ -2,11 +2,13 @@
 #include "Camera.h"
 #include "../Save/Config.h"
 #include "../Menus/GUI/GUIComponent.h"
+#include "DebugGraphics.h"
 
 GraphicsResources::GraphicsResources(PGE::Graphics* gfx, Config* con) {
     con->setGraphicsResources(this);
     updateOrthoMat(con->getAspectRatio());
     graphics = gfx;
+    debugGraphics = new DebugGraphics(gfx);
 }
 
 PGE::Shader* GraphicsResources::getShader(const PGE::FilePath& filename, bool needsViewProjection) {
@@ -96,10 +98,16 @@ void GraphicsResources::setCameraUniforms(const Camera* cam) const {
             shaders[i].shader->getVertexShaderConstant("projectionMatrix")->setValue(cam->getProjectionMatrix());
         }
     }
+    debugGraphics->setViewMatrix(cam->getViewMatrix());
+    debugGraphics->setProjectionMatrix(cam->getProjectionMatrix());
 }
 
 PGE::Graphics* GraphicsResources::getGraphics() const {
     return graphics;
+}
+
+DebugGraphics* GraphicsResources::getDebugGraphics() const {
+    return debugGraphics;
 }
 
 void GraphicsResources::updateShaderConstant(const PGE::FilePath& shd, const PGE::String& name, const PGE::Matrix4x4f& val) {

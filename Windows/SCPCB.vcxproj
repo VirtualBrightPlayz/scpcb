@@ -134,6 +134,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Collision\CollisionMesh.h" />
     <ClInclude Include="..\Src\Collision\CollisionMeshCollection.h" />
     <ClInclude Include="..\Src\Graphics\Camera.h" />
+    <ClInclude Include="..\Src\Graphics\DebugGraphics.h" />
     <ClInclude Include="..\Src\Graphics\Font.h" />
     <ClInclude Include="..\Src\Graphics\GraphicsResources.h" />
     <ClInclude Include="..\Src\Graphics\Sprite.h" />
@@ -196,6 +197,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Collision\CollisionMesh.cpp" />
     <ClCompile Include="..\Src\Collision\CollisionMeshCollection.cpp" />
     <ClCompile Include="..\Src\Graphics\Camera.cpp" />
+    <ClCompile Include="..\Src\Graphics\DebugGraphics.cpp" />
     <ClCompile Include="..\Src\Graphics\Font.cpp" />
     <ClCompile Include="..\Src\Graphics\GraphicsResources.cpp" />
     <ClCompile Include="..\Src\Graphics\Sprite.cpp" />

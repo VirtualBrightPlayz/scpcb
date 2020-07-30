@@ -213,6 +213,8 @@
     </ClInclude>
     <ClInclude Include="..\Src\World\VRManager.h">
       <Filter>Src\World</Filter>
+    <ClInclude Include="..\Src\Graphics\DebugGraphics.h">
+      <Filter>Src\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -387,6 +389,8 @@
     </ClCompile>
     <ClCompile Include="..\Src\World\VRManager.cpp">
       <Filter>Src\World</Filter>
+    <ClCompile Include="..\Src\Graphics\DebugGraphics.cpp">
+      <Filter>Src\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
