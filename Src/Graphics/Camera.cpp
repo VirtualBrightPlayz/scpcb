@@ -68,10 +68,6 @@ void Camera::setLookAt(const PGE::Vector3f lookAt) {
     this->lookAt = lookAt;
 }
 
-void Camera::setMatrix(const PGE::Matrix4x4f mat) {
-    viewMatrix = mat;
-}
-
 void Camera::setTilt(float rad) {
     tilt = rad;
 }

@@ -182,6 +182,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\World\FPSCounter.h" />
     <ClInclude Include="..\Src\World\ScriptWorld.h" />
     <ClInclude Include="..\Src\World\Timing.h" />
+    <ClInclude Include="..\Src\World\VRManager.h" />
     <ClInclude Include="..\Src\World\World.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -245,6 +246,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\World\FPSCounter.cpp" />
     <ClCompile Include="..\Src\World\ScriptWorld.cpp" />
     <ClCompile Include="..\Src\World\Timing.cpp" />
+    <ClCompile Include="..\Src\World\VRManager.cpp" />
     <ClCompile Include="..\Src\World\World.cpp" />
   </ItemGroup>
   <ItemGroup>
