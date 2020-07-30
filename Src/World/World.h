@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <ft2build.h>
-#include <openvr.h>
 #include FT_FREETYPE_H
 #include <Graphics/Graphics.h>
 #include <IO/IO.h>
@@ -17,6 +16,7 @@
 #include "../Models/RM2.h"
 #include "../PlayerController/PlayerController.h"
 #include "../Collision/CollisionMeshCollection.h"
+#include "VRManager.h"
 
 class Camera;
 class Timing;
@@ -63,7 +63,7 @@ class World {
 
         FPSCounter* fps;
 
-        vr::IVRSystem* vrSystem;
+        VRManager* vrm;
 
         ScriptWorld* scripting;
 
