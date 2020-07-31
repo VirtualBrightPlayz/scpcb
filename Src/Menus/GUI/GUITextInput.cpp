@@ -16,6 +16,10 @@ GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE
 
     mementoManager = new MementoManager(mementoMaxMemSize);
 
+    this->defaultText = defaultText;
+    text = defaultText;
+    defaultTextDisplayed = true;
+
     font = fnt;
     io = inIo;
     //text = defaultText; TODO: Implement correctly.
@@ -102,6 +106,11 @@ void GUITextInput::select() {
     caretPosition = 0;
     selectionStartPosition = 0;
     selectionEndPosition = 0;
+
+    if (defaultTextDisplayed) {
+        text = "";
+        defaultTextDisplayed = false;
+    }
 }
 
 void GUITextInput::deselect() {
@@ -111,6 +120,11 @@ void GUITextInput::deselect() {
     caretPosition = 0;
     selectionStartPosition = 0;
     selectionEndPosition = 0;
+
+    if (text.isEmpty()) {
+        text = defaultText;
+        defaultTextDisplayed = true;
+    }
 }
 
 void GUITextInput::deselectSubscribed() {
@@ -529,6 +543,6 @@ void GUITextInput::renderInternal() {
         float txtY = 0.f;
         fillTextCoordinates(txtX, txtY);
 
-        font->draw(text, PGE::Vector2f(txtX, txtY), txtScale);
+        font->draw(text, PGE::Vector2f(txtX, txtY), txtScale, 0.f, defaultTextDisplayed ? PGE::Color::Gray : PGE::Color::White);
     }
 }

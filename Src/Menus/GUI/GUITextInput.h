@@ -19,6 +19,9 @@ private:
     float borderThickness;
     PGE::Vector2f txtScale;
 
+    PGE::String defaultText;
+    bool defaultTextDisplayed;
+
     Font* font;
     PGE::IO* io;
     PGE::String text;
