@@ -1,401 +1,388 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Src">
-      <UniqueIdentifier>{5e13c208-e88b-437b-877a-cfbcc0db45f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Collision">
-      <UniqueIdentifier>{1fbaeefb-f02b-4d45-ae3a-43c0e05a87cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Graphics">
-      <UniqueIdentifier>{26a1e40a-1df8-4af3-8d63-5e5bf0e6a443}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Input">
-      <UniqueIdentifier>{f8787ead-9f3a-4e61-a420-20a3943e1c40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Menus">
-      <UniqueIdentifier>{34a9a24e-1cee-473d-8779-979655a17999}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\PlayerController">
-      <UniqueIdentifier>{4e28020e-0416-4306-8014-578594fcdb5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Save">
-      <UniqueIdentifier>{c10cfe46-a3cb-4005-9f0f-eb962f904fc8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Utils">
-      <UniqueIdentifier>{2a530fab-6df1-4a03-8dd3-9d0b8fe04792}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\World">
-      <UniqueIdentifier>{bd447bc2-4ae6-4225-a7a8-f3bf72dac3b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Menus\GUI">
-      <UniqueIdentifier>{0df873b2-c730-4359-9eb7-ff769cfbaf5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Models">
-      <UniqueIdentifier>{c46dcb69-887c-4267-a6c5-bb5d6929d76d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Scripting">
-      <UniqueIdentifier>{87a441c9-0375-48b0-993b-f423ae476615}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Scripting\AngelScriptAddons">
-      <UniqueIdentifier>{2a57d497-43c7-4a74-b7d0-9efaf65d4287}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Scripting\AngelScriptAddons\scriptarray">
-      <UniqueIdentifier>{d905b520-cf21-4253-b96e-68117e68fab8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Scripting\NativeDefinitions">
-      <UniqueIdentifier>{c98c4347-32be-43a2-8178-fcf50d1af4b0}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="resource.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Collision\Collision.h">
-      <Filter>Src\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Collision\CollisionMesh.h">
-      <Filter>Src\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\World\Timing.h">
-      <Filter>Src\World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\World\World.h">
-      <Filter>Src\World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\PlayerController\PlayerController.h">
-      <Filter>Src\PlayerController</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Input\KeyBinds.h">
-      <Filter>Src\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Save\Config.h">
-      <Filter>Src\Save</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Graphics\Camera.h">
-      <Filter>Src\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Graphics\Sprite.h">
-      <Filter>Src\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Graphics\UIMesh.h">
-      <Filter>Src\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\PauseMenu.h">
-      <Filter>Src\Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\GUIButton.h">
-      <Filter>Src\Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\GUIFrame.h">
-      <Filter>Src\Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Utils\INI.h">
-      <Filter>Src\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Utils\MathUtil.h">
-      <Filter>Src\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Utils\TextMgmt.h">
-      <Filter>Src\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\GUIComponent.h">
-      <Filter>Src\Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Graphics\Font.h">
-      <Filter>Src\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Models\RM2.h">
-      <Filter>Src\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Graphics\GraphicsResources.h">
-      <Filter>Src\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Input\Input.h">
-      <Filter>Src\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\GUIText.h">
-      <Filter>Src\Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\GUITextInput.h">
-      <Filter>Src\Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\World\FPSCounter.h">
-      <Filter>Src\World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\Inventory.h">
-      <Filter>Src\Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\InvSlot.h">
-      <Filter>Src\Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\Menu.h">
-      <Filter>Src\Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Collision\CollisionMeshCollection.h">
-      <Filter>Src\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\ScriptManager.h">
-      <Filter>Src\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\Script.h">
-      <Filter>Src\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\Type.h">
-      <Filter>Src\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.h">
-      <Filter>Src\Scripting\AngelScriptAddons\scriptarray</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\ScriptClass.h">
-      <Filter>Src\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\ScriptObject.h">
-      <Filter>Src\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.h">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\ScriptFunction.h">
-      <Filter>Src\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinition.h">
-      <Filter>Src\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.h">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\EventDefinition.h">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\ScriptModule.h">
-      <Filter>Src\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\World\ScriptWorld.h">
-      <Filter>Src\World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\CollisionDefinitions.h">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\Console.h">
-      <Filter>Src\Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.h">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\RefCounter.h">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.h">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinition.h">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\World\DataInterpolator.h">
-      <Filter>Src\World</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.h">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\CachedArgument.h">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\StringFactory.h">
-      <Filter>Src\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\MementoManager.h">
-      <Filter>Src\Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\World\VRManager.h">
-      <Filter>Src\World</Filter>
-    <ClInclude Include="..\Src\Graphics\DebugGraphics.h">
-      <Filter>Src\Graphics</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="SCPCB.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\Resources\logo.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Src\Main.cpp">
-      <Filter>Src</Filter>
-    </ClCompile>
+    <ClCompile Include="..\Src\Main.cpp" />
     <ClCompile Include="..\Src\Collision\Collision.cpp">
-      <Filter>Src\Collision</Filter>
+      <Filter>Collision</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Collision\CollisionMesh.cpp">
-      <Filter>Src\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\PlayerController\PlayerController.cpp">
-      <Filter>Src\PlayerController</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Graphics\Camera.cpp">
-      <Filter>Src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Graphics\Sprite.cpp">
-      <Filter>Src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Graphics\UIMesh.cpp">
-      <Filter>Src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Input\KeyBinds.cpp">
-      <Filter>Src\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\PauseMenu.cpp">
-      <Filter>Src\Menus</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp">
-      <Filter>Src\Menus\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\GUIFrame.cpp">
-      <Filter>Src\Menus\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Save\Config.cpp">
-      <Filter>Src\Save</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Utils\INI.cpp">
-      <Filter>Src\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Utils\MathUtil.cpp">
-      <Filter>Src\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Utils\TextMgmt.cpp">
-      <Filter>Src\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\World\Timing.cpp">
-      <Filter>Src\World</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\World\World.cpp">
-      <Filter>Src\World</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\GUIComponent.cpp">
-      <Filter>Src\Menus\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Graphics\Font.cpp">
-      <Filter>Src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Models\RM2.cpp">
-      <Filter>Src\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Graphics\GraphicsResources.cpp">
-      <Filter>Src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Input\Input.cpp">
-      <Filter>Src\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\GUIText.cpp">
-      <Filter>Src\Menus\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\GUITextInput.cpp">
-      <Filter>Src\Menus\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\World\FPSCounter.cpp">
-      <Filter>Src\World</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\Inventory.cpp">
-      <Filter>Src\Menus</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\InvSlot.cpp">
-      <Filter>Src\Menus</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\Menu.cpp">
-      <Filter>Src\Menus</Filter>
+      <Filter>Collision</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Collision\CollisionMeshCollection.cpp">
-      <Filter>Src\Collision</Filter>
+      <Filter>Collision</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\Script.cpp">
-      <Filter>Src\Scripting</Filter>
+    <ClCompile Include="..\Src\Graphics\Font.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\ScriptManager.cpp">
-      <Filter>Src\Scripting</Filter>
+    <ClCompile Include="..\Src\Graphics\UIMesh.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\Type.cpp">
-      <Filter>Src\Scripting</Filter>
+    <ClCompile Include="..\Src\Graphics\GraphicsResources.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.cpp">
-      <Filter>Src\Scripting\AngelScriptAddons\scriptarray</Filter>
+    <ClCompile Include="..\Src\Graphics\Camera.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\ScriptFunction.cpp">
-      <Filter>Src\Scripting</Filter>
+    <ClCompile Include="..\Src\Graphics\Sprite.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\ScriptClass.cpp">
-      <Filter>Src\Scripting</Filter>
+    <ClCompile Include="..\Src\Input\KeyBinds.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\ScriptObject.cpp">
-      <Filter>Src\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.cpp">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.cpp">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\EventDefinition.cpp">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\World\ScriptWorld.cpp">
-      <Filter>Src\World</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Scripting\ScriptModule.cpp">
-      <Filter>Src\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Scripting\ScriptGlobal.cpp">
-      <Filter>Src\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\CollisionDefinitions.cpp">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    <ClCompile Include="..\Src\Input\Input.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Menus\Console.cpp">
-      <Filter>Src\Menus</Filter>
+      <Filter>Menus</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.cpp">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    <ClCompile Include="..\Src\Menus\PauseMenu.cpp">
+      <Filter>Menus</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\RefCounter.cpp">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    <ClCompile Include="..\Src\Menus\InvSlot.cpp">
+      <Filter>Menus</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.cpp">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    <ClCompile Include="..\Src\Menus\Inventory.cpp">
+      <Filter>Menus</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinition.cpp">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    <ClCompile Include="..\Src\Menus\Menu.cpp">
+      <Filter>Menus</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\World\DataInterpolator.cpp">
-      <Filter>Src\World</Filter>
+    <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp">
+      <Filter>Menus\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.cpp">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    <ClCompile Include="..\Src\Menus\GUI\GUIComponent.cpp">
+      <Filter>Menus\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\CachedArgument.cpp">
-      <Filter>Src\Scripting\NativeDefinitions</Filter>
+    <ClCompile Include="..\Src\Menus\GUI\GUIFrame.cpp">
+      <Filter>Menus\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\StringFactory.cpp">
-      <Filter>Src\Scripting</Filter>
+    <ClCompile Include="..\Src\Menus\GUI\GUIText.cpp">
+      <Filter>Menus\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Menus\GUI\GUITextInput.cpp">
+      <Filter>Menus\GUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Menus\GUI\MementoManager.cpp">
-      <Filter>Src\Menus\GUI</Filter>
+      <Filter>Menus\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Models\RM2.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\PlayerController\PlayerController.cpp">
+      <Filter>PlayerController</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Save\Config.cpp">
+      <Filter>Save</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\Script.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\ScriptClass.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\ScriptFunction.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\ScriptGlobal.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\ScriptManager.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\ScriptModule.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\ScriptObject.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\StringFactory.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\CollisionDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinition.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\EventDefinition.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\RefCounter.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\CachedArgument.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.cpp">
+      <Filter>Scripting\AngelScriptAddons\scriptarray</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Graphics\DebugGraphics.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Utils\INI.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Utils\TextMgmt.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Utils\MathUtil.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\World\World.cpp">
+      <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\World\VRManager.cpp">
-      <Filter>Src\World</Filter>
-    <ClCompile Include="..\Src\Graphics\DebugGraphics.cpp">
-      <Filter>Src\Graphics</Filter>
+      <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\World\DataInterpolator.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\World\FPSCounter.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\World\Timing.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\World\ScriptWorld.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\Type.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="..\Src\Collision\Collision.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Collision\CollisionMesh.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Collision\CollisionMeshCollection.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Graphics\Font.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Graphics\UIMesh.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Graphics\GraphicsResources.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Graphics\Camera.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Graphics\Sprite.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Input\KeyBinds.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Input\Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\Console.h">
+      <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\PauseMenu.h">
+      <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\InvSlot.h">
+      <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\Inventory.h">
+      <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\Menu.h">
+      <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\GUI\GUIButton.h">
+      <Filter>Menus\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\GUI\GUIComponent.h">
+      <Filter>Menus\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\GUI\GUIFrame.h">
+      <Filter>Menus\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\GUI\GUIText.h">
+      <Filter>Menus\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\GUI\GUITextInput.h">
+      <Filter>Menus\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Menus\GUI\MementoManager.h">
+      <Filter>Menus\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Models\RM2.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\PlayerController\PlayerController.h">
+      <Filter>PlayerController</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Save\Config.h">
+      <Filter>Save</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\Script.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\ScriptClass.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\ScriptFunction.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\ScriptManager.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\ScriptModule.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\ScriptObject.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\StringFactory.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinition.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\CollisionDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinition.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\EventDefinition.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\RefCounter.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\CachedArgument.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.h">
+      <Filter>Scripting\AngelScriptAddons\scriptarray</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Graphics\DebugGraphics.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Utils\INI.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Utils\TextMgmt.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Utils\MathUtil.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\World\World.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\World\VRManager.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\World\DataInterpolator.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\World\FPSCounter.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\World\Timing.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\World\ScriptWorld.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\Type.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SCPCB.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{2a8a569f-66d8-4ac1-b257-5b18c402d79f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{187f7206-04b6-4cd3-8f63-490371fbd586}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{4abb87db-25a4-42aa-bb9d-e170497d40b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menus">
+      <UniqueIdentifier>{53dd1267-112b-4fd3-a4a3-68315807ffd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{305c7b48-b016-4d67-afa0-606e4f42bf66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlayerController">
+      <UniqueIdentifier>{e2369a36-8ce9-4101-b3ee-a9b6ae7bdc27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Save">
+      <UniqueIdentifier>{f5a3a8af-b5f3-49e6-9839-9a3621553d8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting">
+      <UniqueIdentifier>{f4810b3c-277f-4071-9abb-c07acfc4b513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{8441c195-6ae8-466f-8c64-ab9e51ea80d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{d3bae494-bf83-461d-ae68-26caf9f49b05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menus\GUI">
+      <UniqueIdentifier>{76b2ce64-f7bb-42b0-bb87-2d9b6f6e5e4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting\NativeDefinitions">
+      <UniqueIdentifier>{385a7202-e0ec-4d8e-86b3-f82e1bb41485}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting\AngelScriptAddons">
+      <UniqueIdentifier>{65ccd72e-d78d-42d3-8a7e-df20fd22f662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting\AngelScriptAddons\scriptarray">
+      <UniqueIdentifier>{01577c9d-cd86-494f-8564-b9c025344777}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Src\Scripting\ScriptGlobal.h">
-      <Filter>Src\Scripting</Filter>
+      <Filter>Scripting</Filter>
     </Text>
   </ItemGroup>
 </Project>
