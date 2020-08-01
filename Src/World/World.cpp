@@ -27,7 +27,11 @@ World::World() {
     config = new Config("options.ini");
 
     if (config->isVr()) {
-        vrm = new VRManager(config);
+        vrm = new VRManager(config, gfxRes);
+        camera = vrm->getCamera();
+    } else {
+        camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
+        camera->position = PGE::Vector3f(0.f, 10.f, 0.f);
     }
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
@@ -44,9 +48,6 @@ World::World() {
     spriteMesh = Sprite::createSpriteMesh(graphics);
     uiMesh = new UIMesh(gfxRes);
     keyBinds = new KeyBinds(io);
-
-    camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
-    camera->position = PGE::Vector3f(0.f, 10.f, 0.f);
     
     currMenu = nullptr;
     menuGraveyard = nullptr;
@@ -69,7 +70,10 @@ World::World() {
 
     shutdownRequested = false;
     
-    vrm->createTexture(graphics, config);
+    if (config->isVr()) {
+        std::cout << "CREATING TEXTGURE" << std::endl;
+        vrm->createTexture(graphics, config);
+    }
 }
 
 World::~World() {
@@ -142,13 +146,14 @@ bool World::run() {
     if (!config->isVr()) {
         graphics->resetRenderTarget();
         graphics->clear(PGE::Color(1.f, 0.f, 1.f, 1.f));
-        draw((float)timing->getInterpolationFactor());
+        draw((float)timing->getInterpolationFactor(), RenderType::All);
     } else {
-        vrm->update(camera);
-        
+        vrm->update();
         graphics->setRenderTarget(vrm->getTexture());
+
+        vrm->setEye(true);
         graphics->clear(PGE::Color(0.f, 0.f, 0.f, 1.f));
-        draw(1.f);
+        draw(1.f, RenderType::NoUI);
         vr::Texture_t leftEyeTexture = {
             vrm->getTexture()->getNative(),
 #ifdef __APPLE__
@@ -160,11 +165,9 @@ bool World::run() {
         };
         vr::VRCompositor()->Submit(vr::Eye_Left, &leftEyeTexture, NULL);
 
-        PGE::Vector3f lol = camera->getViewMatrix().extractViewTarget().crossProduct(camera->getViewMatrix().extractViewUp()).normalize().multiply(20.f); // Right vector
-        camera->position = camera->position.add(lol);
-        camera->update();
+        vrm->setEye(false);
         graphics->clear(PGE::Color(0.f, 0.f, 0.f, 1.f));
-        draw(1.f);
+        draw(1.f, RenderType::NoUI);
         vr::Texture_t rightEyeTexture = {
         vrm->getTexture()->getNative(),
 #ifdef __APPLE__
@@ -175,8 +178,6 @@ bool World::run() {
          vr::ColorSpace_Gamma
         };
         vr::VRCompositor()->Submit(vr::Eye_Right, &rightEyeTexture, NULL);
-        camera->position = camera->position.subtract(lol);
-        camera->update();
 
         graphics->resetRenderTarget();
         graphics->setDepthTest(false);
@@ -186,8 +187,7 @@ bool World::run() {
             GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio(),
             GUIComponent::SCALE_MAGNITUDE));
         uiMesh->endRender();
-        graphics->setDepthTest(true);
-        graphics->swap(config->isVsync());
+        draw(1.f, RenderType::UIOnly);
     }
 
     // Get elapsed seconds since last run.
@@ -271,28 +271,27 @@ void World::runTick(float timeStep) {
     }
 }
 
-void World::draw(float interpolation) {
-    drawPlaying(interpolation);
-
-    scripting->draw(interpolation);
-
-    gfxRes->getDebugGraphics()->draw3DLine(PGE::Line3f(0,10,0,10,10,0), PGE::Color::Green, 1.f);
-    gfxRes->getDebugGraphics()->draw3DLine(PGE::Line3f(0,10,0,0,20,0), PGE::Color::Red, 1.f);
-
-    // UI.
-    graphics->setDepthTest(false);
-
-    if (currMenu != nullptr) {
-        currMenu->render();
+void World::draw(float interpolation, RenderType r) {
+    if (r != RenderType::UIOnly) {
+        drawPlaying(interpolation);
+        scripting->draw(interpolation);
     }
 
-    fps->draw();
+    if (r != RenderType::NoUI) {
+        graphics->setDepthTest(false);
+
+        if (currMenu != nullptr) {
+            currMenu->render();
+        }
+
+        fps->draw();
 #ifdef DEBUG
-    mouseTxtX->render();
-    mouseTxtY->render();
+        mouseTxtX->render();
+        mouseTxtY->render();
 #endif
 
-    graphics->setDepthTest(true);
+        graphics->setDepthTest(true);
+    }
 
     graphics->swap(config->isVsync());
 }
@@ -317,10 +316,6 @@ void World::updatePlaying(float timeStep) {
 void World::drawPlaying(float interpolation) {
     camera->updateDrawTransform(interpolation);
     gfxRes->setCameraUniforms(camera);
-}
-
-void World::destroyPlaying() {
-
 }
 
 void World::quit() {

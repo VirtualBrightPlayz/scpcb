@@ -31,13 +31,15 @@ class Camera {
 
         PGE::Vector3f lookAt;
         PGE::Vector3f upDir;
-
-        PGE::Matrix4x4f viewMatrix;
-        PGE::Matrix4x4f projectionMatrix;
+        
         PGE::Matrix4x4f rotation;
         DataInterpolator dataInter;
 
         float getAspectRatio() const;
+
+    protected:
+        PGE::Matrix4x4f viewMatrix;
+        PGE::Matrix4x4f projectionMatrix;
 
     public:
         Camera(GraphicsResources* gr, int w, int h, float fov, float nearZ = 0.01f, float farZ = 30.f, bool orthographic = false);
@@ -46,7 +48,7 @@ class Camera {
         PGE::Vector3f position;
 
         void update();
-        void updateDrawTransform(float interpolation);
+        virtual void updateDrawTransform(float interpolation);
         
         void setUpVector(const PGE::Vector3f upVector);
         void setLookAt(const PGE::Vector3f lookAt);

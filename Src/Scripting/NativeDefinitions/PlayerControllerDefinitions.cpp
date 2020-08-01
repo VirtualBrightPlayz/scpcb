@@ -42,7 +42,7 @@ void PlayerControllerDefinitions::setCollisionCollection(PlayerController* contr
 
 void PlayerControllerDefinitions::__UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller, Input input) {
     controller->update(tempCamera->getYawAngle(), tempCamera->getPitchAngle(), input);
-    tempCamera->position = controller->getPosition().add(PGE::Vector3f(0.f, 15.f, 0.f));
+    tempCamera->position = controller->getPosition();// .add(PGE::Vector3f(0.f, 15.f, 0.f));
 
     release(controller);
 }

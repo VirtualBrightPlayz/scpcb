@@ -31,6 +31,12 @@ class ScriptWorld;
 
 class World {
     private:
+        enum class RenderType {
+            All,
+            NoUI,
+            UIOnly
+        };
+
         PGE::Graphics* graphics;
         PGE::IO* io;
 
@@ -80,10 +86,9 @@ class World {
         void updatePlaying(float timeStep);
         // Draw code for GameState::Playing game state.
         void drawPlaying(float interpolation);
-        void destroyPlaying();
 
         // Goes through the draw phase.
-        void draw(float interpolation);
+        void draw(float interpolation, RenderType r);
 
     public:
         World();
