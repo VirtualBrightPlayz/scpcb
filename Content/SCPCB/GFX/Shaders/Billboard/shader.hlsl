@@ -12,7 +12,7 @@ cbuffer cbFragment {
 };
 
 struct VS_INPUT {
-    float2 position  : POSITION0;
+    float4 position  : POSITION0;
     float2 texCoords : TEXCOORD0;
 };
 

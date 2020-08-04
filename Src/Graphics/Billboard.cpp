@@ -15,16 +15,16 @@ Billboard::Billboard(PGE::Graphics* gfx, GraphicsResources* gr, const PGE::Vecto
     std::vector<PGE::Primitive> triangles;
     
     PGE::Vertex f;
-    f.setVector2f("position", PGE::Vector2f(0.f, 0.f));
+    f.setVector4f("position", PGE::Vector4f(0.f, 0.f, 0.f, 1.f));
     f.setVector2f("texCoords", PGE::Vector2f(0.f, 0.f));
     vertices.push_back(f);
-    f.setVector2f("position", PGE::Vector2f(1.f, 0.f));
+    f.setVector4f("position", PGE::Vector4f(1.f, 0.f, 0.f, 1.f));
     f.setVector2f("texCoords", PGE::Vector2f(1.f, 0.f));
     vertices.push_back(f);
-    f.setVector2f("position", PGE::Vector2f(0.f, 1.f));
+    f.setVector4f("position", PGE::Vector4f(0.f, 1.f, 0.f, 1.f));
     f.setVector2f("texCoords", PGE::Vector2f(0.f, 1.f));
     vertices.push_back(f);
-    f.setVector2f("position", PGE::Vector2f(1.f, 1.f));
+    f.setVector4f("position", PGE::Vector4f(1.f, 1.f, 0.f, 1.f));
     f.setVector2f("texCoords", PGE::Vector2f(1.f, 1.f));
     vertices.push_back(f);
     triangles.push_back(PGE::Primitive(0, 1, 2));
