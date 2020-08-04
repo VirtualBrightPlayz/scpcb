@@ -57,6 +57,7 @@ class World {
         // When a menu is markedForRemoval it's moved here where it'll be deleted in the update loop.
         Menu* menuGraveyard;
 
+        BillboardManager* bm;
         Billboard* b;
 
 #ifdef DEBUG

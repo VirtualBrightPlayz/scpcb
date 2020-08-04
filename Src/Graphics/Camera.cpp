@@ -5,14 +5,15 @@
 #include "GraphicsResources.h"
 #include "../World/DataInterpolator.h"
 
+const PGE::Vector3f Camera::forwardVector = PGE::Vector3f(0.f, 0.f, 1.f);
+const PGE::Vector3f Camera::upVector = PGE::Vector3f(0.f, 1.f, 0.f);
+
 Camera::Camera(GraphicsResources* gr, int w, int h, float fov, float nearZ, float farZ, bool orthographic) {
     gfxRes = gr;
 
     position = PGE::Vector3f(0.f, 0.f, 0.f);
-    lookAt = PGE::Vector3f(0.f, 0.f, 1.f);
-    upDir = PGE::Vector3f(0.f, 1.f, 0.f);
 
-    viewMatrix = PGE::Matrix4x4f::constructViewMat(position, lookAt, upDir);
+    viewMatrix = PGE::Matrix4x4f::constructViewMat(position, forwardVector, upVector);
 
     yawAngle = 0.f;
     pitchAngle = 0.f;
@@ -36,36 +37,23 @@ Camera::Camera(GraphicsResources* gr, int w, int h, float fov, float nearZ, floa
 Camera::Camera(GraphicsResources* gr, int w, int h) : Camera(gr, w, h, MathUtil::degToRad(70.0f)) { }
 
 void Camera::update() {
-    PGE::Vector3f rotate = PGE::Vector3f(-pitchAngle, yawAngle, tilt);
-    dataInter.update(position, rotate, PGE::Vector3f::zero);
+    dataInter.update(position, PGE::Vector3f(-pitchAngle, yawAngle, tilt), PGE::Vector3f::zero);
 }
 
 void Camera::updateDrawTransform(float interpolation) {
     rotation = PGE::Matrix4x4f::rotate(dataInter.getInterpolatedRotation(interpolation));
 
-    viewMatrix = PGE::Matrix4x4f::constructViewMat(dataInter.getInterpolatedPosition(interpolation), rotation.transform(lookAt), rotation.transform(upDir));
+    viewMatrix = PGE::Matrix4x4f::constructViewMat(dataInter.getInterpolatedPosition(interpolation), rotation.transform(forwardVector), rotation.transform(upVector));
 
     if (needsProjUpdate) {
         if (!orthographicProj) {
-            projectionMatrix = PGE::Matrix4x4f::constructPerspectiveMat(fov, getAspectRatio(), nearPlaneZ, farPlaneZ);
+            projectionMatrix = PGE::Matrix4x4f::constructPerspectiveMat(fov, (float)width / height, nearPlaneZ, farPlaneZ);
         } else {
             projectionMatrix = PGE::Matrix4x4f::constructOrthographicMat(width, height, nearPlaneZ, farPlaneZ);
         }
 
         needsProjUpdate = false;
     }
-}
-
-float Camera::getAspectRatio() const {
-    return (float)width / height;
-}
-
-void Camera::setUpVector(const PGE::Vector3f upVector) {
-    upDir = upVector;
-}
-
-void Camera::setTilt(float rad) {
-    tilt = rad;
 }
 
 void Camera::addAngle(float x, float y) {
@@ -109,8 +97,4 @@ float Camera::getYawAngle() const {
 
 float Camera::getPitchAngle() const {
     return pitchAngle;
-}
-
-PGE::Vector3f Camera::getForwardVector() const {
-    return rotation.transform(lookAt);
 }

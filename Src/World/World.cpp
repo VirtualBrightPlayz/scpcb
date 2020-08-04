@@ -31,7 +31,6 @@ World::World() {
         camera = vrm->getCamera();
     } else {
         camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
-        camera->position = PGE::Vector3f(0.f, 10.f, 0.f);
     }
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
@@ -64,8 +63,8 @@ World::World() {
     applyConfig(config);
 
 #ifdef DEBUG
-    mouseTxtX =  new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -5.f, Alignment::Bottom | Alignment::Left);
-    mouseTxtY =  new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -2.5f, Alignment::Bottom | Alignment::Left);
+    mouseTxtX = new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -5.f, Alignment::Bottom | Alignment::Left);
+    mouseTxtY = new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -2.5f, Alignment::Bottom | Alignment::Left);
 #endif
 
     shutdownRequested = false;
@@ -75,7 +74,8 @@ World::World() {
         vrm->createTexture(graphics, config);
     }
     
-    b = new Billboard(graphics, gfxRes, PGE::Vector3f(0, 5, 35), "SCPCB/GFX/Decals/blood_drop2.png");
+    bm = new BillboardManager(graphics, gfxRes);
+    b = new RotatedBillboard(bm, PGE::Vector3f(0, 5, 5), "SCPCB/GFX/Decals/blood_drop2.png", PGE::Vector3f(MathUtil::PI * 0.5f, 0, 0), PGE::Vector2f(5, 5));
 }
 
 World::~World() {
@@ -278,7 +278,7 @@ void World::draw(float interpolation, RenderType r) {
         drawPlaying(interpolation);
         scripting->draw(interpolation);
     }
-    b->render(camera->getForwardVector().invert());
+    b->render(camera->getRotationMatrix());
 
     if (r != RenderType::NoUI) {
         graphics->setDepthTest(false);
@@ -300,17 +300,14 @@ void World::draw(float interpolation, RenderType r) {
 }
 
 void World::updatePlaying(float timeStep) {
-    int centerX = config->getWidth() / 2;
-    int centerY = config->getHeight() / 2;
+    PGE::Vector2f center = PGE::Vector2f(config->getWidth(), config->getHeight()).multiply(0.5f);
 
     // TODO: Sensitivity from Config class.
-    float addXAngle = (float)(io->getMousePosition().x - centerX) / 300.f;
-    float addYAngle = (float)(io->getMousePosition().y - centerY) / 300.f;
-
-    camera->addAngle(addXAngle, addYAngle);
+    PGE::Vector2f addAngle = io->getMousePosition().subtract(center).multiply(1 / 300.f);
+    camera->addAngle(addAngle.x, addAngle.y);
 
     // Reset mouse to center.
-    io->setMousePosition(PGE::Vector2f(centerX, centerY));
+    io->setMousePosition(center);
 
     // View/Projection matrix.
     camera->update();

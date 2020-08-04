@@ -29,15 +29,13 @@ class Camera {
 
         bool needsProjUpdate;
         
-        PGE::Vector3f lookAt;
-        PGE::Vector3f upDir;
+        static const PGE::Vector3f forwardVector;
+        static const PGE::Vector3f upVector;
         
         PGE::Matrix4x4f rotation;
-        DataInterpolator dataInter;
-
-        float getAspectRatio() const;
 
     protected:
+        DataInterpolator dataInter;
         PGE::Matrix4x4f viewMatrix;
         PGE::Matrix4x4f projectionMatrix;
 
@@ -50,18 +48,14 @@ class Camera {
         void update();
         virtual void updateDrawTransform(float interpolation);
         
-        void setUpVector(const PGE::Vector3f upVector);
-        void setTilt(float rad);
         void addAngle(float yawAngle, float pitchAngle);
 
         const PGE::Matrix4x4f& getViewMatrix() const;
         const PGE::Matrix4x4f& getProjectionMatrix() const;
-        const PGE::Matrix4x4f& getRotationMatrix() const;
+        virtual const PGE::Matrix4x4f& getRotationMatrix() const;
 
         float getYawAngle() const;
         float getPitchAngle() const;
-
-        PGE::Vector3f getForwardVector() const;
 };
 
 #endif // Camera_H_INCLUDED
