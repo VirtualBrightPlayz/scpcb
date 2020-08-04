@@ -64,10 +64,6 @@ void Camera::setUpVector(const PGE::Vector3f upVector) {
     upDir = upVector;
 }
 
-void Camera::setLookAt(const PGE::Vector3f lookAt) {
-    this->lookAt = lookAt;
-}
-
 void Camera::setTilt(float rad) {
     tilt = rad;
 }
@@ -113,4 +109,8 @@ float Camera::getYawAngle() const {
 
 float Camera::getPitchAngle() const {
     return pitchAngle;
+}
+
+PGE::Vector3f Camera::getForwardVector() const {
+    return rotation.transform(lookAt);
 }

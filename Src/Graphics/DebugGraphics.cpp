@@ -44,16 +44,16 @@ void DebugGraphics::draw3DLine(const PGE::Line3f& line, const PGE::Color& color,
     vertex.setVector3f("normal", v3);
 
     tempPos = line.pointA.add(v2.multiply(thickness));
-    vertex.setVector4f("position", PGE::Vector4f(tempPos.x, tempPos.y, tempPos.z, 1.f));
+    vertex.setVector4f("position", PGE::Vector4f(tempPos, 1.f));
     vertices.push_back(vertex);
     tempPos = line.pointA.add(v2.multiply(-thickness));
-    vertex.setVector4f("position", PGE::Vector4f(tempPos.x, tempPos.y, tempPos.z, 1.f));
+    vertex.setVector4f("position", PGE::Vector4f(tempPos, 1.f));
     vertices.push_back(vertex);
     tempPos = line.pointB.add(v2.multiply(thickness));
-    vertex.setVector4f("position", PGE::Vector4f(tempPos.x, tempPos.y, tempPos.z, 1.f));
+    vertex.setVector4f("position", PGE::Vector4f(tempPos, 1.f));
     vertices.push_back(vertex);
     tempPos = line.pointB.add(v2.multiply(-thickness));
-    vertex.setVector4f("position", PGE::Vector4f(tempPos.x, tempPos.y, tempPos.z, 1.f));
+    vertex.setVector4f("position", PGE::Vector4f(tempPos, 1.f));
     vertices.push_back(vertex);
     triangles.push_back(PGE::Primitive(0,1,2));
     triangles.push_back(PGE::Primitive(1,2,3));
@@ -63,16 +63,16 @@ void DebugGraphics::draw3DLine(const PGE::Line3f& line, const PGE::Color& color,
     vertex.setVector3f("normal", v2);
 
     tempPos = line.pointA.add(v3.multiply(thickness));
-    vertex.setVector4f("position", PGE::Vector4f(tempPos.x, tempPos.y, tempPos.z, 1.f));
+    vertex.setVector4f("position", PGE::Vector4f(tempPos, 1.f));
     vertices.push_back(vertex);
     tempPos = line.pointA.add(v3.multiply(-thickness));
-    vertex.setVector4f("position", PGE::Vector4f(tempPos.x, tempPos.y, tempPos.z, 1.f));
+    vertex.setVector4f("position", PGE::Vector4f(tempPos, 1.f));
     vertices.push_back(vertex);
     tempPos = line.pointB.add(v3.multiply(thickness));
-    vertex.setVector4f("position", PGE::Vector4f(tempPos.x, tempPos.y, tempPos.z, 1.f));
+    vertex.setVector4f("position", PGE::Vector4f(tempPos, 1.f));
     vertices.push_back(vertex);
     tempPos = line.pointB.add(v3.multiply(-thickness));
-    vertex.setVector4f("position", PGE::Vector4f(tempPos.x, tempPos.y, tempPos.z, 1.f));
+    vertex.setVector4f("position", PGE::Vector4f(tempPos, 1.f));
     vertices.push_back(vertex);
     triangles.push_back(PGE::Primitive(4,5,6));
     triangles.push_back(PGE::Primitive(5,6,7));

@@ -29,4 +29,4 @@ class DebugGraphics {
         void draw3DLine(const PGE::Line3f& line, const PGE::Color& color, float thickness);
 };
 
-#endif
+#endif // DEBUGGRAPHICS_H_INCLUDED

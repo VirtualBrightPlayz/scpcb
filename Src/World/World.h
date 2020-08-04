@@ -10,6 +10,7 @@
 
 #include "../Graphics/Sprite.h"
 #include "../Graphics/UIMesh.h"
+#include "../Graphics/Billboard.h"
 #include "../Graphics/Font.h"
 #include "../Input/KeyBinds.h"
 #include "../Save/Config.h"
@@ -55,6 +56,8 @@ class World {
         Menu* currMenu;
         // When a menu is markedForRemoval it's moved here where it'll be deleted in the update loop.
         Menu* menuGraveyard;
+
+        Billboard* b;
 
 #ifdef DEBUG
         GUIText* mouseTxtX;

@@ -74,6 +74,8 @@ World::World() {
         std::cout << "CREATING TEXTGURE" << std::endl;
         vrm->createTexture(graphics, config);
     }
+    
+    b = new Billboard(graphics, gfxRes, PGE::Vector3f(0, 5, 35), "SCPCB/GFX/Decals/blood_drop2.png");
 }
 
 World::~World() {
@@ -276,6 +278,7 @@ void World::draw(float interpolation, RenderType r) {
         drawPlaying(interpolation);
         scripting->draw(interpolation);
     }
+    b->render(camera->getForwardVector().invert());
 
     if (r != RenderType::NoUI) {
         graphics->setDepthTest(false);

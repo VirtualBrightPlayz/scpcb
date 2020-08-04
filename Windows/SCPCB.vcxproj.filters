@@ -164,6 +164,9 @@
     <ClCompile Include="..\Src\Scripting\Type.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Graphics\Billboard.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -328,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\Type.h">
       <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Graphics\Billboard.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -28,7 +28,7 @@ class Camera {
         bool orthographicProj;
 
         bool needsProjUpdate;
-
+        
         PGE::Vector3f lookAt;
         PGE::Vector3f upDir;
         
@@ -51,7 +51,6 @@ class Camera {
         virtual void updateDrawTransform(float interpolation);
         
         void setUpVector(const PGE::Vector3f upVector);
-        void setLookAt(const PGE::Vector3f lookAt);
         void setTilt(float rad);
         void addAngle(float yawAngle, float pitchAngle);
 
@@ -61,6 +60,8 @@ class Camera {
 
         float getYawAngle() const;
         float getPitchAngle() const;
+
+        PGE::Vector3f getForwardVector() const;
 };
 
 #endif // Camera_H_INCLUDED
