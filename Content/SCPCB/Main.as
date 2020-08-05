@@ -5,7 +5,7 @@ serialize EntranceZone@ entranceZone;
 // TODO: remove these globals, they only exist for testing purposes
 serialize Vector3f whVy = Vector3f(17, 14, 14);
 serialize string uh = "aaah";
-serialize Matrix4x4f worldMatrix = Matrix4x4f::constructWorldMat(Vector3f(0, 0, 0), Vector3f(1, 1, 1), Vector3f(0, 0, 0));
+serialize Matrix4x4f worldMatrix = Matrix4x4f::constructWorldMat(Vector3f(0.0, 0.0, 0.0), Vector3f(1.0, 1.0, 1.0), Vector3f(0, 0, 0));
 
 PlayerController@ testController;
 Collision::Collection@ testCollCollection;
@@ -24,7 +24,7 @@ Billboard@ lol;
 void main() {
     Debug::log("Starting up!");
     
-    @lol = Billboard::create(Vector3f(1, 1, 1), "SCPCB/GFX/Decals/blood_drop2.png", Vector3f(100, 10, 0));
+    @lol = Billboard::createRotated(Vector3f(1, 1, 1), "SCPCB/GFX/Decals/blood_drop2.png", Vector3f(0,0,0));
 
     registerCommand("mytest", "THIS COMKMAND IS VERY EPIC", Test);
     registerCommand(

@@ -5,7 +5,12 @@
 
 class NativeDefinition {
     protected:
+        template<class BASE, class DERIVED>
+		void registerInheritance(const char* base, const char* derived);
+        template<class BASE, class DERIVED>
+        void registerInheritanceCount(const char* base, const char* derived);
+        
         asIScriptEngine* engine;
 };
 
-#endif
+#endif // NATIVEDEFINITION_H_INCLUDED

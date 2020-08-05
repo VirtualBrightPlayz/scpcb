@@ -1,23 +1,35 @@
 #include "MathDefinitions.h"
 #include "../../Utils/MathUtil.h"
 
-void vector3fConstructor(void* memory) {
+static void vector2fConstructor(void* memory) {
+    new(memory) PGE::Vector2f();
+}
+
+static void vector2fConstructorParametrized(float x, float y, void* memory) {
+    new(memory) PGE::Vector2f(x, y);
+}
+
+static void vector2fDestructor(void* memory) {
+    ((PGE::Vector2f*)memory)->~Vector2f();
+}
+
+static void vector3fConstructor(void* memory) {
     new(memory) PGE::Vector3f();
 }
 
-void vector3fConstructorParametrized(float x, float y, float z, void* memory) {
+static void vector3fConstructorParametrized(float x, float y, float z, void* memory) {
     new(memory) PGE::Vector3f(x, y, z);
 }
 
-void vector3fDestructor(void* memory) {
+static void vector3fDestructor(void* memory) {
     ((PGE::Vector3f*)memory)->~Vector3f();
 }
 
-void matrixConstructor(void* memory) {
+static void matrixConstructor(void* memory) {
     new(memory) PGE::Matrix4x4f();
 }
 
-void matrixConstructorParametrized(float aa, float ab, float ac, float ad,
+static void matrixConstructorParametrized(float aa, float ab, float ac, float ad,
                                    float ba, float bb, float bc, float bd,
                                    float ca, float cb, float cc, float cd,
                                    float da, float db, float dc, float dd, void* memory) {
@@ -27,18 +39,41 @@ void matrixConstructorParametrized(float aa, float ab, float ac, float ad,
                                 da, db, dc, dd);
 }
 
-void matrixDestructor(void* memory) {
+static void matrixDestructor(void* memory) {
     ((PGE::Matrix4x4f*)memory)->~Matrix4x4f();
 }
 
 MathDefinitions::MathDefinitions(ScriptManager* mgr) {
     engine = mgr->getAngelScriptEngine();
 
-    //Vector3f
+    // Vector2f
+    engine->RegisterObjectType("Vector2f", sizeof(PGE::Vector2f), asOBJ_VALUE | asOBJ_APP_CLASS_ALLFLOATS | asGetTypeTraits<PGE::Vector2f>());
+    engine->RegisterObjectBehaviour("Vector2f", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(vector2fConstructor), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectBehaviour("Vector2f", asBEHAVE_CONSTRUCT, "void f(float x, float y)", asFUNCTION(vector2fConstructorParametrized), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectBehaviour("Vector2f", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(vector2fDestructor), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectProperty("Vector2f", "float x", asOFFSET(PGE::Vector2f, x));
+    engine->RegisterObjectProperty("Vector2f", "float y", asOFFSET(PGE::Vector2f, y));
+
+    engine->RegisterObjectMethod("Vector2f", "Vector2f& opAssign(const Vector2f &in other)", asMETHODPR(PGE::Vector2f, operator=, (const PGE::Vector2f&), PGE::Vector2f&), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod("Vector2f", "float lengthSquared() const", asMETHOD(PGE::Vector2f, lengthSquared), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector2f", "float length() const", asMETHOD(PGE::Vector2f, length), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector2f", "float distanceSquared(const Vector2f&in other) const", asMETHOD(PGE::Vector2f, distanceSquared), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector2f", "float distance(const Vector2f&in other) const", asMETHOD(PGE::Vector2f, distance), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod("Vector2f", "Vector2f add(const Vector2f&in other) const", asMETHOD(PGE::Vector2f, add), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector2f", "Vector2f subtract(const Vector2f&in other) const", asMETHOD(PGE::Vector2f, subtract), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod("Vector2f", "Vector2f multiply(float s) const", asMETHOD(PGE::Vector2f, multiply), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector2f", "Vector2f normalize() const", asMETHOD(PGE::Vector2f, normalize), asCALL_THISCALL);
+
+    engine->RegisterObjectMethod("Vector2f", "Vector2f reflect(const Vector2f&in other) const", asMETHOD(PGE::Vector2f, reflect), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector2f", "float dotProduct(const Vector2f&in other) const", asMETHOD(PGE::Vector2f, dotProduct), asCALL_THISCALL);
+
+    // Vector3f
     engine->RegisterObjectType("Vector3f", sizeof(PGE::Vector3f), asOBJ_VALUE | asOBJ_APP_CLASS_ALLFLOATS | asGetTypeTraits<PGE::Vector3f>());
     engine->RegisterObjectBehaviour("Vector3f", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(vector3fConstructor), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectBehaviour("Vector3f", asBEHAVE_CONSTRUCT, "void f(float x, float y, float z)",
-        asFUNCTION(vector3fConstructorParametrized), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectBehaviour("Vector3f", asBEHAVE_CONSTRUCT, "void f(float x, float y, float z)", asFUNCTION(vector3fConstructorParametrized), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("Vector3f", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(vector3fDestructor), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectProperty("Vector3f", "float x", asOFFSET(PGE::Vector3f, x));
     engine->RegisterObjectProperty("Vector3f", "float y", asOFFSET(PGE::Vector3f, y));
@@ -61,7 +96,7 @@ MathDefinitions::MathDefinitions(ScriptManager* mgr) {
     engine->RegisterObjectMethod("Vector3f", "float dotProduct(const Vector3f&in other) const", asMETHOD(PGE::Vector3f, dotProduct), asCALL_THISCALL);
     engine->RegisterObjectMethod("Vector3f", "Vector3f crossProduct(const Vector3f&in other) const", asMETHOD(PGE::Vector3f, crossProduct), asCALL_THISCALL);
 
-    //Matrix4x4f
+    // Matrix4x4f
     engine->RegisterObjectType("Matrix4x4f", sizeof(PGE::Matrix4x4f), asOBJ_VALUE | asOBJ_APP_CLASS_ALLFLOATS | asGetTypeTraits<PGE::Matrix4x4f>());
     engine->RegisterObjectBehaviour("Matrix4x4f", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(matrixConstructor), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("Matrix4x4f", asBEHAVE_CONSTRUCT, "void f(float aa, float ab, float ac, float ad,"

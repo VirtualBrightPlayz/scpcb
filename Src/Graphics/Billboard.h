@@ -27,6 +27,10 @@ class BillboardManager {
 };
 
 class Billboard {
+    private:
+        void dropMaterial();
+        void loadMaterial(const PGE::String& textureName);
+
     protected:
         const BillboardManager* bm;
         PGE::Material* material;
@@ -36,8 +40,10 @@ class Billboard {
         PGE::Vector2f scale;
         PGE::Color color;
         
-        Billboard(BillboardManager* bm, const PGE::Vector3f& pos, const PGE::String& textureName, const PGE::Vector2f& scale = PGE::Vector2f::one, const PGE::Color& color = PGE::Color::White);
+        Billboard(BillboardManager* bm, const PGE::Vector3f& pos, const PGE::String& textureName, const PGE::Vector2f& scale, const PGE::Color& color);
         ~Billboard();
+
+        void setTexture(const PGE::String& textureName);
 
         virtual void render(const PGE::Matrix4x4f& camRotationMatrix) const;
 };
@@ -46,7 +52,7 @@ class RotatedBillboard : public Billboard {
     public:
         PGE::Vector3f rotation;
         
-        RotatedBillboard(BillboardManager* bm, const PGE::Vector3f& pos, const PGE::String& textureName, const PGE::Vector3f& rotation = PGE::Vector3f::zero, const PGE::Vector2f& scale = PGE::Vector2f::one, const PGE::Color& color = PGE::Color::White);
+        RotatedBillboard(BillboardManager* bm, const PGE::Vector3f& pos, const PGE::String& textureName, const PGE::Vector3f& rotation, const PGE::Vector2f& scale, const PGE::Color& color);
 
         virtual void render(const PGE::Matrix4x4f& camRotationMatrix) const override;
 };

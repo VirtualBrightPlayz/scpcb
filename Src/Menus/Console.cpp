@@ -4,7 +4,7 @@
 #include "GUI/GUIFrame.h"
 #include "GUI/GUITextInput.h"
 #include "../Utils/MathUtil.h"
-#include "../Scripting/NativeDefinitions/ConsoleDefinition.h"
+#include "../Scripting/NativeDefinitions/ConsoleDefinitions.h"
 
 float Console::Message::lineHeight;
 float Console::Message::bottomOfConsoleWindow;

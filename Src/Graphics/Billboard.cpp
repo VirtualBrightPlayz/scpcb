@@ -62,13 +62,26 @@ Billboard::Billboard(BillboardManager* bm, const PGE::Vector3f& pos, const PGE::
     this->scale = scale;
     this->color = color;
     
+    loadMaterial(textureName);
+}
+
+Billboard::~Billboard() {
+    dropMaterial();
+}
+
+void Billboard::dropMaterial() {
+    bm->getGfxRes()->dropTexture(material->getTexture(0));
+    delete material;
+}
+
+void Billboard::loadMaterial(const PGE::String& textureName) {
     PGE::Texture* texture = bm->getGfxRes()->getTexture(PGE::FilePath::fromStr(textureName));
     material = new PGE::Material(bm->getShader(), texture, false);
 }
 
-Billboard::~Billboard() {
-    bm->getGfxRes()->dropTexture(material->getTexture(0));
-    delete material;
+void Billboard::setTexture(const PGE::String& textureName) {
+    dropMaterial();
+    loadMaterial(textureName);
 }
 
 void Billboard::render(const PGE::Matrix4x4f& camRotationMatrix) const {

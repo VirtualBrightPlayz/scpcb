@@ -1956,37 +1956,6 @@ int asCScriptEngine::RegisterObjectBehaviour(const char *datatype, asEBehaviours
 	return RegisterBehaviourToObjectType(CastToObjectType(type.GetTypeInfo()), behaviour, decl, funcPointer, callConv, auxiliary, compositeOffset, isCompositeIndirect);
 }
 
-// CB; Only for non-reference counted classes
-template<class BASE, class DERIVED>
-int asCScriptEngine::RegisterObjectInheritance(const char* base, const char* derived) {
-	// There might be a way to do this without templates?
-	bool b;
-	if (b = (GetRegisteredType(base, defaultNamespace)->flags & asOBJ_NOCOUNT) != (GetRegisteredType(derived, defaultNamespace)->flags & asOBJ_NOCOUNT)) {
-		return ConfigError(asINVALID_CONFIGURATION, "RegisterObjectInheritance", "One type is reference counted, the other is not.", 0);
-	}
-	int err = 0;
-	err = RegisterObjectMethod(base, derived + "@ opCast()", b ? asMETHOD(asCScriptEngine, (refCast<BASE, DERIVED>)) : asMETHOD(asCScriptEngine, (refCastCount<BASE, DERIVED>)), asCALL_THISCALL_ASGLOBAL, this);
-	if (err < 0) { return err; }
-	err = RegisterObjectMethod(derived, base + "@ opImplCast()", b ? asMETHOD(asCScriptEngine, (refCast<DERIVED, BASE>)) : asMETHOD(asCScriptEngine, (refCastCount<DERIVED, BASE>)), asCALL_THISCALL_ASGLOBAL, this);
-	if (err < 0) { return err; }
-	return 0;
-}
-
-// internal CB
-template<class A, class B>
-B* asCScriptEngine::refCast(A* a) {
-	if (a == nullptr) { return nullptr; }
-	// TODO: How to add to the reference counter here?
-	return dynamic_cast<B*>(a);
-}
-
-// internal CB
-template<class A, class B>
-B* asCScriptEngine::refCastCount(A* a) {
-	if (a == nullptr) { return nullptr; }
-	return dynamic_cast<B*>(a);
-}
-
 // internal
 int asCScriptEngine::RegisterBehaviourToObjectType(asCObjectType *objectType, asEBehaviours behaviour, const char *decl, const asSFuncPtr &funcPointer, asDWORD callConv, void *auxiliary, int compositeOffset, bool isCompositeIndirect)
 {

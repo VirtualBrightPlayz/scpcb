@@ -1,12 +1,12 @@
-#ifndef GENERALDEFINITIONS_H_INCLUDED
-#define GENERALDEFINITIONS_H_INCLUDED
+#ifndef CONSOLEDEFINITIONS_H_INCLUDED
+#define CONSOLEDEFINITIONS_H_INCLUDED
 
 #include "../ScriptManager.h"
 #include "../NativeDefinition.h"
 
 class Console;
 
-class ConsoleDefinition : public NativeDefinition {
+class ConsoleDefinitions : public NativeDefinition {
     private:
         Console* console;
 
@@ -19,7 +19,7 @@ class ConsoleDefinition : public NativeDefinition {
         void warning(const PGE::String& content);
         void error(const PGE::String& content);
     public:
-        ConsoleDefinition(ScriptManager* mgr, Console* con);
+        ConsoleDefinitions(ScriptManager* mgr, Console* con);
 };
 
-#endif
+#endif // CONSOLEDEFINITIONS_H_INCLUDED
