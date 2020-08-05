@@ -19,8 +19,12 @@ void Test(int testString) {
     //Debug::log("Parameter: "+testString);
 }
 
+Billboard@ lol;
+
 void main() {
     Debug::log("Starting up!");
+    
+    @lol = Billboard::create(Vector3f(1, 1, 1), "SCPCB/GFX/Decals/blood_drop2.png", Vector3f(100, 10, 0));
 
     registerCommand("mytest", "THIS COMKMAND IS VERY EPIC", Test);
     registerCommand(
@@ -58,4 +62,5 @@ void update(float deltaTime) {
 void render(float interpolation) {
     if (test_shared_global == null) { return; }
     test_shared_global.render(interpolation);
+    lol.render(Matrix4x4f::constructWorldMat(Vector3f(0, 0, 0), Vector3f(1, 1, 1), Vector3f(0, 5, 0)));
 }

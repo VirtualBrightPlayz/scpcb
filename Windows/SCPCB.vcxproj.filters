@@ -167,6 +167,9 @@
     <ClCompile Include="..\Src\Graphics\Billboard.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\BillboardDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="..\Src\Graphics\Billboard.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\BillboardDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -43,10 +43,9 @@ class Billboard {
 };
 
 class RotatedBillboard : public Billboard {
-    private:
+    public:
         PGE::Vector3f rotation;
         
-    public:
         RotatedBillboard(BillboardManager* bm, const PGE::Vector3f& pos, const PGE::String& textureName, const PGE::Vector3f& rotation = PGE::Vector3f::zero, const PGE::Vector2f& scale = PGE::Vector2f::one, const PGE::Color& color = PGE::Color::White);
 
         virtual void render(const PGE::Matrix4x4f& camRotationMatrix) const override;

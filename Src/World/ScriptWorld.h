@@ -3,6 +3,7 @@
 
 class ScriptManager;
 
+class BillboardDefinitions;
 class ConsoleDefinition;
 class MathDefinitions;
 class RM2Definitions;
@@ -18,6 +19,7 @@ class KeyBinds;
 class Config;
 class Camera;
 class Console;
+class BillboardManager;
 class RefCounterManager;
 
 class ScriptWorld {
@@ -29,6 +31,7 @@ private:
     ConsoleDefinition* consoleDefinition;
     InputDefinitions* inputDefinitions;
     MathDefinitions* mathDefinitions;
+    BillboardDefinitions* billboardDefinitions;
     RM2Definitions* rm2Definitions;
     CollisionDefinitions* collisionDefinitions;
     PlayerControllerDefinitions* playerControllerDefinitions;
@@ -40,7 +43,7 @@ private:
     std::vector<ScriptModule*> modules;
 
 public:
-    ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, const Config* config, float timestep, Console* con);
+    ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, const Config* config, float timestep, Console* con, BillboardManager* bm);
     ~ScriptWorld();
 
     void update();

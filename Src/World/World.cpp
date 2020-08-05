@@ -58,7 +58,7 @@ World::World() {
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
 
-    scripting = new ScriptWorld(gfxRes, camera, keyBinds, config, timing->getTimeStep(), console);
+    scripting = new ScriptWorld(gfxRes, camera, keyBinds, config, timing->getTimeStep(), console, new BillboardManager(graphics, gfxRes));
 
     applyConfig(config);
 
@@ -73,9 +73,6 @@ World::World() {
         std::cout << "CREATING TEXTGURE" << std::endl;
         vrm->createTexture(graphics, config);
     }
-    
-    bm = new BillboardManager(graphics, gfxRes);
-    b = new RotatedBillboard(bm, PGE::Vector3f(0, 5, 5), "SCPCB/GFX/Decals/blood_drop2.png", PGE::Vector3f(MathUtil::PI * 0.5f, 0, 0), PGE::Vector2f(5, 5));
 }
 
 World::~World() {
@@ -278,7 +275,6 @@ void World::draw(float interpolation, RenderType r) {
         drawPlaying(interpolation);
         scripting->draw(interpolation);
     }
-    b->render(camera->getRotationMatrix());
 
     if (r != RenderType::NoUI) {
         graphics->setDepthTest(false);

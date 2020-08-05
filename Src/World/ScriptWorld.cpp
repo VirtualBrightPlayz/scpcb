@@ -14,13 +14,14 @@
 #include "../Scripting/NativeDefinitions/InputDefinitions.h"
 #include "../Scripting/NativeDefinitions/RefCounter.h"
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
+#include "../Scripting/NativeDefinitions/BillboardDefinitions.h"
 #include "../Scripting/NativeDefinitions/RM2Definitions.h"
 #include "../Scripting/NativeDefinitions/CollisionDefinitions.h"
 #include "../Scripting/NativeDefinitions/PlayerControllerDefinitions.h"
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 #include "../Scripting/NativeDefinitions/ReflectionDefinitions.h"
 
-ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, const Config* config, float timestep, Console* con) {
+ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, const Config* config, float timestep, Console* con, BillboardManager* bm) {
     manager = new ScriptManager();
 
     refCounterManager = new RefCounterManager();
@@ -28,6 +29,7 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
     consoleDefinition = new ConsoleDefinition(manager, con);
     inputDefinitions = new InputDefinitions(manager, keyBinds);
     mathDefinitions = new MathDefinitions(manager);
+    billboardDefinitions = new BillboardDefinitions(manager, bm);
     collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);
     rm2Definitions = new RM2Definitions(manager, gfxRes);
     playerControllerDefinitions = new PlayerControllerDefinitions(manager, refCounterManager, camera);
@@ -114,6 +116,7 @@ ScriptWorld::~ScriptWorld() {
     delete consoleDefinition;
     delete inputDefinitions;
     delete mathDefinitions;
+    delete billboardDefinitions;
     delete rm2Definitions;
     delete collisionDefinitions;
     delete playerControllerDefinitions;
