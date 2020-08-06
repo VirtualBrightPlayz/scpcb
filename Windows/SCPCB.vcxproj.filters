@@ -101,9 +101,6 @@
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\CollisionDefinitions.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinition.cpp">
-      <Filter>Scripting\NativeDefinitions</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\EventDefinition.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
@@ -172,6 +169,12 @@
     </ClCompile>
     <ClCompile Include="..\Src\Scripting\NativeDefinition.cpp">
       <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ColorDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,9 +278,6 @@
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\CollisionDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinition.h">
-      <Filter>Scripting\NativeDefinitions</Filter>
-    </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\EventDefinition.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
@@ -342,6 +342,12 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\BillboardDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ColorDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
   </ItemGroup>

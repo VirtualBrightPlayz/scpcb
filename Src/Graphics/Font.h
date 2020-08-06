@@ -24,8 +24,8 @@ class Font {
         Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::FilePath& fn, int h);
         ~Font();
 
-        void draw(const PGE::String& text, PGE::Vector3f pos, PGE::Vector2f scale=PGE::Vector2f::one, PGE::Vector3f rotation=PGE::Vector3f::zero, PGE::Color color=PGE::Color(1.f,1.f,1.f,1.f));
-        void draw(const PGE::String& text, PGE::Vector2f pos, PGE::Vector2f scale=PGE::Vector2f::one,float rotation=0.f, PGE::Color color=PGE::Color(1.f,1.f,1.f,1.f));
+        void draw(const PGE::String& text, PGE::Vector3f pos, PGE::Vector2f scale=PGE::Vector2f::one, PGE::Vector3f rotation=PGE::Vector3f::zero, PGE::Color color=PGE::Color(1.f,1.f,1.f));
+        void draw(const PGE::String& text, PGE::Vector2f pos, PGE::Vector2f scale=PGE::Vector2f::one,float rotation=0.f, PGE::Color color=PGE::Color(1.f,1.f,1.f));
 
         float stringWidth(const PGE::String& text, PGE::Vector2f scale = PGE::Vector2f::one);
         float getHeight(PGE::Vector2f scale = PGE::Vector2f::one) const;

@@ -4,7 +4,8 @@
 class ScriptManager;
 
 class BillboardDefinitions;
-class ConsoleDefinition;
+class ConsoleDefinitions;
+class ColorDefinitions;
 class MathDefinitions;
 class RM2Definitions;
 class CollisionDefinitions;
@@ -28,8 +29,9 @@ private:
 
     RefCounterManager* refCounterManager;
 
-    ConsoleDefinition* consoleDefinition;
+    ConsoleDefinitions* consoleDefinition;
     InputDefinitions* inputDefinitions;
+    ColorDefinitions* colorDefinitions;
     MathDefinitions* mathDefinitions;
     BillboardDefinitions* billboardDefinitions;
     RM2Definitions* rm2Definitions;

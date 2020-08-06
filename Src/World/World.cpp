@@ -144,14 +144,14 @@ bool World::run() {
 
     if (!config->isVr()) {
         graphics->resetRenderTarget();
-        graphics->clear(PGE::Color(1.f, 0.f, 1.f, 1.f));
+        graphics->clear(PGE::Color(1.f, 0.f, 1.f));
         draw((float)timing->getInterpolationFactor(), RenderType::All);
     } else {
         vrm->update();
         graphics->setRenderTarget(vrm->getTexture());
 
         vrm->setEye(true);
-        graphics->clear(PGE::Color(0.f, 0.f, 0.f, 1.f));
+        graphics->clear(PGE::Color(0.f, 0.f, 0.f));
         draw(1.f, RenderType::NoUI);
         vr::Texture_t leftEyeTexture = {
             vrm->getTexture()->getNative(),
@@ -165,7 +165,7 @@ bool World::run() {
         vr::VRCompositor()->Submit(vr::Eye_Left, &leftEyeTexture, NULL);
 
         vrm->setEye(false);
-        graphics->clear(PGE::Color(0.f, 0.f, 0.f, 1.f));
+        graphics->clear(PGE::Color(0.f, 0.f, 0.f));
         draw(1.f, RenderType::NoUI);
         vr::Texture_t rightEyeTexture = {
         vrm->getTexture()->getNative(),

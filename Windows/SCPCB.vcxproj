@@ -160,8 +160,9 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\BillboardDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\CachedArgument.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\CollisionDefinitions.h" />
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ColorDefinitions.h" />
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\EventDefinition.h" />
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinition.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.h" />
@@ -227,8 +228,9 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\BillboardDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\CachedArgument.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\CollisionDefinitions.cpp" />
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ColorDefinitions.cpp" />
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\EventDefinition.cpp" />
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ConsoleDefinition.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.cpp" />

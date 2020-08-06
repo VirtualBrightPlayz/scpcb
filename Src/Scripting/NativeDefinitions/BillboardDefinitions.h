@@ -18,8 +18,8 @@ class BillboardDefinitions : public NativeDefinition {
         template <class T>
         void registerClass(const char* className);
         
-        Billboard* createBillboard(const PGE::Vector3f& pos, const PGE::String& textureName, const PGE::Vector2f& scale);
-        RotatedBillboard* createBillboardRotated(const PGE::Vector3f& pos, const PGE::String& textureName, const PGE::Vector3f& rotation, const PGE::Vector2f& scale);
+        Billboard* createBillboard(const PGE::Vector3f& pos, const PGE::String& textureName, const PGE::Vector2f& scale, const PGE::Color& color);
+        RotatedBillboard* createBillboardRotated(const PGE::Vector3f& pos, const PGE::String& textureName, const PGE::Vector3f& rotation, const PGE::Vector2f& scale, const PGE::Color& color);
         void destroyBillboard(Billboard* billboard);
 
     public:

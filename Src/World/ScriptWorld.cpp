@@ -10,9 +10,10 @@
 #include "../Scripting/ScriptFunction.h"
 #include "../Scripting/ScriptClass.h"
 
-#include "../Scripting/NativeDefinitions/ConsoleDefinition.h"
+#include "../Scripting/NativeDefinitions/ConsoleDefinitions.h"
 #include "../Scripting/NativeDefinitions/InputDefinitions.h"
 #include "../Scripting/NativeDefinitions/RefCounter.h"
+#include "../Scripting/NativeDefinitions/ColorDefinitions.h"
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
 #include "../Scripting/NativeDefinitions/BillboardDefinitions.h"
 #include "../Scripting/NativeDefinitions/RM2Definitions.h"
@@ -26,8 +27,9 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
 
     refCounterManager = new RefCounterManager();
 
-    consoleDefinition = new ConsoleDefinition(manager, con);
+    consoleDefinition = new ConsoleDefinitions(manager, con);
     inputDefinitions = new InputDefinitions(manager, keyBinds);
+    colorDefinitions = new ColorDefinitions(manager);
     mathDefinitions = new MathDefinitions(manager);
     billboardDefinitions = new BillboardDefinitions(manager, bm);
     collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);
@@ -115,6 +117,7 @@ ScriptWorld::~ScriptWorld() {
 
     delete consoleDefinition;
     delete inputDefinitions;
+    delete colorDefinitions;
     delete mathDefinitions;
     delete billboardDefinitions;
     delete rm2Definitions;

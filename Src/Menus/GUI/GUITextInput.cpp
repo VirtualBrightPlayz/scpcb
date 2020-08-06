@@ -529,7 +529,7 @@ void GUITextInput::renderInternal() {
     // Render selection backdrop.
     } else {
         uiMesh->setTextureless();
-        uiMesh->setColor(subscriber == this ? PGE::Color(0.75f, 0.75f, 0.75f, 1.f) : PGE::Color(0.25f, 0.25f, 0.25f, 1.f)); // This is not necessary if deselection automatically resets the selection (which is currently the case as of commit #badafdb4).
+        uiMesh->setColor(subscriber == this ? PGE::Color(0.75f, 0.75f, 0.75f) : PGE::Color(0.25f, 0.25f, 0.25f)); // This is not necessary if deselection automatically resets the selection (which is currently the case as of commit #badafdb4).
         uiMesh->addRect(PGE::Rectanglef(selectionStartX, textY - 0.1f, selectionEndX, textY + font->getHeight(txtScale) + 0.2f));
         uiMesh->setColor(PGE::Color::White);
     }
