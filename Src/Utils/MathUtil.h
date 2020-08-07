@@ -10,10 +10,12 @@ class MathUtil {
         static float degToRad(float degrees);
         static float radToDeg(float radians);
     
-        static bool equalFloats(float p1, float p2);
+        static bool equalFloats(float val, float other);
 
-        static int maxInt(int val, int pther);
-        static int minInt(int val, int pther);
+        static int maxInt(int val, int other);
+        static int minInt(int val, int other);
+        static float maxFloat(float val, float other);
+        static float minFloat(float val, float other);
         static int clampInt(int val, int min, int max);
         static float clampFloat(float val, float min, float max);
 

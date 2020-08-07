@@ -24,7 +24,10 @@ Billboard@ lol;
 void main() {
     Debug::log("Starting up!");
     
-    @lol = Billboard::createRotated(Vector3f(1, 1, 1), "SCPCB/GFX/Decals/blood_drop2.png", Vector3f(0,0,0), Vector2f(10.0, 10.0), Color(0.0, 1.0, 1.0));
+    Vector2f test = Vector2f(10.0, 10.0);
+    Vector2f test2 = Vector2f(10.0, 10.0);
+    test2 = 2.0 * test;
+    @lol = Billboard::createRotated(Vector3f(1, 1, 1), "SCPCB/GFX/Decals/blood_drop2.png", Vector3f(0,0,0), test2 - test, Color(0.0, 1.0, 1.0));
 
     registerCommand("mytest", "THIS COMKMAND IS VERY EPIC", Test);
     registerCommand(

@@ -8,8 +8,8 @@ float MathUtil::radToDeg(float radians) {
     return radians * 180.0f / PI;
 }
 
-bool MathUtil::equalFloats(float p1, float p2) {
-    return absFloat(p1 - p2) < MARGIN_ERROR;
+bool MathUtil::equalFloats(float val, float other) {
+    return absFloat(val - other) < MARGIN_ERROR;
 }
 
 int MathUtil::maxInt(int val, int other) {
@@ -18,6 +18,16 @@ int MathUtil::maxInt(int val, int other) {
 }
 
 int MathUtil::minInt(int val, int other) {
+    if (val < other) { return val; }
+    return other;
+}
+
+float MathUtil::maxFloat(float val, float other) {
+    if (val > other) { return val; }
+    return other;
+}
+
+float MathUtil::minFloat(float val, float other) {
     if (val < other) { return val; }
     return other;
 }
