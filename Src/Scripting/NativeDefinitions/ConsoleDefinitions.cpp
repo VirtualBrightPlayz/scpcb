@@ -13,37 +13,114 @@ ConsoleDefinitions::ConsoleDefinitions(ScriptManager* mgr, Console* con) {
     engine->RegisterGlobalFunction("void registerCommand(const string&in name, function&in command)", asMETHOD(ConsoleDefinitions, registerCommandNoHelp), asCALL_THISCALL_ASGLOBAL, this);
 
     engine->SetDefaultNamespace("Debug");
-    engine->RegisterGlobalFunction("void log(const string&in content)", asMETHOD(ConsoleDefinitions, log), asCALL_THISCALL_ASGLOBAL, this);
-    engine->RegisterGlobalFunction("void warning(const string&in content)", asMETHOD(ConsoleDefinitions, warning), asCALL_THISCALL_ASGLOBAL, this);
-    engine->RegisterGlobalFunction("void error(const string&in content)", asMETHOD(ConsoleDefinitions, error), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterGlobalFunction("void log(?&in content)", asMETHOD(ConsoleDefinitions, log), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterGlobalFunction("void warning(?&in content)", asMETHOD(ConsoleDefinitions, warning), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterGlobalFunction("void error(?&in content)", asMETHOD(ConsoleDefinitions, error), asCALL_THISCALL_ASGLOBAL, this);
 }
 
-void ConsoleDefinitions::registerCommand(const PGE::String& name, const PGE::String& helpText, void* f, int typeId) {
+ConsoleDefinitions::~ConsoleDefinitions() {
+    scriptContext->Release();
+}
+
+void ConsoleDefinitions::registerCommand(const PGE::String& name, const PGE::String& helpText, void* f, int typeId) const {
     asIScriptFunction* func = (asIScriptFunction*)(((typeId & asTYPEID_OBJHANDLE) != 0) ? *((void**)f) : f);
     console->registerExternalCommand(name, helpText, func, scriptContext);
 }
 
-void ConsoleDefinitions::registerCommandNoHelp(const PGE::String& name, void* f, int typeId) {
+void ConsoleDefinitions::registerCommandNoHelp(const PGE::String& name, void* f, int typeId) const {
     registerCommand(name, "", f, typeId);
 }
 
-void ConsoleDefinitions::log(const PGE::String& content) {
+void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) const {
+    PGE::String typeString;
+    switch (type) {
+        case LogType::Log:
+            typeString = "Log";
+            break;
+        case LogType::Warning:
+            typeString = "Warn";
+            break;
+        case LogType::Error:
+            typeString = "Err";
+            break;
+    }
+    PGE::String content;
+    if (typeId == engine->GetStringFactoryReturnTypeId()) {
+        content = *(PGE::String*)ref;
+    } else {
+        switch (typeId) {
+            case asTYPEID_VOID: // This should never happen.
+                throw new std::runtime_error(("VOID PARAMETER! " + PGE::String((uint64_t)ref, true)).cstr());
+            case asTYPEID_BOOL:
+                content = (*(bool*)ref) ? "True" : "False";
+                break;
+            case asTYPEID_INT8:
+                content = PGE::String((int32_t)*(int8_t*)ref);
+                break;
+            case asTYPEID_INT16:
+                content = PGE::String((int32_t)*(int16_t*)ref);
+                break;
+            case asTYPEID_INT32:
+                content = PGE::String(*(int32_t*)ref);
+                break;
+            case asTYPEID_INT64:
+                content = PGE::String(*(int64_t*)ref);
+                break;
+            case asTYPEID_UINT8:
+                content = PGE::String((uint32_t)*(uint8_t*)ref);
+                break;
+            case asTYPEID_UINT16:
+                content = PGE::String((uint32_t)*(uint16_t*)ref);
+                break;
+            case asTYPEID_UINT32:
+                content = PGE::String(*(uint32_t*)ref);
+                break;
+            case asTYPEID_UINT64:
+                content = PGE::String(*(uint64_t*)ref);
+                break;
+            case asTYPEID_FLOAT:
+                content = PGE::String(*(float*)ref);
+                break;
+            case asTYPEID_DOUBLE:
+                content = PGE::String(*(double*)ref);
+                break;
+            default: // Object.
+                asITypeInfo* typeInfo = engine->GetTypeInfoById(typeId);
+                asIScriptFunction* toString = typeInfo->GetMethodByName("toString");
+                if (toString != nullptr) {
+                    asIScriptContext* context = engine->RequestContext();
+                    context->Prepare(toString);
+                    context->SetObject(ref);
+                    context->Execute();
+                    void* ret = context->GetAddressOfReturnValue();
+                    if (ret != nullptr) {
+                        content = *(PGE::String*)ret;
+                        engine->ReturnContext(context);
+                        break;
+                    }
+                }
+                content = PGE::String(typeInfo->GetName()) + "@" + PGE::String((uint64_t) ref, true);
+                break;
+        }
+    }
 #ifdef DEBUG
-    std::cout << "Debug::Log: " << content << std::endl;
+    std::ostream& out = (type == LogType::Error ? std::cerr : std::cout);
+    out << "Debug::" << typeString << ": " << content << std::endl;
 #endif
-    console->addConsoleMessage("Debug::Log: " + content);
+    console->addConsoleMessage("Debug::" + typeString + ": " + content);
+    if (type == LogType::Error) {
+        throw new std::runtime_error(("ERROR! " + content).cstr());
+    }
 }
 
-void ConsoleDefinitions::warning(const PGE::String& content) {
-#ifdef DEBUG
-    std::cout << "Debug::Warn: " << content << std::endl;
-#endif
-    console->logWarning("Debug::Log: " + content);
+void ConsoleDefinitions::log(void* ref, int typeId) const {
+    internalLog(ref, typeId, LogType::Log);
 }
 
-void ConsoleDefinitions::error(const PGE::String& content) {
-#ifdef DEBUG
-    std::cerr << "Debug::Err: " << content << std::endl; //TODO: Error throwing.
-#endif
-    console->logError("Debug::Err: " + content);
+void ConsoleDefinitions::warning(void* ref, int typeId) const {
+    internalLog(ref, typeId, LogType::Warning);
+}
+
+void ConsoleDefinitions::error(void* ref, int typeId) const {
+    internalLog(ref, typeId, LogType::Error);
 }
