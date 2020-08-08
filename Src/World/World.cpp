@@ -55,10 +55,12 @@ World::World() {
     pauseMenu = new PauseMenu(this, uiMesh, largeFont, keyBinds, config, txtMngt, io);
     console = new Console(this, uiMesh, largeFont, keyBinds, config, txtMngt, io);
 
+    billboardManager = new BillboardManager(graphics, gfxRes);
+
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
 
-    scripting = new ScriptWorld(gfxRes, camera, keyBinds, config, timing->getTimeStep(), console, new BillboardManager(graphics, gfxRes));
+    scripting = new ScriptWorld(gfxRes, camera, keyBinds, config, timing->getTimeStep(), console, billboardManager);
 
     applyConfig(config);
 
@@ -76,6 +78,8 @@ World::World() {
 }
 
 World::~World() {
+    delete fps;
+    delete billboardManager;
     delete pauseMenu;
     delete console;
     delete uiMesh;

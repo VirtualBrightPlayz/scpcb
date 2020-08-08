@@ -68,5 +68,4 @@ void update(float deltaTime) {
 void render(float interpolation) {
     if (test_shared_global == null) { return; }
     test_shared_global.render(interpolation);
-    Billboard::renderAll();
 }

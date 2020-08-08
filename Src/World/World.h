@@ -68,6 +68,8 @@ class World {
         PauseMenu* pauseMenu;
         Console* console;
 
+        BillboardManager* billboardManager;
+
         FPSCounter* fps;
 
         VRManager* vrm;
