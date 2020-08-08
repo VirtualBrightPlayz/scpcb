@@ -30,7 +30,7 @@ void main() {
     Billboard::create("SCPCB/GFX/Sprites/light_flare.jpg", Vector3f(1, 7, 1), 0.5, test, Color(1.0, 0.8, 0.5));
     Billboard::create("SCPCB/GFX/Map/Textures/dirtymetal.jpg", Vector3f(1, 3, 10), Vector3f(-1.57, 0, 3), test2, Color(0.0, 1.0, 1.0));
 
-    Debug::log(test_shared_global); // This breaks without error.
+    //Debug::log(test_shared_global);
 
     registerCommand("mytest", "THIS COMKMAND IS VERY EPIC", Test);
     registerCommand(

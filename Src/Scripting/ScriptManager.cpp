@@ -16,7 +16,8 @@ struct ContextPool {
 std::map<asIScriptEngine*, ContextPool> contextPools;
 asIScriptContext* requestContextCallback(asIScriptEngine* engine, void* param) {
     if (contextPools.find(engine) == contextPools.end()) {
-        
+        ContextPool newPool;
+        contextPools.emplace(engine, newPool);
     }
 
     asIScriptContext* ctx = nullptr;
@@ -25,8 +26,8 @@ asIScriptContext* requestContextCallback(asIScriptEngine* engine, void* param) {
         contextPools[engine].contexts.pop_back();
     } else {
         ctx = engine->CreateContext();
-        ctx->SetExceptionCallback(asMETHOD(ScriptManager, contextExceptionCallback), param, asCALL_THISCALL);
     }
+    ctx->SetExceptionCallback(asMETHOD(ScriptManager, contextExceptionCallback), param, asCALL_THISCALL);
 
     return ctx;
 }
@@ -48,7 +49,7 @@ ScriptManager::ScriptManager() {
     ContextPool newPool;
     contextPools.emplace(engine, newPool);
 
-    engine->SetContextCallbacks(requestContextCallback, returnContextToPool);
+    engine->SetContextCallbacks(requestContextCallback, returnContextToPool, this);
 
     engine->SetMessageCallback(asMETHOD(ScriptManager, messageCallback), this, asCALL_THISCALL);
 
