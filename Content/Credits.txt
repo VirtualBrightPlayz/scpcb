@@ -74,6 +74,9 @@ Contributors
 
     Brokami
         Graphics.
+        
+    C45
+        Textures, Modelling.
 
     Caleb Yu ("Omniary")
         Textures, graphics, sound effects, music, writing.
@@ -179,6 +182,9 @@ Contributors
 
     SaitoFox
         Modelling.
+        
+    Senhor
+        Textures, modelling.
 
     Shadowscale48
         Modelling, graphics.
