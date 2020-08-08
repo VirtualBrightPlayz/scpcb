@@ -25,9 +25,9 @@ void main() {
     Debug::log("Starting up!");
     
     Vector2f test = Vector2f(10.0, 10.0);
-    Vector2f test2 = Vector2f(10.0, 10.0);
-    test2 = 2.0 * test;
-    @lol = Billboard::createRotated(Vector3f(1, 1, 1), "SCPCB/GFX/Decals/blood_drop2.png", Vector3f(0,0,0), test2 - test, Color(0.0, 1.0, 1.0));
+    Vector2f test2 = Vector2f(15.0, 10.0);
+    Billboard::create("SCPCB/GFX/Sprites/light_flare.jpg", Vector3f(1, 7, 1), 0.5, test, Color(1.0, 0.8, 0.5));
+    Billboard::create("SCPCB/GFX/Map/Textures/dirtymetal.jpg", Vector3f(1, 3, 10), Vector3f(-1.57, 0, 3), test2, Color(0.0, 1.0, 1.0));
 
     registerCommand("mytest", "THIS COMKMAND IS VERY EPIC", Test);
     registerCommand(
@@ -65,5 +65,5 @@ void update(float deltaTime) {
 void render(float interpolation) {
     if (test_shared_global == null) { return; }
     test_shared_global.render(interpolation);
-    lol.render(Matrix4x4f::constructWorldMat(Vector3f(0, 0, 0), Vector3f(1, 1, 1), Vector3f(0, 5, 0)));
+    Billboard::renderAll();
 }

@@ -1,60 +1,70 @@
-#ifndef Billboard_H_INCLUDED
-#define Billboard_H_INCLUDED
+#ifndef BILLBOARD_H_INCLUDED
+#define BILLBOARD_H_INCLUDED
+
+#include <map>
 
 #include <Mesh/Mesh.h>
 
 #include "GraphicsResources.h"
 
+class Billboard;
 class BillboardManager {
     private:
         GraphicsResources* gfxRes;
         
-        PGE::Mesh* mesh;
+        struct BillboardMesh {
+            PGE::Mesh* mesh;
+            PGE::Material* material;
+            PGE::Texture* texture;
+
+            std::vector<PGE::Vertex> vertices;
+            std::vector<Billboard*> billboards;
+        };
+
+        std::vector<PGE::Primitive> primitives;
+
+        std::map<long long, BillboardMesh> meshes;
         PGE::Shader* shader;
-        PGE::Shader::Constant* modelMatrix;
-        PGE::Shader::Constant* spriteColor;
 
     public:
         BillboardManager(PGE::Graphics* gfx, GraphicsResources* gr);
         ~BillboardManager();
 
+        void addBillboard(Billboard* billboard);
+        void removeBillboard(Billboard* billboard);
+
         GraphicsResources* getGfxRes() const;
 
-        PGE::Mesh* getMesh() const;
-        PGE::Shader* getShader() const;
-        PGE::Shader::Constant* getModelMatrix() const;
-        PGE::Shader::Constant* getSpriteColor() const;
+        void render();
 };
 
 class Billboard {
-    private:
-        void dropMaterial();
-        void loadMaterial(const PGE::String& textureName);
-
     protected:
-        const BillboardManager* bm;
-        PGE::Material* material;
+        BillboardManager* bm;
 
-    public:
-        PGE::Vector3f pos;
+        int vertexStartIndex;
+
+        PGE::Vector3f position;
+        PGE::Vector3f rotation; bool alwaysFacingCamera;
         PGE::Vector2f scale;
         PGE::Color color;
-        
-        Billboard(BillboardManager* bm, const PGE::Vector3f& pos, const PGE::String& textureName, const PGE::Vector2f& scale, const PGE::Color& color);
+
+        PGE::String textureName;
+
+    public:
+        Billboard(BillboardManager* bm, const PGE::String& textureName, const PGE::Vector3f& pos, float rotation, const PGE::Vector2f& scale, const PGE::Color& color);
+        Billboard(BillboardManager* bm, const PGE::String& textureName, const PGE::Vector3f& pos, const PGE::Vector3f& rotation, const PGE::Vector2f& scale, const PGE::Color& color);
         ~Billboard();
 
         void setTexture(const PGE::String& textureName);
+        PGE::String getTexture() const;
+        void setPosition(const PGE::Vector3f& position);
+        void setRotation(const PGE::Vector3f& rotation);
+        void setRotation(float rotation);
+        void setScale(const PGE::Vector2f& scale);
+        void setColor(const PGE::Color& color);
 
-        virtual void render(const PGE::Matrix4x4f& camRotationMatrix) const;
+        bool updateVertices(std::vector<PGE::Vertex>& vertices, int startIndex);
 };
 
-class RotatedBillboard : public Billboard {
-    public:
-        PGE::Vector3f rotation;
-        
-        RotatedBillboard(BillboardManager* bm, const PGE::Vector3f& pos, const PGE::String& textureName, const PGE::Vector3f& rotation, const PGE::Vector2f& scale, const PGE::Color& color);
-
-        virtual void render(const PGE::Matrix4x4f& camRotationMatrix) const override;
-};
-
-#endif // Billboard_H_INCLUDED
+#endif // BILLBOARD_H_INCLUDED

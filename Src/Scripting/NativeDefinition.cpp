@@ -49,4 +49,4 @@ void NativeDefinition::registerInheritanceCount(const char* base, const char* de
 	throwOnError(engine->RegisterObjectMethod(derived, ("const " + PGE::String(base) + "@ opImplCast() const").cstr(), asFUNCTION((refCastCount<DERIVED, BASE>)), asCALL_CDECL_OBJLAST));
 }
 
-template void NativeDefinition::registerInheritance<Billboard, RotatedBillboard>(const char* base, const char* derived);
+//template void NativeDefinition::registerInheritance<Billboard, RotatedBillboard>(const char* base, const char* derived);
