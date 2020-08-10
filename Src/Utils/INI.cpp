@@ -154,8 +154,12 @@ int getINIInt(const PGE::String& file, const PGE::String& section, const PGE::St
 }
 
 bool getINIBool(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, bool defaultvalue) {
-    int val = getINIInt(file, section, parameter, (int)defaultvalue);
-    return !!val;
+    PGE::String val = getINIString(file, section, parameter, defaultvalue ? "true" : "false");
+    if (val == "true" || val == "false") {
+        return val == "true";
+    } else {
+        return defaultvalue;
+    }
 }
 
 float getINIFloat(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, float defaultvalue) {

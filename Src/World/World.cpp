@@ -26,7 +26,7 @@
 World::World() {
     config = new Config("options.ini");
 
-    if (config->isVr()) {
+    if (config->vr->value) {
         vrm = new VRManager(config, gfxRes);
         camera = vrm->getCamera();
     } else {
@@ -40,7 +40,7 @@ World::World() {
     timing = new Timing(60);
 
     gfxRes = new GraphicsResources(graphics, config);
-    txtMngt = new TxtManager(config->getLangCode());
+    txtMngt = new TxtManager(config->languageCode->value);
 
     FT_Init_FreeType(&ftLibrary);
     largeFont = new Font(ftLibrary, gfxRes, config, PGE::FilePath::fromStr("SCPCB/GFX/Font/Inconsolata-Regular.ttf"), 20);
@@ -71,8 +71,7 @@ World::World() {
 
     shutdownRequested = false;
     
-    if (config->isVr()) {
-        std::cout << "CREATING TEXTGURE" << std::endl;
+    if (vrm != nullptr) {
         vrm->createTexture(graphics, config);
     }
 }
@@ -146,7 +145,7 @@ bool World::run() {
     // Rendering next, don't use accumulator.
     graphics->update();
 
-    if (!config->isVr()) {
+    if (vrm == nullptr) {
         graphics->resetRenderTarget();
         graphics->clear(PGE::Color(1.f, 0.f, 1.f));
         draw((float)timing->getInterpolationFactor(), RenderType::All);
@@ -296,7 +295,7 @@ void World::draw(float interpolation, RenderType r) {
         graphics->setDepthTest(true);
     }
 
-    graphics->swap(config->isVsync());
+    graphics->swap(config->vsync->value);
 }
 
 void World::updatePlaying(float timeStep) {

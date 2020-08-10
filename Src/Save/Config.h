@@ -2,76 +2,67 @@
 #define CONFIG_H_INCLUDED
 
 #include <map>
+#include <list>
 
 #include <Misc/FilePath.h>
 #include <Math/Matrix.h>
  #include <UserInput/UserInput.h>
 
+#include "ConfigValues.h"
 #include "../Input/Input.h"
 
 class GraphicsResources;
 
-enum class WindowType {
-    Windowed,
-    Fullscreen
+enum WindowType {
+    Windowed = 0,
+    Fullscreen = 1
 };
 
 class Config {
     private:
         GraphicsResources* gfxResMgr = nullptr;
 
-        PGE::String filename;
-        PGE::String secGen = "general";
-        PGE::String secGFX = "graphics";
-        PGE::String secCon = "controls";
-        PGE::String secMod = "mods";
+        const PGE::String filename;
+        const PGE::String secGen = "general";
+        const PGE::String secGFX = "graphics";
+        const PGE::String secCon = "controls";
+        const PGE::String secMod = "mods";
 
-        PGE::String languageCode;
+        std::list<ConfigValue*> values;
 
-        WindowType windowType;
-        int width;
-        int height;
+        IntConfigValue* const windowType;
+        IntConfigValue* const width;
+        IntConfigValue* const height;
         float aspectRatio;
-
-        bool vsync;
-
-        bool vr;
 
         std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> kbBinds;
         void loadKeyboardInput(Input input);
         std::map<Input, std::vector<PGE::MouseInput::BUTTON>> msBinds;
-
-        std::vector<PGE::String> enabledMods;
-
         void genDefaultKeyboardBindings();
 
         void loadFile();
         void saveFile() const;
 
     public:
-        Config(const PGE::String& optionsFile);
-        Config(const Config& cpy);
+        StringConfigValue* const languageCode;
+        
+        BoolConfigValue* const vsync;
+        BoolConfigValue* const vr;
 
-        Config& operator=(const Config& other);
-    
-        void loadExistingConfigFile(const Config& src);
+        ArrayConfigValue* enabledMods;
+        ArrayConfigValue* resourcePackLocations;
+        
+        Config(const PGE::String& optionsFile);
+        ~Config();
 
         void setGraphicsResources(GraphicsResources* grm);
-
-        PGE::String getLangCode() const;
 
         void setResolution(int width, int height);
         int getWidth() const;
         int getHeight() const;
         float getAspectRatio() const;
 
-        float isVsync() const;
-
-        bool isVr() const;
-
         std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> getKeyboardBindings() const;
-
-        const std::vector<PGE::String>& getEnabledMods() const;
 };
 
 #endif // CONFIG_H_INCLUDED

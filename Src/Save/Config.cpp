@@ -1,21 +1,13 @@
+#include "Config.h"
+
 #include <exception>
 #include <Misc/FileUtil.h>
 
-#include "Config.h"
 #include "../Utils/INI.h"
 #include "../Graphics/GraphicsResources.h"
 
-PGE::String corpFolder = "Undertow Games";
-PGE::String gameFolder = "SCP - Containment Breach";
-
-// Defaults.
-PGE::String defaultLanguage = "en";
-
-WindowType defaultWindow = WindowType::Windowed;
-int defaultWidth = 1280;
-int defaultHeight = 720;
-bool defaultVsync = false;
-bool defaultVr = false;
+const PGE::String corpFolder = "Undertow Games";
+const PGE::String gameFolder = "SCP - Containment Breach";
 
 void Config::genDefaultKeyboardBindings() {
     kbBinds[Input::Forward] = { PGE::KeyboardInput::KEYCODE::W };
@@ -30,68 +22,49 @@ void Config::genDefaultKeyboardBindings() {
     kbBinds[Input::ToggleConsole] = { PGE::KeyboardInput::KEYCODE::F3 };
 }
 
-PGE::String defaultModules = "RootScript|SCPCB";
-
 PGE::String getConfigDir() {
-#if DEBUG
-    return "";
-#endif
-    return PGE::FileUtil::getDataFolder() + corpFolder + "/" + gameFolder + "/";
+    // return ""; // Uncomment this if you want options.ini in the root game folder.
+    return PGE::FileUtil::getDataFolder() + corpFolder + '/' + gameFolder + '/';
 }
 
-Config::Config(const PGE::String& optionsFile) {
-    filename = getConfigDir() + optionsFile;
+Config::Config(const PGE::String& optionsFile) :
+    filename(getConfigDir() + optionsFile),
+    vsync(new BoolConfigValue(filename, secGFX, "vsync", true)),
+    vr(new BoolConfigValue(filename, secGFX, "vr", false)),
+    languageCode(new StringConfigValue(filename, secGen, "language", "en")),
+    windowType(new IntConfigValue(filename, secGFX, "window", WindowType::Windowed)),
+    width(new IntConfigValue(filename, secGFX, "width", 1280)),
+    height(new IntConfigValue(filename, secGFX, "height", 720)),
+    enabledMods(new ArrayConfigValue(filename, secMod, "enabledmods", "RootScript|SCPCB")),
+    resourcePackLocations(new ArrayConfigValue(filename, secMod, "respacklocs", "")) {
+    values.push_back(vsync);
+    values.push_back(vr);
+    values.push_back(languageCode);
+    values.push_back(windowType);
+    values.push_back(width);
+    values.push_back(height);
+    values.push_back(enabledMods);
+    values.push_back(resourcePackLocations);
 
-    languageCode = defaultLanguage;
-
-    windowType = defaultWindow;
-    setResolution(defaultWidth, defaultHeight);
-    vsync = defaultVsync;
-    vr = defaultVr;
+    setResolution(width->value, height->value);
 
     genDefaultKeyboardBindings();
-    
-    enabledMods = defaultModules.split("|", true);
 
     if (PGE::FileUtil::exists(PGE::FilePath::fromStr(filename))) {
         loadFile();
     } else {
-        if (!PGE::FileUtil::exists(PGE::FilePath::fromStr(PGE::FileUtil::getDataFolder() + corpFolder))) {
-            PGE::FileUtil::createDirectory(PGE::FilePath::fromStr(PGE::FileUtil::getDataFolder() + corpFolder));
-        }
-
-        if (!PGE::FileUtil::exists(PGE::FilePath::fromStr(getConfigDir()))) {
-            PGE::FileUtil::createDirectory(PGE::FilePath::fromStr(getConfigDir()));
-        }
+        PGE::FileUtil::createDirectoryIfNotExists(PGE::FilePath::fromStr(PGE::FileUtil::getDataFolder() + corpFolder));
+        PGE::FileUtil::createDirectoryIfNotExists(PGE::FilePath::fromStr(getConfigDir()));
 
         saveFile();
     }
 }
 
-void Config::loadExistingConfigFile(const Config& src) {
-    languageCode = src.languageCode;
-
-    windowType = src.windowType;
-    setResolution(src.width, src.height);
-    vsync = src.vsync;
-    vr = src.vr;
-
-    kbBinds = src.kbBinds;
-    msBinds = src.msBinds;
-    
-    enabledMods = src.enabledMods;
-}
-
-Config::Config(const Config& cpy) {
-    loadExistingConfigFile(cpy);
-}
-
-Config& Config::operator=(const Config& other) {
-    if (this != &other) {
-        loadExistingConfigFile(other);
+Config::~Config() {
+    // Deleting all entries in the list, as we own them.
+    for (std::list<ConfigValue*>::iterator it = values.begin(); it != values.end(); it++) {
+        delete *it;
     }
-
-    return *this;
 }
 
 void Config::setGraphicsResources(GraphicsResources* grm) {
@@ -99,16 +72,11 @@ void Config::setGraphicsResources(GraphicsResources* grm) {
 }
 
 void Config::loadFile() {
-    languageCode = getINIString(filename, secGen, "language", defaultLanguage);
+    for (std::list<ConfigValue*>::iterator it = values.begin(); it != values.end(); it++) {
+        (*it)->loadValue();
+    }
 
-    windowType = (WindowType)getINIInt(filename, secGFX, "fullscreen");
-    int widthINI = getINIInt(filename, secGFX, "width", defaultWidth);
-    int heightINI = getINIInt(filename, secGFX, "height", defaultHeight);
-    setResolution(widthINI, heightINI);
-    vsync = getINIBool(filename, secGFX, "vsync", defaultVsync);
-    vr = getINIBool(filename, secGFX, "vr", defaultVr);
-
-    enabledMods = getINIString(filename, secMod, "enabledmods").split("|", true);
+    setResolution(width->value, height->value);
 
     loadKeyboardInput(Input::Forward);
     loadKeyboardInput(Input::Backward);
@@ -130,21 +98,16 @@ void Config::loadKeyboardInput(Input input) {
 
     kbBinds[input] = std::vector<PGE::KeyboardInput::KEYCODE>();
 
-    std::vector<PGE::String> bindVect = bindings.split(",", true);
+    std::vector<PGE::String> bindVect = bindings.split(',', true);
     for (int i = 0; i < (int)bindVect.size(); i++) {
         kbBinds[input].push_back((PGE::KeyboardInput::KEYCODE)bindVect[i].toInt());
     }
 }
 
 void Config::saveFile() const {
-    putINIValue(filename, secGen, "language", languageCode);
-
-    putINIValue(filename, secGFX, "width", width);
-    putINIValue(filename, secGFX, "height", height);
-    putINIValue(filename, secGFX, "vsync", vsync);
-    putINIValue(filename, secGFX, "vr", vr);
-    
-    putINIValue(filename, secMod, "enabledmods", PGE::String::join(enabledMods, "|"));
+    for (std::list<ConfigValue*>::const_iterator it = values.begin(); it != values.end(); it++) {
+        (*it)->saveValue();
+    }
 
     std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>>::const_iterator it;
     for (it = kbBinds.begin(); it != kbBinds.end(); it++) {
@@ -162,27 +125,22 @@ void Config::saveFile() const {
 
 void Config::setResolution(int width, int height) {
     if (width <= 0 || height <= 0) {
-        PGE::String errorStr = PGE::String("Invalid display resolution. (width: ") + width + ", height: " + height + ")";
-        throw std::runtime_error(errorStr.cstr());
+        throw std::runtime_error((PGE::String("Invalid display resolution. (width: ") + width + ", height: " + height + ")").cstr());
     }
 
-    this->width = width;
-    this->height = height;
+    this->width->value = width;
+    this->height->value = height;
     aspectRatio = (float)width / height;
 
     if (gfxResMgr != nullptr) { gfxResMgr->updateOrthoMat(aspectRatio); }
 }
 
-PGE::String Config::getLangCode() const {
-    return languageCode;
-}
-
 int Config::getWidth() const {
-    return width;
+    return width->value;
 }
 
 int Config::getHeight() const {
-    return height;
+    return height->value;
 }
 
 float Config::getAspectRatio() const {
@@ -191,16 +149,4 @@ float Config::getAspectRatio() const {
 
 std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> Config::getKeyboardBindings() const {
     return kbBinds;
-}
-
-float Config::isVsync() const {
-    return vsync;
-}
-
-bool Config::isVr() const {
-    return vr;
-}
-
-const std::vector<PGE::String>& Config::getEnabledMods() const {
-    return enabledMods;
 }

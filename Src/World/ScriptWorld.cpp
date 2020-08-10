@@ -53,7 +53,7 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
     perFrameEventDefinition = new EventDefinition(manager, "PerFrame", perFrameSignature);
     perFrameEventDefinition->setArgument("interpolation", 1.0f);
 
-    const std::vector<PGE::String>& enabledMods = config->getEnabledMods();
+    const std::vector<PGE::String>& enabledMods = config->enabledMods->value;
 
     tinyxml2::XMLDocument doc;
 
