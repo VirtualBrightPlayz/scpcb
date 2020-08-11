@@ -51,7 +51,7 @@ World::World() {
     currMenu = nullptr;
     menuGraveyard = nullptr;
     io->setMouseVisibility(false);
-    io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
+    io->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
     pauseMenu = new PauseMenu(this, uiMesh, largeFont, keyBinds, config, txtMngt, io);
     console = new Console(this, uiMesh, largeFont, keyBinds, config, txtMngt, io);
 
@@ -60,7 +60,7 @@ World::World() {
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
 
-    scripting = new ScriptWorld(gfxRes, camera, keyBinds, config, timing->getTimeStep(), console, billboardManager);
+    scripting = new ScriptWorld(gfxRes, camera, keyBinds, config, (float)timing->getTimeStep(), console, billboardManager);
 
     applyConfig(config);
 
@@ -226,6 +226,10 @@ void World::runTick(float timeStep) {
     mouseTxtY->rt.text = PGE::String("MouseWheelX: ", PGE::String(io->getMouseWheelDelta().y));
 #endif
 
+    if (vrm != nullptr) {
+        vrm->tick(timeStep);
+    }
+
     // If a menu is in the graveyard then remove it.
     if (menuGraveyard != nullptr) {
         delete menuGraveyard;
@@ -267,7 +271,7 @@ void World::runTick(float timeStep) {
     // If a menu was closed this tick then reset the mouse position.
     if (menuWasOpened && currMenu == nullptr) {
         io->setMouseVisibility(false);
-        io->setMousePosition(PGE::Vector2f(config->getWidth() / 2, config->getHeight() / 2));
+        io->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
     } else if (!menuWasOpened && currMenu != nullptr) {
         io->setMouseVisibility(true);
     }
@@ -278,6 +282,24 @@ void World::draw(float interpolation, RenderType r) {
         drawPlaying(interpolation);
         scripting->draw(interpolation);
         billboardManager->render();
+
+        if (vrm != nullptr && vrm->getFade() > 0.f) {
+            graphics->setDepthTest(false);
+
+            uiMesh->setTextureless();
+            uiMesh->setColor(PGE::Color(0.f, 0.f, 0.f, vrm->getFade()));
+            uiMesh->addRect(PGE::Rectanglef(-GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio(),
+                -GUIComponent::SCALE_MAGNITUDE,
+                GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio(),
+                GUIComponent::SCALE_MAGNITUDE));
+            uiMesh->endRender();
+            graphics->setDepthTest(true);
+        }
+    }
+    
+    if (vrm != nullptr) {
+        gfxRes->getDebugGraphics()->draw3DLine(PGE::Line3f(camera->position, camera->position.add(vrm->getHandPosition(true))), PGE::Color::Green, 1.f);
+        gfxRes->getDebugGraphics()->draw3DLine(PGE::Line3f(camera->position, camera->position.add(vrm->getHandPosition(false))), PGE::Color::Red, 1.f);
     }
 
     if (r != RenderType::NoUI) {
@@ -300,7 +322,7 @@ void World::draw(float interpolation, RenderType r) {
 }
 
 void World::updatePlaying(float timeStep) {
-    PGE::Vector2f center = PGE::Vector2f(config->getWidth(), config->getHeight()).multiply(0.5f);
+    PGE::Vector2f center = PGE::Vector2f((float)config->getWidth(), (float)config->getHeight()).multiply(0.5f);
 
     // TODO: Sensitivity from Config class.
     PGE::Vector2f addAngle = io->getMousePosition().subtract(center).multiply(1 / 300.f);

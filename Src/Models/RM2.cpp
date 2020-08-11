@@ -342,6 +342,6 @@ CollisionMesh* RM2::getCollisionMesh(int index) const {
 }
 
 int RM2::collisionMeshCount() const {
-    return collisionMeshes.size();
+    return (int)collisionMeshes.size();
 }
 

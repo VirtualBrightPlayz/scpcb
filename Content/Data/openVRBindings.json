@@ -1,0 +1,21 @@
+{
+    "default_bindings": [
+            {
+                "controller_type": "knuckles",
+                "binding_url": "VRBindings\\knuckles.json"
+            }
+        ],
+    "actions": [
+            {
+                "name": "/actions/main/in/Test",
+                "requirement": "mandatory",
+                "type": "vector2"
+            }
+        ],
+    "action_sets": [
+            {
+                "name": "/actions/main",
+                "usage": "leftright"
+            }
+        ]
+}

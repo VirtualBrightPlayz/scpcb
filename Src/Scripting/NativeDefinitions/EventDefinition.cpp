@@ -105,7 +105,7 @@ void EventDefinition::unregisterCallback(asIScriptFunction* f) {
         scriptFunction = modules[i]->getFunctionByAngelScriptPtr(f);
         if (scriptFunction != nullptr) { break; }
     }
-    for (int i=registeredCallbacks.size()-1;i>=0;i--) {
+    for (int i = (int)registeredCallbacks.size()-1; i >= 0; i--) {
         if (registeredCallbacks[i] == scriptFunction) {
             registeredCallbacks.erase(registeredCallbacks.begin() + i);
         }

@@ -49,7 +49,7 @@ void Camera::updateDrawTransform(float interpolation) {
         if (!orthographicProj) {
             projectionMatrix = PGE::Matrix4x4f::constructPerspectiveMat(fov, (float)width / height, nearPlaneZ, farPlaneZ);
         } else {
-            projectionMatrix = PGE::Matrix4x4f::constructOrthographicMat(width, height, nearPlaneZ, farPlaneZ);
+            projectionMatrix = PGE::Matrix4x4f::constructOrthographicMat((float)width, (float)height, nearPlaneZ, farPlaneZ);
         }
 
         needsProjUpdate = false;
@@ -87,7 +87,7 @@ const PGE::Matrix4x4f& Camera::getProjectionMatrix() const {
     return projectionMatrix;
 }
 
-const PGE::Matrix4x4f& Camera::getRotationMatrix() const {
+PGE::Matrix4x4f Camera::getRotationMatrix() const {
     return rotation;
 }
 

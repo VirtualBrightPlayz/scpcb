@@ -31,7 +31,7 @@ Collision CollisionMesh::checkCollision(Matrix4x4f matrix, Line3f line,float hei
         if (coll.hit) {
             if (!retVal.hit || retVal.coveredAmount>coll.coveredAmount) {
                 retVal = coll;
-                outTriangleIndex = i;
+                outTriangleIndex = (int)i;
             }
         }
     }

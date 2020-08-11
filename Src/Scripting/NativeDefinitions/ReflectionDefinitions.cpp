@@ -26,12 +26,12 @@ class Reflection {
             std::vector<ScriptClass*> derivedClasses = scriptClass->getDerivedClasses();
 
             if (requiredInterfaces.size() > 0) {
-                for (int i=derivedClasses.size()-1;i>=0;i--) {
+                for (int i = (int)derivedClasses.size()-1; i >= 0; i--) {
                     int interfaceCount = 0;
                     asITypeInfo* ti = derivedClasses[i]->getAngelScriptTypeInfo();
-                    for (int j=0;j<ti->GetInterfaceCount();j++) {
+                    for (unsigned int j=0; j < ti->GetInterfaceCount(); j++) {
                         asITypeInfo* itf = ti->GetInterface(j);
-                        for (int k=0;k<requiredInterfaces.size();k++) {
+                        for (int k=0; k < requiredInterfaces.size(); k++) {
                             if (requiredInterfaces[k].equalsIgnoreCase(itf->GetName())) {
                                 interfaceCount++;
                                 break;
@@ -83,7 +83,7 @@ class Reflection {
 
             asITypeInfo* arrayTypeInfo = scriptManager->getAngelScriptEngine()->GetTypeInfoByDecl("array<string>");
 
-            CScriptArray* newArray = CScriptArray::Create(arrayTypeInfo, derivedClasses.size());
+            CScriptArray* newArray = CScriptArray::Create(arrayTypeInfo, (asUINT)derivedClasses.size());
             for (int i=0;i<derivedClasses.size();i++) {
                 newArray->SetValue(i, &(derivedClasses[i]->getName()));
             }

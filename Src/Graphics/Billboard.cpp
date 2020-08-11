@@ -10,7 +10,7 @@ BillboardManager::~BillboardManager() {
     std::map<long long, BillboardMesh> meshesCopy = meshes;
     for (std::map<long long, BillboardMesh>::iterator it=meshesCopy.begin();it!=meshesCopy.end();it++) {
         BillboardMesh& mesh = it->second;
-        for (int i=mesh.billboards.size()-1;i>=0;i--) {
+        for (int i = (int)mesh.billboards.size()-1; i >= 0; i--) {
             delete mesh.billboards[i];
         }
     }
@@ -60,7 +60,7 @@ void BillboardManager::render() {
             geomChanged = true;
             mesh.vertices.resize(mesh.billboards.size()*4);
             if (primitives.size() < (mesh.vertices.size() / 2)) {
-                int prevSize = primitives.size();
+                int prevSize = (int)primitives.size();
                 for (int i=prevSize;i<(mesh.vertices.size() / 2);i+=2) {
                     primitives.push_back(PGE::Primitive((i*2)+2, (i*2)+1, (i*2)+0));
                     primitives.push_back(PGE::Primitive((i*2)+1, (i*2)+2, (i*2)+3));
@@ -71,7 +71,7 @@ void BillboardManager::render() {
             geomChanged |= mesh.billboards[i]->updateVertices(mesh.vertices, i*4);
         }
         if (geomChanged) {
-            mesh.mesh->setGeometry(mesh.vertices.size(), mesh.vertices, mesh.vertices.size() / 2, primitives);
+            mesh.mesh->setGeometry((int)mesh.vertices.size(), mesh.vertices, (int)mesh.vertices.size() / 2, primitives);
         }
         mesh.mesh->render();
     }

@@ -77,7 +77,7 @@ void MementoManager::removeBack() {
     memSize -= history.back().getSize();
     history.pop_back();
     if (position >= history.size()) {
-        position = history.size() - 1;
+        position = (int)history.size() - 1;
     }
 }
 

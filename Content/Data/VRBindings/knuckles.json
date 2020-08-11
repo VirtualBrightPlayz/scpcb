@@ -1,0 +1,15 @@
+{
+    "/actions/main": {
+        "sources": [
+            {
+                "path": "/user/hand/right/input/thumbstick",
+                "mode": "joystick",
+                "inputs": {
+                    "position": {
+                        "output": "/actions/main/in/test"
+                    }
+                }
+            }
+        ]
+    }
+}

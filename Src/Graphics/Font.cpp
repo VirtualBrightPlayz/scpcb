@@ -103,8 +103,8 @@ void Font::renderAtlas(long chr) {
 
                     GlyphData gd;
                     gd.atlasIndex = (int)atlases.size();
-                    gd.horizontalAdvance = freeTypeFace->glyph->metrics.horiAdvance>>6;
-                    gd.drawOffset = PGE::Vector2f(-freeTypeFace->glyph->bitmap_left,freeTypeFace->glyph->bitmap_top-height*10/14);
+                    gd.horizontalAdvance = (float)(freeTypeFace->glyph->metrics.horiAdvance>>6);
+                    gd.drawOffset = PGE::Vector2f((float)-freeTypeFace->glyph->bitmap_left, (float)(freeTypeFace->glyph->bitmap_top-height*10/14));
                     gd.srcRect = PGE::Rectanglef((float)x/(float)atlasDims,(float)y/(float)atlasDims,(float)(x+glyphWidth)/(float)atlasDims,(float)(y+glyphHeight)/(float)atlasDims);
 
                     x+=glyphWidth+1;
@@ -113,13 +113,13 @@ void Font::renderAtlas(long chr) {
                 } else {
                     GlyphData gd;
                     gd.atlasIndex = -1;
-                    gd.horizontalAdvance = freeTypeFace->glyph->metrics.horiAdvance>>6;
+                    gd.horizontalAdvance = (float)(freeTypeFace->glyph->metrics.horiAdvance>>6);
                     glyphData.emplace(i,gd);
                 }
             } else {
                 GlyphData gd;
                 gd.atlasIndex = -1;
-                gd.horizontalAdvance = freeTypeFace->glyph->metrics.horiAdvance>>6;
+                gd.horizontalAdvance = (float)(freeTypeFace->glyph->metrics.horiAdvance>>6);
                 glyphData.emplace(i,gd);
             }
         }

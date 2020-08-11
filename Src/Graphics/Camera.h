@@ -52,7 +52,7 @@ class Camera {
 
         const PGE::Matrix4x4f& getViewMatrix() const;
         const PGE::Matrix4x4f& getProjectionMatrix() const;
-        virtual const PGE::Matrix4x4f& getRotationMatrix() const;
+        virtual PGE::Matrix4x4f getRotationMatrix() const;
 
         float getYawAngle() const;
         float getPitchAngle() const;
