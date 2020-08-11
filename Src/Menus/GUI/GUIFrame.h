@@ -5,8 +5,8 @@
 
 class GUIFrame : public GUIComponent {
     private:
-        PGE::FilePath menuwhite;
-        PGE::FilePath menublack;
+        const PGE::String menuwhite;
+        const PGE::String menublack;
         float borderThickness;
     
         void updateInternal(PGE::Vector2f mousePos) override;

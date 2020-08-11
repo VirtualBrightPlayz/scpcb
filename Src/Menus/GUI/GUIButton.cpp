@@ -3,9 +3,9 @@
 #include "../../Utils/TextMgmt.h"
 
 GUIButton::GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, TxtManager* tm, float x, float y, float width, float height, const PGE::String& txt, Alignment alignment)
-: GUIComponent(um, kb, con, x, y, width, height, alignment), clicked(false), locked(false) {
-    menuwhite = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menuwhite.jpg");
-    menublack = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menublack.jpg");
+: GUIComponent(um, kb, con, x, y, width, height, alignment), clicked(false), locked(false),
+    menuwhite("SCPCB/GFX/Menu/menuwhite"),
+    menublack("SCPCB/GFX/Menu/menublack") {
     hoverColor = PGE::Color(70, 70, 150, 200);
     borderThickness = 0.33f;
 

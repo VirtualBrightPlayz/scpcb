@@ -8,8 +8,8 @@ class TxtManager;
 
 class GUIButton : public GUIComponent {
     private:
-        PGE::FilePath menuwhite;
-        PGE::FilePath menublack;
+        const PGE::String menuwhite;
+        const PGE::String menublack;
         PGE::Color hoverColor;
         float borderThickness;
 

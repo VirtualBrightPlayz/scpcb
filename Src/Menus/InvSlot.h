@@ -11,8 +11,8 @@ class InvSlot : public GUIComponent {
 
         Item* item;
 
-        PGE::FilePath menuwhite;
-        PGE::FilePath menublack;
+        const PGE::String menuwhite;
+        const PGE::String menublack;
         PGE::Color hoverColor;
         float borderThickness;
 

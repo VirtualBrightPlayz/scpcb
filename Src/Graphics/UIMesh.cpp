@@ -1,5 +1,7 @@
 #include "UIMesh.h"
+
 #include "../Graphics/GraphicsResources.h"
+#include "../Utils/ResourcePack.h"
 
 UIMesh::UIMesh(GraphicsResources* gr) {
     gfxRes = gr;
@@ -63,7 +65,7 @@ void UIMesh::setTextured(PGE::Texture* texture, bool tile) {
     startRender();
 }
 
-void UIMesh::setTextured(const PGE::FilePath& textureName, bool tile) {
+void UIMesh::setTextured(const PGE::String& textureName, bool tile) {
     loadTexture(textureName);
     PGE::Texture* texture = nullptr;
     for (int i = 0; i < textures.size(); i++) {
@@ -138,7 +140,7 @@ void UIMesh::addRect(const PGE::Rectanglef& rect) {
     primitives.push_back(PGE::Primitive(index3, index1, index2));
 }
 
-void UIMesh::loadTexture(const PGE::FilePath& textureName) {
+void UIMesh::loadTexture(const PGE::String& textureName) {
     PGE::Texture* texture = nullptr;
     for (int i = 0; i < textures.size(); i++) {
         if (textures[i].name.equals(textureName)) {
@@ -147,7 +149,7 @@ void UIMesh::loadTexture(const PGE::FilePath& textureName) {
     }
 
     if (texture == nullptr) {
-        texture = PGE::Texture::load(gfxRes->getGraphics(), textureName);
+        texture = PGE::Texture::load(gfxRes->getGraphics(), ResourcePack::getHighestModPath(textureName));
         Texture cacheEntry;
         cacheEntry.name = textureName; cacheEntry.pgeTexture = texture;
         textures.push_back(cacheEntry);

@@ -179,6 +179,9 @@
     <ClCompile Include="..\Src\Save\ConfigValues.cpp">
       <Filter>Save</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Utils\ResourcePack.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -355,6 +358,9 @@
     </ClInclude>
     <ClInclude Include="..\Src\Save\ConfigValues.h">
       <Filter>Save</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Utils\ResourcePack.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

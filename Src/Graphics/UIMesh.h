@@ -40,7 +40,7 @@ class UIMesh {
 
         struct Texture
         {
-            PGE::FilePath name;
+            PGE::String name;
             PGE::Texture* pgeTexture;
         };
         std::vector<Texture> textures;
@@ -52,7 +52,7 @@ class UIMesh {
 
         void setTextureless();
         void setTextured(PGE::Texture* texture, bool tile);
-        void setTextured(const PGE::FilePath& texture, bool tile);
+        void setTextured(const PGE::String& texture, bool tile);
 
         void setColor(PGE::Color col);
 
@@ -60,7 +60,7 @@ class UIMesh {
 
         void endRender();
 
-        void loadTexture(const PGE::FilePath& textureName);
+        void loadTexture(const PGE::String& textureName);
 };
 
 #endif // UIMESH_H_INCLUDED

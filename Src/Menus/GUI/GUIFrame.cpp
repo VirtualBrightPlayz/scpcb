@@ -2,9 +2,9 @@
 #include "../../Graphics/UIMesh.h"
 
 GUIFrame::GUIFrame(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment)
-: GUIComponent(um, kb, con, x, y, width, height, alignment) {
-    menuwhite = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menuwhite.jpg");
-    menublack = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menublack.jpg");
+: GUIComponent(um, kb, con, x, y, width, height, alignment),
+    menuwhite("SCPCB/GFX/Menu/menuwhite"),
+    menublack("SCPCB/GFX/Menu/menublack") {
     borderThickness = 1.f;
 }
 

@@ -38,7 +38,6 @@ class Config {
         std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> kbBinds;
         void loadKeyboardInput(Input input);
         std::map<Input, std::vector<PGE::MouseInput::BUTTON>> msBinds;
-        void genDefaultKeyboardBindings();
 
         void loadFile();
         void saveFile() const;
@@ -51,6 +50,7 @@ class Config {
 
         ArrayConfigValue* enabledMods;
         ArrayConfigValue* resourcePackLocations;
+        ArrayConfigValue* enabledResourcePacks;
         
         Config(const PGE::String& optionsFile);
         ~Config();

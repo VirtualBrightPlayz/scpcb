@@ -8,9 +8,9 @@
 GUITextInput* GUITextInput::subscriber = nullptr;
 
 GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, bool alignLeft, int mementoMaxMemSize, const PGE::String& defaultText, int limit, const PGE::String& pattern, Alignment alignment)
-: GUIComponent(um, kb, con, x, y, width, height, alignment), textY(getY() + height / 2.f - 1.f) {
-    menuwhite = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menuwhite.jpg");
-    menublack = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menublack.jpg");
+: GUIComponent(um, kb, con, x, y, width, height, alignment), textY(getY() + height / 2.f - 1.f),
+    menuwhite("SCPCB/GFX/Menu/menuwhite"),
+    menublack("SCPCB/GFX/Menu/menublack") {
     hoverColor = PGE::Color(70, 70, 150, 200);
     borderThickness = 0.33f;
 

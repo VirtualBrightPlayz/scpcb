@@ -4,23 +4,11 @@
 #include <Misc/FileUtil.h>
 
 #include "../Utils/INI.h"
+#include "../Utils/ResourcePack.h"
 #include "../Graphics/GraphicsResources.h"
 
 const PGE::String corpFolder = "Undertow Games";
 const PGE::String gameFolder = "SCP - Containment Breach";
-
-void Config::genDefaultKeyboardBindings() {
-    kbBinds[Input::Forward] = { PGE::KeyboardInput::KEYCODE::W };
-    kbBinds[Input::Backward] = { PGE::KeyboardInput::KEYCODE::S };
-    kbBinds[Input::Left] = { PGE::KeyboardInput::KEYCODE::A };
-    kbBinds[Input::Right] = { PGE::KeyboardInput::KEYCODE::D };
-    kbBinds[Input::Sprint] = { PGE::KeyboardInput::KEYCODE::LSHIFT };
-    kbBinds[Input::Crouch] = { PGE::KeyboardInput::KEYCODE::LCTRL };
-    kbBinds[Input::Blink] = { PGE::KeyboardInput::KEYCODE::SPACE };
-    kbBinds[Input::Interact] = { PGE::KeyboardInput::KEYCODE::E };
-    kbBinds[Input::Inventory] = { PGE::KeyboardInput::KEYCODE::TAB };
-    kbBinds[Input::ToggleConsole] = { PGE::KeyboardInput::KEYCODE::F3 };
-}
 
 PGE::String getConfigDir() {
     // return ""; // Uncomment this if you want options.ini in the root game folder.
@@ -36,7 +24,8 @@ Config::Config(const PGE::String& optionsFile) :
     width(new IntConfigValue(filename, secGFX, "width", 1280)),
     height(new IntConfigValue(filename, secGFX, "height", 720)),
     enabledMods(new ArrayConfigValue(filename, secMod, "enabledmods", "RootScript|SCPCB")),
-    resourcePackLocations(new ArrayConfigValue(filename, secMod, "respacklocs", "")) {
+    resourcePackLocations(new ArrayConfigValue(filename, secMod, "resourcepacklocations", "")),
+    enabledResourcePacks(new ArrayConfigValue(filename, secMod, "enabledresourcepacks", "")) {
     values.push_back(vsync);
     values.push_back(vr);
     values.push_back(languageCode);
@@ -45,10 +34,21 @@ Config::Config(const PGE::String& optionsFile) :
     values.push_back(height);
     values.push_back(enabledMods);
     values.push_back(resourcePackLocations);
+    values.push_back(enabledResourcePacks);
 
     setResolution(width->value, height->value);
 
-    genDefaultKeyboardBindings();
+    // Generating default keyboard bindings.
+    kbBinds[Input::Forward] = { PGE::KeyboardInput::KEYCODE::W };
+    kbBinds[Input::Backward] = { PGE::KeyboardInput::KEYCODE::S };
+    kbBinds[Input::Left] = { PGE::KeyboardInput::KEYCODE::A };
+    kbBinds[Input::Right] = { PGE::KeyboardInput::KEYCODE::D };
+    kbBinds[Input::Sprint] = { PGE::KeyboardInput::KEYCODE::LSHIFT };
+    kbBinds[Input::Crouch] = { PGE::KeyboardInput::KEYCODE::LCTRL };
+    kbBinds[Input::Blink] = { PGE::KeyboardInput::KEYCODE::SPACE };
+    kbBinds[Input::Interact] = { PGE::KeyboardInput::KEYCODE::E };
+    kbBinds[Input::Inventory] = { PGE::KeyboardInput::KEYCODE::TAB };
+    kbBinds[Input::ToggleConsole] = { PGE::KeyboardInput::KEYCODE::F3 };
 
     if (PGE::FileUtil::exists(PGE::FilePath::fromStr(filename))) {
         loadFile();

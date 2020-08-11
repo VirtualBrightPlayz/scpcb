@@ -1,11 +1,11 @@
 #include "InvSlot.h"
 
 InvSlot::InvSlot(UIMesh* um, KeyBinds* kb, Config* con, float x, float y)
-: GUIComponent(um, kb, con, x, y, SIZE, SIZE, Alignment::CenterXY) {
+: GUIComponent(um, kb, con, x, y, SIZE, SIZE, Alignment::CenterXY),
+    menuwhite("SCPCB/GFX/Menu/menuwhite"),
+    menublack("SCPCB/GFX/Menu/menublack") {
     item = nullptr;
 
-    menuwhite = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menuwhite.jpg");
-    menublack = PGE::FilePath::fromStr("SCPCB/GFX/Menu/menublack.jpg");
     hoverColor = PGE::Color(70, 70, 150, 200);
     borderThickness = 0.33f;
 }

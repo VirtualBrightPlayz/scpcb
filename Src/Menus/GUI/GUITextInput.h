@@ -13,8 +13,8 @@ private:
 
     static GUITextInput* subscriber;
 
-    PGE::FilePath menuwhite;
-    PGE::FilePath menublack;
+    const PGE::String menuwhite;
+    const PGE::String menublack;
     PGE::Color hoverColor;
     float borderThickness;
     PGE::Vector2f txtScale;

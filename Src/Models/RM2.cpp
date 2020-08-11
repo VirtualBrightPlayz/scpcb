@@ -4,6 +4,8 @@
 
 #include <Math/Matrix.h>
 
+#include "../Utils/ResourcePack.h"
+
 const PGE::FilePath RM2::opaqueShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/");
 const PGE::FilePath RM2::opaqueNormalMapShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaqueNormalMap/");
 const PGE::FilePath RM2::alphaShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomAlpha/");
@@ -102,16 +104,16 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     std::vector<PGE::Texture*> lightmapTextures[3];
     if (lmCount.u == 1) {
         for (int i = 0; i < 3; i++) {
-            const PGE::String lightmapSuffix = "_lm" + PGE::String(i) + ".png";
+            const PGE::String lightmapSuffix = "_lm" + PGE::String(i);
             PGE::String lightmapName = filename.substr(0, filename.size() - extension.size()) + lightmapSuffix;
-            lightmapTextures[i].push_back(gfxRes->getTexture(PGE::FilePath::fromStr(lightmapName)));
+            lightmapTextures[i].push_back(gfxRes->getTexture(lightmapName));
         }
     } else {
         for (int n = 0; n < lmCount.u; n++) {
             for (int i = 0; i < 3; i++) {
-                const PGE::String lightmapSuffix = "_lm" + PGE::String(i) + "_" + PGE::String(n) + ".png";
+                const PGE::String lightmapSuffix = "_lm" + PGE::String(i) + "_" + PGE::String(n);
                 PGE::String lightmapName = filename.substr(0, filename.size() - extension.size()) + lightmapSuffix;
-                lightmapTextures[i].push_back(gfxRes->getTexture(PGE::FilePath::fromStr(lightmapName)));
+                lightmapTextures[i].push_back(gfxRes->getTexture(lightmapName));
             }
         }
     }
@@ -121,12 +123,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
 
         PGE::String textureName = readByteString(inFile);
 
-        PGE::FilePath textureFilePath = PGE::FilePath::fromStr(texturePath + textureName + ".jpg");
-        if (!textureFilePath.exists()) {
-            textureFilePath  = PGE::FilePath::fromStr(texturePath + textureName + ".png");
-        }
-
-        PGE::Texture* texture = gfxRes->getTexture(textureFilePath);
+        PGE::Texture* texture = gfxRes->getTexture(texturePath + textureName);
         textureEntry.texture = texture;
 
         char flag = 0;
@@ -139,13 +136,9 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
         if (isOpaque) {
             textureEntry.shader = opaqueShader;
 
-            PGE::FilePath normalMapFilePath = PGE::FilePath::fromStr(texturePath + textureName + "_n.jpg");
-            if (!normalMapFilePath.exists()) {
-                normalMapFilePath = PGE::FilePath::fromStr(texturePath + textureName + "_n.png");
-            }
-
-            if (normalMapFilePath.exists()) {
-                textureEntry.normalMap = gfxRes->getTexture(normalMapFilePath);
+            PGE::Texture* tex = gfxRes->getTexture(texturePath + textureName + "_n");
+            if (tex != nullptr) {
+                textureEntry.normalMap = tex;
                 textureEntry.shader = opaqueNormalMapShader;
             }
         }

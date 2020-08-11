@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "../Save/Config.h"
 #include "../Menus/GUI/GUIComponent.h"
+#include "../Utils/ResourcePack.h"
 #include "DebugGraphics.h"
 
 GraphicsResources::GraphicsResources(PGE::Graphics* gfx, Config* con) {
@@ -41,18 +42,23 @@ void GraphicsResources::dropShader(PGE::Shader* shader) {
     }
 }
 
-PGE::Texture* GraphicsResources::getTexture(const PGE::FilePath& filename) {
+PGE::Texture* GraphicsResources::getTexture(const PGE::String& filename) {
     for (int i = 0; i < (int)textures.size(); i++) {
-        if (textures[i].filename.equals(filename)) {
+        if (textures[i].name.equals(filename)) {
             textures[i].refCount++;
             return textures[i].texture;
         }
     }
 
+    PGE::FilePath path = ResourcePack::getHighestModPath(filename);
+    if (!path.exists()) {
+        return nullptr;
+    }
+
     Texture newTexture;
     newTexture.refCount = 1;
-    newTexture.texture = PGE::Texture::load(graphics, filename);
-    newTexture.filename = filename;
+    newTexture.texture = PGE::Texture::load(graphics, path);
+    newTexture.name = filename;
     textures.push_back(newTexture);
     return newTexture.texture;
 }

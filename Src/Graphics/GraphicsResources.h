@@ -20,7 +20,7 @@ class GraphicsResources {
         std::vector<Shader> shaders;
 
         struct Texture {
-            PGE::FilePath filename;
+            PGE::String name;
             PGE::Texture* texture;
             int refCount;
         };
@@ -42,7 +42,7 @@ class GraphicsResources {
         void dropShader(PGE::Shader* shader);
         void updateShaderConstant(const PGE::FilePath& shd, const PGE::String& constant, const PGE::Matrix4x4f& val);
 
-        PGE::Texture* getTexture(const PGE::FilePath& filename);
+        PGE::Texture* getTexture(const PGE::String& filename);
         void dropTexture(PGE::Texture* texture);
     
         void updateOrthoMat(float aspectRatio);

@@ -27,8 +27,8 @@ void main() {
     Vector2f test = Vector2f(10.0, 10.0);
     Vector2f test2 = Vector2f(15.0, 10.0);
 
-    Billboard::create("SCPCB/GFX/Sprites/light_flare.jpg", Vector3f(1, 7, 1), 0.5, test, Color(1.0, 0.8, 0.5));
-    Billboard::create("SCPCB/GFX/Map/Textures/dirtymetal.jpg", Vector3f(1, 3, 10), Vector3f(-1.57, 0, 3), test2, Color(0.0, 1.0, 1.0));
+    Billboard::create("SCPCB/GFX/Sprites/smoke_white", Vector3f(1, 7, 1), 0.5, test, Color(1.0, 0.8, 0.5));
+    Billboard::create("SCPCB/GFX/Map/Textures/dirtymetal", Vector3f(1, 3, 10), Vector3f(-1.57, 0, 3), test2, Color(0.0, 1.0, 1.0));
 
     //Debug::log(test_shared_global);
 

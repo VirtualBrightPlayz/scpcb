@@ -22,7 +22,7 @@ void BillboardManager::addBillboard(Billboard* billboard) {
     std::map<long long, BillboardMesh>::iterator it = meshes.find(texName.getHashCode());
     if (it == meshes.end()) {
         BillboardMesh newMesh;
-        newMesh.texture = gfxRes->getTexture(PGE::FilePath::fromStr(texName));
+        newMesh.texture = gfxRes->getTexture(texName);
         newMesh.material = new PGE::Material(shader, newMesh.texture, false);
         newMesh.mesh = PGE::Mesh::create(gfxRes->getGraphics(), PGE::Primitive::TYPE::TRIANGLE);
         newMesh.mesh->setMaterial(newMesh.material);
