@@ -5,6 +5,8 @@
 #include <Shader/Shader.h>
 #include <Texture/Texture.h>
 
+#include "../Utils/ResourcePackManager.h"
+
 class Config;
 class Camera;
 class DebugGraphics;
@@ -36,6 +38,8 @@ class GraphicsResources {
         DebugGraphics* debugGraphics;
 
     public:
+        ResourcePackManager* const rpm;
+        
         GraphicsResources(PGE::Graphics* gfx, Config* con);
 
         PGE::Shader* getShader(const PGE::FilePath& filename, bool needsViewProjection);

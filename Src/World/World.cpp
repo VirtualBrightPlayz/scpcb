@@ -277,6 +277,7 @@ void World::draw(float interpolation, RenderType r) {
     if (r != RenderType::UIOnly) {
         drawPlaying(interpolation);
         scripting->draw(interpolation);
+        billboardManager->render();
     }
 
     if (r != RenderType::NoUI) {

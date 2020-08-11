@@ -4,7 +4,6 @@
 #include <Misc/FileUtil.h>
 
 #include "../Utils/INI.h"
-#include "../Utils/ResourcePack.h"
 #include "../Graphics/GraphicsResources.h"
 
 const PGE::String corpFolder = "Undertow Games";
@@ -24,8 +23,8 @@ Config::Config(const PGE::String& optionsFile) :
     width(new IntConfigValue(filename, secGFX, "width", 1280)),
     height(new IntConfigValue(filename, secGFX, "height", 720)),
     enabledMods(new ArrayConfigValue(filename, secMod, "enabledmods", "RootScript|SCPCB")),
-    resourcePackLocations(new ArrayConfigValue(filename, secMod, "resourcepacklocations", "")),
-    enabledResourcePacks(new ArrayConfigValue(filename, secMod, "enabledresourcepacks", "")) {
+    resourcePackLocations(new ArrayConfigValue(filename, secMod, "resourcepacklocations", "ResourcePacks")),
+    enabledResourcePacks(new ArrayConfigValue(filename, secMod, "enabledresourcepacks", "hahahaha")) {
     values.push_back(vsync);
     values.push_back(vr);
     values.push_back(languageCode);

@@ -4,8 +4,6 @@
 
 #include <Math/Matrix.h>
 
-#include "../Utils/ResourcePack.h"
-
 const PGE::FilePath RM2::opaqueShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/");
 const PGE::FilePath RM2::opaqueNormalMapShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaqueNormalMap/");
 const PGE::FilePath RM2::alphaShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomAlpha/");

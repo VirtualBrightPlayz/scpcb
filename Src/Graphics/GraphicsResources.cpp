@@ -2,10 +2,10 @@
 #include "Camera.h"
 #include "../Save/Config.h"
 #include "../Menus/GUI/GUIComponent.h"
-#include "../Utils/ResourcePack.h"
 #include "DebugGraphics.h"
 
-GraphicsResources::GraphicsResources(PGE::Graphics* gfx, Config* con) {
+GraphicsResources::GraphicsResources(PGE::Graphics* gfx, Config* con) :
+    rpm(new ResourcePackManager(con->resourcePackLocations, con->enabledResourcePacks)) {
     con->setGraphicsResources(this);
     updateOrthoMat(con->getAspectRatio());
     graphics = gfx;
@@ -50,7 +50,7 @@ PGE::Texture* GraphicsResources::getTexture(const PGE::String& filename) {
         }
     }
 
-    PGE::FilePath path = ResourcePack::getHighestModPath(filename);
+    PGE::FilePath path = rpm->getHighestModPath(filename);
     if (!path.exists()) {
         return nullptr;
     }

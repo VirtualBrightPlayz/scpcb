@@ -179,7 +179,7 @@
     <ClCompile Include="..\Src\Save\ConfigValues.cpp">
       <Filter>Save</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Utils\ResourcePack.cpp">
+    <ClCompile Include="..\Src\Utils\ResourcePackManager.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
@@ -359,7 +359,7 @@
     <ClInclude Include="..\Src\Save\ConfigValues.h">
       <Filter>Save</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\Utils\ResourcePack.h">
+    <ClInclude Include="..\Src\Utils\ResourcePackManager.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
