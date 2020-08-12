@@ -47,6 +47,9 @@ void ResourcePackManager::loadResPacks() {
 PGE::FilePath ResourcePackManager::getHighestModPath(const PGE::String& itemPath) {
 	PGE::FilePath ret;
 	for (int i = 0; i < activeResPacks.size(); i++) {
+		if ((activeResPacks[i].path + itemPath + ".LOCK").exists()) {
+			break;
+		}
 		if ((ret = (activeResPacks[i].path + itemPath + ".png")).exists()) {
 			return ret;
 		}

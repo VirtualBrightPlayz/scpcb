@@ -24,7 +24,7 @@ Config::Config(const PGE::String& optionsFile) :
     height(new IntConfigValue(filename, secGFX, "height", 720)),
     enabledMods(new ArrayConfigValue(filename, secMod, "enabledmods", "RootScript|SCPCB")),
     resourcePackLocations(new ArrayConfigValue(filename, secMod, "resourcepacklocations", "ResourcePacks")),
-    enabledResourcePacks(new ArrayConfigValue(filename, secMod, "enabledresourcepacks", "hahahaha")) {
+    enabledResourcePacks(new ArrayConfigValue(filename, secMod, "enabledresourcepacks", "HIGH|hahahaha")) {
     values.push_back(vsync);
     values.push_back(vr);
     values.push_back(languageCode);
