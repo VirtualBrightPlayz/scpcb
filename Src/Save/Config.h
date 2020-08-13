@@ -48,6 +48,8 @@ class Config {
         BoolConfigValue* const vsync;
         BoolConfigValue* const vr;
 
+        IntConfigValue* const sensitivity;
+
         ArrayConfigValue* enabledMods;
         ArrayConfigValue* resourcePackLocations;
         ArrayConfigValue* enabledResourcePacks;

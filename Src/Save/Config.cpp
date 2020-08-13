@@ -18,6 +18,7 @@ Config::Config(const PGE::String& optionsFile) :
     filename(getConfigDir() + optionsFile),
     vsync(new BoolConfigValue(filename, secGFX, "vsync", true)),
     vr(new BoolConfigValue(filename, secGFX, "vr", false)),
+    sensitivity(new IntConfigValue(filename, secGen, "sensitivity", 100)),
     languageCode(new StringConfigValue(filename, secGen, "language", "en")),
     windowType(new IntConfigValue(filename, secGFX, "window", WindowType::Windowed)),
     width(new IntConfigValue(filename, secGFX, "width", 1280)),
@@ -27,6 +28,7 @@ Config::Config(const PGE::String& optionsFile) :
     enabledResourcePacks(new ArrayConfigValue(filename, secMod, "enabledresourcepacks", "HIGH|hahahaha")) {
     values.push_back(vsync);
     values.push_back(vr);
+    values.push_back(sensitivity);
     values.push_back(languageCode);
     values.push_back(windowType);
     values.push_back(width);

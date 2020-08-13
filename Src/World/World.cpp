@@ -323,9 +323,8 @@ void World::draw(float interpolation, RenderType r) {
 
 void World::updatePlaying(float timeStep) {
     PGE::Vector2f center = PGE::Vector2f((float)config->getWidth(), (float)config->getHeight()).multiply(0.5f);
-
-    // TODO: Sensitivity from Config class.
-    PGE::Vector2f addAngle = io->getMousePosition().subtract(center).multiply(1 / 300.f);
+    
+    PGE::Vector2f addAngle = io->getMousePosition().subtract(center).multiply(config->sensitivity->value / 30000.f);
     camera->addAngle(addAngle.x, addAngle.y);
 
     // Reset mouse to center.
