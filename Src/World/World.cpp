@@ -102,12 +102,10 @@ World::~World() {
 }
 
 void World::applyConfig(const Config* config) {
-    std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> keyboardMappings = config->getKeyboardBindings();
-    std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>>::const_iterator it;
+    Config::KeyBindsMap keyboardMappings = config->getKeyboardBindings();
+    Config::KeyBindsMap::const_iterator it;
     for (it = keyboardMappings.begin(); it != keyboardMappings.end(); it++) {
-        for (int i = 0; i < (int)it->second.size(); i++) {
-            keyBinds->bindInput(it->first, it->second[i]);
-        }
+        keyBinds->bindInput(it->first, it->second);
     }
 }
 
@@ -258,8 +256,7 @@ void World::runTick(float timeStep) {
     } else if (inputWasFired(hitInputs, Input::ToggleConsole)) {
         if (currMenu == nullptr) {
             activateMenu(console);
-        }
-        else {
+        } else {
             console->onEscapeHit();
         }
     }

@@ -34,57 +34,58 @@ void ConsoleDefinitions::registerCommandNoHelp(const PGE::String& name, void* f,
 void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) const {
     PGE::String typeString;
     switch (type) {
-        case LogType::Log:
+        case LogType::Log: {
             typeString = "Log";
-            break;
-        case LogType::Warning:
+        } break;
+        case LogType::Warning: {
             typeString = "Warn";
-            break;
-        case LogType::Error:
+        } break;
+        case LogType::Error: {
             typeString = "Err";
-            break;
+        } break;
     }
     PGE::String content;
     if (typeId == engine->GetStringFactoryReturnTypeId()) {
         content = *(PGE::String*)ref;
     } else {
         switch (typeId) {
-            case asTYPEID_VOID: // This should never happen.
+            case asTYPEID_VOID: { // This should never happen.
                 throw new std::runtime_error(("VOID PARAMETER! " + PGE::String((uint64_t)ref, true)).cstr());
-            case asTYPEID_BOOL:
+            } break;
+            case asTYPEID_BOOL: {
                 content = (*(bool*)ref) ? "True" : "False";
-                break;
-            case asTYPEID_INT8:
-                content = PGE::String((int32_t)*(int8_t*)ref);
-                break;
-            case asTYPEID_INT16:
-                content = PGE::String((int32_t)*(int16_t*)ref);
-                break;
-            case asTYPEID_INT32:
+            } break;
+            case asTYPEID_INT8: {
+                content = PGE::String((int32_t) * (int8_t*)ref);
+            } break;
+            case asTYPEID_INT16: {
+                content = PGE::String((int32_t) * (int16_t*)ref);
+            } break;
+            case asTYPEID_INT32: {
                 content = PGE::String(*(int32_t*)ref);
-                break;
-            case asTYPEID_INT64:
+            } break;
+            case asTYPEID_INT64: {
                 content = PGE::String(*(int64_t*)ref);
-                break;
-            case asTYPEID_UINT8:
-                content = PGE::String((uint32_t)*(uint8_t*)ref);
-                break;
-            case asTYPEID_UINT16:
-                content = PGE::String((uint32_t)*(uint16_t*)ref);
-                break;
-            case asTYPEID_UINT32:
+            } break;
+            case asTYPEID_UINT8: {
+                content = PGE::String((uint32_t) * (uint8_t*)ref);
+            } break;
+            case asTYPEID_UINT16: {
+                content = PGE::String((uint32_t) * (uint16_t*)ref);
+            } break;
+            case asTYPEID_UINT32: {
                 content = PGE::String(*(uint32_t*)ref);
-                break;
-            case asTYPEID_UINT64:
+            } break;
+            case asTYPEID_UINT64: {
                 content = PGE::String(*(uint64_t*)ref);
-                break;
-            case asTYPEID_FLOAT:
+            } break;
+            case asTYPEID_FLOAT: {
                 content = PGE::String(*(float*)ref);
-                break;
-            case asTYPEID_DOUBLE:
+            } break;
+            case asTYPEID_DOUBLE: {
                 content = PGE::String(*(double*)ref);
-                break;
-            default: // Object.
+            } break;
+            default: { // Object.
                 asITypeInfo* typeInfo = engine->GetTypeInfoById(typeId);
                 asIScriptFunction* toString = typeInfo->GetMethodByName("toString");
                 if (toString != nullptr) {
@@ -99,8 +100,8 @@ void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) const 
                         break;
                     }
                 }
-                content = PGE::String(typeInfo->GetName()) + "@" + PGE::String((uint64_t) ref, true);
-                break;
+                content = PGE::String(typeInfo->GetName()) + "@" + PGE::String((uint64_t)ref, true);
+            } break;
         }
     }
 #ifdef DEBUG

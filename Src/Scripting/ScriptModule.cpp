@@ -123,45 +123,45 @@ Type* ScriptModule::typeFromTypeId(int typeId) const {
 
     Type* type = nullptr;
     switch (typeId) {
-    case asTYPEID_INT32: {
-        type = Type::Int32;
-    } break;
-    case asTYPEID_UINT32: {
-        type = Type::UInt32;
-    } break;
-    case asTYPEID_FLOAT: {
-        type = Type::Float;
-    } break;
-    case asTYPEID_DOUBLE: {
-        type = Type::Double;
-    } break;
-    case asTYPEID_VOID: {
-        type = Type::Void;
-    } break;
-    default: {
-        if (typeId == stringFactoryTypeId) {
-            type = Type::String;
-        } else if (typeId == vector3fTypeID) {
-            type = Type::Vector3f;
-        } else if (typeId == matrix4x4fTypeID) {
-            type = Type::Matrix4x4f;
-        }
-        else if (isTemplate) {
-            if (scriptManager->isArrayTypeId(originalTypeId)) {
-                asITypeInfo* typeInfo = engine->GetTypeInfoById(originalTypeId);
-                Type* baseType = typeFromTypeId(typeInfo->GetSubTypeId());
-                type = baseType->getArrayType();
+        case asTYPEID_INT32: {
+            type = Type::Int32;
+        } break;
+        case asTYPEID_UINT32: {
+            type = Type::UInt32;
+        } break;
+        case asTYPEID_FLOAT: {
+            type = Type::Float;
+        } break;
+        case asTYPEID_DOUBLE: {
+            type = Type::Double;
+        } break;
+        case asTYPEID_VOID: {
+            type = Type::Void;
+        } break;
+        default: {
+            if (typeId == stringFactoryTypeId) {
+                type = Type::String;
+            } else if (typeId == vector3fTypeID) {
+                type = Type::Vector3f;
+            } else if (typeId == matrix4x4fTypeID) {
+                type = Type::Matrix4x4f;
+            }
+            else if (isTemplate) {
+                if (scriptManager->isArrayTypeId(originalTypeId)) {
+                    asITypeInfo* typeInfo = engine->GetTypeInfoById(originalTypeId);
+                    Type* baseType = typeFromTypeId(typeInfo->GetSubTypeId());
+                    type = baseType->getArrayType();
+                }
+                else {
+                    throw std::runtime_error("Templates are currently not supported for types other than arrays");
+                }
             }
             else {
-                throw std::runtime_error("Templates are currently not supported for types other than arrays");
+                ScriptClass* clss = getClassByTypeId(typeId);
+                if (clss == nullptr) { clss = scriptManager->getSharedClassByTypeId(typeId); }
+                type = clss;
             }
-        }
-        else {
-            ScriptClass* clss = getClassByTypeId(typeId);
-            if (clss == nullptr) { clss = scriptManager->getSharedClassByTypeId(typeId); }
-            type = clss;
-        }
-    } break;
+        } break;
     }
 
     if (type == nullptr) {

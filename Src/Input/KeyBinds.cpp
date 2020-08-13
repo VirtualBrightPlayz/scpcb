@@ -94,13 +94,10 @@ KeyBinds::~KeyBinds() {
 #endif
 
     // Untrack and delete bindings map.
-    std::map<Input, std::vector<UserInput>>::iterator it;
+    UserInputMap::iterator it;
     for (it = bindings.begin(); it != bindings.end(); it++) {
-        for (int i = 0; i < (int)it->second.size(); i++) {
-            io->untrackInput(it->second[i].input);
-            delete it->second[i].input;
-        }
-        it->second.clear();
+        io->untrackInput(it->second.input);
+        delete it->second.input;
     }
 }
 
@@ -143,18 +140,16 @@ void KeyBinds::update() {
     downInputs = Input::None;
     hitInputs = Input::None;
 
-    std::map<Input, std::vector<UserInput>>::const_iterator it;
+    UserInputMap::const_iterator it;
     for (it = bindings.begin(); it != bindings.end(); it++) {
         // Check if any of the assigned inputs are down.
-        for (int i = 0; i < (int)it->second.size(); i++) {
-            // If one of them is down/hit then the input is active.
-            if (it->second[i].input->isDown()) {
-                downInputs = downInputs | it->first;
-            }
+        // If one of them is down/hit then the input is active.
+        if (it->second.input->isDown()) {
+            downInputs = downInputs | it->first;
+        }
             
-            if (it->second[i].input->isHit()) {
-                hitInputs = hitInputs | it->first;
-            }
+        if (it->second.input->isHit()) {
+            hitInputs = hitInputs | it->first;
         }
     }
 }
@@ -170,22 +165,13 @@ Input KeyBinds::getHitInputs() const {
 void KeyBinds::bindInput(Input input, UserInput key) {
     io->trackInput(key.input);
 
-    // Does the key exist already?
-    std::map<Input, std::vector<UserInput>>::iterator it = bindings.find(input);
-    if (it != bindings.end()) {
-        it->second.push_back(key);
-    } else {
-        // Create it otherwise.
-        std::vector<UserInput> vect;
-        vect.push_back(key);
-        bindings[input] = vect;
-    }
+    bindings.emplace(input, key);
 }
 
 void KeyBinds::bindInput(Input input, PGE::MouseInput::BUTTON key) {
     UserInput wrapKey;
     wrapKey.input = new PGE::MouseInput(key);
-    wrapKey.mouseButton = key;
+    wrapKey.code = (int)key;
 
     bindInput(input, wrapKey);
 }
@@ -193,57 +179,40 @@ void KeyBinds::bindInput(Input input, PGE::MouseInput::BUTTON key) {
 void KeyBinds::bindInput(Input input, PGE::KeyboardInput::KEYCODE key) {
     UserInput wrapKey;
     wrapKey.input = new PGE::KeyboardInput(key);
-    wrapKey.keyCode = key;
+    wrapKey.code = (int)key;
 
     bindInput(input, wrapKey);
 }
 
 void KeyBinds::bindInput(Input input, PGE::ControllerInput::BUTTON key) {
     UserInput wrapKey;
-    wrapKey.input = new PGE::ControllerInput(io->getController(0),key);
-    wrapKey.controllerButton = key;
+    wrapKey.input = new PGE::ControllerInput(io->getController(0), key);
+    wrapKey.code = (int)key;
 
     bindInput(input, wrapKey);
 }
 
-void KeyBinds::unbindInput(Input input, PGE::MouseInput::BUTTON key) {
-    std::map<Input, std::vector<UserInput>>::iterator it = bindings.find(input);
-    if (it != bindings.end()) {
-        for (int i = 0; i < (int)it->second.size(); i++) {
-            if (it->second[i].input->getDevice() == PGE::UserInput::DEVICE::MOUSE && it->second[i].mouseButton == key) {
-                io->untrackInput(it->second[i].input);
-                delete it->second[i].input;
-                it->second.erase(it->second.begin() + i);
-                return;
-            }
+void KeyBinds::unbindInput(Input input, PGE::UserInput::DEVICE device, int key) {
+    // Iterate over all values of the given key
+    std::pair<UserInputMap::iterator, UserInputMap::iterator> bindingsRange = bindings.equal_range(input);
+    for (UserInputMap::iterator it = bindingsRange.first; it != bindingsRange.second; it++) {
+        if (it->second.input->getDevice() == device && it->second.code == key) {
+            io->untrackInput(it->second.input);
+            delete it->second.input;
+            bindings.erase(it);
+            return;
         }
     }
+}
+
+void KeyBinds::unbindInput(Input input, PGE::MouseInput::BUTTON key) {
+    unbindInput(input, PGE::UserInput::DEVICE::MOUSE, (int)key);
 }
 
 void KeyBinds::unbindInput(Input input, PGE::KeyboardInput::KEYCODE key) {
-    std::map<Input, std::vector<UserInput>>::iterator it = bindings.find(input);
-    if (it != bindings.end()) {
-        for (int i = 0; i < (int)it->second.size(); i++) {
-            if (it->second[i].input->getDevice() == PGE::UserInput::DEVICE::KEYBOARD && it->second[i].keyCode == key) {
-                io->untrackInput(it->second[i].input);
-                delete it->second[i].input;
-                it->second.erase(it->second.begin() + i);
-                return;
-            }
-        }
-    }
+    unbindInput(input, PGE::UserInput::DEVICE::KEYBOARD, (int)key);
 }
 
 void KeyBinds::unbindInput(Input input, PGE::ControllerInput::BUTTON key) {
-    std::map<Input, std::vector<UserInput>>::iterator it = bindings.find(input);
-    if (it != bindings.end()) {
-        for (int i = 0; i < (int)it->second.size(); i++) {
-            if (it->second[i].input->getDevice() == PGE::UserInput::DEVICE::CONTROLLER && it->second[i].controllerButton == key) {
-                io->untrackInput(it->second[i].input);
-                delete it->second[i].input;
-                it->second.erase(it->second.begin() + i);
-                return;
-            }
-        }
-    }
+    unbindInput(input, PGE::UserInput::DEVICE::CONTROLLER, (int)key);
 }

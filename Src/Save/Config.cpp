@@ -40,16 +40,15 @@ Config::Config(const PGE::String& optionsFile) :
     setResolution(width->value, height->value);
 
     // Generating default keyboard bindings.
-    kbBinds[Input::Forward] = { PGE::KeyboardInput::KEYCODE::W };
-    kbBinds[Input::Backward] = { PGE::KeyboardInput::KEYCODE::S };
-    kbBinds[Input::Left] = { PGE::KeyboardInput::KEYCODE::A };
-    kbBinds[Input::Right] = { PGE::KeyboardInput::KEYCODE::D };
-    kbBinds[Input::Sprint] = { PGE::KeyboardInput::KEYCODE::LSHIFT };
-    kbBinds[Input::Crouch] = { PGE::KeyboardInput::KEYCODE::LCTRL };
-    kbBinds[Input::Blink] = { PGE::KeyboardInput::KEYCODE::SPACE };
-    kbBinds[Input::Interact] = { PGE::KeyboardInput::KEYCODE::E };
-    kbBinds[Input::Inventory] = { PGE::KeyboardInput::KEYCODE::TAB };
-    kbBinds[Input::ToggleConsole] = { PGE::KeyboardInput::KEYCODE::F3 };
+    kbBinds.emplace(Input::Forward, PGE::KeyboardInput::KEYCODE::W);
+    kbBinds.emplace(Input::Left, PGE::KeyboardInput::KEYCODE::A);
+    kbBinds.emplace(Input::Right, PGE::KeyboardInput::KEYCODE::D);
+    kbBinds.emplace(Input::Sprint, PGE::KeyboardInput::KEYCODE::LSHIFT);
+    kbBinds.emplace(Input::Crouch, PGE::KeyboardInput::KEYCODE::LCTRL);
+    kbBinds.emplace(Input::Blink, PGE::KeyboardInput::KEYCODE::SPACE);
+    kbBinds.emplace(Input::Interact, PGE::KeyboardInput::KEYCODE::E);
+    kbBinds.emplace(Input::Inventory, PGE::KeyboardInput::KEYCODE::TAB);
+    kbBinds.emplace(Input::ToggleConsole, PGE::KeyboardInput::KEYCODE::F3);
 
     if (PGE::FileUtil::exists(PGE::FilePath::fromStr(filename))) {
         loadFile();
@@ -63,8 +62,8 @@ Config::Config(const PGE::String& optionsFile) :
 
 Config::~Config() {
     // Deleting all entries in the list, as we own them.
-    for (std::list<ConfigValue*>::iterator it = values.begin(); it != values.end(); it++) {
-        delete *it;
+    for (int i = 0; i < values.size(); i++) {
+        delete values[i];
     }
 }
 
@@ -73,8 +72,8 @@ void Config::setGraphicsResources(GraphicsResources* grm) {
 }
 
 void Config::loadFile() {
-    for (std::list<ConfigValue*>::iterator it = values.begin(); it != values.end(); it++) {
-        (*it)->loadValue();
+    for (int i = 0; i < values.size(); i++) {
+        values[i]->loadValue();
     }
 
     setResolution(width->value, height->value);
@@ -97,30 +96,30 @@ void Config::loadKeyboardInput(Input input) {
         return;
     }
 
-    kbBinds[input] = std::vector<PGE::KeyboardInput::KEYCODE>();
+    std::pair<KeyBindsMap::iterator, KeyBindsMap::iterator> bindingsRange = kbBinds.equal_range(input);
+    kbBinds.erase(bindingsRange.first, bindingsRange.second);
 
     std::vector<PGE::String> bindVect = bindings.split(',', true);
     for (int i = 0; i < (int)bindVect.size(); i++) {
-        kbBinds[input].push_back((PGE::KeyboardInput::KEYCODE)bindVect[i].toInt());
+        kbBinds.emplace(input, (PGE::KeyboardInput::KEYCODE)bindVect[i].toInt());
     }
 }
 
 void Config::saveFile() const {
-    for (std::list<ConfigValue*>::const_iterator it = values.begin(); it != values.end(); it++) {
-        (*it)->saveValue();
+    for (int i = 0; i < values.size(); i++) {
+        values[i]->saveValue();
     }
 
-    std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>>::const_iterator it;
+    KeyBindsMap::const_iterator it;
+    Input currInput = Input::None;
+    std::vector<PGE::String> strToJoin;
     for (it = kbBinds.begin(); it != kbBinds.end(); it++) {
-        PGE::String bindName = getBindingName(it->first) + "_keyboard";
-
-        std::vector<PGE::String> strToJoin;
-        for (int i = 0; i < (int)it->second.size(); i++) {
-            strToJoin.push_back(PGE::String((int)it->second[i]));
+        if (it->first != currInput) {
+            putINIValue(filename, secCon, getBindingName(it->first) + "_keyboard", PGE::String::join(strToJoin, ","));
+            strToJoin.clear();
+            currInput = it->first;
         }
-        PGE::String finalSave = PGE::String::join(strToJoin, ",");
-
-        putINIValue(filename, secCon, bindName, finalSave);
+        strToJoin.push_back(PGE::String((int)it->second));
     }
 }
 
@@ -148,6 +147,6 @@ float Config::getAspectRatio() const {
     return aspectRatio;
 }
 
-std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> Config::getKeyboardBindings() const {
+Config::KeyBindsMap Config::getKeyboardBindings() const {
     return kbBinds;
 }

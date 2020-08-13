@@ -19,6 +19,9 @@ enum WindowType {
 };
 
 class Config {
+    public:
+        typedef std::multimap<Input, PGE::KeyboardInput::KEYCODE> KeyBindsMap;
+        
     private:
         GraphicsResources* gfxResMgr = nullptr;
 
@@ -28,16 +31,16 @@ class Config {
         const PGE::String secCon = "controls";
         const PGE::String secMod = "mods";
 
-        std::list<ConfigValue*> values;
+        std::vector<ConfigValue*> values;
 
         IntConfigValue* const windowType;
         IntConfigValue* const width;
         IntConfigValue* const height;
         float aspectRatio;
-
-        std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> kbBinds;
+        
+        KeyBindsMap kbBinds;
         void loadKeyboardInput(Input input);
-        std::map<Input, std::vector<PGE::MouseInput::BUTTON>> msBinds;
+        std::multimap<Input, PGE::MouseInput::BUTTON> msBinds;
 
         void loadFile();
         void saveFile() const;
@@ -64,7 +67,7 @@ class Config {
         int getHeight() const;
         float getAspectRatio() const;
 
-        std::map<Input, std::vector<PGE::KeyboardInput::KEYCODE>> getKeyboardBindings() const;
+        KeyBindsMap getKeyboardBindings() const;
 };
 
 #endif // CONFIG_H_INCLUDED

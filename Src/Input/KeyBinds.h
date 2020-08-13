@@ -10,29 +10,25 @@
 
 class KeyBinds {
     private:
-        /// <summary>
-        /// Inputs that are down for this tick.
-        /// </summary>
+        // Inputs that are down for this tick.
         Input downInputs;
 
-        /// <summary>
-        /// Inputs that are in the hit state for this tick.
-        /// </summary>
+        // Inputs that are in the hit state for this tick.
         Input hitInputs;
 
-        class UserInput {
-            public:
+        struct UserInput {
                 PGE::UserInput* input;
-                PGE::MouseInput::BUTTON mouseButton;
-                PGE::KeyboardInput::KEYCODE keyCode;
-                PGE::ControllerInput::BUTTON controllerButton;
+                int code; // Can be mouse button, controller button or key code.
         };
 
         PGE::IO* io;
-        std::map<Input, std::vector<UserInput>> bindings;
-        // TODO: Separate bindings map for console commands.
+
+        typedef std::multimap<Input, UserInput> UserInputMap;
+        UserInputMap bindings;
+        //std::multimap<PGE::String, UserInput> consoleBindings; // TODO.
 
         void bindInput(Input input, UserInput key);
+        void unbindInput(Input input, PGE::UserInput::DEVICE device, int key);
 
     public:
         KeyBinds(PGE::IO* inIo);

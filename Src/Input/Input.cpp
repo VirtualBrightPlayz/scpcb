@@ -34,7 +34,7 @@ PGE::String getBindingName(const Input& input) {
         } break;
         default: {
             return PGE::String("None");
-        }
+        } break;
     }
 }
 
