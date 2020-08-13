@@ -15,7 +15,7 @@ void ResourcePackManager::loadResPacks() {
 
 	std::vector<PGE::FilePath> modFolders;
 	PGE::FilePath metaPath;
-	tinyxml2::XMLDocument* xmlDoc; // TODO: Check if this actually needs to be re-created for each call to LoadFile.
+	tinyxml2::XMLDocument xmlDoc;
 	tinyxml2::XMLError xmlErr;
 	tinyxml2::XMLElement* xmlRoot;
 	PGE::String modName;
@@ -25,12 +25,11 @@ void ResourcePackManager::loadResPacks() {
 		for (int j = 0; j < modFolders.size(); j++) {
 			metaPath = modFolders[j] + "meta.xml";
 			if (metaPath.exists()) {
-				xmlDoc = new tinyxml2::XMLDocument();
-				xmlErr = xmlDoc->LoadFile(metaPath.cstr());
+				xmlErr = xmlDoc.LoadFile(metaPath.cstr());
 				if (xmlErr != tinyxml2::XML_SUCCESS) {
 					throw new std::runtime_error("XML moment " + xmlErr);
 				}
-				xmlRoot = xmlDoc->RootElement();
+				xmlRoot = xmlDoc.RootElement();
 				if (xmlRoot != nullptr && xmlRoot->FirstChildElement("Type")->GetText() == PGE::String("ResPack")) {
 					modName = xmlRoot->FirstChildElement("Name")->GetText();
 					resPacks.push_back({ modName, modFolders[j] });
@@ -38,7 +37,6 @@ void ResourcePackManager::loadResPacks() {
 						activeResPacks.push_back(resPacks[resPacks.size() - 1]);
 					}
 				}
-				delete xmlDoc;
 			}
 		}
 	}
