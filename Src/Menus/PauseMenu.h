@@ -4,6 +4,7 @@
 #include "Menu.h"
 #include "GUI/GUIButton.h"
 #include "GUI/GUIFrame.h"
+#include "GUI/GUIText.h"
 #include "GUI/GUITextInput.h"
 #include "../Graphics/Font.h"
 
@@ -46,6 +47,7 @@ class PauseMenu : public Menu {
 
         // Quitting state.
         GUIFrame* quitFrame;
+        GUIText* quitText;
         GUIButton* quitYes;
         GUIButton* quitNo;
 

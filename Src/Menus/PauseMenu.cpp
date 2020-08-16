@@ -1,6 +1,7 @@
+#include "PauseMenu.h"
+
 #include <iostream>
 
-#include "PauseMenu.h"
 #include "../Utils/TextMgmt.h"
 #include "../World/World.h"
 
@@ -25,8 +26,10 @@ PauseMenu::PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Conf
     float quitFrameWidth = 60.f;
     float quitFrameHeight = 30.f;
     quitFrame = new GUIFrame(um, kb, con, -quitFrameWidth / 2.f, -quitFrameHeight / 2.f, quitFrameWidth, quitFrameHeight);
-    quitYes = new GUIButton(um, largeFnt, kb, con, tm, -31.f, 10.f, 3.f, 1.f, "MainMenu.Quit.Yes");
-    quitNo = new GUIButton(um, largeFnt, kb, con, tm, 29.f, 10.f, 3.f, 1.f, "MainMenu.Quit.No");
+    quitText = new GUIText(um, kb, con, largeFnt, -21.f, -5.f, Alignment::CenterXY);
+    quitText->rt.text = "MainMenu.Quit.Prompt";
+    quitYes = new GUIButton(um, largeFnt, kb, con, tm, -25.f, 5.f, 12.f, 4.f, "MainMenu.Quit.Yes");
+    quitNo = new GUIButton(um, largeFnt, kb, con, tm, 13.f, 5.f, 12.f, 4.f, "MainMenu.Quit.No");
 
     uiMesh = um;
     largeFont = largeFnt;
@@ -107,6 +110,7 @@ void PauseMenu::render() const {
     switch (currState) {
         case SubState::Quitting: {
             quitFrame->render();
+            quitText->render();
             quitYes->render();
             quitNo->render();
         } break;

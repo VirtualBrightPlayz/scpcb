@@ -52,16 +52,18 @@ void UIMesh::endRender() {
 }
 
 void UIMesh::setTextured(PGE::Texture* texture, bool tile) {
-    endRender();
-    tiled = tile;
-    textureless = false;
+    if (tiled != tile || material == nullptr || material->getTextureCount() == 0 || texture != material->getTexture(0)) {
+        endRender();
+        tiled = tile;
+        textureless = false;
 
-    PGE::Material* prevMaterial = material;
-    material = new PGE::Material(shaderTextured, texture);
-    mesh->setMaterial(material);
-    delete prevMaterial;
+        PGE::Material* prevMaterial = material;
+        material = new PGE::Material(shaderTextured, texture);
+        mesh->setMaterial(material);
+        delete prevMaterial;
 
-    startRender();
+        startRender();
+    }
 }
 
 void UIMesh::setTextured(const PGE::String& textureName, bool tile) {
@@ -78,16 +80,18 @@ void UIMesh::setTextured(const PGE::String& textureName, bool tile) {
 }
 
 void UIMesh::setTextureless() {
-    endRender();
+    if (!textureless) {
+        endRender();
 
-    textureless = true;
+        textureless = true;
 
-    PGE::Material* prevMaterial = material;
-    material = new PGE::Material(shaderTextureless);
-    mesh->setMaterial(material);
-    delete prevMaterial;
+        PGE::Material* prevMaterial = material;
+        material = new PGE::Material(shaderTextureless);
+        mesh->setMaterial(material);
+        delete prevMaterial;
 
-    startRender();
+        startRender();
+    }
 }
 
 void UIMesh::setColor(PGE::Color col) {
