@@ -57,8 +57,13 @@ void PauseMenu::setOptionsTab(OptionsTab tab) {
 
 void PauseMenu::onEscapeHit() {
     if (mainMenu) { return; }
-    if (currState == SubState::Main) {
-        detach();
+    switch (currState) {
+        case SubState::Main: {
+            detach();
+        } break;
+        case SubState::Quitting: {
+            setState(SubState::Main);
+        } break;
     }
 }
 
@@ -81,7 +86,6 @@ void PauseMenu::update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& 
                 setState(SubState::Quitting);
             }
         } break;
-
         case SubState::Quitting: {
             quitFrame->update(mousePosition);
             quitYes->update(mousePosition);
