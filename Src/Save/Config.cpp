@@ -112,7 +112,7 @@ void Config::saveFile() const {
     }
 
     std::map<Input, PGE::String> inputValues;
-    for (const std::pair<Input, PGE::KeyboardInput::KEYCODE>& it : kbBinds) {
+    for (const auto& it : kbBinds) {
         std::map<Input, PGE::String>::iterator valIter = inputValues.find(it.first);
         if (valIter == inputValues.end()) {
             inputValues.emplace(it.first, "");
