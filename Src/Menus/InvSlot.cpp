@@ -7,7 +7,6 @@ InvSlot::InvSlot(UIMesh* um, KeyBinds* kb, Config* con, float x, float y)
     item = nullptr;
 
     hoverColor = PGE::Color(70, 70, 150, 200);
-    borderThickness = 0.33f;
 }
 
 bool InvSlot::hasItem() const {
@@ -32,7 +31,7 @@ void InvSlot::renderInternal() {
     uiMesh->addRect(PGE::Rectanglef(PGE::Vector2f(getX(), getY()), PGE::Vector2f(getX2(), getY2())));
 
     // TODO: Thicken border when item is in use.
-    PGE::Rectanglef foreground = PGE::Rectanglef(PGE::Vector2f(getX() + borderThickness, getY() + borderThickness), PGE::Vector2f(getX2() - borderThickness, getY2() - borderThickness));
+    PGE::Rectanglef foreground = PGE::Rectanglef(PGE::Vector2f(getX() + uiMesh->borderThickness, getY() + uiMesh->borderThickness), PGE::Vector2f(getX2() - uiMesh->borderThickness, getY2() - uiMesh->borderThickness));
     uiMesh->setTextured(menublack, true);
     uiMesh->addRect(foreground);
 

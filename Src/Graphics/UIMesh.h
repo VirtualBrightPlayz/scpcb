@@ -45,6 +45,8 @@ class UIMesh {
         };
         std::vector<Texture> textures;
     public:
+        float borderThickness;
+
         UIMesh(GraphicsResources* gr);
         ~UIMesh();
 

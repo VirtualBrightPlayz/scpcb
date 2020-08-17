@@ -16,7 +16,6 @@ private:
     const PGE::String menuwhite;
     const PGE::String menublack;
     PGE::Color hoverColor;
-    float borderThickness;
     PGE::Vector2f txtScale;
 
     PGE::String defaultText;

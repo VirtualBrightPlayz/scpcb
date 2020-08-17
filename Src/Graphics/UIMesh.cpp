@@ -22,6 +22,8 @@ UIMesh::UIMesh(GraphicsResources* gr) {
     textureless = false;
     tiled = false;
 
+    borderThickness = 0.5f;
+
     PGE::Matrix4x4f orthoMat = gr->getOrthoMat();
 
     shaderTextured->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);

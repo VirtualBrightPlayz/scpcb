@@ -11,7 +11,6 @@ class GUIButton : public GUIComponent {
         const PGE::String menuwhite;
         const PGE::String menublack;
         PGE::Color hoverColor;
-        float borderThickness;
 
         Font* font;
         PGE::String text;

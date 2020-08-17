@@ -14,7 +14,6 @@ class InvSlot : public GUIComponent {
         const PGE::String menuwhite;
         const PGE::String menublack;
         PGE::Color hoverColor;
-        float borderThickness;
 
         bool doubleClicked;
         bool hovered;

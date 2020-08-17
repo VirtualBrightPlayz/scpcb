@@ -12,7 +12,6 @@ GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE
     menuwhite("SCPCB/GFX/Menu/menuwhite"),
     menublack("SCPCB/GFX/Menu/menublack") {
     hoverColor = PGE::Color(70, 70, 150, 200);
-    borderThickness = 0.33f;
 
     mementoManager = new MementoManager(mementoMaxMemSize);
 
@@ -516,7 +515,7 @@ void GUITextInput::renderInternal() {
     uiMesh->setTextured(menuwhite, true);
     uiMesh->addRect(PGE::Rectanglef(PGE::Vector2f(getX(), getY()), PGE::Vector2f(getX2(), getY2())));
 
-    PGE::Rectanglef foreground = PGE::Rectanglef(PGE::Vector2f(getX() + borderThickness, getY() + borderThickness), PGE::Vector2f(getX2() - borderThickness, getY2() - borderThickness));
+    PGE::Rectanglef foreground = PGE::Rectanglef(PGE::Vector2f(getX() + uiMesh->borderThickness, getY() + uiMesh->borderThickness), PGE::Vector2f(getX2() - uiMesh->borderThickness, getY2() - uiMesh->borderThickness));
     uiMesh->setTextured(menublack, true);
     uiMesh->addRect(foreground);
 
