@@ -26,7 +26,7 @@ Licensing terms can be found in [License.txt](Content/License.txt).
 * `using` directive in header files.
 * `std::string`.
 * Overriding virtual methods without the `override` or `final` keywords.
-* `auto` keyword.
+* `auto` keyword (unless using range-based for)
 * `switch` `case`s that don't create a new scope.
 * Tabs & indentations other than multiples of 4 spaces.
 * Anything other than LF newlines.
