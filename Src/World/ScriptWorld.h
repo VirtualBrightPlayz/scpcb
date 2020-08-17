@@ -7,6 +7,7 @@ class BillboardDefinitions;
 class ConsoleDefinitions;
 class ColorDefinitions;
 class MathDefinitions;
+class MessageDefinitions;
 class RM2Definitions;
 class CollisionDefinitions;
 class PlayerControllerDefinitions;
@@ -20,6 +21,7 @@ class KeyBinds;
 class Config;
 class Camera;
 class Console;
+class MessageManager;
 class BillboardManager;
 class RefCounterManager;
 
@@ -33,6 +35,7 @@ private:
     InputDefinitions* inputDefinitions;
     ColorDefinitions* colorDefinitions;
     MathDefinitions* mathDefinitions;
+    MessageDefinitions* messageDefinitions;
     BillboardDefinitions* billboardDefinitions;
     RM2Definitions* rm2Definitions;
     CollisionDefinitions* collisionDefinitions;
@@ -45,7 +48,7 @@ private:
     std::vector<ScriptModule*> modules;
 
 public:
-    ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, const Config* config, float timestep, Console* con, BillboardManager* bm);
+    ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MessageManager* mm, const Config* config, float timestep, Console* con, BillboardManager* bm);
     ~ScriptWorld();
 
     void update();

@@ -134,9 +134,6 @@
     <ClCompile Include="..\Src\Utils\INI.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Utils\TextMgmt.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\Utils\MathUtil.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -181,6 +178,15 @@
     </ClCompile>
     <ClCompile Include="..\Src\Utils\ResourcePackManager.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Utils\LocalizationManager.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Utils\MessageManager.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\MessageDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,9 +323,6 @@
     <ClInclude Include="..\Src\Utils\INI.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\Utils\TextMgmt.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\Src\Utils\MathUtil.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -361,6 +364,15 @@
     </ClInclude>
     <ClInclude Include="..\Src\Utils\ResourcePackManager.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Utils\LocalizationManager.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Utils\MessageManager.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\MessageDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

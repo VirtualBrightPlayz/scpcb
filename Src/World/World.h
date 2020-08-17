@@ -22,7 +22,8 @@
 class Camera;
 class Timing;
 class GraphicsResources;
-class TxtManager;
+class MessageManager;
+class LocalizationManager;
 class PauseMenu;
 class Console;
 class FPSCounter;
@@ -63,7 +64,8 @@ class World {
 #endif
 
         GraphicsResources* gfxRes;
-        TxtManager* txtMngt;
+        LocalizationManager* locMng;
+        MessageManager* msgMng;
 
         PauseMenu* pauseMenu;
         Console* console;

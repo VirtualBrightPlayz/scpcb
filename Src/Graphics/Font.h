@@ -30,7 +30,7 @@ class Font {
         float stringWidth(const PGE::String& text, PGE::Vector2f scale = PGE::Vector2f::one);
         float getHeight(PGE::Vector2f scale = PGE::Vector2f::one) const;
         // Returns the coordinates to center this text inside the given rectangle.
-        void centerTextCoords(float& txtX, float& txtY, const PGE::String& text, float x, float y, float w, float h, PGE::Vector2f scale = PGE::Vector2f::one);
+        PGE::Vector2f centerTextCoords(const PGE::String& text, float x, float y, float w, float h, PGE::Vector2f scale = PGE::Vector2f::one);
 
         struct Atlas {
             PGE::Texture* texture;

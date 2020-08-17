@@ -1,8 +1,8 @@
 #include "GUIButton.h"
 #include "../../Graphics/UIMesh.h"
-#include "../../Utils/TextMgmt.h"
+#include "../../Utils/LocalizationManager.h"
 
-GUIButton::GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, TxtManager* tm, float x, float y, float width, float height, const PGE::String& txt, Alignment alignment)
+GUIButton::GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, LocalizationManager* tm, float x, float y, float width, float height, const PGE::String& txt, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment), clicked(false), locked(false),
     menuwhite("SCPCB/GFX/Menu/menuwhite"),
     menublack("SCPCB/GFX/Menu/menublack") {
@@ -64,9 +64,7 @@ void GUIButton::renderInternal() {
 
         PGE::String local = txtMng->getLocalTxt(text);
         PGE::Vector2f txtScale = PGE::Vector2f(100.f / 720.f);
-        float txtX; float txtY;
-        font->centerTextCoords(txtX, txtY, local, getX(), getY(), width, height, txtScale);
 
-        font->draw(local, PGE::Vector2f(txtX, txtY), txtScale);
+        font->draw(local, font->centerTextCoords(local, getX(), getY(), width, height, txtScale), txtScale);
     }
 }

@@ -9,6 +9,7 @@ class GUIText : public GUIComponent {
     private:
         Font* font;
         float scale;
+        bool center;
 
         void updateInternal(PGE::Vector2f mousePos) override;
         void renderInternal() override;
@@ -21,7 +22,7 @@ class GUIText : public GUIComponent {
         };
         RichText rt;
 
-        GUIText(UIMesh* um, KeyBinds* kb, Config* con, Font* font, float x, float y, Alignment alignment = Alignment::CenterXY);
+        GUIText(UIMesh* um, KeyBinds* kb, Config* con, Font* font, float x, float y, bool center = false, Alignment alignment = Alignment::CenterXY);
 
         using GUIComponent::setX;
         using GUIComponent::setY;

@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-#include "../Utils/TextMgmt.h"
+#include "../Utils/LocalizationManager.h"
 #include "../World/World.h"
 
-PauseMenu::PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io) : Menu(wrld, "pausemenu") {
+PauseMenu::PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, LocalizationManager* tm, PGE::IO* io) : Menu(wrld, "pausemenu") {
     float btnWidth = 40.f;
     float btnHeight = 7.f;
 
@@ -26,7 +26,7 @@ PauseMenu::PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Conf
     float quitFrameWidth = 60.f;
     float quitFrameHeight = 30.f;
     quitFrame = new GUIFrame(um, kb, con, -quitFrameWidth / 2.f, -quitFrameHeight / 2.f, quitFrameWidth, quitFrameHeight);
-    quitText = new GUIText(um, kb, con, largeFnt, -21.f, -5.f, Alignment::CenterXY);
+    quitText = new GUIText(um, kb, con, largeFnt, 0.f, -5.f, true, Alignment::CenterXY);
     quitText->rt.text = "MainMenu.Quit.Prompt";
     quitYes = new GUIButton(um, largeFnt, kb, con, tm, -25.f, 5.f, 12.f, 4.f, "MainMenu.Quit.Yes");
     quitNo = new GUIButton(um, largeFnt, kb, con, tm, 13.f, 5.f, 12.f, 4.f, "MainMenu.Quit.No");

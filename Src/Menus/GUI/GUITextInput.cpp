@@ -133,19 +133,18 @@ bool GUITextInput::hasSubscriber() {
     return subscriber != nullptr;
 }
 
-void GUITextInput::fillTextCoordinates(float& outTextX, float& outTextY) const {
-    font->centerTextCoords(outTextX, outTextY, text, getX(), getY(), width, height, txtScale);
+PGE::Vector2f GUITextInput::getTextCoordinates() const {
+    PGE::Vector2f pos = font->centerTextCoords(text, getX(), getY(), width, height, txtScale);
     if (leftAlignedText) {
-        outTextX = getX();
+        pos.x = getX();
     }
+    return pos;
 }
 
 int GUITextInput::getCaretPosition(float mouseX) {
     float textWidth = font->stringWidth(text, txtScale);
-    float textX = 0.f; float textY = 0.f;
-    fillTextCoordinates(textX, textY);
     
-    float caretX = textX + textWidth;
+    float caretX = getTextCoordinates().x + textWidth;
     for (int newCaret = text.size(); newCaret > 0; newCaret--) {
         float charWidth = font->stringWidth(text.charAt(newCaret - 1), txtScale);
         if (mouseX > caretX - charWidth / 2.f) {
@@ -164,15 +163,14 @@ void GUITextInput::setCaretPositionFromMouse(float mouseX) {
 }
 
 void GUITextInput::updateCoordinates() {
-    float textX = 0.f; float textY = 0.f;
-    fillTextCoordinates(textX, textY);
+    PGE::Vector2f pos = getTextCoordinates();
 
-    caretX = textX;
+    caretX = pos.x;
     if (!text.isEmpty()) {
         caretX += font->stringWidth(text.substr(0, caretPosition), txtScale);
     }
 
-    selectionStartX = textX;
+    selectionStartX = pos.x;
     if (!text.isEmpty()) {
         selectionStartX += font->stringWidth(text.substr(0, selectionStartPosition), txtScale);
     }
@@ -537,10 +535,6 @@ void GUITextInput::renderInternal() {
         uiMesh->endRender();
         uiMesh->startRender();
 
-        float txtX = 0.f;
-        float txtY = 0.f;
-        fillTextCoordinates(txtX, txtY);
-
-        font->draw(text, PGE::Vector2f(txtX, txtY), txtScale, 0.f, defaultTextDisplayed ? PGE::Color::Gray : PGE::Color::White);
+        font->draw(text, getTextCoordinates(), txtScale, 0.f, defaultTextDisplayed ? PGE::Color::Gray : PGE::Color::White);
     }
 }

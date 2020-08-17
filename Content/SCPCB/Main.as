@@ -24,6 +24,8 @@ Billboard@ lol;
 void main() {
     Debug::log("Starting up!");
     
+    Msg::set("LOL");
+    
     Vector2f test = Vector2f(10.0, 10.0);
     Vector2f test2 = Vector2f(15.0, 10.0);
 
