@@ -19,7 +19,8 @@
 #include "../Menus/GUI/GUIText.h"
 #include "../Input/KeyBinds.h"
 #include "../Input/Input.h"
-#include "../Utils/TextMgmt.h"
+#include "../Utils/MessageManager.h"
+#include "../Utils/LocalizationManager.h"
 #include "../Utils/MathUtil.h"
 #include "../Scripting/ScriptObject.h"
 
@@ -40,33 +41,35 @@ World::World() {
     timing = new Timing(60);
 
     gfxRes = new GraphicsResources(graphics, config);
-    txtMngt = new TxtManager(config->languageCode->value);
 
     FT_Init_FreeType(&ftLibrary);
     largeFont = new Font(ftLibrary, gfxRes, config, PGE::FilePath::fromStr("SCPCB/GFX/Font/Inconsolata-Regular.ttf"), 20);
     spriteMesh = Sprite::createSpriteMesh(graphics);
     uiMesh = new UIMesh(gfxRes);
     keyBinds = new KeyBinds(io);
+
+    locMng = new LocalizationManager(config->languageCode->value);
+    msgMng = new MessageManager(locMng, uiMesh, keyBinds, config, largeFont);
     
     currMenu = nullptr;
     menuGraveyard = nullptr;
     io->setMouseVisibility(false);
     io->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
-    pauseMenu = new PauseMenu(this, uiMesh, largeFont, keyBinds, config, txtMngt, io);
-    console = new Console(this, uiMesh, largeFont, keyBinds, config, txtMngt, io);
+    pauseMenu = new PauseMenu(this, uiMesh, largeFont, keyBinds, config, locMng, io);
+    console = new Console(this, uiMesh, largeFont, keyBinds, config, locMng, io);
 
     billboardManager = new BillboardManager(graphics, gfxRes);
 
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
 
-    scripting = new ScriptWorld(gfxRes, camera, keyBinds, config, (float)timing->getTimeStep(), console, billboardManager);
+    scripting = new ScriptWorld(gfxRes, camera, keyBinds, msgMng, config, (float)timing->getTimeStep(), console, billboardManager);
 
     applyConfig(config);
 
 #ifdef DEBUG
-    mouseTxtX = new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -5.f, Alignment::Bottom | Alignment::Left);
-    mouseTxtY = new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -2.5f, Alignment::Bottom | Alignment::Left);
+    mouseTxtX = new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -5.f, false, Alignment::Bottom | Alignment::Left);
+    mouseTxtY = new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -2.5f, false, Alignment::Bottom | Alignment::Left);
 #endif
 
     shutdownRequested = false;
@@ -95,7 +98,8 @@ World::~World() {
     delete timing;
     delete scripting;
     delete gfxRes;
-    delete txtMngt;
+    delete locMng;
+    delete msgMng;
 
     delete io;
     delete graphics;
@@ -301,9 +305,11 @@ void World::draw(float interpolation, RenderType r) {
 
     if (r != RenderType::NoUI) {
         graphics->setDepthTest(false);
-
+        
         if (currMenu != nullptr) {
             currMenu->render();
+        } else {
+            msgMng->draw();
         }
 
         fps->draw();
@@ -329,6 +335,8 @@ void World::updatePlaying(float timeStep) {
 
     // View/Projection matrix.
     camera->update();
+
+    msgMng->update(timeStep);
 }
 
 void World::drawPlaying(float interpolation) {

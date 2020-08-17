@@ -68,12 +68,8 @@ class GUITextInput : public GUIComponent {
         int getFirstLeftWordBoundary(int startingPosition) const;
         int getFirstRightWordBoundary(int startingPosition) const;
 
-        /// <summary>
-        /// Passes the XY coordinates of the text's starting point to the parameters by reference.
-        /// </summary>
-        /// <param name="outTextX">The X coordinate of the text.</param>
-        /// <param name="outTextY">The Y coordinate of the text.</param>
-        void fillTextCoordinates(float& outTextX, float& outTextY) const;
+        // Return a Vector2f to the coordinates of the text's starting point.
+        PGE::Vector2f getTextCoordinates() const;
         // Returns an index corresponding to where the caret should be based on the provided X coordinate.
         int getCaretPosition(float mouseX);
         void setCaretPositionFromMouse(float mouseX);

@@ -9,7 +9,7 @@
 float Console::Message::lineHeight;
 float Console::Message::bottomOfConsoleWindow;
 
-Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io) : Menu(wrld, "console") {
+Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, LocalizationManager* tm, PGE::IO* io) : Menu(wrld, "console") {
     //TODO: Figure out alignment issues and simplify this.
     float frameX = -GUIComponent::SCALE_MAGNITUDE * con->getAspectRatio();
     float frameY = -GUIComponent::SCALE_MAGNITUDE + 2.f;
@@ -117,7 +117,7 @@ void Console::executeCommand(const PGE::String& in) {
 }
 
 Console::Message::Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, const PGE::String& resp, const PGE::Color& color) {
-    text = new GUIText(um, kb, con, fnt, 3.f / con->getAspectRatio(), 0.f, Alignment::Left | Alignment::Top);
+    text = new GUIText(um, kb, con, fnt, 3.f / con->getAspectRatio(), 0.f, false, Alignment::Left | Alignment::Top);
     text->rt = { resp, color };
 }
 

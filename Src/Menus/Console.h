@@ -13,7 +13,7 @@ class UIMesh;
 class Font;
 class KeyBinds;
 class Config;
-class TxtManager;
+class LocalizationManager;
 class GUIFrame;
 class GUITextInput;
 
@@ -66,7 +66,7 @@ private:
     void executeCommand(const PGE::String& in);
 
 public:
-    Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io);
+    Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, LocalizationManager* tm, PGE::IO* io);
     ~Console();
 
     void update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mouseWheelDelta) override;

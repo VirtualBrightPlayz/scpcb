@@ -231,10 +231,6 @@ float Font::getHeight(PGE::Vector2f scale) const {
     return glyphData.find(L'T')->second.srcRect.height() * (float)atlasDims * scale.y;
 }
 
-void Font::centerTextCoords(float& txtX, float& txtY, const PGE::String& text, float x, float y, float w, float h, PGE::Vector2f scale) {
-    float txtWidth = stringWidth(text, scale);
-    float txtHeight = height * scale.y;
-
-    txtX = (x + w / 2.f) - txtWidth / 2.f;
-    txtY = (y + h / 2.f) - txtHeight / 2.f;
+PGE::Vector2f Font::centerTextCoords(const PGE::String& text, float x, float y, float w, float h, PGE::Vector2f scale) {
+    return PGE::Vector2f(x + (w - stringWidth(text, scale)) / 2.f, y + (h - getHeight(scale)) / 2.f);
 }

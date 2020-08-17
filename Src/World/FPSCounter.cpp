@@ -10,7 +10,7 @@ FPSCounter::FPSCounter(UIMesh* um, KeyBinds* kb, Config* con, Font* font) {
     visible = false;
     this->config = con;
 
-    display = new GUIText(um, kb, con, font, 0.f, 0.f, Alignment::Left | Alignment::Top);
+    display = new GUIText(um, kb, con, font, 0.f, 0.f, false, Alignment::Left | Alignment::Top);
     display->rt.text = "FPS: -1";
 }
 

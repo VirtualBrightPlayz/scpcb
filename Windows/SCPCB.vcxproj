@@ -166,6 +166,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\EventDefinition.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.h" />
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\MessageDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\RefCounter.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.h" />
@@ -181,8 +182,9 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Scripting\Type.h" />
     <ClInclude Include="..\Src\Utils\INI.h" />
     <ClInclude Include="..\Src\Utils\MathUtil.h" />
+    <ClInclude Include="..\Src\Utils\MessageManager.h" />
     <ClInclude Include="..\Src\Utils\ResourcePackManager.h" />
-    <ClInclude Include="..\Src\Utils\TextMgmt.h" />
+    <ClInclude Include="..\Src\Utils\LocalizationManager.h" />
     <ClInclude Include="..\Src\World\DataInterpolator.h" />
     <ClInclude Include="..\Src\World\FPSCounter.h" />
     <ClInclude Include="..\Src\World\ScriptWorld.h" />
@@ -236,6 +238,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\EventDefinition.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\InputDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.cpp" />
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\MessageDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\RefCounter.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.cpp" />
@@ -251,8 +254,9 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Scripting\Type.cpp" />
     <ClCompile Include="..\Src\Utils\INI.cpp" />
     <ClCompile Include="..\Src\Utils\MathUtil.cpp" />
+    <ClCompile Include="..\Src\Utils\MessageManager.cpp" />
     <ClCompile Include="..\Src\Utils\ResourcePackManager.cpp" />
-    <ClCompile Include="..\Src\Utils\TextMgmt.cpp" />
+    <ClCompile Include="..\Src\Utils\LocalizationManager.cpp" />
     <ClCompile Include="..\Src\World\DataInterpolator.cpp" />
     <ClCompile Include="..\Src\World\FPSCounter.cpp" />
     <ClCompile Include="..\Src\World\ScriptWorld.cpp" />

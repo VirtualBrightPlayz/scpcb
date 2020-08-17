@@ -8,7 +8,7 @@
 #include "GUI/GUITextInput.h"
 #include "../Graphics/Font.h"
 
-class TxtManager;
+class LocalizationManager;
 class World;
 
 class PauseMenu : public Menu {
@@ -56,7 +56,7 @@ class PauseMenu : public Menu {
         KeyBinds* keyBinds;
 
     public:
-        PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, TxtManager* tm, PGE::IO* io);
+        PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, LocalizationManager* tm, PGE::IO* io);
 
         void onEscapeHit() override;
 

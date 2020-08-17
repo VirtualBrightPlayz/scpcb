@@ -4,7 +4,7 @@
 #include "GUIComponent.h"
 #include "../../Graphics/Font.h"
 
-class TxtManager;
+class LocalizationManager;
 
 class GUIButton : public GUIComponent {
     private:
@@ -14,7 +14,7 @@ class GUIButton : public GUIComponent {
 
         Font* font;
         PGE::String text;
-        TxtManager* txtMng;
+        LocalizationManager* txtMng;
 
     protected:
         // MouseHit.
@@ -30,7 +30,7 @@ class GUIButton : public GUIComponent {
         // Whether this button can be clicked.
         bool locked;
 
-        GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, TxtManager* tm, float x, float y, float width, float height, const PGE::String& txt, Alignment alignment = Alignment::CenterXY);
+        GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, LocalizationManager* tm, float x, float y, float width, float height, const PGE::String& txt, Alignment alignment = Alignment::CenterXY);
 
         bool isClicked() const;
 };
