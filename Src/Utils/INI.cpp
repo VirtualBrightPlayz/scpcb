@@ -74,9 +74,9 @@ PGE::String INIFile::getName() {
 PGE::String INIFile::getValue(const PGE::String& section, const PGE::String& key, const PGE::String& defaultValue) {
     for (int i = 0; i < (int)sections.size(); i++) {
         for (int j = 0; j < (int)sections[i]->names.size(); j++) {
-            if (section.toLower().equals(sections[i]->names[j].toLower())) {
+            if (section.equalsIgnoreCase(sections[i]->names[j])) {
                 for (int k = 0; k < (int)sections[i]->keys.size(); k++) {
-                    if (sections[i]->keys[k].toLower().equals(key.toLower())) {
+                    if (sections[i]->keys[k].equalsIgnoreCase(key)) {
                         return sections[i]->values[k];
                     }
                 }
@@ -90,9 +90,9 @@ PGE::String INIFile::getValue(const PGE::String& section, const PGE::String& key
 void INIFile::setValue(const PGE::String& section, const PGE::String& key, const PGE::String& value) {
     for (int i = 0; i < (int)sections.size(); i++) {
         for (int j = 0; j < (int)sections[i]->names.size(); j++) {
-            if (section.toLower().equals(sections[i]->names[j])) {
+            if (section.equalsIgnoreCase(sections[i]->names[j])) {
                 for (int k = 0; k < (int)sections[i]->keys.size(); k++) {
-                    if (sections[i]->keys[k].toLower().equals(key.toLower())) {
+                    if (sections[i]->keys[k].equalsIgnoreCase(key)) {
                         sections[i]->values[k] = value;
                         return;
                     }
@@ -140,7 +140,7 @@ PGE::String getINIString(const PGE::String& file, const PGE::String& section, co
     for (int i = 0; i < INIFile::getListSize(); i++) {
         INIFile* iniFile = INIFile::getObject(i);
 
-        if (iniFile->getName().toLower().equals(file.toLower())) {
+        if (iniFile->getName().equalsIgnoreCase(file)) {
             return iniFile->getValue(section, parameter, defaultValue);
         }
     }
@@ -171,7 +171,7 @@ void putINIValue(const PGE::String& file, const PGE::String& section, const PGE:
     for (int i = 0; i < INIFile::getListSize(); i++) {
         INIFile* iniFile = INIFile::getObject(i);
 
-        if (iniFile->getName().toLower().equals(file.toLower())) {
+        if (iniFile->getName().equalsIgnoreCase(file)) {
             targetFile = iniFile;
             break;
         }
@@ -188,7 +188,7 @@ std::vector<INIFile::Section*> getINISections(const PGE::String& file) {
     for (int i = 0; i < INIFile::getListSize(); i++) {
         INIFile* iniFile = INIFile::getObject(i);
 
-        if (iniFile->getName().toLower().equals(file.toLower())) {
+        if (iniFile->getName().equalsIgnoreCase(file)) {
             return iniFile->getAllSections();
         }
     }

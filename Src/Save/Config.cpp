@@ -15,17 +15,17 @@ PGE::String getConfigDir() {
 }
 
 Config::Config(const PGE::String& optionsFile) :
-    filename(getConfigDir() + optionsFile),
-    vsync(new BoolConfigValue(filename, secGFX, "vsync", true)),
-    vr(new BoolConfigValue(filename, secGFX, "vr", false)),
-    sensitivity(new IntConfigValue(filename, secGen, "sensitivity", 100)),
-    languageCode(new StringConfigValue(filename, secGen, "language", "en")),
-    windowType(new IntConfigValue(filename, secGFX, "window", WindowType::Windowed)),
-    width(new IntConfigValue(filename, secGFX, "width", 1280)),
-    height(new IntConfigValue(filename, secGFX, "height", 720)),
-    enabledMods(new ArrayConfigValue(filename, secMod, "enabledmods", "RootScript|SCPCB")),
-    resourcePackLocations(new ArrayConfigValue(filename, secMod, "resourcepacklocations", "ResourcePacks")),
-    enabledResourcePacks(new ArrayConfigValue(filename, secMod, "enabledresourcepacks", "HIGH|hahahaha")) {
+        filename(getConfigDir() + optionsFile),
+        vsync(new BoolConfigValue(filename, secGFX, "vsync", true)),
+        vr(new BoolConfigValue(filename, secGFX, "vr", false)),
+        sensitivity(new IntConfigValue(filename, secGen, "sensitivity", 100)),
+        languageCode(new StringConfigValue(filename, secGen, "language", "en")),
+        windowType(new IntConfigValue(filename, secGFX, "window", WindowType::Windowed)),
+        width(new IntConfigValue(filename, secGFX, "width", 1280)),
+        height(new IntConfigValue(filename, secGFX, "height", 720)),
+        enabledMods(new ArrayConfigValue(filename, secMod, "enabledmods", "RootScript|SCPCB")),
+        resourcePackLocations(new ArrayConfigValue(filename, secMod, "resourcepacklocations", "ResourcePacks")),
+        enabledResourcePacks(new ArrayConfigValue(filename, secMod, "enabledresourcepacks", "HIGH|hahahaha")) {
     values.push_back(vsync);
     values.push_back(vr);
     values.push_back(sensitivity);
@@ -41,6 +41,7 @@ Config::Config(const PGE::String& optionsFile) :
 
     // Generating default keyboard bindings.
     kbBinds.emplace(Input::Forward, PGE::KeyboardInput::KEYCODE::W);
+    kbBinds.emplace(Input::Backward, PGE::KeyboardInput::KEYCODE::S);
     kbBinds.emplace(Input::Left, PGE::KeyboardInput::KEYCODE::A);
     kbBinds.emplace(Input::Right, PGE::KeyboardInput::KEYCODE::D);
     kbBinds.emplace(Input::Sprint, PGE::KeyboardInput::KEYCODE::LSHIFT);
@@ -111,15 +112,20 @@ void Config::saveFile() const {
     }
 
     KeyBindsMap::const_iterator it;
-    Input currInput = Input::None;
-    std::vector<PGE::String> strToJoin;
+    std::map<Input, PGE::String> inputValues;
     for (it = kbBinds.begin(); it != kbBinds.end(); it++) {
-        if (it->first != currInput) {
-            putINIValue(filename, secCon, getBindingName(it->first) + "_keyboard", PGE::String::join(strToJoin, ","));
-            strToJoin.clear();
-            currInput = it->first;
+        std::map<Input, PGE::String>::iterator valIter = inputValues.find(it->first);
+        if (valIter == inputValues.end()) {
+            inputValues.emplace(it->first, "");
+            valIter = inputValues.find(it->first);
+        } else {
+            valIter->second += PGE::String(",");
         }
-        strToJoin.push_back(PGE::String((int)it->second));
+        valIter->second += PGE::String((int)it->second);
+    }
+
+    for (std::map<Input, PGE::String>::iterator valIter = inputValues.begin(); valIter != inputValues.end(); valIter++) {
+        putINIValue(filename, secCon, getBindingName(valIter->first) + "_keyboard", valIter->second);
     }
 }
 
@@ -147,6 +153,6 @@ float Config::getAspectRatio() const {
     return aspectRatio;
 }
 
-Config::KeyBindsMap Config::getKeyboardBindings() const {
+const Config::KeyBindsMap& Config::getKeyboardBindings() const {
     return kbBinds;
 }

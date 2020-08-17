@@ -30,7 +30,7 @@ PGE::String getBindingName(const Input& input) {
             return PGE::String("Inventory");
         } break;
         case Input::ToggleConsole: {
-            return PGE::String("Toggle console");
+            return PGE::String("ToggleConsole");
         } break;
         default: {
             return PGE::String("None");

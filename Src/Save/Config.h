@@ -67,7 +67,7 @@ class Config {
         int getHeight() const;
         float getAspectRatio() const;
 
-        KeyBindsMap getKeyboardBindings() const;
+        const KeyBindsMap& getKeyboardBindings() const;
 };
 
 #endif // CONFIG_H_INCLUDED
