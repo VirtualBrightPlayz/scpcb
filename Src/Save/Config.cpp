@@ -111,21 +111,17 @@ void Config::saveFile() const {
         values[i]->saveValue();
     }
 
-    std::map<Input, PGE::String> inputValues;
+    Input currInput = Input::None;
+    std::vector<PGE::String> strToJoin;
     for (const auto& it : kbBinds) {
-        std::map<Input, PGE::String>::iterator valIter = inputValues.find(it.first);
-        if (valIter == inputValues.end()) {
-            inputValues.emplace(it.first, "");
-            valIter = inputValues.find(it.first);
-        } else {
-            valIter->second += PGE::String(",");
+        if (it.first != currInput) {
+            putINIValue(filename, secCon, getBindingName(currInput) + "_keyboard", PGE::String::join(strToJoin, ","));
+            strToJoin.clear();
+            currInput = it.first;
         }
-        valIter->second += PGE::String((int)it.second);
+        strToJoin.push_back(PGE::String((int)it.second));
     }
-
-    for (const auto& valIter : inputValues) {
-        putINIValue(filename, secCon, getBindingName(valIter.first) + "_keyboard", valIter.second);
-    }
+    putINIValue(filename, secCon, getBindingName(currInput) + "_keyboard", PGE::String::join(strToJoin, ","));
 }
 
 void Config::setResolution(int width, int height) {
