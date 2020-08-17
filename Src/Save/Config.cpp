@@ -123,8 +123,8 @@ void Config::saveFile() const {
         valIter->second += PGE::String((int)it.second);
     }
 
-    for (std::map<Input, PGE::String>::iterator valIter = inputValues.begin(); valIter != inputValues.end(); valIter++) {
-        putINIValue(filename, secCon, getBindingName(valIter->first) + "_keyboard", valIter->second);
+    for (const auto& valIter : inputValues) {
+        putINIValue(filename, secCon, getBindingName(valIter.first) + "_keyboard", valIter.second);
     }
 }
 
