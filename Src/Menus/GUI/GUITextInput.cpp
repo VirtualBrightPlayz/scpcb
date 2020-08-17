@@ -21,7 +21,6 @@ GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE
 
     font = fnt;
     io = inIo;
-    //text = defaultText; TODO: Implement correctly.
     txtScale = PGE::Vector2f(100.f / con->getHeight());
 
     if (!pattern.isEmpty()) {

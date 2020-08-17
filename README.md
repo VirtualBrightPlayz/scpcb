@@ -27,7 +27,7 @@ Licensing terms can be found in [License.txt](Content/License.txt).
 * `std::string`.
 * Overriding virtual methods without the `override` or `final` keywords.
 * `auto` keyword.
-* `switch` cases that don't create a new scope.
+* `switch` `case`s that don't create a new scope.
 * Tabs & indentations other than multiples of 4 spaces.
 * Anything other than LF newlines.
 * `#define` for anything but include safeguards.

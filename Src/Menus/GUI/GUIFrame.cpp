@@ -4,10 +4,9 @@
 GUIFrame::GUIFrame(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment),
     menuwhite("SCPCB/GFX/Menu/menuwhite"),
-    menublack("SCPCB/GFX/Menu/menublack") {
-}
+    menublack("SCPCB/GFX/Menu/menublack") {}
 
-void GUIFrame::updateInternal(PGE::Vector2f mousePos) { }
+void GUIFrame::updateInternal(PGE::Vector2f mousePos) {}
 
 void GUIFrame::renderInternal() {
     uiMesh->setTextured(menuwhite, true);
