@@ -44,4 +44,17 @@ ColorDefinitions::ColorDefinitions(ScriptManager* mgr) {
     engine->RegisterObjectMethod("Color", "void set_alphaInt(int a) property", asMETHOD(PGE::Color, setAlphaInt), asCALL_THISCALL);
 
     engine->RegisterObjectMethod("Color", "Color& opAssign(const Color &in other)", asMETHODPR(PGE::Color, operator=, (const PGE::Color&), PGE::Color&), asCALL_THISCALL);
+
+    engine->SetDefaultNamespace("Color");
+    engine->RegisterGlobalProperty("const Color Red", (void*)&PGE::Color::Red);
+    engine->RegisterGlobalProperty("const Color Green", (void*)&PGE::Color::Green);
+    engine->RegisterGlobalProperty("const Color Blue", (void*)&PGE::Color::Blue);
+    engine->RegisterGlobalProperty("const Color Orange", (void*)&PGE::Color::Orange);
+    engine->RegisterGlobalProperty("const Color Yellow", (void*)&PGE::Color::Yellow);
+    engine->RegisterGlobalProperty("const Color Cyan", (void*)&PGE::Color::Cyan);
+    engine->RegisterGlobalProperty("const Color Magenta", (void*)&PGE::Color::Magenta);
+    engine->RegisterGlobalProperty("const Color White", (void*)&PGE::Color::White);
+    engine->RegisterGlobalProperty("const Color Gray", (void*)&PGE::Color::Gray);
+    engine->RegisterGlobalProperty("const Color Black", (void*)&PGE::Color::Black);
+
 }
