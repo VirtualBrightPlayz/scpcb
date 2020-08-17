@@ -103,9 +103,8 @@ World::~World() {
 
 void World::applyConfig(const Config* config) {
     const Config::KeyBindsMap& keyboardMappings = config->getKeyboardBindings();
-    Config::KeyBindsMap::const_iterator it;
-    for (it = keyboardMappings.begin(); it != keyboardMappings.end(); it++) {
-        keyBinds->bindInput(it->first, it->second);
+    for (const auto& it : keyboardMappings) {
+        keyBinds->bindInput(it.first, it.second);
     }
 }
 

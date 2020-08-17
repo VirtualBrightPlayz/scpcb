@@ -111,17 +111,16 @@ void Config::saveFile() const {
         values[i]->saveValue();
     }
 
-    KeyBindsMap::const_iterator it;
     std::map<Input, PGE::String> inputValues;
-    for (it = kbBinds.begin(); it != kbBinds.end(); it++) {
-        std::map<Input, PGE::String>::iterator valIter = inputValues.find(it->first);
+    for (const std::pair<Input, PGE::KeyboardInput::KEYCODE>& it : kbBinds) {
+        std::map<Input, PGE::String>::iterator valIter = inputValues.find(it.first);
         if (valIter == inputValues.end()) {
-            inputValues.emplace(it->first, "");
-            valIter = inputValues.find(it->first);
+            inputValues.emplace(it.first, "");
+            valIter = inputValues.find(it.first);
         } else {
             valIter->second += PGE::String(",");
         }
-        valIter->second += PGE::String((int)it->second);
+        valIter->second += PGE::String((int)it.second);
     }
 
     for (std::map<Input, PGE::String>::iterator valIter = inputValues.begin(); valIter != inputValues.end(); valIter++) {
