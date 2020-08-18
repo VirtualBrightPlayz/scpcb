@@ -14,10 +14,11 @@ LocalizationManager::Language::Language(const PGE::String& langCode) :
         throw std::runtime_error(PGE::String("Language file \"" + path.str() + "\" not found!").cstr());
     }
 
-    std::vector<INIFile::Section*> iniFile = getINISections(path.str());
+    INIFile* iniFile = new INIFile(path.str());
+    std::vector<INIFile::Section*> sections = iniFile->getAllSections();
 
-    for (int i = 0; i < (int)iniFile.size(); i++) {
-        INIFile::Section* currSection = iniFile[i];
+    for (int i = 0; i < (int)sections.size(); i++) {
+        INIFile::Section* currSection = sections[i];
 
         if (currSection->names[0].equals("info")) {
             for (int j = 0; j < (int)currSection->keys.size(); j++) {
@@ -36,6 +37,8 @@ LocalizationManager::Language::Language(const PGE::String& langCode) :
             }
         }
     }
+
+    delete iniFile;
 }
 
 PGE::String LocalizationManager::Language::getText(const PGE::String& code) const {

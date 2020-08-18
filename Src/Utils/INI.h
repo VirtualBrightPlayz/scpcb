@@ -11,41 +11,34 @@ class INIFile {
             std::vector<PGE::String> keys;
             std::vector<PGE::String> values;
         };
+
     private:
-        static std::vector<INIFile*> list;
+        bool unsavedChanges;
 
         std::vector<Section*> sections;
-
-        PGE::String name;
-    public:
-        INIFile(const PGE::String& filename);
-        ~INIFile();
-        static int getListSize();
-        static INIFile* getObject(int index);
-
-        PGE::String getName();
 
         PGE::String getValue(const PGE::String& section, const PGE::String& key, const PGE::String& defaultValue);
         void setValue(const PGE::String& section, const PGE::String& key, const PGE::String& value);
 
-        std::vector<INIFile::Section*> getAllSections();
+    public:
+        const PGE::String name;
+        
+        INIFile(const PGE::String& filename);
+        ~INIFile();
 
         void save();
 
-        int bankOffset = 0;
-        int size;
+        PGE::String getString(const PGE::String& section, const PGE::String& key, const PGE::String& defaultValue = "");
+        bool getBool(const PGE::String& section, const PGE::String& key, bool defaultValue = false);
+        int getInt(const PGE::String& section, const PGE::String& key, int defaultValue = 0);
+        float getFloat(const PGE::String& section, const PGE::String& key, float defaultValue = 0.f);
+
+        void setString(const PGE::String& section, const PGE::String& key, const PGE::String& value);
+        void setBool(const PGE::String& section, const PGE::String& key, bool value);
+        void setInt(const PGE::String& section, const PGE::String& key, int value);
+        void setFloat(const PGE::String& section, const PGE::String& key, float value);
+
+        std::vector<INIFile::Section*> getAllSections();
 };
-
-PGE::String getINIString(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, const PGE::String& defaultValue = "");
-
-int getINIInt(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, int defaultvalue = 0);
-
-bool getINIBool(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, bool defaultvalue = false);
-
-float getINIFloat(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, float defaultvalue = 0.0);
-
-void putINIValue(const PGE::String& file, const PGE::String& INI_sSection, const PGE::String& INI_sKey, const PGE::String& INI_sValue);
-
-std::vector<INIFile::Section*> getINISections(const PGE::String& file);
 
 #endif // INI_H_INCLUDED

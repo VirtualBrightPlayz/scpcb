@@ -14,18 +14,19 @@ PGE::String getConfigDir() {
     return PGE::FileUtil::getDataFolder() + corpFolder + '/' + gameFolder + '/';
 }
 
-Config::Config(const PGE::String& optionsFile) :
-        filename(getConfigDir() + optionsFile),
-        vsync(new BoolConfigValue(filename, secGFX, "vsync", true)),
-        vr(new BoolConfigValue(filename, secGFX, "vr", false)),
-        sensitivity(new IntConfigValue(filename, secGen, "sensitivity", 100)),
-        languageCode(new StringConfigValue(filename, secGen, "language", "en")),
-        windowType(new IntConfigValue(filename, secGFX, "window", WindowType::Windowed)),
-        width(new IntConfigValue(filename, secGFX, "width", 1280)),
-        height(new IntConfigValue(filename, secGFX, "height", 720)),
-        enabledMods(new ArrayConfigValue(filename, secMod, "enabledmods", "RootScript|SCPCB")),
-        resourcePackLocations(new ArrayConfigValue(filename, secMod, "resourcepacklocations", "ResourcePacks")),
-        enabledResourcePacks(new ArrayConfigValue(filename, secMod, "enabledresourcepacks", "HIGH|hahahaha")) {
+Config::Config(const PGE::String& file) :
+        filename(getConfigDir() + file),
+        optionsFile(new INIFile(filename)),
+        vsync(new BoolConfigValue(optionsFile, secGFX, "vsync", true)),
+        vr(new BoolConfigValue(optionsFile, secGFX, "vr", false)),
+        sensitivity(new IntConfigValue(optionsFile, secGen, "sensitivity", 100)),
+        languageCode(new StringConfigValue(optionsFile, secGen, "language", "en")),
+        windowType(new IntConfigValue(optionsFile, secGFX, "window", WindowType::Windowed)),
+        width(new IntConfigValue(optionsFile, secGFX, "width", 1280)),
+        height(new IntConfigValue(optionsFile, secGFX, "height", 720)),
+        enabledMods(new ArrayConfigValue(optionsFile, secMod, "enabledmods", "RootScript|SCPCB")),
+        resourcePackLocations(new ArrayConfigValue(optionsFile, secMod, "resourcepacklocations", "ResourcePacks")),
+        enabledResourcePacks(new ArrayConfigValue(optionsFile, secMod, "enabledresourcepacks", "HIGH|hahahaha")) {
     values.push_back(vsync);
     values.push_back(vr);
     values.push_back(sensitivity);
@@ -66,6 +67,8 @@ Config::~Config() {
     for (int i = 0; i < values.size(); i++) {
         delete values[i];
     }
+
+    delete optionsFile;
 }
 
 void Config::setGraphicsResources(GraphicsResources* grm) {
@@ -92,7 +95,7 @@ void Config::loadFile() {
 
 void Config::loadKeyboardInput(Input input) {
     PGE::String name = getBindingName(input) + "_keyboard";
-    PGE::String bindings = getINIString(filename, secCon, name, "");
+    PGE::String bindings = optionsFile->getString(secCon, name, "");
     if (bindings.isEmpty()) {
         return;
     }
@@ -115,13 +118,15 @@ void Config::saveFile() const {
     std::vector<PGE::String> strToJoin;
     for (const auto& it : kbBinds) {
         if (it.first != currInput) {
-            putINIValue(filename, secCon, getBindingName(currInput) + "_keyboard", PGE::String::join(strToJoin, ","));
+            optionsFile->setString(secCon, getBindingName(currInput) + "_keyboard", PGE::String::join(strToJoin, ","));
             strToJoin.clear();
             currInput = it.first;
         }
         strToJoin.push_back(PGE::String((int)it.second));
     }
-    putINIValue(filename, secCon, getBindingName(currInput) + "_keyboard", PGE::String::join(strToJoin, ","));
+    optionsFile->setString(secCon, getBindingName(currInput) + "_keyboard", PGE::String::join(strToJoin, ","));
+
+    optionsFile->save();
 }
 
 void Config::setResolution(int width, int height) {

@@ -23,9 +23,14 @@ class Config {
         typedef std::multimap<Input, PGE::KeyboardInput::KEYCODE> KeyBindsMap;
         
     private:
-        GraphicsResources* gfxResMgr = nullptr;
-
+        // TODO: Revisit this.
+        // Initialization lists initialize their variables in the order that they are declared in the header.
+        // This means that the two following members have to stay in that order and all ConfigValues have to follow below.
         const PGE::String filename;
+        INIFile* const optionsFile;
+        
+        GraphicsResources* gfxResMgr = nullptr;
+        
         const PGE::String secGen = "general";
         const PGE::String secGFX = "graphics";
         const PGE::String secCon = "controls";

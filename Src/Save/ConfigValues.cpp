@@ -2,59 +2,59 @@
 
 #include "../Utils/INI.h"
 
-ConfigValue::ConfigValue(const PGE::String& file, const PGE::String& section, const PGE::String& name) :
+ConfigValue::ConfigValue(INIFile* file, const PGE::String& section, const PGE::String& name) :
     file(file), section(section), name(name) {}
 
-IntConfigValue::IntConfigValue(const PGE::String& file, const PGE::String& section, const PGE::String& name, int defaultValue)
+IntConfigValue::IntConfigValue(INIFile* file, const PGE::String& section, const PGE::String& name, int defaultValue)
     : ConfigValue(file, section, name) {
     value = defaultValue;
 }
 
 void IntConfigValue::saveValue() const {
-    putINIValue(file, section, name, value);
+    file->setInt(section, name, value);
 }
 
 void IntConfigValue::loadValue() {
-    value = getINIInt(file, section, name, value);
+    value = file->getInt(section, name, value);
 }
 
-BoolConfigValue::BoolConfigValue(const PGE::String& file, const PGE::String& section, const PGE::String& name, bool defaultValue)
+BoolConfigValue::BoolConfigValue(INIFile* file, const PGE::String& section, const PGE::String& name, bool defaultValue)
     : ConfigValue(file, section, name) {
     value = defaultValue;
 }
 
 void BoolConfigValue::saveValue() const {
-    putINIValue(file, section, name, value ? "true" : "false");
+    file->setBool(section, name, value);
 }
 
 void BoolConfigValue::loadValue() {
-    value = getINIBool(file, section, name, value);
+    value = file->getBool(section, name, value);
 }
 
-StringConfigValue::StringConfigValue(const PGE::String& file, const PGE::String& section, const PGE::String& name, const PGE::String& defaultValue)
+StringConfigValue::StringConfigValue(INIFile* file, const PGE::String& section, const PGE::String& name, const PGE::String& defaultValue)
     : ConfigValue(file, section, name) {
     value = defaultValue;
 }
 
 void StringConfigValue::saveValue() const {
-    putINIValue(file, section, name, value);
+    file->setString(section, name, value);
 }
 
 void StringConfigValue::loadValue() {
-    value = getINIString(file, section, name, value);
+    value = file->getString(section, name, value);
 }
 
-ArrayConfigValue::ArrayConfigValue(const PGE::String& file, const PGE::String& section, const PGE::String& name, const PGE::String& defaultValue)
+ArrayConfigValue::ArrayConfigValue(INIFile* file, const PGE::String& section, const PGE::String& name, const PGE::String& defaultValue)
     : ConfigValue(file, section, name) {
     value = defaultValue.split('|', true);
 }
 
 void ArrayConfigValue::saveValue() const {
-    putINIValue(file, section, name, PGE::String::join(value, '|'));
+    file->setString(section, name, PGE::String::join(value, '|'));
 }
 
 void ArrayConfigValue::loadValue() {
-    PGE::String newVal = getINIString(file, section, name, "");
+    PGE::String newVal = file->getString(section, name, "");
     if (!newVal.isEmpty()) {
         value = newVal.split('|', true);
     }

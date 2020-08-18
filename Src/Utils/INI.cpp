@@ -5,15 +5,13 @@
 
 #include "INI.h"
 
-std::vector<INIFile*> INIFile::list;
-INIFile::INIFile(const PGE::String& filename) {
-    list.push_back(this);
-
-    name = filename;
+INIFile::INIFile(const PGE::String& filename) :
+        name(filename) {
+    unsavedChanges = false;
 
     Section* currSection = nullptr;
 
-    std::ifstream file(filename.cstr());
+    std::ifstream file(name.cstr());
 
     if (file.good()) {
         PGE::String currLine;
@@ -49,26 +47,12 @@ INIFile::INIFile(const PGE::String& filename) {
     }
     file.close();
 }
+
 INIFile::~INIFile() {
-    for (int i = 0; i < (int)list.size(); i++) {
-        if (list[i] == this) {
-            list.erase(list.begin() + i);
-            break;
-        }
-    }
+    save();
     for (int i = 0; i < (int)sections.size(); i++) {
         delete sections[i];
     }
-}
-int INIFile::getListSize() {
-    return (int)list.size();
-}
-INIFile* INIFile::getObject(int index) {
-    return list[index];
-}
-
-PGE::String INIFile::getName() {
-    return name;
 }
 
 PGE::String INIFile::getValue(const PGE::String& section, const PGE::String& key, const PGE::String& defaultValue) {
@@ -93,7 +77,10 @@ void INIFile::setValue(const PGE::String& section, const PGE::String& key, const
             if (section.equalsIgnoreCase(sections[i]->names[j])) {
                 for (int k = 0; k < (int)sections[i]->keys.size(); k++) {
                     if (sections[i]->keys[k].equalsIgnoreCase(key)) {
-                        sections[i]->values[k] = value;
+                        if (!sections[i]->values[k].equals(value)) {
+                            sections[i]->values[k] = value;
+                            unsavedChanges = true;
+                        }
                         return;
                     }
                 }
@@ -101,6 +88,7 @@ void INIFile::setValue(const PGE::String& section, const PGE::String& key, const
                 // Key doesn't exist, make it.
                 sections[i]->keys.push_back(key.toLower());
                 sections[i]->values.push_back(value);
+                unsavedChanges = true;
                 return;
             }
         }
@@ -113,6 +101,7 @@ void INIFile::setValue(const PGE::String& section, const PGE::String& key, const
     sec->values.push_back(value);
 
     sections.push_back(sec);
+    unsavedChanges = true;
 }
 
 std::vector<INIFile::Section*> INIFile::getAllSections() {
@@ -120,6 +109,10 @@ std::vector<INIFile::Section*> INIFile::getAllSections() {
 }
 
 void INIFile::save() {
+    if (!unsavedChanges) {
+        return;
+    }
+
     std::ofstream f(name.cstr());
 
     for (int i = 0; i < (int)sections.size(); i++) {
@@ -133,65 +126,44 @@ void INIFile::save() {
         }
         f << std::endl;
     }
+
     f.close();
+    unsavedChanges = false;
 }
 
-PGE::String getINIString(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, const PGE::String& defaultValue) {
-    for (int i = 0; i < INIFile::getListSize(); i++) {
-        INIFile* iniFile = INIFile::getObject(i);
-
-        if (iniFile->getName().equalsIgnoreCase(file)) {
-            return iniFile->getValue(section, parameter, defaultValue);
-        }
-    }
-    INIFile* newFile = new INIFile(file);
-    return newFile->getValue(section, parameter, defaultValue);
+PGE::String INIFile::getString(const PGE::String& section, const PGE::String& key, const PGE::String& defaultValue) {
+    return getValue(section, key, defaultValue);
 }
 
-int getINIInt(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, int defaultvalue) {
-    PGE::String txt = getINIString(file, section, parameter, PGE::String(defaultvalue));
-    return txt.toInt();
-}
-
-bool getINIBool(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, bool defaultvalue) {
-    PGE::String val = getINIString(file, section, parameter, defaultvalue ? "true" : "false");
+bool INIFile::getBool(const PGE::String& section, const PGE::String& key, bool defaultValue) {
+    PGE::String val = getValue(section, key, "");
     if (val == "true" || val == "false") {
         return val == "true";
     } else {
-        return defaultvalue;
+        return defaultValue;
     }
 }
 
-float getINIFloat(const PGE::String& file, const PGE::String& section, const PGE::String& parameter, float defaultvalue) {
-    return getINIString(file, section, parameter, PGE::String(defaultvalue)).toFloat();
+int INIFile::getInt(const PGE::String& section, const PGE::String& key, int defaultValue) {
+    return getValue(section, key, defaultValue).toInt();
 }
 
-void putINIValue(const PGE::String& file, const PGE::String& section, const PGE::String& key, const PGE::String& value) {
-    INIFile* targetFile = nullptr;
-    for (int i = 0; i < INIFile::getListSize(); i++) {
-        INIFile* iniFile = INIFile::getObject(i);
-
-        if (iniFile->getName().equalsIgnoreCase(file)) {
-            targetFile = iniFile;
-            break;
-        }
-    }
-    if (targetFile == nullptr) {
-        targetFile = new INIFile(file);
-    }
-
-    targetFile->setValue(section,key,value);
-    targetFile->save();
+float INIFile::getFloat(const PGE::String& section, const PGE::String& key, float defaultValue) {
+    return getValue(section, key, defaultValue).toFloat();
 }
 
-std::vector<INIFile::Section*> getINISections(const PGE::String& file) {
-    for (int i = 0; i < INIFile::getListSize(); i++) {
-        INIFile* iniFile = INIFile::getObject(i);
+void INIFile::setString(const PGE::String& section, const PGE::String& key, const PGE::String& value) {
+    setValue(section, key, value);
+}
 
-        if (iniFile->getName().equalsIgnoreCase(file)) {
-            return iniFile->getAllSections();
-        }
-    }
-    INIFile* newFile = new INIFile(file);
-    return newFile->getAllSections();
+void INIFile::setBool(const PGE::String& section, const PGE::String& key, bool value) {
+    setValue(section, key, value ? "true" : "false");
+}
+
+void INIFile::setInt(const PGE::String& section, const PGE::String& key, int value) {
+    setValue(section, key, value);
+}
+
+void INIFile::setFloat(const PGE::String& section, const PGE::String& key, float value) {
+    setValue(section, key, value);
 }
