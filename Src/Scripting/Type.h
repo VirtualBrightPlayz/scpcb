@@ -6,21 +6,12 @@
 class ArrayType;
 class RefType;
 class Type {
-    private:
-        static Type int32Private;
-        static Type uint32Private;
-        static Type floatPrivate;
-        static Type doublePrivate;
-        static Type stringPrivate;
-        static Type vector3fPrivate;
-        static Type matrix4x4fPrivate;
-        static Type voidPrivate;
-        static Type unsupportedPrivate;
     protected:
         PGE::String typeName;
         int size;
         RefType* refType = nullptr;
         ArrayType* arrayType = nullptr;
+
     public:
         Type();
         Type(const PGE::String& name, int size = 0);
@@ -42,6 +33,7 @@ class Type {
         static Type* const String;
         static Type* const Vector3f;
         static Type* const Matrix4x4f;
+        static Type* const Color;
         static Type* const Void;
         static Type* const Unsupported;
 };
@@ -49,6 +41,7 @@ class Type {
 class ArrayType : public Type {
     private:
         Type* elementType;
+
     public:
         ArrayType(Type* type);
 
@@ -60,6 +53,7 @@ class ArrayType : public Type {
 class RefType : public Type {
     private:
         Type* baseType;
+
     public:
         RefType(Type* type);
 

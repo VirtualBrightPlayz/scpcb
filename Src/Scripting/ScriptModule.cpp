@@ -115,6 +115,7 @@ Type* ScriptModule::typeFromTypeId(int typeId) const {
     int arrayTypeId = engine->GetDefaultArrayTypeId();
     int vector3fTypeID = engine->GetTypeIdByDecl("Vector3f");
     int matrix4x4fTypeID = engine->GetTypeIdByDecl("Matrix4x4f");
+    int colorTypeID = engine->GetTypeIdByDecl("Color");
 
     int originalTypeId = typeId;
     bool isRef = (typeId & asTYPEID_OBJHANDLE) != 0;
@@ -145,21 +146,20 @@ Type* ScriptModule::typeFromTypeId(int typeId) const {
                 type = Type::Vector3f;
             } else if (typeId == matrix4x4fTypeID) {
                 type = Type::Matrix4x4f;
-            }
-            else if (isTemplate) {
+            } else if (typeId == colorTypeID) {
+                type = Type::Color;
+            } else if (isTemplate) {
                 if (scriptManager->isArrayTypeId(originalTypeId)) {
                     asITypeInfo* typeInfo = engine->GetTypeInfoById(originalTypeId);
                     Type* baseType = typeFromTypeId(typeInfo->GetSubTypeId());
                     type = baseType->getArrayType();
-                }
-                else {
+                } else {
                     throw std::runtime_error("Templates are currently not supported for types other than arrays");
                 }
-            }
-            else {
-                ScriptClass* clss = getClassByTypeId(typeId);
-                if (clss == nullptr) { clss = scriptManager->getSharedClassByTypeId(typeId); }
-                type = clss;
+            } else {
+                if ((type = getClassByTypeId(typeId)) == nullptr) {
+                    type = scriptManager->getSharedClassByTypeId(typeId);
+                }
             }
         } break;
     }
