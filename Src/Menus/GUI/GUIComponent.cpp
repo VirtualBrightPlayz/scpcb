@@ -2,8 +2,17 @@
 #include "../../Input/KeyBinds.h"
 #include "../../Save/Config.h"
 
-GUIComponent::GUIComponent(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment)
-    : uiMesh(um), keyBinds(kb), config(con), x(x), y(y), width(width), height(height), alignment(alignment) { 
+GUIComponent::GUIComponent(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment) { 
+    uiMesh = um;
+    keyBinds = kb;
+    config = con;
+
+    this->x = x;
+    this->y = y;
+    this->width = width;
+    this->height = height;
+    this->alignment = alignment;
+
     mouseDown = false;
 }
 

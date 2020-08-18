@@ -68,8 +68,8 @@ World::World() {
     applyConfig(config);
 
 #ifdef DEBUG
-    mouseTxtX = new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -5.f, false, Alignment::Bottom | Alignment::Left);
-    mouseTxtY = new GUIText(uiMesh, keyBinds, config, largeFont, 0.f, -2.5f, false, Alignment::Bottom | Alignment::Left);
+    mouseTxtX = new GUIText(uiMesh, keyBinds, config, largeFont, nullptr, 0.f, -5.f, false, Alignment::Bottom | Alignment::Left);
+    mouseTxtY = new GUIText(uiMesh, keyBinds, config, largeFont, nullptr, 0.f, -2.5f, false, Alignment::Bottom | Alignment::Left);
 #endif
 
     shutdownRequested = false;
@@ -223,8 +223,8 @@ void World::runTick(float timeStep) {
     PGE::Vector2i mouseWheelDelta = io->getMouseWheelDelta();
 
 #ifdef DEBUG
-    mouseTxtX->rt.text = PGE::String("DownInputs: ", PGE::String((int)downInputs));
-    mouseTxtY->rt.text = PGE::String("MouseWheelX: ", PGE::String(io->getMouseWheelDelta().y));
+    mouseTxtX->setText(PGE::String("DownInputs: ") + (int)downInputs);
+    mouseTxtY->setText(PGE::String("MouseWheelX: ") + io->getMouseWheelDelta().y);
 #endif
 
     if (vrm != nullptr) {

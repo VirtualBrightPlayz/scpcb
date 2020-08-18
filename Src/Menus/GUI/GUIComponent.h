@@ -33,15 +33,15 @@ class GUIComponent {
 
         GUIComponent(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment);
 
-        void setX(float x);
-        void setY(float y);
+        virtual void setX(float x);
+        virtual void setY(float y);
         float getX() const;
         float getY() const;
         float getX2() const;
         float getY2() const;
 
-        virtual void updateInternal(PGE::Vector2f mousePos) =0;
-        virtual void renderInternal() =0;
+        virtual void updateInternal(PGE::Vector2f mousePos) = 0;
+        virtual void renderInternal() = 0;
 
     public:
         virtual ~GUIComponent();

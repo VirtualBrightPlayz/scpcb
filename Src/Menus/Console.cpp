@@ -117,8 +117,9 @@ void Console::executeCommand(const PGE::String& in) {
 }
 
 Console::Message::Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, const PGE::String& resp, const PGE::Color& color) {
-    text = new GUIText(um, kb, con, fnt, 3.f / con->getAspectRatio(), 0.f, false, Alignment::Left | Alignment::Top);
-    text->rt = { resp, color };
+    text = new GUIText(um, kb, con, fnt, nullptr, 3.f/con->getAspectRatio(), 0.f, false, Alignment::Left | Alignment::Top);
+    text->setText(resp);
+    text->color = color;
 }
 
 void Console::Message::setLinePositionFromBottom(float line) {

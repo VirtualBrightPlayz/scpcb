@@ -6,16 +6,16 @@
 #include "../Input/KeyBinds.h"
 #include "../Graphics/Font.h"
 
-MessageManager::MessageManager(LocalizationManager* tm, UIMesh* um, KeyBinds* kb, Config* con, Font* font) :
-    tm(tm),
+MessageManager::MessageManager(LocalizationManager* lm, UIMesh* um, KeyBinds* kb, Config* con, Font* font) :
     um(um),
     font(font),
-    text(new GUIText(um, kb, con, font, 0.f, -33.3f, true, Alignment::Bottom)) {
+    text(new GUIText(um, kb, con, font, lm, 0.f, -33.3f, true, Alignment::Bottom)) {
     displayTimer = 0.f;
 }
 
 void MessageManager::setMsg(const PGE::String& local, float seconds, const PGE::Color& color) {
-    text->rt = { tm->getLocalTxt(local), color };
+    text->setText(local);
+    text->color = color;
     displayTimer = seconds;
 }
 
@@ -27,8 +27,7 @@ void MessageManager::update(float timeStep) {
 void MessageManager::draw() {
     if (displayTimer > 0) {
         if (displayTimer < 1.f) {
-            PGE::Color oldColor = text->rt.color;
-            text->rt.color = PGE::Color(oldColor.red, oldColor.green, oldColor.blue, displayTimer);
+            text->color = PGE::Color(text->color.red, text->color.green, text->color.blue, displayTimer);
         }
         text->render();
     }

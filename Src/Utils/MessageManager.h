@@ -13,7 +13,6 @@ class Font;
 
 class MessageManager {
 	private:
-		LocalizationManager* const tm;
 		UIMesh* const um;
 		Font* const font;
 
@@ -21,7 +20,7 @@ class MessageManager {
 		float displayTimer;
 
 	public:
-		MessageManager(LocalizationManager* tm, UIMesh* um, KeyBinds* kb, Config* con, Font* font);
+		MessageManager(LocalizationManager* lm, UIMesh* um, KeyBinds* kb, Config* con, Font* font);
 		
 		void setMsg(const PGE::String& local, float seconds, const PGE::Color& color);
 		void update(float timeStep);

@@ -5,6 +5,9 @@
 
 class GUIFrame : public GUIComponent {
     private:
+        const PGE::Rectanglef foreground;
+        const PGE::Rectanglef background;
+        
         const PGE::String menuwhite;
         const PGE::String menublack;
     

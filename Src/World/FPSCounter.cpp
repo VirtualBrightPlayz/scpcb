@@ -10,8 +10,8 @@ FPSCounter::FPSCounter(UIMesh* um, KeyBinds* kb, Config* con, Font* font) {
     visible = false;
     this->config = con;
 
-    display = new GUIText(um, kb, con, font, 0.f, 0.f, false, Alignment::Left | Alignment::Top);
-    display->rt.text = "FPS: -1";
+    display = new GUIText(um, kb, con, font, nullptr, 0.f, 0.f, false, Alignment::Left | Alignment::Top);
+    display->setText("FPS: -1");
 }
 
 void FPSCounter::update(double elapsedSeconds) {
@@ -28,7 +28,7 @@ void FPSCounter::update(double elapsedSeconds) {
     }
 
     avgFPS = sum / sampleBuffer.size();
-    display->rt.text = PGE::String("FPS: ", (int)avgFPS);
+    display->setText(PGE::String("FPS: ") + (int)avgFPS);
 }
 
 void FPSCounter::draw() {
