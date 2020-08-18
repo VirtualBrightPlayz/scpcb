@@ -34,7 +34,7 @@ Camera::Camera(GraphicsResources* gr, int w, int h, float fov, float nearZ, floa
     update();
 }
 
-Camera::Camera(GraphicsResources* gr, int w, int h) : Camera(gr, w, h, MathUtil::degToRad(70.0f)) { }
+Camera::Camera(GraphicsResources* gr, int w, int h) : Camera(gr, w, h, MathUtil::degToRad(70.0f)) {}
 
 void Camera::update() {
     dataInter.update(position, PGE::Vector3f(-pitchAngle, yawAngle, tilt), PGE::Vector3f::zero);

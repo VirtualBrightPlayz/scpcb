@@ -26,7 +26,7 @@ Licensing terms can be found in [License.txt](Content/License.txt).
 * `using` directive in header files.
 * `std::string`.
 * Overriding virtual methods without the `override` or `final` keywords.
-* `auto` keyword (unless using range-based for)
+* `auto` keyword (unless using range-based for).
 * `switch` `case`s that don't create a new scope.
 * Tabs & indentations other than multiples of 4 spaces.
 * Anything other than LF newlines.
@@ -35,6 +35,7 @@ Licensing terms can be found in [License.txt](Content/License.txt).
 * Text/source files without a newline at the end.
 * Declaring several variables in one statement.
 * Placing the pointer/reference symbol anywhere other than next to the type.
+* Initialization lists (except when used to initialize a variable that needs to be `const`).
 
 [vs2019]: https://visualstudio.microsoft.com/vs/
 [scp-wiki]: http://www.scp-wiki.net/

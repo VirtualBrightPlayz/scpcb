@@ -5,8 +5,9 @@
 
 #include "INI.h"
 
-INIFile::INIFile(const PGE::String& filename) :
-        name(filename) {
+INIFile::INIFile(const PGE::String& filename) {
+    name = filename;
+
     unsavedChanges = false;
 
     Section* currSection = nullptr;

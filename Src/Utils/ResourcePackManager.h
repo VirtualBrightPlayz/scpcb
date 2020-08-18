@@ -14,8 +14,8 @@ class ResourcePackManager {
             const PGE::FilePath path;
         };
         
-        ArrayConfigValue* const resPackLocs;
-        ArrayConfigValue* const activeResPackNames;
+        ArrayConfigValue* resPackLocs;
+        ArrayConfigValue* activeResPackNames;
         
         std::vector<ResourcePack> resPacks;
         std::vector<ResourcePack> activeResPacks;

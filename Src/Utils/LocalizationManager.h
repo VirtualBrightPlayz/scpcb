@@ -12,7 +12,7 @@ class LocalizationManager {
                 std::map<PGE::String, PGE::String> map;
 
             public:
-                const PGE::String code;
+                PGE::String code;
                 
                 Language(const PGE::String& langCode);
 

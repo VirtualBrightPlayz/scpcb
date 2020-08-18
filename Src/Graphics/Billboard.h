@@ -39,7 +39,7 @@ class BillboardManager {
 };
 
 class Billboard {
-    protected:
+    private:
         BillboardManager* bm;
 
         int vertexStartIndex;

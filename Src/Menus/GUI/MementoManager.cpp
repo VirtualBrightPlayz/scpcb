@@ -1,6 +1,11 @@
 #include "MementoManager.h"
 
-Memento::Memento(int startPos, PGE::String content, bool write, bool linked) : startPos(startPos), content(content), write(write), linked(linked) {}
+Memento::Memento(int startPos, PGE::String content, bool write, bool linked) {
+    this->startPos = startPos;
+    this->content = content;
+    this->write = write;
+    this->linked = linked;
+}
 
 PGE::String Memento::execute(const PGE::String& txt, bool flip) const {
     if (write ^ flip) {
@@ -14,7 +19,11 @@ int Memento::getSize() const {
     return content.byteSize() + content.size() * 2 + sizeof(Memento) + sizeof(PGE::String);
 }
 
-MementoManager::MementoManager(int mementoMaxMemSize) : maxMemSize(mementoMaxMemSize), position(-1), memSize(0) {}
+MementoManager::MementoManager(int mementoMaxMemSize) {
+    maxMemSize = mementoMaxMemSize;
+    position = -1;
+    memSize = 0;
+}
 
 PGE::String MementoManager::execute(const PGE::String& txt, int& pos, bool undo) {
     if (undo) {

@@ -38,7 +38,7 @@ class GraphicsResources {
         DebugGraphics* debugGraphics;
 
     public:
-        ResourcePackManager* const rpm;
+        ResourcePackManager* rpm;
         
         GraphicsResources(PGE::Graphics* gfx, Config* con);
 

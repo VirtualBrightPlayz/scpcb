@@ -81,7 +81,9 @@ GraphicsResources* BillboardManager::getGfxRes() const {
     return gfxRes;
 }
 
-Billboard::Billboard(BillboardManager* bm, const PGE::String& textureName, const PGE::Vector3f& pos, float rotation, const PGE::Vector2f& scale, const PGE::Color& color) : bm(bm) {
+Billboard::Billboard(BillboardManager* bm, const PGE::String& textureName, const PGE::Vector3f& pos, float rotation, const PGE::Vector2f& scale, const PGE::Color& color) {
+    this->bm = bm;
+    
     this->position = pos;
     this->scale = scale;
     this->color = color;
@@ -95,7 +97,9 @@ Billboard::Billboard(BillboardManager* bm, const PGE::String& textureName, const
     bm->addBillboard(this);
 }
 
-Billboard::Billboard(BillboardManager* bm, const PGE::String& textureName, const PGE::Vector3f& pos, const PGE::Vector3f& rotation, const PGE::Vector2f& scale, const PGE::Color& color) : bm(bm) {
+Billboard::Billboard(BillboardManager* bm, const PGE::String& textureName, const PGE::Vector3f& pos, const PGE::Vector3f& rotation, const PGE::Vector2f& scale, const PGE::Color& color) {
+    this->bm = bm;
+    
     this->position = pos;
     this->scale = scale;
     this->color = color;

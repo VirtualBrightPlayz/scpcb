@@ -21,7 +21,7 @@ class INIFile {
         void setValue(const PGE::String& section, const PGE::String& key, const PGE::String& value);
 
     public:
-        const PGE::String name;
+        PGE::String name;
         
         INIFile(const PGE::String& filename);
         ~INIFile();

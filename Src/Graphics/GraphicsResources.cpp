@@ -4,8 +4,8 @@
 #include "../Menus/GUI/GUIComponent.h"
 #include "DebugGraphics.h"
 
-GraphicsResources::GraphicsResources(PGE::Graphics* gfx, Config* con) :
-    rpm(new ResourcePackManager(con->resourcePackLocations, con->enabledResourcePacks)) {
+GraphicsResources::GraphicsResources(PGE::Graphics* gfx, Config* con) {
+    rpm = new ResourcePackManager(con->resourcePackLocations, con->enabledResourcePacks);
     con->setGraphicsResources(this);
     updateOrthoMat(con->getAspectRatio());
     graphics = gfx;

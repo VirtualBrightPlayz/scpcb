@@ -6,10 +6,10 @@
 #include "../Input/KeyBinds.h"
 #include "../Graphics/Font.h"
 
-MessageManager::MessageManager(LocalizationManager* lm, UIMesh* um, KeyBinds* kb, Config* con, Font* font) :
-    um(um),
-    font(font),
-    text(new GUIText(um, kb, con, font, lm, 0.f, -33.3f, true, Alignment::Bottom)) {
+MessageManager::MessageManager(LocalizationManager* lm, UIMesh* um, KeyBinds* kb, Config* con, Font* font) {
+    this->um = um;
+    this->font = font;
+    this->text = new GUIText(um, kb, con, font, lm, 0.f, -33.3f, true, Alignment::Bottom);
     displayTimer = 0.f;
 }
 

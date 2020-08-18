@@ -13,10 +13,10 @@ class Font;
 
 class MessageManager {
 	private:
-		UIMesh* const um;
-		Font* const font;
+		UIMesh* um;
+		Font* font;
 
-		GUIText* const text;
+		GUIText* text;
 		float displayTimer;
 
 	public:
