@@ -11,7 +11,7 @@ GUIButton::GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, Localizat
     text = new GUIText(um, kb, con, fnt, lm, x + width / 2, y + height / 2, true, alignment);
     text->setText(txt);
 
-    hoverRect = PGE::Rectanglef(PGE::Vector2f(getX() + uiMesh->borderThickness, getY() + uiMesh->borderThickness), PGE::Vector2f(getX2() - uiMesh->borderThickness, getY2() - uiMesh->borderThickness));
+    hoverRect = PGE::Rectanglef(getX() + uiMesh->borderThickness, getY() + uiMesh->borderThickness, getX2() - uiMesh->borderThickness, getY2() - uiMesh->borderThickness);
     hoverColor = PGE::Color(70, 70, 150, 200);
 
     locked = false;

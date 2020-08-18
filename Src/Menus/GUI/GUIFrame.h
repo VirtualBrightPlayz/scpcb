@@ -5,11 +5,11 @@
 
 class GUIFrame : public GUIComponent {
     private:
-        const PGE::Rectanglef foreground;
-        const PGE::Rectanglef background;
+        PGE::Rectanglef foreground;
+        PGE::Rectanglef background;
         
-        const PGE::String menuwhite;
-        const PGE::String menublack;
+        PGE::String menuwhite;
+        PGE::String menublack;
     
         void updateInternal(PGE::Vector2f mousePos) override;
         void renderInternal() override;
