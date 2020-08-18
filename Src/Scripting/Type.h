@@ -6,6 +6,19 @@
 class ArrayType;
 class RefType;
 class Type {
+    private:
+        // By initializing the Types this way the destructor gets called when the program exits.
+        static Type int32Private;
+        static Type uint32Private;
+        static Type floatPrivate;
+        static Type doublePrivate;
+        static Type stringPrivate;
+        static Type vector3fPrivate;
+        static Type matrix4x4fPrivate;
+        static Type colorPrivate;
+        static Type voidPrivate;
+        static Type unsupportedPrivate;
+
     protected:
         PGE::String typeName;
         int size;
