@@ -11,6 +11,9 @@ bool Menu::isMarkedForDeath() const {
     return markedForRemoval;
 }
 
+void Menu::onActivate() {}
+void Menu::onDeactivate() {}
+
 void Menu::detach() {
     world->deactivateMenu(this);
 }

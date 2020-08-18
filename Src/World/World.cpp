@@ -118,6 +118,7 @@ void World::activateMenu(Menu* mu) {
     }
 
     currMenu = mu;
+    currMenu->onActivate();
 }
 
 void World::deactivateMenu(Menu* mu) {
@@ -129,6 +130,7 @@ void World::deactivateMenu(Menu* mu) {
         menuGraveyard = mu;
     }
     currMenu = nullptr;
+    mu->onDeactivate();
 }
 
 bool World::run() {
@@ -259,9 +261,9 @@ void World::runTick(float timeStep) {
     } else if (inputWasFired(hitInputs, Input::ToggleConsole)) {
         if (currMenu == nullptr) {
             activateMenu(console);
-        } else {
+        } else if (currMenu == console) {
             console->onEscapeHit();
-        }
+        } // Otherwise another menu is already open.
     }
 
     if (currMenu == nullptr && !graphics->getWindow()->isFocused()) {
