@@ -7,23 +7,24 @@
 #include "MementoManager.h"
 #include "../../Graphics/Font.h"
 
+class GUIFrame;
+class GUIText;
+
 class GUITextInput : public GUIComponent {
     private:
+        GUIFrame* frame;
+        GUIText* text;
+        
         MementoManager* mementoManager;
 
         static GUITextInput* subscriber;
 
-        const PGE::String menuwhite;
-        const PGE::String menublack;
         PGE::Color hoverColor;
-        PGE::Vector2f txtScale;
 
         PGE::String defaultText;
         bool defaultTextDisplayed;
 
-        Font* font;
         PGE::IO* io;
-        PGE::String text;
 
         // If this pattern is defined, text will only be accepted if it matches it.
         std::regex rgxPattern;
@@ -45,31 +46,32 @@ class GUITextInput : public GUIComponent {
         // Determines if the box should track the mouse's movement as a drag action for selecting text.
         bool draggable;
 
-        /// <summary>
-        /// Whether the text should be aligned to the left side of the input box.
-        /// </summary>
-        bool leftAlignedText;
-
-        // Y coordinate of the text in UI space, used for caret and selection.
-        const float textY;
-        // Current position of the caret relative to the text.
+        // Current position of the caret.
         int caretPosition;
-        // X coordinate of the caret in UI space.
-        float caretX;
-        // Current position of the start point of a selection.
+        // Current position of the start and end points of the selection.
         int selectionStartPosition;
-        // Current position of the end point of a selection.
         int selectionEndPosition;
-        // Start and end coordinates of the selection in UI space.
+
+        // Cached positions for coordinate updates.
+        int oldCaretPosition;
+        int oldSelectionStartPosition;
+        int oldSelectionEndPosition;
+
+        // Various coordinates of the caret and selection in UI space.
+        static constexpr float caretBreathingSpace = 0.25;
+        float caretTop;
+        float caretBottom;
+        float caretX;
         float selectionStartX;
         float selectionEndX;
+
+        void setCaretAndSelection(int pos);
+
         bool anyTextSelected() const;
 
         int getFirstLeftWordBoundary(int startingPosition) const;
         int getFirstRightWordBoundary(int startingPosition) const;
-
-        // Return a Vector2f to the coordinates of the text's starting point.
-        PGE::Vector2f getTextCoordinates() const;
+        
         // Returns an index corresponding to where the caret should be based on the provided X coordinate.
         int getCaretPosition(float mouseX);
         void setCaretPositionFromMouse(float mouseX);
@@ -103,13 +105,9 @@ class GUITextInput : public GUIComponent {
         void clearTextAndMementos();
         PGE::String getText() const;
 
-        /// <summary>
-        /// Select this textbox.
-        /// </summary>
+        // Select this textbox.
         void select();
-        /// <summary>
-        /// Deselect this textbox
-        /// </summary>
+        // Deselect this textbox
         void deselect();
 
         static bool hasSubscriber();

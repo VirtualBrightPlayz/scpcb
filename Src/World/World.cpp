@@ -68,8 +68,8 @@ World::World() {
     applyConfig(config);
 
 #ifdef DEBUG
-    mouseTxtX = new GUIText(uiMesh, keyBinds, config, largeFont, nullptr, 0.f, -5.f, false, Alignment::Bottom | Alignment::Left);
-    mouseTxtY = new GUIText(uiMesh, keyBinds, config, largeFont, nullptr, 0.f, -2.5f, false, Alignment::Bottom | Alignment::Left);
+    mouseTxtX = new GUIText(uiMesh, keyBinds, config, largeFont, nullptr, 0.f, -5.f, false, false, Alignment::Bottom | Alignment::Left);
+    mouseTxtY = new GUIText(uiMesh, keyBinds, config, largeFont, nullptr, 0.f, -2.5f, false, false, Alignment::Bottom | Alignment::Left);
 #endif
 
     shutdownRequested = false;

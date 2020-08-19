@@ -1,27 +1,39 @@
-#include <iostream>
-#include <string>
-
 #include "GUITextInput.h"
+
+#include <iostream>
+
+#include "GUIFrame.h"
+#include "GUIText.h"
 #include "../../Utils/MathUtil.h"
 #include "../../Save/Config.h"
 
 GUITextInput* GUITextInput::subscriber = nullptr;
 
 GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, bool alignLeft, int mementoMaxMemSize, const PGE::String& defaultText, int limit, const PGE::String& pattern, Alignment alignment)
-: GUIComponent(um, kb, con, x, y, width, height, alignment), textY(getY() + height / 2.f - 1.f),
-    menuwhite("SCPCB/GFX/Menu/menuwhite"),
-    menublack("SCPCB/GFX/Menu/menublack") {
+: GUIComponent(um, kb, con, x, y, width, height, alignment) {
+    frame = new GUIFrame(um, kb, con, x, y, width, height, alignment);
+    text = new GUIText(um, kb, con, fnt, nullptr, alignLeft ? x + um->borderThickness * 2 : x + width/2, y + height/2, !alignLeft, true, alignment);
+
+    float textHeight = fnt->getHeight(text->scale);
+    caretTop = getY() + (height - textHeight)/2 - caretBreathingSpace;
+    caretBottom = caretTop + textHeight + caretBreathingSpace*2;
+
     hoverColor = PGE::Color(70, 70, 150, 200);
 
     mementoManager = new MementoManager(mementoMaxMemSize);
 
-    this->defaultText = defaultText;
-    text = defaultText;
-    defaultTextDisplayed = true;
+    setCaretAndSelection(0);
+    oldCaretPosition = -1;
+    oldSelectionEndPosition = -1;
+    oldSelectionStartPosition = -1;
+    updateCoordinates();
 
-    font = fnt;
+    this->defaultText = defaultText;
+    text->setText(defaultText);
+    text->color = PGE::Color::Gray;
+    defaultTextDisplayed = true;
+    
     io = inIo;
-    txtScale = PGE::Vector2f(100.f / con->getHeight());
 
     if (!pattern.isEmpty()) {
         patternMatching = true;
@@ -32,11 +44,6 @@ GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE
 
     characterLimit = limit;
     draggable = false;
-    leftAlignedText = alignLeft;
-
-    caretPosition = 0;
-    selectionStartPosition = 0;
-    selectionEndPosition = 0;
 }
 
 // Regex stuff.
@@ -45,24 +52,27 @@ std::regex leftBoundWord("(\\b)\\w+$|\\w(\\b)\\W+$");
 std::regex rightBoundWord("^\\w+(\\b)|^\\W+(\\b)\\w");
 
 void GUITextInput::setText(const PGE::String& txt) {
-    mementoManager->push(Memento(0, text, false, true));
+    mementoManager->push(Memento(0, text->getText(), false, true));
     mementoManager->push(Memento(0, txt, true, true));
-    text = txt;
-    caretPosition = text.size();
-    selectionStartPosition = caretPosition;
-    selectionEndPosition = caretPosition;
+    text->setText(txt);
+    setCaretAndSelection(text->getText().size());
 }
 
 void GUITextInput::clearTextAndMementos() {
-    text = "";
-    caretPosition = 0;
-    selectionStartPosition = 0;
-    selectionEndPosition = 0;
+    text->setText("");
+    setCaretAndSelection(0);
     mementoManager->clear();
 }
 
 PGE::String GUITextInput::getText() const {
-    return text;
+    return text->getText();
+}
+
+void GUITextInput::setCaretAndSelection(int pos) {
+    caretPosition = pos;
+    selectionStartPosition = pos;
+    selectionEndPosition = pos;
+
 }
 
 bool GUITextInput::anyTextSelected() const {
@@ -101,12 +111,9 @@ void GUITextInput::select() {
     subscriber = this;
     io->startTextInputCapture();
 
-    caretPosition = 0;
-    selectionStartPosition = 0;
-    selectionEndPosition = 0;
-
     if (defaultTextDisplayed) {
-        text = "";
+        text->setText("");
+        text->color = PGE::Color::White;
         defaultTextDisplayed = false;
     }
 }
@@ -115,12 +122,9 @@ void GUITextInput::deselect() {
     io->stopTextInputCapture();
     subscriber = nullptr;
 
-    caretPosition = 0;
-    selectionStartPosition = 0;
-    selectionEndPosition = 0;
-
-    if (text.isEmpty()) {
-        text = defaultText;
+    if (text->getText().isEmpty()) {
+        text->setText(defaultText);
+        text->color = PGE::Color::Gray;
         defaultTextDisplayed = true;
     }
 }
@@ -133,20 +137,10 @@ bool GUITextInput::hasSubscriber() {
     return subscriber != nullptr;
 }
 
-PGE::Vector2f GUITextInput::getTextCoordinates() const {
-    PGE::Vector2f pos = font->centerTextCoords(text, getX(), getY(), width, height, txtScale);
-    if (leftAlignedText) {
-        pos.x = getX();
-    }
-    return pos;
-}
-
 int GUITextInput::getCaretPosition(float mouseX) {
-    float textWidth = font->stringWidth(text, txtScale);
-    
-    float caretX = getTextCoordinates().x + textWidth;
-    for (int newCaret = text.size(); newCaret > 0; newCaret--) {
-        float charWidth = font->stringWidth(text.charAt(newCaret - 1), txtScale);
+    float caretX = text->getTextPos().x + text->getWidth();
+    for (int newCaret = text->getText().size(); newCaret > 0; newCaret--) {
+        float charWidth = text->getWidth(text->getText().charAt(newCaret - 1));
         if (mouseX > caretX - charWidth / 2.f) {
             return newCaret;
         }
@@ -157,62 +151,66 @@ int GUITextInput::getCaretPosition(float mouseX) {
 }
 
 void GUITextInput::setCaretPositionFromMouse(float mouseX) {
-    caretPosition = getCaretPosition(mouseX);
-    selectionStartPosition = caretPosition;
-    selectionEndPosition = caretPosition;
+    setCaretAndSelection(getCaretPosition(mouseX));
 }
 
 void GUITextInput::updateCoordinates() {
-    PGE::Vector2f pos = getTextCoordinates();
-
-    caretX = pos.x;
-    if (!text.isEmpty()) {
-        caretX += font->stringWidth(text.substr(0, caretPosition), txtScale);
+    if (caretPosition == oldCaretPosition && selectionStartPosition == oldSelectionStartPosition && selectionEndPosition == oldSelectionEndPosition) {
+        return;
     }
 
-    selectionStartX = pos.x;
-    if (!text.isEmpty()) {
-        selectionStartX += font->stringWidth(text.substr(0, selectionStartPosition), txtScale);
+    oldCaretPosition = caretPosition;
+    oldSelectionStartPosition = selectionStartPosition;
+    oldSelectionEndPosition = selectionEndPosition;
+
+    float textX = text->getTextPos().x;
+
+    std::cout << "Lol " << textX << std::endl;
+
+    caretX = textX;
+    if (!text->getText().isEmpty()) {
+        caretX += text->getWidth(text->getText().substr(0, caretPosition));
     }
 
-    selectionEndX = selectionStartX + font->stringWidth(text.substr(selectionStartPosition, selectionEndPosition - selectionStartPosition), txtScale);
+    selectionStartX = textX;
+    if (!text->getText().isEmpty()) {
+        selectionStartX += text->getWidth(text->getText().substr(0, selectionStartPosition));
+    }
+
+    selectionEndX = selectionStartX + text->getWidth(text->getText().substr(selectionStartPosition, selectionEndPosition - selectionStartPosition));
 }
 
 void GUITextInput::addText(PGE::String& append) {
     // Truncate the string if it's over the capacity.
-    int newSize = text.size() + append.size();
+    int newSize = text->getText().size() + append.size();
     if (newSize > characterLimit) {
-        append = append.substr(0, characterLimit - text.size());
+        append = append.substr(0, characterLimit - text->getText().size());
     }
 
     if (selectionStartPosition != selectionEndPosition) {
-        mementoManager->push(Memento(selectionStartPosition, text.substr(selectionStartPosition, selectionEndPosition - selectionStartPosition), false, true));
+        mementoManager->push(Memento(selectionStartPosition, text->getText().substr(selectionStartPosition, selectionEndPosition - selectionStartPosition), false, true));
     }
     mementoManager->push(Memento(selectionStartPosition, append, true, selectionStartPosition != selectionEndPosition));
 
     // If any text was selected then delete it.
-    if (selectionEndPosition >= text.size()) {
-        text = text.substr(0, selectionStartPosition) + append;
+    if (selectionEndPosition >= text->getText().size()) {
+        text->setText(text->getText().substr(0, selectionStartPosition) + append);
     } else {
-        text = text.substr(0, selectionStartPosition) + append + text.substr(selectionEndPosition);
+        text->setText(text->getText().substr(0, selectionStartPosition) + append + text->getText().substr(selectionEndPosition));
     }
 
-    caretPosition = selectionStartPosition + append.size();
-    selectionStartPosition = caretPosition;
-    selectionEndPosition = caretPosition;
+    setCaretAndSelection(selectionStartPosition + append.size());
 }
 
 void GUITextInput::deleteSelectedText() {
     removeText(selectionStartPosition, selectionEndPosition);
 
-    caretPosition = selectionStartPosition;
-    selectionStartPosition = caretPosition;
-    selectionEndPosition = caretPosition;
+    setCaretAndSelection(selectionStartPosition);
 }
 
 void GUITextInput::removeText(int start, int end) {
-    mementoManager->push(Memento(start, text.substr(start, end - start), false));
-    text = text.substr(0, start) + text.substr(end);
+    mementoManager->push(Memento(start, text->getText().substr(start, end - start), false));
+    text->setText(text->getText().substr(0, start) + text->getText().substr(end));
 }
 
 void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
@@ -236,17 +234,17 @@ void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
         updateMouseActions(mousePos);
         updateShortcutActions();
 
-        updateCoordinates(); // TODO: Optimize this, it doesn't need to run every interval, especially now that it's a tad heavier.
+        updateCoordinates();
 
 #if DEBUG
         // Debug printing highlighted text.
         PGE::String str = "";
-        for (int i = 0; i < text.size(); i++) {
+        for (int i = 0; i < text->getText().size(); i++) {
             if (i == selectionStartPosition) {
                 str = str + "[";
             }
 
-            str = str + text.charAt(i);
+            str = str + text->getText().charAt(i);
 
             if (i + 1 == selectionEndPosition) {
                 str = str + "]";
@@ -262,7 +260,7 @@ void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
 
 void GUITextInput::updateTextActions() {
     PGE::String append = io->getTextInput();
-    if (!append.isEmpty() && text.size() < characterLimit) {
+    if (!append.isEmpty() && text->getText().size() < characterLimit) {
         addText(append);
 #ifdef __APPLE__
         selectionWasDraggedOrClicked = false;
@@ -280,10 +278,8 @@ void GUITextInput::updateDeleteKeyActions() {
             if (keyBinds->backspace->isHit() && caretPosition > 0) {
                 int deletionStart = keyBinds->anyShortcutDown() ? getFirstLeftWordBoundary(caretPosition) : caretPosition - 1;
                 removeText(deletionStart, caretPosition);
-                caretPosition = deletionStart;
-                selectionStartPosition = caretPosition;
-                selectionEndPosition = caretPosition;
-            } else if (keyBinds->del->isHit() && caretPosition < text.size()) {
+                setCaretAndSelection(deletionStart);
+            } else if (keyBinds->del->isHit() && caretPosition < text->getText().size()) {
                 removeText(caretPosition, keyBinds->anyShortcutDown() ? getFirstRightWordBoundary(caretPosition) : caretPosition + 1);
             }
         }
@@ -299,21 +295,19 @@ void GUITextInput::updateArrowActions() {
         if (!keyBinds->anyShiftDown()) {
             if (anyTextSelected()) {
                 // Snap to one side of the selection.
-                caretPosition = right ? selectionEndPosition : selectionStartPosition;
+                setCaretAndSelection(right ? selectionEndPosition : selectionStartPosition);
             } else {
                 // Shift caret position.
                 if (keyBinds->anyShortcutDown()) {
                     if (right) {
-                        caretPosition = getFirstRightWordBoundary(caretPosition);
+                        setCaretAndSelection(getFirstRightWordBoundary(caretPosition));
                     } else {
-                        caretPosition = getFirstLeftWordBoundary(caretPosition);
+                        setCaretAndSelection(getFirstLeftWordBoundary(caretPosition));
                     }
                 } else {
-                    caretPosition = MathUtil::clampInt(right ? caretPosition + 1 : caretPosition - 1, 0, text.size());
+                    setCaretAndSelection(MathUtil::clampInt(right ? caretPosition + 1 : caretPosition - 1, 0, text->getText().size()));
                 }
             }
-            selectionStartPosition = caretPosition;
-            selectionEndPosition = caretPosition;
 #ifdef __APPLE__
             selectionWasDraggedOrClicked = false;
 #endif
@@ -362,13 +356,75 @@ void GUITextInput::updateArrowActions() {
                 }
             }
             if (selectionStartPosition < 0) { selectionStartPosition = 0; }
-            if (selectionEndPosition > text.size()) { selectionEndPosition = text.size(); }
+            if (selectionEndPosition > text->getText().size()) { selectionEndPosition = text->getText().size(); }
         }
     }
 }
 
 void GUITextInput::updateMouseActions(PGE::Vector2f mousePos) {
-    if (keyBinds->mouse1->isHit() && keyBinds->mouse1->getClickCount() < 2) {
+    if (keyBinds->mouse1->getClickCount() == 2) {
+        // Prevents selectionEndPosition from assuming an illegal value.
+        if (!text->getText().isEmpty()) {
+            selectionStartPosition = caretPosition;
+            selectionEndPosition = caretPosition;
+
+            // What direction are we going in?
+            bool right = (mousePos.x >= caretX && caretPosition != text->getText().size()) || caretPosition == 0;
+
+            // Select all word-based characters until either the end or a boundary.
+            // Unless the first character found IS a boundary, then we ONLY select that.
+            // Let's check for that first character being a boundary first.
+            bool boundaryContact = false;
+            if (right) {
+                boundaryContact = !std::regex_match(std::string(1, text->getText().charAt(selectionEndPosition)), word, std::regex_constants::match_any);
+                selectionEndPosition++;
+            } else {
+                boundaryContact = !std::regex_match(std::string(1, text->getText().charAt(selectionStartPosition - 1)), word, std::regex_constants::match_any);
+                selectionStartPosition--;
+            }
+
+            if (!boundaryContact) {
+                // Scan both left and right sides of the caret for word characters.
+                while (selectionEndPosition < text->getText().size()) {
+                    if (std::regex_match(std::string(1, text->getText().charAt(selectionEndPosition)), word, std::regex_constants::match_any)) {
+                        selectionEndPosition++;
+                    } else {
+                        break;
+                    }
+                }
+                while (selectionStartPosition > 0) {
+                    if (std::regex_match(std::string(1, text->getText().charAt(selectionStartPosition - 1)), word, std::regex_constants::match_any)) {
+                        selectionStartPosition--;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            draggable = false; // Prevents a double click from being registered as a drag action.
+
+#ifdef __APPLE__
+            selectionWasDraggedOrClicked = true;
+#elif defined(WINDOWS)
+        // If you shift+arrow after a click selection on Windows, it defaults to manipulating the right-hand side.
+        // So move the caret to the left to replicate that behavior.
+            caretPosition = selectionStartPosition;
+#endif
+        }
+    } else if (keyBinds->mouse1->getClickCount() >= 3) {
+        // Select all.
+        selectionStartPosition = 0;
+        selectionEndPosition = text->getText().size();
+        caretPosition = 0;
+        draggable = false; // Prevents a triple click from being registered as a drag action.
+
+#ifdef __APPLE__
+        selectionWasDraggedOrClicked = true;
+#elif defined(WINDOWS)
+        // If you shift+arrow after a click selection on Windows, it defaults to manipulating the right-hand side.
+        // So move the caret to the left to replicate that behavior.
+        caretPosition = selectionStartPosition;
+#endif
+    } else if (keyBinds->mouse1->isHit()) {
         // If we're still in the textbox move the caret to the mouse's position.
         if (mousePos.x >= getX() && mousePos.y >= getY()
             && mousePos.x <= getX2() && mousePos.y <= getY2()) {
@@ -414,80 +470,21 @@ void GUITextInput::updateMouseActions(PGE::Vector2f mousePos) {
             selectionStartPosition = caretPosition;
             selectionEndPosition = caretPosition;
         }
-    } else if (keyBinds->mouse1->getClickCount() == 2) {
-        selectionStartPosition = caretPosition;
-        selectionEndPosition = caretPosition;
-
-        // What direction are we going in?
-        bool right = (mousePos.x >= caretX && caretPosition != text.size()) || caretPosition == 0;
-
-        // Select all word-based characters until either the end or a boundary.
-        // Unless the first character found IS a boundary, then we ONLY select that.
-        // Let's check for that first character being a boundary first.
-        bool boundaryContact = false;
-        if (right) {
-            boundaryContact = !std::regex_match(std::string(1, text.charAt(selectionEndPosition)), word, std::regex_constants::match_any);
-            selectionEndPosition++;
-        } else {
-            boundaryContact = !std::regex_match(std::string(1, text.charAt(selectionStartPosition - 1)), word, std::regex_constants::match_any);
-            selectionStartPosition--;
-        }
-
-        if (!boundaryContact) {
-            // Scan both left and right sides of the caret for word characters.
-            while (selectionEndPosition < text.size()) {
-                if (std::regex_match(std::string(1, text.charAt(selectionEndPosition)), word, std::regex_constants::match_any)) {
-                    selectionEndPosition++;
-                } else {
-                    break;
-                }
-            }
-            while (selectionStartPosition > 0) {
-                if (std::regex_match(std::string(1, text.charAt(selectionStartPosition - 1)), word, std::regex_constants::match_any)) {
-                    selectionStartPosition--;
-                } else {
-                    break;
-                }
-            }
-        }
-        draggable = false; // Prevents a double click from being registered as a drag action.
-
-#ifdef __APPLE__
-        selectionWasDraggedOrClicked = true;
-#elif defined(WINDOWS)
-        // If you shift+arrow after a click selection on Windows, it defaults to manipulating the right-hand side.
-        // So move the caret to the left to replicate that behavior.
-        caretPosition = selectionStartPosition;
-#endif
-    } else if (keyBinds->mouse1->getClickCount() >= 3) {
-        // Select all.
-        selectionStartPosition = 0;
-        selectionEndPosition = text.size();
-        caretPosition = 0;
-        draggable = false; // Prevents a triple click from being registered as a drag action.
-
-#ifdef __APPLE__
-        selectionWasDraggedOrClicked = true;
-#elif defined(WINDOWS)
-        // If you shift+arrow after a click selection on Windows, it defaults to manipulating the right-hand side.
-        // So move the caret to the left to replicate that behavior.
-        caretPosition = selectionStartPosition;
-#endif
     }
 }
 
 void GUITextInput::updateShortcutActions() {
     if (keyBinds->copyIsHit() && anyTextSelected()) {
-        io->setClipboardText(text.substr(selectionStartPosition, selectionEndPosition - selectionStartPosition));
+        io->setClipboardText(text->getText().substr(selectionStartPosition, selectionEndPosition - selectionStartPosition));
     } else if (keyBinds->cutIsHit() && anyTextSelected()) {
-        io->setClipboardText(text.substr(selectionStartPosition, selectionEndPosition - selectionStartPosition));
+        io->setClipboardText(text->getText().substr(selectionStartPosition, selectionEndPosition - selectionStartPosition));
         deleteSelectedText();
 #ifdef __APPLE__
         selectionWasDraggedOrClicked = false;
 #endif
     } else if (keyBinds->pasteIsHit()) {
         PGE::String append = io->getClipboardText();
-        if (!append.isEmpty() && text.size() < characterLimit) {
+        if (!append.isEmpty() && text->getText().size() < characterLimit) {
             if (anyTextSelected()) {
                 deleteSelectedText();
             }
@@ -497,44 +494,30 @@ void GUITextInput::updateShortcutActions() {
 #endif
         }
     } else if (keyBinds->undoIsHit() || keyBinds->redoIsHit()) {
-        int pos = caretPosition;
-        text = mementoManager->execute(text, pos, keyBinds->undoIsHit());
-        caretPosition = pos;
-        selectionStartPosition = pos;
-        selectionEndPosition = pos;
+        text->setText(mementoManager->execute(text->getText(), caretPosition, keyBinds->undoIsHit()));
+        setCaretAndSelection(caretPosition);
     } else if (keyBinds->selectAllIsHit()) {
         selectionStartPosition = 0;
-        selectionEndPosition = text.size();
+        selectionEndPosition = text->getText().size();
     }
 }
 
 void GUITextInput::renderInternal() {
-    uiMesh->setTextured(menuwhite, true);
-    uiMesh->addRect(PGE::Rectanglef(PGE::Vector2f(getX(), getY()), PGE::Vector2f(getX2(), getY2())));
-
-    PGE::Rectanglef foreground = PGE::Rectanglef(PGE::Vector2f(getX() + uiMesh->borderThickness, getY() + uiMesh->borderThickness), PGE::Vector2f(getX2() - uiMesh->borderThickness, getY2() - uiMesh->borderThickness));
-    uiMesh->setTextured(menublack, true);
-    uiMesh->addRect(foreground);
+    frame->render();
 
     // Render caret.
     if (selectionStartPosition == selectionEndPosition) {
         if (subscriber == this) {
             uiMesh->setTextureless();
-            uiMesh->addRect(PGE::Rectanglef(caretX, textY - 0.1f, caretX + 0.3f, textY + font->getHeight(txtScale) + 0.2f));
+            uiMesh->addRect(PGE::Rectanglef(caretX, caretTop, caretX + 0.3f, caretBottom));
         }
     // Render selection backdrop.
     } else {
         uiMesh->setTextureless();
         uiMesh->setColor(subscriber == this ? PGE::Color(0.75f, 0.75f, 0.75f) : PGE::Color(0.25f, 0.25f, 0.25f)); // This is not necessary if deselection automatically resets the selection (which is currently the case as of commit #badafdb4).
-        uiMesh->addRect(PGE::Rectanglef(selectionStartX, textY - 0.1f, selectionEndX, textY + font->getHeight(txtScale) + 0.2f));
+        uiMesh->addRect(PGE::Rectanglef(selectionStartX, caretTop - 0.2f, selectionEndX, caretBottom + 0.2f));
         uiMesh->setColor(PGE::Color::White);
     }
 
-    if (!text.isEmpty()) {
-        // Render anything buffered so the text doesn't get overlapped.
-        uiMesh->endRender();
-        uiMesh->startRender();
-
-        font->draw(text, getTextCoordinates(), txtScale, 0.f, defaultTextDisplayed ? PGE::Color::Gray : PGE::Color::White);
-    }
+    text->render();
 }

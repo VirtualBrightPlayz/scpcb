@@ -20,9 +20,11 @@ Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con,
     float inputY = frameY + frameHeight;
     input = new GUITextInput(um, font, kb, con, io, frameX, inputY, frameWidth, 5.f, true);
 
-    windowMaxLineCount = (int) ((frameHeight - 3.f) / (font->getHeight() / con->getHeight() * GUIComponent::SCALE_MAGNITUDE + 2.f));
+    float textScale = 100.f / con->getHeight();
 
-    Message::lineHeight = (font->getHeight() / con->getHeight() * frameHeight + 2.f);
+    windowMaxLineCount = (int) ((frameHeight - 3.f) / (font->getHeight(textScale) / con->getHeight() * GUIComponent::SCALE_MAGNITUDE + 2.f));
+
+    Message::lineHeight = (font->getHeight(textScale) / con->getHeight() * frameHeight + 2.f);
     Message::bottomOfConsoleWindow = windowMaxLineCount * Message::lineHeight + 1.f;
     commandHistoryIndex = -1;
 
@@ -125,7 +127,7 @@ void Console::executeCommand(const PGE::String& in) {
 }
 
 Console::Message::Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, const PGE::String& resp, const PGE::Color& color) {
-    text = new GUIText(um, kb, con, fnt, nullptr, 3.f/con->getAspectRatio(), 0.f, false, Alignment::Left | Alignment::Top);
+    text = new GUIText(um, kb, con, fnt, nullptr, 3.f/con->getAspectRatio(), 0.f, false, false, Alignment::Left | Alignment::Top);
     text->setText(resp);
     text->color = color;
 }

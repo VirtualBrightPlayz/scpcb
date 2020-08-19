@@ -1,29 +1,65 @@
 #include "GUIText.h"
+
 #include "../../Graphics/Font.h"
 #include "../../Utils/LocalizationManager.h"
+#include "../../Save/Config.h"
 
-GUIText::GUIText(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, LocalizationManager* lm, float x, float y, bool center, Alignment alignment)
+GUIText::GUIText(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, LocalizationManager* lm, float x, float y, bool centerX, bool centerY, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, 0.f, 0.f, alignment) {
     this->font = fnt;
     this->lm = lm;
 
-    this->center = center;
+    this->centerX = centerX;
+    this->centerY = centerY;
     text = "";
     color = PGE::Color::White;
     rotation = 0.f;
-    scale = 1.f;
+    scale = 100.f / con->getHeight();
+
+    updatePosition();
 }
 
 void GUIText::updateInternal(PGE::Vector2f mousePos) {}
 
 void GUIText::renderInternal() {
     uiMesh->setTextureless();
-    PGE::Vector2f txtScale = PGE::Vector2f(0.1388f * scale);
-    PGE::Vector2f pos = PGE::Vector2f(getX(), getY());
-    if (center) {
-        pos = font->centerTextCoords(text, pos.x, pos.y, width, height, txtScale);
+    font->draw(text, pos, scale, rotation, color);
+}
+
+void GUIText::updatePosition() {
+    pos = PGE::Vector2f(getX(), getY());
+    if (centerX) {
+        pos.x = pos.x - font->stringWidth(text, scale) / 2.f;
     }
-    font->draw(text, pos, txtScale, rotation, color);
+    if (centerY) {
+        pos.y = pos.y - font->getHeight(scale) / 1.5;
+    }
+}
+
+void GUIText::setX(float x) {
+    GUIComponent::setX(x);
+    updatePosition();
+}
+
+void GUIText::setY(float y) {
+    GUIComponent::setY(y);
+    updatePosition();
+}
+
+const PGE::Vector2f& GUIText::getTextPos() const {
+    return pos;
+}
+
+float GUIText::getWidth() const {
+    return font->stringWidth(text, scale);
+}
+
+float GUIText::getWidth(const PGE::String& text) const {
+    return font->stringWidth(text, scale);
+}
+
+float GUIText::getHeight() const {
+    return font->getHeight(scale);
 }
 
 void GUIText::setText(const PGE::String& newText) {
@@ -32,4 +68,9 @@ void GUIText::setText(const PGE::String& newText) {
     } else {
         text = lm->getLocalTxt(newText);
     }
+    updatePosition();
+}
+
+const PGE::String& GUIText::getText() {
+    return text;
 }

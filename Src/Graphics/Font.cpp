@@ -140,12 +140,12 @@ void Font::renderAtlas(long chr) {
     }
 }
 
-void Font::draw(const PGE::String& text, PGE::Vector2f pos, PGE::Vector2f scale, float rotation, PGE::Color color) {
-    draw(text, PGE::Vector3f(pos.x,pos.y,0.1f), scale, PGE::Vector3f(0.f,0.f,rotation), color);
+void Font::draw(const PGE::String& text, const PGE::Vector2f& pos, float scale, float rotation, const PGE::Color& color) {
+    draw(text, PGE::Vector3f(pos.x,pos.y,0.1f), PGE::Vector2f(scale), PGE::Vector3f(0.f, 0.f, rotation), color);
 }
 
-void Font::draw(const PGE::String& text, PGE::Vector3f pos, PGE::Vector2f scale, PGE::Vector3f rotation, PGE::Color color) {
-    PGE::Matrix4x4f modelMatrix = PGE::Matrix4x4f::constructWorldMat(pos, PGE::Vector3f(scale.x,scale.y,1.f),rotation);
+void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Vector2f& scale, const PGE::Vector3f& rotation, const PGE::Color& color) {
+    PGE::Matrix4x4f modelMatrix = PGE::Matrix4x4f::constructWorldMat(pos, PGE::Vector3f(scale.x, scale.y, 1.f), rotation);
 
     PGE::Vector3f currPos = PGE::Vector3f::zero;
 
@@ -210,7 +210,7 @@ void Font::draw(const PGE::String& text, PGE::Vector3f pos, PGE::Vector2f scale,
     }
 }
 
-float Font::stringWidth(const PGE::String& text, PGE::Vector2f scale) {
+float Font::stringWidth(const PGE::String& text, float scale) {
     float width = 0.f;
 
     for (int i = 0; i < text.size(); i++) {
@@ -224,13 +224,9 @@ float Font::stringWidth(const PGE::String& text, PGE::Vector2f scale) {
         width += it->second.horizontalAdvance;
     }
 
-    return width * scale.x;
+    return width * scale;
 }
 
-float Font::getHeight(PGE::Vector2f scale) const {
-    return glyphData.find(L'T')->second.srcRect.height() * (float)atlasDims * scale.y;
-}
-
-PGE::Vector2f Font::centerTextCoords(const PGE::String& text, float x, float y, float w, float h, PGE::Vector2f scale) {
-    return PGE::Vector2f(x + (w - stringWidth(text, scale)) / 2.f, y + (h - getHeight(scale)) / 2.f);
+float Font::getHeight(float scale) const {
+    return glyphData.find(L'T')->second.srcRect.height() * (float)atlasDims * scale;
 }

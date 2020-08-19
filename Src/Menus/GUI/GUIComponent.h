@@ -35,8 +35,8 @@ class GUIComponent {
 
         virtual void setX(float x);
         virtual void setY(float y);
-        float getX() const;
-        float getY() const;
+        virtual float getX() const;
+        virtual float getY() const;
         float getX2() const;
         float getY2() const;
 

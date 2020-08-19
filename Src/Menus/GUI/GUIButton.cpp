@@ -8,7 +8,7 @@
 GUIButton::GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, LocalizationManager* lm, float x, float y, float width, float height, const PGE::String& txt, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment) {
     frame = new GUIFrame(um, kb, con, x, y, width, height, alignment);
-    text = new GUIText(um, kb, con, fnt, lm, x + width / 2, y + height / 2, true, alignment);
+    text = new GUIText(um, kb, con, fnt, lm, x + width / 2, y + height / 2, true, true, alignment);
     text->setText(txt);
 
     hoverRect = PGE::Rectanglef(getX() + uiMesh->borderThickness, getY() + uiMesh->borderThickness, getX2() - uiMesh->borderThickness, getY2() - uiMesh->borderThickness);

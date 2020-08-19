@@ -9,7 +9,7 @@
 MessageManager::MessageManager(LocalizationManager* lm, UIMesh* um, KeyBinds* kb, Config* con, Font* font) {
     this->um = um;
     this->font = font;
-    this->text = new GUIText(um, kb, con, font, lm, 0.f, -33.3f, true, Alignment::Bottom);
+    this->text = new GUIText(um, kb, con, font, lm, 0.f, -33.3f, true, true, Alignment::Bottom);
     displayTimer = 0.f;
 }
 

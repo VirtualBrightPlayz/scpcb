@@ -26,7 +26,7 @@ PauseMenu::PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Conf
     float quitFrameWidth = 60.f;
     float quitFrameHeight = 30.f;
     quitFrame = new GUIFrame(um, kb, con, -quitFrameWidth / 2.f, -quitFrameHeight / 2.f, quitFrameWidth, quitFrameHeight);
-    quitText = new GUIText(um, kb, con, largeFnt, lm, 0.f, -5.f, true, Alignment::CenterXY);
+    quitText = new GUIText(um, kb, con, largeFnt, lm, 0.f, -5.f, true, true, Alignment::CenterXY);
     quitText->setText("MainMenu.Quit.Prompt");
     quitYes = new GUIButton(um, largeFnt, kb, con, lm, -25.f, 5.f, 12.f, 4.f, "MainMenu.Quit.Yes");
     quitNo = new GUIButton(um, largeFnt, kb, con, lm, 13.f, 5.f, 12.f, 4.f, "MainMenu.Quit.No");
