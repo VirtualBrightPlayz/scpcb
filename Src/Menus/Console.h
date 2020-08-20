@@ -47,7 +47,7 @@ class Console : public Menu {
                 static float bottomOfConsoleWindow;
         };
 
-        std::vector<Message> messageHistory;
+        std::vector<Message*> messageHistory;
         void updateMessageWindow();
 
         int commandHistoryIndex;

@@ -45,6 +45,10 @@ Console::~Console() {
     for (int i = 0; i < (int)commands.size(); i++) {
         delete commands[i];
     }
+
+    for (int i = 0; i < (int)messageHistory.size(); i++) {
+        delete messageHistory[i];
+    }
 }
 
 void Console::update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mouseWheelDelta) {
@@ -98,7 +102,7 @@ void Console::render() const {
 
     int lowestDrawn = (int)messageHistory.size() - MathUtil::floor(MathUtil::absFloat(windowScrollOffset));
     for (int i = MathUtil::maxInt(0, lowestDrawn - windowMaxLineCount); i < lowestDrawn; i++) {
-        messageHistory[i].text->render();
+        messageHistory[i]->text->render();
     }
 
     uiMesh->endRender();
@@ -145,7 +149,7 @@ void Console::Message::setLinePositionFromBottom(float line) {
 }
 
 void Console::addConsoleMessage(const PGE::String& resp, const PGE::Color& color) {
-    messageHistory.push_back(Message(uiMesh, keyBinds, config, font, resp, color));
+    messageHistory.push_back(new Message(uiMesh, keyBinds, config, font, resp, color));
     updateMessageWindow();
     windowScrollOffset = 0;
 }
@@ -160,7 +164,7 @@ void Console::logError(const PGE::String& resp) {
 
 void Console::updateMessageWindow() {
     for (int i = 0; i < messageHistory.size(); i++) {
-        messageHistory[i].setLinePositionFromBottom(windowScrollOffset + messageHistory.size()-1-i);
+        messageHistory[i]->setLinePositionFromBottom(windowScrollOffset + messageHistory.size()-1-i);
     }
 }
 
