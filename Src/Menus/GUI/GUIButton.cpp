@@ -20,6 +20,11 @@ GUIButton::GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, Localizat
     hovered = false;
 }
 
+GUIButton::~GUIButton() {
+    delete frame;
+    delete text;
+}
+
 bool GUIButton::isClicked() const {
     return clicked;
 }

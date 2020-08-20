@@ -39,6 +39,9 @@ Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con,
 }
 
 Console::~Console() {
+    delete frame;
+    delete input;
+
     for (int i = 0; i < (int)commands.size(); i++) {
         delete commands[i];
     }
@@ -130,6 +133,10 @@ Console::Message::Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, cons
     text = new GUIText(um, kb, con, fnt, nullptr, 3.f/con->getAspectRatio(), 0.f, false, false, Alignment::Left | Alignment::Top);
     text->setText(resp);
     text->color = color;
+}
+
+Console::Message::~Message() {
+    delete text;
 }
 
 void Console::Message::setLinePositionFromBottom(float line) {

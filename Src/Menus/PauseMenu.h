@@ -52,11 +52,10 @@ class PauseMenu : public Menu {
         GUIButton* quitNo;
 
         UIMesh* uiMesh;
-        Font* largeFont;
-        KeyBinds* keyBinds;
 
     public:
         PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Config* con, LocalizationManager* lm, PGE::IO* io);
+        ~PauseMenu();
 
         void onEscapeHit() override;
 

@@ -100,6 +100,7 @@ class GUITextInput : public GUIComponent {
 
     public:
         GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, bool alignLeft = false, int mementoMaxMemSize = 1048576, const PGE::String& defaultText = "", int limit = INT_MAX, const PGE::String& pattern = "", Alignment alignment = Alignment::CenterXY);
+        ~GUITextInput();
 
         void setText(const PGE::String& txt);
         void clearTextAndMementos();

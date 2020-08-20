@@ -31,6 +31,7 @@ class GUIButton : public GUIComponent {
         bool locked;
 
         GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, LocalizationManager* lm, float x, float y, float width, float height, const PGE::String& txt, Alignment alignment = Alignment::CenterXY);
+        ~GUIButton();
 
         bool isClicked() const;
 };

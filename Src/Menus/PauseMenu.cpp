@@ -32,17 +32,28 @@ PauseMenu::PauseMenu(World* wrld, UIMesh* um, Font* largeFnt, KeyBinds* kb, Conf
     quitNo = new GUIButton(um, largeFnt, kb, con, lm, 13.f, 5.f, 12.f, 4.f, "MainMenu.Quit.No");
 
     uiMesh = um;
-    largeFont = largeFnt;
-    keyBinds = kb;
 
     setState(SubState::Main);
     mainMenu = false;
 }
 
+PauseMenu::~PauseMenu() {
+    delete newgame;
+    delete loadgame;
+    delete options;
+    delete quit;
+    delete inputTest;
+
+    delete quitFrame;
+    delete quitText;
+    delete quitYes;
+    delete quitNo;
+}
+
 void PauseMenu::setState(SubState state) {
     currState = state;
 
-    if (currState == SubState::Options) { setOptionsTab(OptionsTab::Graphics); }
+    if (state == SubState::Options) { setOptionsTab(OptionsTab::Graphics); }
 
     // The menu's still visible when the quit prompt's on screen but it's disabled.
     newgame->locked = currState == SubState::Quitting;
@@ -52,7 +63,7 @@ void PauseMenu::setState(SubState state) {
 }
 
 void PauseMenu::setOptionsTab(OptionsTab tab) {
-
+    currOptionsTab = tab;
 }
 
 void PauseMenu::onEscapeHit() {

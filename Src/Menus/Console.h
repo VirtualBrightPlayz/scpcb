@@ -39,6 +39,7 @@ class Console : public Menu {
                 GUIText* text;
 
                 Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, const PGE::String& resp, const PGE::Color& color);
+                ~Message();
 
                 void setLinePositionFromBottom(float line);
 

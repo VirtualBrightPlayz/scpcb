@@ -46,6 +46,12 @@ GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE
     draggable = false;
 }
 
+GUITextInput::~GUITextInput() {
+    delete frame;
+    delete text;
+    delete mementoManager;
+}
+
 // Regex stuff.
 std::regex word("\\w");
 std::regex leftBoundWord("(\\b)\\w+$|\\w(\\b)\\W+$");
@@ -164,8 +170,6 @@ void GUITextInput::updateCoordinates() {
     oldSelectionEndPosition = selectionEndPosition;
 
     float textX = text->getTextPos().x;
-
-    std::cout << "Lol " << textX << std::endl;
 
     caretX = textX;
     if (!text->getText().isEmpty()) {
