@@ -1,13 +1,15 @@
 #ifndef CONSOLE_H_INCLUDED
 #define CONSOLE_H_INCLUDED
 
+#include <deque>
+
 #include <IO/IO.h>
 #include <Color/Color.h>
-#include <stack>
 
 #include "Menu.h"
-#include "GUI/GUIText.h"
-#include <angelscript.h>
+
+class asIScriptFunction;
+class asIScriptContext;
 
 class UIMesh;
 class Font;
@@ -17,35 +19,13 @@ class LocalizationManager;
 class GUIFrame;
 class GUITextInput;
 
-class Console;
-
-class Command {
-    public:
-        virtual PGE::String getName() const = 0;
-        virtual PGE::String getHelpText() const = 0;
-        virtual void execute(Console* console, const std::vector<PGE::String>& params) const = 0;
-};
+class Command;
+class Message;
 
 class Console : public Menu {
     private:
         GUIFrame* frame;
         GUITextInput* input;
-
-        class Message {
-            private:
-                float linePositionFromBottom;
-
-            public:
-                GUIText* text;
-
-                Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, const PGE::String& resp, const PGE::Color& color);
-                ~Message();
-
-                void setLinePositionFromBottom(float line);
-
-                static float lineHeight;
-                static float bottomOfConsoleWindow;
-        };
 
         std::vector<Message*> messageHistory;
         void updateMessageWindow();

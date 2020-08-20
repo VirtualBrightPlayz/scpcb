@@ -1,13 +1,50 @@
 #include "Console.h"
+
+#include <angelscript.h>
+
 #include "../Save/Config.h"
 #include "GUI/GUIComponent.h"
 #include "GUI/GUIFrame.h"
+#include "GUI/GUIText.h"
 #include "GUI/GUITextInput.h"
 #include "../Utils/MathUtil.h"
 #include "../Scripting/NativeDefinitions/ConsoleDefinitions.h"
 
-float Console::Message::lineHeight;
-float Console::Message::bottomOfConsoleWindow;
+class Command {
+    public:
+        virtual PGE::String getName() const = 0;
+        virtual PGE::String getHelpText() const = 0;
+        virtual void execute(Console* console, const std::vector<PGE::String>& params) const = 0;
+};
+
+class Message {
+    private:
+        float linePositionFromBottom;
+
+    public:
+        static float lineHeight;
+        static float bottomOfConsoleWindow;
+        
+        GUIText* text;
+
+        Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, const PGE::String& resp, const PGE::Color& color) {
+            text = new GUIText(um, kb, con, fnt, nullptr, 3.f / con->getAspectRatio(), 0.f, false, false, Alignment::Left | Alignment::Top);
+            text->setText(resp);
+            text->color = color;
+        }
+
+        ~Message() {
+            delete text;
+        }
+
+        void setLinePositionFromBottom(float line) {
+            linePositionFromBottom = line;
+            text->setY(bottomOfConsoleWindow - line * lineHeight);
+        }
+};
+
+float Message::lineHeight;
+float Message::bottomOfConsoleWindow;
 
 Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, LocalizationManager* tm, PGE::IO* io) : Menu(wrld, "console") {
     //TODO: Figure out alignment issues and simplify this.
@@ -131,21 +168,6 @@ void Console::executeCommand(const PGE::String& in) {
         }
     }
     addConsoleMessage("No command found", PGE::Color::Red);
-}
-
-Console::Message::Message(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, const PGE::String& resp, const PGE::Color& color) {
-    text = new GUIText(um, kb, con, fnt, nullptr, 3.f/con->getAspectRatio(), 0.f, false, false, Alignment::Left | Alignment::Top);
-    text->setText(resp);
-    text->color = color;
-}
-
-Console::Message::~Message() {
-    delete text;
-}
-
-void Console::Message::setLinePositionFromBottom(float line) {
-    linePositionFromBottom = line;
-    text->setY(bottomOfConsoleWindow - line * lineHeight);
 }
 
 void Console::addConsoleMessage(const PGE::String& resp, const PGE::Color& color) {
