@@ -19,8 +19,6 @@ class GUITextInput : public GUIComponent {
 
         static GUITextInput* subscriber;
 
-        PGE::Color hoverColor;
-
         PGE::String defaultText;
         bool defaultTextDisplayed;
 

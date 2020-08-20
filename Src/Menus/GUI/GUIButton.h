@@ -12,16 +12,12 @@ class GUIButton : public GUIComponent {
     private:
         GUIFrame* frame;
         GUIText* text;
-        
-        PGE::Rectanglef hoverRect;
-        PGE::Color hoverColor;
 
     protected:
         // MouseHit.
         bool active;
         // Activated and MouseUP.
         bool clicked;
-        bool hovered;
 
         void updateInternal(PGE::Vector2f mousePos) override;
         void renderInternal() override;

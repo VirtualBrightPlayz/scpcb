@@ -11,13 +11,9 @@ GUIButton::GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, Localizat
     text = new GUIText(um, kb, con, fnt, lm, x + width / 2, y + height / 2, true, true, alignment);
     text->setText(txt);
 
-    hoverRect = PGE::Rectanglef(getX() + uiMesh->borderThickness, getY() + uiMesh->borderThickness, getX2() - uiMesh->borderThickness, getY2() - uiMesh->borderThickness);
-    hoverColor = PGE::Color(70, 70, 150, 200);
-
     locked = false;
     active = false;
     clicked = false;
-    hovered = false;
 }
 
 GUIButton::~GUIButton() {
@@ -36,7 +32,7 @@ void GUIButton::updateInternal(PGE::Vector2f mousePos) {
 
     if (mousePos.x >= getX() && mousePos.y >= getY()
         && mousePos.x <= getX2() && mousePos.y <= getY2()) {
-        hovered = true;
+        frame->setHovered(!locked);
 
         if (keyBinds->mouse1->isHit()) {
             active = true;
@@ -45,20 +41,12 @@ void GUIButton::updateInternal(PGE::Vector2f mousePos) {
             active = false;
         }
     } else {
-        hovered = false;
+        frame->setHovered(false);
         active = false;
     }
 }
 
 void GUIButton::renderInternal() {
     frame->render();
-
-    if (hovered && !locked) {
-        uiMesh->setTextureless();
-        uiMesh->setColor(hoverColor);
-        uiMesh->addRect(hoverRect);
-        uiMesh->setColor(PGE::Color());
-    }
-
     text->render();
 }

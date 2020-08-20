@@ -1,6 +1,8 @@
 #include "GUITextInput.h"
 
+#if DEBUG
 #include <iostream>
+#endif
 
 #include "GUIFrame.h"
 #include "GUIText.h"
@@ -17,8 +19,6 @@ GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE
     float textHeight = fnt->getHeight(text->scale);
     caretTop = getY() + (height - textHeight)/2 - caretBreathingSpace;
     caretBottom = caretTop + textHeight + caretBreathingSpace*2;
-
-    hoverColor = PGE::Color(70, 70, 150, 200);
 
     mementoManager = new MementoManager(mementoMaxMemSize);
 
