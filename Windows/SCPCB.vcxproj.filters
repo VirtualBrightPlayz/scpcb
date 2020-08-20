@@ -185,6 +185,12 @@
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\MessageDefinitions.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\World\Item.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Models\Generic.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -367,6 +373,12 @@
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\MessageDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\World\Item.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Models\Generic.h">
+      <Filter>Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

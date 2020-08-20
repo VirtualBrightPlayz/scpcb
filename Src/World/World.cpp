@@ -26,6 +26,10 @@
 #include "../Utils/MathUtil.h"
 #include "../Scripting/ScriptObject.h"
 
+#include "../Models/Generic.h"
+
+ModelInstance* mi;
+
 World::World() {
     config = new Config("options.ini");
 
@@ -79,6 +83,9 @@ World::World() {
     if (vrm != nullptr) {
         vrm->createTexture(graphics, config);
     }
+
+    mi = gfxRes->getModelInstance(PGE::FilePath::fromStr("SCPCB/GFX/Items/Gasmask/gasmask"));
+    mi->setRotation(PGE::Vector3f(0, 2, 5));
 }
 
 World::~World() {
@@ -289,6 +296,7 @@ void World::runTick(float timeStep) {
 void World::draw(float interpolation, RenderType r) {
     if (r != RenderType::UIOnly) {
         drawPlaying(interpolation);
+        mi->render();
         scripting->draw(interpolation);
         billboardManager->render();
 

@@ -220,7 +220,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                     tempVertex.setVector3f("normal", PGE::Vector3f::one);
                     tempVertex.setVector2f("diffUv", diffUv);
                     tempVertex.setVector2f("lmUv", lmUv);
-                    tempVertex.setColor("color", PGE::Color(255,255,255));
+                    tempVertex.setColor("color", PGE::Color::White);
                     vertices.push_back(tempVertex);
 
                     vertexPositions.push_back(PGE::Vector3f(position.x, position.y, position.z));

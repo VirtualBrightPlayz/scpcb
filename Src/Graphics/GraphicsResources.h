@@ -6,6 +6,7 @@
 #include <Texture/Texture.h>
 
 #include "../Utils/ResourcePackManager.h"
+#include "../Models/Generic.h"
 
 class Config;
 class Camera;
@@ -22,11 +23,19 @@ class GraphicsResources {
         std::vector<Shader> shaders;
 
         struct Texture {
+            // This needs to stay a string for the Resource Packs to work.
             PGE::String name;
             PGE::Texture* texture;
             int refCount;
         };
         std::vector<Texture> textures;
+
+        struct ModelEntry {
+            PGE::FilePath filename;
+            Model* model;
+            int refCount;
+        };
+        std::vector<ModelEntry> modelEntries;
 
         PGE::Matrix4x4f orthoMat;
         PGE::FilePath uiShaderPath = PGE::FilePath::fromStr("GFX/Shaders/UI/");
@@ -48,6 +57,9 @@ class GraphicsResources {
 
         PGE::Texture* getTexture(const PGE::String& filename);
         void dropTexture(PGE::Texture* texture);
+
+        ModelInstance* getModelInstance(const PGE::FilePath& filename);
+        void dropModelInstance(ModelInstance* mi);
     
         void updateOrthoMat(float aspectRatio);
         PGE::Matrix4x4f getOrthoMat() const;

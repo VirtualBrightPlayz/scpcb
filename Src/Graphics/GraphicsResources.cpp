@@ -36,8 +36,8 @@ void GraphicsResources::dropShader(PGE::Shader* shader) {
             if (shaders[i].refCount <= 0) {
                 delete shaders[i].shader;
                 shaders.erase(shaders.begin() + i);
-                return;
             }
+            return;
         }
     }
 }
@@ -70,8 +70,35 @@ void GraphicsResources::dropTexture(PGE::Texture* texture) {
             if (textures[i].refCount <= 0) {
                 delete textures[i].texture;
                 textures.erase(textures.begin() + i);
-                return;
             }
+            return;
+        }
+    }
+}
+
+ModelInstance* GraphicsResources::getModelInstance(const PGE::FilePath& filename) {
+    for (int i = 0; i < (int)modelEntries.size(); i++) {
+        if (modelEntries[i].filename.equals(filename)) {
+            return new ModelInstance(modelEntries[i].model);
+        }
+    }
+
+    Model* newModel = new Model(this, filename);
+    modelEntries.push_back({ filename, newModel, 1 });
+
+    return new ModelInstance(newModel);
+}
+
+void GraphicsResources::dropModelInstance(ModelInstance* mi) {
+    for (int i = 0; i < (int)modelEntries.size(); i++) {
+        if (modelEntries[i].model == mi->getModel()) {
+            modelEntries[i].refCount--;
+            delete mi;
+            if (modelEntries[i].refCount <= 0) {
+                delete modelEntries[i].model;
+                modelEntries.erase(modelEntries.begin() + i);
+            }
+            return;
         }
     }
 }
