@@ -242,11 +242,10 @@ void World::runTick(float timeStep) {
     bool menuWasOpened = currMenu != nullptr;
     if (!menuWasOpened) {
         updatePlaying(timeStep);
+        scripting->update();
     } else {
         currMenu->update(mousePosition, mouseWheelDelta);
     }
-
-    scripting->update();
 
     if (keyBinds->escape->isHit()) {
         // If a text input is active then escape de-selects it.
