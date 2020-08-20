@@ -8,7 +8,6 @@
 #include <IO/IO.h>
 #include <Misc/String.h>
 
-#include "../Graphics/Sprite.h"
 #include "../Graphics/UIMesh.h"
 #include "../Graphics/Billboard.h"
 #include "../Graphics/Font.h"
@@ -52,8 +51,6 @@ class World {
         FT_Library ftLibrary;
         Font* largeFont;
         UIMesh* uiMesh;
-
-        PGE::Mesh* spriteMesh;
 
         Menu* currMenu;
         // When a menu is markedForRemoval it's moved here where it'll be deleted in the update loop.

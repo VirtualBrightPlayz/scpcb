@@ -23,9 +23,6 @@
     <ClCompile Include="..\Src\Graphics\Camera.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Graphics\Sprite.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\Input\KeyBinds.cpp">
       <Filter>Input</Filter>
     </ClCompile>
@@ -210,9 +207,6 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Graphics\Camera.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Graphics\Sprite.h">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Input\KeyBinds.h">

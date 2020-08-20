@@ -46,7 +46,6 @@ World::World() {
 
     FT_Init_FreeType(&ftLibrary);
     largeFont = new Font(ftLibrary, gfxRes, config, PGE::FilePath::fromStr("SCPCB/GFX/Font/Inconsolata-Regular.ttf"), 20);
-    spriteMesh = Sprite::createSpriteMesh(graphics);
     uiMesh = new UIMesh(gfxRes);
     keyBinds = new KeyBinds(io);
 
@@ -90,7 +89,6 @@ World::~World() {
     delete inventory;
     delete uiMesh;
     delete keyBinds;
-    delete spriteMesh;
 #ifdef DEBUG
     delete mouseTxtX;
     delete mouseTxtY;
