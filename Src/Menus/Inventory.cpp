@@ -1,29 +1,34 @@
-#include <cmath>
-
 #include "Inventory.h"
+
+#include "../Utils/MathUtil.h"
 #include "InvSlot.h"
 
-Inventory::Inventory(UIMesh* um, KeyBinds* kb, Config* con) {
-    float spacing = 5.f;
-    float totalWidth = (ITEMS_PER_ROW * InvSlot::SIZE) + (ITEMS_PER_ROW - 1) * spacing;
-    int itemsPerColumn = (int)std::round((float)MAX_ITEM_COUNT / ITEMS_PER_ROW);
-    float totalHeight = (itemsPerColumn * InvSlot::SIZE) + (itemsPerColumn - 1) * spacing;
-    
-    float x = -totalWidth / 2.f;
-    float y = -totalHeight / 2.f;
-    
-    for (int i = 0; i < MAX_ITEM_COUNT; i++) {
-        slots[i] = new InvSlot(um, kb, con, x, y);
-        
-        x += InvSlot::SIZE + spacing;
-        if (i % (ITEMS_PER_ROW - 1) == 0) {
-            y += InvSlot::SIZE + spacing;
-        }
+Inventory::Inventory(World* wrld, UIMesh* um, KeyBinds* kb, Config* con, int size) : Menu(wrld, "inventory") {
+    const int rows = MathUtil::ceil((float)size / maxItemsPerRow);
+    if (size % rows != 0) {
+        throw new std::runtime_error("Invalid size! " + size);
     }
+    const int itemsPerRow = size / rows;
+
+    this->size = size;
+
+    slots = new InvSlot*[size];
+
+    float screenX; float screenY = -(rows * 2 - 1) * InvSlot::screenSize / 2;
+    for (int y = 0; y < rows; y++) {
+        screenX = -(itemsPerRow * 2 - 1) * InvSlot::screenSize / 2;
+        for (int x = 0; x < itemsPerRow; x++) {
+            slots[x + y * itemsPerRow] = new InvSlot(um, kb, con, screenX, screenY);
+            screenX += InvSlot::screenSize * 2;
+        }
+        screenY += InvSlot::screenSize * 2;
+    }
+
+    setState(SubState::Main);
 }
 
 Inventory::~Inventory() {
-    for (int i = 0; i < MAX_ITEM_COUNT; i++) {
+    for (int i = 0; i < size; i++) {
         delete slots[i];
     }
 }
@@ -32,16 +37,14 @@ void Inventory::setState(SubState state) {
     currState = state;
 }
 
-void Inventory::update(PGE::Vector2f mousePos) {
-    for (int i = 0; i < MAX_ITEM_COUNT; i++) {
+void Inventory::update(const PGE::Vector2f& mousePos, const PGE::Vector2i& mouseWheelDelta) {
+    for (int i = 0; i < size; i++) {
         slots[i]->update(mousePos);
     }
 }
 
 void Inventory::render() const {
-    if (currState == SubState::Hidden) { return; }
-    
-    for (int i = 0; i < MAX_ITEM_COUNT; i++) {
+    for (int i = 0; i < size; i++) {
         slots[i]->render();
     }
 }

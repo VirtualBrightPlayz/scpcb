@@ -3,34 +3,36 @@
 
 #include <Math/Vector.h>
 
+#include "Menu.h"
+
 class InvSlot;
 class World;
 class UIMesh;
 class KeyBinds;
 class Config;
 
-class Inventory {
-private:
-    constexpr static int MAX_ITEM_COUNT = 6;
-    constexpr static int ITEMS_PER_ROW = MAX_ITEM_COUNT / 2;
-    
-    InvSlot* slots[MAX_ITEM_COUNT];
+class Inventory : public Menu {
+    private:
+        static constexpr int maxItemsPerRow = 6;
 
-    enum class SubState {
-        Main,
-        DocumentViewer,
-        ObjectivesMenu,
-        Hidden
-    };
-    SubState currState;
-    void setState(SubState state);
+        enum class SubState {
+            Main,
+            DocumentViewer,
+            ObjectivesMenu
+        };
+
+        SubState currState;
+        void setState(SubState state);
+
+        int size;
+        InvSlot** slots;
     
-public:
-    Inventory(UIMesh* um, KeyBinds* kb, Config* con);
-    ~Inventory();
+    public:
+        Inventory(World* wrld, UIMesh* um, KeyBinds* kb, Config* con, int size);
+        ~Inventory();
     
-    void update(PGE::Vector2f mousePos);
-    void render() const;
+        void update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mouseWheelDelta) override;
+        void render() const override;
 };
 
 #endif // INVENTORY_H_INCLUDED

@@ -1,10 +1,11 @@
+#include "World.h"
+
 #include <iostream>
 #include <cmath>
 #include <Color/Color.h>
 #include <Misc/FileUtil.h>
 #include <filesystem>
 
-#include "World.h"
 #include "Timing.h"
 #include "FPSCounter.h"
 #include "ScriptWorld.h"
@@ -13,6 +14,7 @@
 #include "../Graphics/DebugGraphics.h"
 #include "../Menus/PauseMenu.h"
 #include "../Menus/Console.h"
+#include "../Menus/Inventory.h"
 #include "../Menus/Menu.h"
 #include "../Save/Config.h"
 #include "../Menus/GUI/GUIComponent.h"
@@ -57,6 +59,7 @@ World::World() {
     io->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
     pauseMenu = new PauseMenu(this, uiMesh, largeFont, keyBinds, config, locMng, io);
     console = new Console(this, uiMesh, largeFont, keyBinds, config, locMng, io);
+    inventory = new Inventory(this, uiMesh, keyBinds, config, 10);
 
     billboardManager = new BillboardManager(graphics, gfxRes);
 
@@ -84,6 +87,7 @@ World::~World() {
     delete billboardManager;
     delete pauseMenu;
     delete console;
+    delete inventory;
     delete uiMesh;
     delete keyBinds;
     delete spriteMesh;
@@ -262,6 +266,12 @@ void World::runTick(float timeStep) {
             activateMenu(console);
         } else if (currMenu == console) {
             console->onEscapeHit();
+        } // Otherwise another menu is already open.
+    } else if (inputWasFired(hitInputs, Input::Inventory)) {
+        if (currMenu == nullptr) {
+            activateMenu(inventory);
+        } else if (currMenu == inventory) {
+            inventory->onEscapeHit();
         } // Otherwise another menu is already open.
     }
 

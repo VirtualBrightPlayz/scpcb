@@ -4,27 +4,25 @@
 #include "GUI/GUIComponent.h"
 
 class Item;
+class GUIFrame;
 class Config;
 
 class InvSlot : public GUIComponent {
     private:
-
+        GUIFrame* frame;
+        
         Item* item;
 
-        const PGE::String menuwhite;
-        const PGE::String menublack;
-        PGE::Color hoverColor;
-
         bool doubleClicked;
-        bool hovered;
     
         void updateInternal(PGE::Vector2f mousePos) override;
         void renderInternal() override;
 
     public:
+        static constexpr float screenSize = 7.5f;
+
         InvSlot(UIMesh* um, KeyBinds* kb, Config* con, float x, float y);
-    
-        static const int SIZE = 5;
+        ~InvSlot();
 
         bool hasItem() const;
 };

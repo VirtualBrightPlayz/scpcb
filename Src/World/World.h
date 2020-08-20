@@ -26,6 +26,7 @@ class MessageManager;
 class LocalizationManager;
 class PauseMenu;
 class Console;
+class Inventory;
 class FPSCounter;
 class GUIText;
 class Menu;
@@ -69,6 +70,7 @@ class World {
 
         PauseMenu* pauseMenu;
         Console* console;
+        Inventory* inventory;
 
         BillboardManager* billboardManager;
 
