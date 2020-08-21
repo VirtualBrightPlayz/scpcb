@@ -17,6 +17,7 @@
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
 #include "../Scripting/NativeDefinitions/MessageDefinitions.h"
 #include "../Scripting/NativeDefinitions/BillboardDefinitions.h"
+#include "../Scripting/NativeDefinitions/ModelDefinitions.h"
 #include "../Scripting/NativeDefinitions/RM2Definitions.h"
 #include "../Scripting/NativeDefinitions/CollisionDefinitions.h"
 #include "../Scripting/NativeDefinitions/PlayerControllerDefinitions.h"
@@ -35,6 +36,7 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
     messageDefinitions = new MessageDefinitions(manager, mm);
     billboardDefinitions = new BillboardDefinitions(manager, bm);
     collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);
+    modelDefinitions = new ModelDefinitions(manager, gfxRes);
     rm2Definitions = new RM2Definitions(manager, gfxRes);
     playerControllerDefinitions = new PlayerControllerDefinitions(manager, refCounterManager, camera);
     reflectionDefinitions = new ReflectionDefinitions(manager);
@@ -122,6 +124,7 @@ ScriptWorld::~ScriptWorld() {
     delete colorDefinitions;
     delete mathDefinitions;
     delete billboardDefinitions;
+    delete modelDefinitions;
     delete rm2Definitions;
     delete collisionDefinitions;
     delete playerControllerDefinitions;

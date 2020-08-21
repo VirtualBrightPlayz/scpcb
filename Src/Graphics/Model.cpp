@@ -7,7 +7,7 @@
 
 Model::Model(GraphicsResources* gfx, const PGE::String& filename) {
     gfxRes = gfx;
-    shader = gfx->getShader(PGE::FilePath::fromStr("GFX/Shaders/Model/"), true);
+    shader = gfx->getShader(PGE::FilePath::fromStr(), true);
 
     Assimp::Importer importer;
 

@@ -1,5 +1,7 @@
-#ifndef MODELMANAGER_H_DEFINED
-#define MODELMANAGER_H_DEFINED
+#ifndef MODELMANAGER_H_INCLUDED
+#define MODELMANAGER_H_INCLUDED
+
+#include <assimp/Importer.hpp>
 
 #include <Misc/FilePath.h>
 #include <Math/Matrix.h>
@@ -9,15 +11,23 @@ class GraphicsResources;
 
 class Model {
     private:
+        GraphicsResources* gr;
+
         PGE::Mesh** meshes;
-        int meshCount;
+        unsigned int meshCount;
+
+        PGE::Material** materials;
+        unsigned int materialCount;
+
+        PGE::Shader* shader;
 
         PGE::Shader::Constant* modelMatrix;
 
         Model(); // We don't want this.
         
     public:
-        Model(GraphicsResources* gr, const PGE::FilePath& filename);
+        Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::String& filename);
+        ~Model();
         
         void render(const PGE::Matrix4x4f& modelMatrix) const;
 };
@@ -52,4 +62,4 @@ class ModelInstance {
         void render() const;
 };
 
-#endif // MODELMANAGER_H_DEFINED
+#endif // MODELMANAGER_H_INCLUDED

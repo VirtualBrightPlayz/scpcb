@@ -188,8 +188,11 @@
     <ClCompile Include="..\Src\World\Item.cpp">
       <Filter>World</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Models\Generic.cpp">
+    <ClCompile Include="..\Src\Models\Model.cpp">
       <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ModelDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -377,8 +380,11 @@
     <ClInclude Include="..\Src\World\Item.h">
       <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\Models\Generic.h">
+    <ClInclude Include="..\Src\Models\Model.h">
       <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ModelDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

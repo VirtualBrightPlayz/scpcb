@@ -43,12 +43,9 @@ PS_OUTPUT PS(PS_INPUT input) {
     PS_OUTPUT output = (PS_OUTPUT)0;
     float4 diffColor = diff.Sample(smp,input.uv);
 
-    float light = (max(dot(float3(0.0,0.92,-0.39),input.normal.xyz),0.0)*0.7);
-    float4 light4 = float4(light,light,light,1.0);
-    light4 = (float4(1.0,1.0,1.0,1.0)-inColor)*light4 + inColor;
-    diffColor = diffColor*light4;
+    diffColor = diffColor*inColor;
 
-    output.color = float4(diffColor.r, diffColor.g, diffColor.b, 1.0);
+    output.color = diffColor;
     output.depth = float4(input.position.w,0.0,0.0,1.0);
     return output;
 }

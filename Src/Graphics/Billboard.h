@@ -42,6 +42,8 @@ class Billboard {
     private:
         BillboardManager* bm;
 
+        bool visible;
+
         int vertexStartIndex;
 
         PGE::Vector3f position;
@@ -63,6 +65,8 @@ class Billboard {
         void setRotation(float rotation);
         void setScale(const PGE::Vector2f& scale);
         void setColor(const PGE::Color& color);
+        void setVisible(bool vis);
+        bool getVisible();
 
         bool updateVertices(std::vector<PGE::Vertex>& vertices, int startIndex);
 };

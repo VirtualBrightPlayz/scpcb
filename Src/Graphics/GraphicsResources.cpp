@@ -1,15 +1,36 @@
 #include "GraphicsResources.h"
+
+#include <assimp/mesh.h>
+
 #include "Camera.h"
 #include "../Save/Config.h"
 #include "../Menus/GUI/GUIComponent.h"
 #include "DebugGraphics.h"
 
 GraphicsResources::GraphicsResources(PGE::Graphics* gfx, Config* con) {
-    rpm = new ResourcePackManager(con->resourcePackLocations, con->enabledResourcePacks);
     con->setGraphicsResources(this);
     updateOrthoMat(con->getAspectRatio());
     graphics = gfx;
+    rpm = new ResourcePackManager(con->resourcePackLocations, con->enabledResourcePacks);
     debugGraphics = new DebugGraphics(gfx);
+
+    modelImporter = new Assimp::Importer();
+    modelImporter->SetPropertyInteger(AI_CONFIG_PP_RVC_FLAGS,
+        aiComponent_CAMERAS |
+        aiComponent_LIGHTS |
+        aiComponent_COLORS |
+        aiComponent_ANIMATIONS |
+        aiComponent_BONEWEIGHTS
+    );
+    modelImporter->SetPropertyInteger(AI_CONFIG_PP_SLM_VERTEX_LIMIT, 65535);
+    modelImporter->SetPropertyInteger(AI_CONFIG_PP_SLM_TRIANGLE_LIMIT, 65535);
+    modelImporter->SetPropertyInteger(AI_CONFIG_PP_SBP_REMOVE, aiPrimitiveType_POINT | aiPrimitiveType_LINE);
+}
+
+GraphicsResources::~GraphicsResources() {
+    delete rpm;
+    delete debugGraphics;
+    delete modelImporter;
 }
 
 PGE::Shader* GraphicsResources::getShader(const PGE::FilePath& filename, bool needsViewProjection) {
@@ -76,14 +97,14 @@ void GraphicsResources::dropTexture(PGE::Texture* texture) {
     }
 }
 
-ModelInstance* GraphicsResources::getModelInstance(const PGE::FilePath& filename) {
+ModelInstance* GraphicsResources::getModelInstance(const PGE::String& filename) {
     for (int i = 0; i < (int)modelEntries.size(); i++) {
         if (modelEntries[i].filename.equals(filename)) {
             return new ModelInstance(modelEntries[i].model);
         }
     }
 
-    Model* newModel = new Model(this, filename);
+    Model* newModel = new Model(modelImporter, this, filename);
     modelEntries.push_back({ filename, newModel, 1 });
 
     return new ModelInstance(newModel);

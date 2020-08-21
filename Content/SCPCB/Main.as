@@ -20,6 +20,10 @@ void Test(int testString) {
 }
 
 Billboard@ lol;
+Billboard@ two;
+
+Model@ mask;
+Model@ mask2;
 
 void main() {
     Debug::log("Starting up!");
@@ -29,8 +33,18 @@ void main() {
     Vector2f test = Vector2f(10.0, 10.0);
     Vector2f test2 = Vector2f(15.0, 10.0);
 
-    Billboard::create("SCPCB/GFX/Sprites/smoke_white", Vector3f(1, 7, 5), 0.5, test, Color(1.0, 0.8, 0.5));
+    @lol = Billboard::create("SCPCB/GFX/Sprites/smoke_white", Vector3f(1, 7, 5), 0.5, test, Color(1.0, 0.8, 0.5));
+    
     Billboard::create("SCPCB/GFX/Map/Textures/dirtymetal", Vector3f(1, 4, 1), Vector3f(0, 3, 0), test2, Color(0.0, 1.0, 1.0));
+    @two = Billboard::create("SCPCB/GFX/Map/Textures/dirtymetal", Vector3f(2, 7, 15), Vector3f(0, 3, 0), test2, Color(1.0, 0.0, 1.0));
+
+    @mask = Model::create("SCPCB/GFX/Items/Gasmask/gasmask.fbx");
+    mask.position = Vector3f(10, 5, 0);
+    mask.rotation = Vector3f(-1, 0.1, 0);
+
+    @mask2 = Model::create("SCPCB/GFX/Items/Gasmask/gasmask.fbx");
+    mask2.position = Vector3f(-8, 4, 1);
+    mask2.rotation = Vector3f(-1, -0.1, 0);
 
     //Debug::log(test_shared_global);
 
@@ -62,12 +76,22 @@ void main() {
     PerFrame::register(render);
 }
 
+float time = 0.0;
+
 void update(float deltaTime) {
     __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown());
     entranceZone.update(deltaTime);
+    time += deltaTime;
+    if (time > 1.0) { // So you don't get a fucking seizure.
+        two.visible = !two.visible;
+        time = 0.0;
+    }
 }
 
 void render(float interpolation) {
     if (test_shared_global == null) { return; }
     test_shared_global.render(interpolation);
+    mask.render();
+    mask2.render();
+    Billboard::renderAll();
 }

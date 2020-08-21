@@ -1,6 +1,6 @@
 #include "Item.h"
 
-#include "../Models/Generic.h"
+#include "../Models/Model.h"
 
 Item::Item(const PGE::FilePath& path, PGE::Graphics* gr) {
 

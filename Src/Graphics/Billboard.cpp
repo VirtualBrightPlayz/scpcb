@@ -52,6 +52,10 @@ void BillboardManager::removeBillboard(Billboard* billboard) {
     }
 }
 
+GraphicsResources* BillboardManager::getGfxRes() const {
+    return gfxRes;
+}
+
 void BillboardManager::render() {
     for (std::map<long long, BillboardMesh>::iterator it=meshes.begin();it!=meshes.end();it++) {
         BillboardMesh& mesh = it->second;
@@ -77,10 +81,6 @@ void BillboardManager::render() {
     }
 }
 
-GraphicsResources* BillboardManager::getGfxRes() const {
-    return gfxRes;
-}
-
 Billboard::Billboard(BillboardManager* bm, const PGE::String& textureName, const PGE::Vector3f& pos, float rotation, const PGE::Vector2f& scale, const PGE::Color& color) {
     this->bm = bm;
     
@@ -93,6 +93,8 @@ Billboard::Billboard(BillboardManager* bm, const PGE::String& textureName, const
     this->vertexStartIndex = -1;
 
     this->textureName = textureName;
+
+    this->visible = true;
 
     bm->addBillboard(this);
 }
@@ -109,6 +111,8 @@ Billboard::Billboard(BillboardManager* bm, const PGE::String& textureName, const
     this->vertexStartIndex = -1;
 
     this->textureName = textureName;
+
+    this->visible = true;
 
     bm->addBillboard(this);
 }
@@ -151,6 +155,21 @@ void Billboard::setScale(const PGE::Vector2f& scale) {
 void Billboard::setColor(const PGE::Color& color) {
     this->color = color;
     vertexStartIndex = -1;
+}
+
+void Billboard::setVisible(bool vis) {
+    if (visible != vis) {
+        visible = vis;
+        if (visible) {
+            bm->addBillboard(this);
+        } else {
+            bm->removeBillboard(this);
+        }
+    }
+}
+
+bool Billboard::getVisible() {
+    return visible;
 }
 
 bool Billboard::updateVertices(std::vector<PGE::Vertex>& vertices, int startIndex) {

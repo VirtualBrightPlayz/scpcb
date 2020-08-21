@@ -8,6 +8,7 @@ class ConsoleDefinitions;
 class ColorDefinitions;
 class MathDefinitions;
 class MessageDefinitions;
+class ModelDefinitions;
 class RM2Definitions;
 class CollisionDefinitions;
 class PlayerControllerDefinitions;
@@ -37,6 +38,7 @@ private:
     MathDefinitions* mathDefinitions;
     MessageDefinitions* messageDefinitions;
     BillboardDefinitions* billboardDefinitions;
+    ModelDefinitions* modelDefinitions;
     RM2Definitions* rm2Definitions;
     CollisionDefinitions* collisionDefinitions;
     PlayerControllerDefinitions* playerControllerDefinitions;

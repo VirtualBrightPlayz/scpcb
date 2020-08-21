@@ -1,12 +1,14 @@
 #ifndef GRAPHICSRESOURCES_H_INCLUDED
 #define GRAPHICSRESOURCES_H_INCLUDED
 
+#include <assimp/Importer.hpp>
+
 #include <Graphics/Graphics.h>
 #include <Shader/Shader.h>
 #include <Texture/Texture.h>
 
 #include "../Utils/ResourcePackManager.h"
-#include "../Models/Generic.h"
+#include "../Models/Model.h"
 
 class Config;
 class Camera;
@@ -31,7 +33,8 @@ class GraphicsResources {
         std::vector<Texture> textures;
 
         struct ModelEntry {
-            PGE::FilePath filename;
+            // Having this as a string makes the loading of textures easier.
+            PGE::String filename;
             Model* model;
             int refCount;
         };
@@ -46,10 +49,13 @@ class GraphicsResources {
 
         DebugGraphics* debugGraphics;
 
+        Assimp::Importer* modelImporter;
+
     public:
         ResourcePackManager* rpm;
         
         GraphicsResources(PGE::Graphics* gfx, Config* con);
+        ~GraphicsResources();
 
         PGE::Shader* getShader(const PGE::FilePath& filename, bool needsViewProjection);
         void dropShader(PGE::Shader* shader);
@@ -58,7 +64,7 @@ class GraphicsResources {
         PGE::Texture* getTexture(const PGE::String& filename);
         void dropTexture(PGE::Texture* texture);
 
-        ModelInstance* getModelInstance(const PGE::FilePath& filename);
+        ModelInstance* getModelInstance(const PGE::String& filename);
         void dropModelInstance(ModelInstance* mi);
     
         void updateOrthoMat(float aspectRatio);
@@ -66,7 +72,6 @@ class GraphicsResources {
         void setCameraUniforms(const Camera* cam) const;
 
         PGE::Graphics* getGraphics() const;
-
         DebugGraphics* getDebugGraphics() const;
 };
 
