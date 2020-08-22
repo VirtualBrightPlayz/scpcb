@@ -288,6 +288,8 @@ void World::runTick(float timeStep) {
 }
 
 void World::draw(float interpolation, RenderType r) {
+    uiMesh->setTextureless();
+    uiMesh->addRect(PGE::Rectanglef(0, 0, 10, 10));
     if (r != RenderType::UIOnly) {
         drawPlaying(interpolation);
         scripting->draw(interpolation);
