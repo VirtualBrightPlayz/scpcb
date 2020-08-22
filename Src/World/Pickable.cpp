@@ -6,11 +6,20 @@
 #include "../Graphics/Camera.h"
 #include "../Utils/MathUtil.h"
 
-Pickable::Pickable(PickType type) {
-    this->type = type;
+CollisionMeshCollection* PickableManager::cmc;
+
+Pickable::Pickable() {
+    position = PGE::Vector3f::zero;
+    picked = false;
 }
 
-CollisionMeshCollection* PickableManager::cmc;
+bool Pickable::getPicked() {
+    if (picked) {
+        picked = false;
+        return true;
+    }
+    return false;
+}
 
 PickableManager::PickableManager(Camera* cam, UIMesh* um, KeyBinds* kb) {
     camera = cam;
@@ -45,7 +54,7 @@ void PickableManager::update() {
     currentPickable = nullptr;
     validPickables.clear();
     for (const auto& p : activePickables) {
-        p->cachedDistance = camera->position.distanceSquared(p->getPos());
+        p->cachedDistance = camera->position.distanceSquared(p->position);
         // We only want to have to sort the Pickables in a valid range.
         if (p->cachedDistance < 20 * 20) {
             validPickables.push_back(p);
@@ -55,10 +64,10 @@ void PickableManager::update() {
         return a->cachedDistance < b->cachedDistance;
     });
     for (const auto& p : validPickables) {
-        if (!cmc->checkCollision(PGE::Line3f(camera->position, p->getPos() + PGE::Vector3f(0.f, 1.f, 0.f)), 0.f, 0.f).hit) { // TODO: Remove artificial raising of height.
+        if (!cmc->checkCollision(PGE::Line3f(camera->position, p->position + PGE::Vector3f(0.f, 1.f, 0.f)), 0.f, 0.f).hit) { // TODO: Remove artificial raising of height.
             currentPickable = p;
             if (keyBinds->mouse1->isHit()) {
-                p->onPicked();
+                p->picked = true;
             }
             return;
         }
@@ -68,7 +77,7 @@ void PickableManager::update() {
 void PickableManager::render() {
     if (currentPickable != nullptr) {
         uiMesh->setTextureless();
-        PGE::Vector3f lookAt = -(camera->position - currentPickable->getPos()).normalize();
+        PGE::Vector3f lookAt = -(camera->position - currentPickable->position).normalize();
         PGE::Vector3f forward = camera->getViewMatrix().extractViewTarget().normalize();
         PGE::Vector2f lookAtTwo = PGE::Vector2f(lookAt.x, lookAt.z).normalize();
         float f = -camera->getYawAngle() + std::atan2(lookAtTwo.x, lookAtTwo.y);

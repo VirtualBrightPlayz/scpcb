@@ -4,11 +4,7 @@
 #include "../Models/Model.h"
 #include "../Menus/Inventory.h"
 
-PGE::Vector3f Item::getPos() const {
-    return model->getPosition();
-}
-
-void Item::onPicked() {
+/*void Item::onPicked() {
     if (inventory->addItem(this)) {
         picked = true;
         pickMan->deactivatePickable(this);
@@ -45,3 +41,4 @@ void Item::render() const {
 PGE::Texture* Item::getInvIcon() const {
     return invIcon;
 }
+*/

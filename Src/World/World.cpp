@@ -28,9 +28,6 @@
 
 #include "../World/Item.h"
 
-Item* i;
-Item* i2;
-
 World::World() {
     config = new Config("options.ini");
 
@@ -90,8 +87,8 @@ World::World() {
 
     keyBinds->mouse1->isHit();
 
-    i = new Item("SCPCB/GFX/Items/Gasmask/gasmask.fbx", "SCPCB/GFX/Items/Gasmask/inv_gasmask", 50, gfxRes, pickableManager, inventory);
-    i2 = new Item("SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 40, gfxRes, pickableManager, inventory);
+    //i = new Item("SCPCB/GFX/Items/Gasmask/gasmask.fbx", "SCPCB/GFX/Items/Gasmask/inv_gasmask", 50, gfxRes, pickableManager, inventory);
+    //i2 = new Item("SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 40, gfxRes, pickableManager, inventory);
 }
 
 World::~World() {
@@ -305,8 +302,6 @@ void World::draw(float interpolation, RenderType r) {
     if (r != RenderType::UIOnly) {
         drawPlaying(interpolation);
         scripting->draw(interpolation);
-        i->render();
-        i2->render();
 
         if (vrm != nullptr && vrm->getFade() > 0.f) {
             graphics->setDepthTest(false);

@@ -54,7 +54,7 @@ void InvSlot::updateInternal(PGE::Vector2f mousePos) {
 
 void InvSlot::renderInternal() {
     if (hasItem()) {
-        uiMesh->setTextured(item->getInvIcon(), false);
+        //uiMesh->setTextured(item->getInvIcon(), false);
         uiMesh->addRect(background);
     } else {
         uiMesh->setTextured("SCPCB/GFX/Menu/menublack", true);

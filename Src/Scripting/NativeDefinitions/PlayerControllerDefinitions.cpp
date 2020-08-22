@@ -55,8 +55,7 @@ PlayerControllerDefinitions::PlayerControllerDefinitions(ScriptManager* mgr, Ref
     refCounterManager = rcMgr;
 
     engine->RegisterObjectType("PlayerController", sizeof(PlayerController), asOBJ_REF);
-    engine->RegisterObjectBehaviour("PlayerController", asBEHAVE_FACTORY, "PlayerController@ f(float radius, float height)",
-        asMETHOD(PlayerControllerDefinitions, playerControllerFactory), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterObjectBehaviour("PlayerController", asBEHAVE_FACTORY, "PlayerController@ f(float radius, float height)", asMETHOD(PlayerControllerDefinitions, playerControllerFactory), asCALL_THISCALL_ASGLOBAL, this);
     engine->RegisterObjectBehaviour("PlayerController", asBEHAVE_ADDREF, "void f()", asMETHOD(PlayerControllerDefinitions,addRef), asCALL_THISCALL_OBJLAST, this);
     engine->RegisterObjectBehaviour("PlayerController", asBEHAVE_RELEASE, "void f()", asMETHOD(PlayerControllerDefinitions,release), asCALL_THISCALL_OBJLAST, this);
 

@@ -10,21 +10,13 @@ class UIMesh;
 
 class Pickable {
     public:
-        enum class PickType {
-            Grab,
-            Push
-        };
-
-    private:
-        PickType type;
-        
-    public:
+        PGE::Vector3f position;
+        bool picked;
         float cachedDistance;
 
-        Pickable(PickType type);
+        Pickable();
 
-        virtual void onPicked() = 0;
-        virtual PGE::Vector3f getPos() const = 0;
+        bool getPicked();
 };
 
 class PickableManager {

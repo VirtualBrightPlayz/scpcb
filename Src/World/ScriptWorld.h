@@ -11,6 +11,7 @@ class MessageDefinitions;
 class ModelDefinitions;
 class RM2Definitions;
 class CollisionDefinitions;
+class PickableDefinitions;
 class PlayerControllerDefinitions;
 class InputDefinitions;
 class EventDefinition;
@@ -41,6 +42,7 @@ private:
     ModelDefinitions* modelDefinitions;
     RM2Definitions* rm2Definitions;
     CollisionDefinitions* collisionDefinitions;
+    PickableDefinitions* pickableDefinitions;
     PlayerControllerDefinitions* playerControllerDefinitions;
     ReflectionDefinitions* reflectionDefinitions;
 

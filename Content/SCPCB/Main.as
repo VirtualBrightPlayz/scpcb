@@ -25,9 +25,14 @@ Billboard@ two;
 Model@ mask;
 Model@ mask2;
 
+external class Item;
+Item i;
+
 void main() {
     Debug::log("Starting up!");
     
+    i = Item();
+
     Msg::set("LOL");
     
     Vector2f test = Vector2f(10.0, 10.0);
@@ -94,4 +99,5 @@ void render(float interpolation) {
     mask.render();
     mask2.render();
     Billboard::renderAll();
+    i.render();
 }

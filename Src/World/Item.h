@@ -25,8 +25,8 @@ class Item : public Pickable {
         Item(const PGE::String& filename, const PGE::String& icon, int x, GraphicsResources* gr, PickableManager* pm, Inventory* inv);
         ~Item();
 
-        PGE::Vector3f getPos() const override;
-        void onPicked() override;
+        //PGE::Vector3f getPos() const override;
+        //void onPicked() override;
 
         PGE::Texture* getInvIcon() const;
 

@@ -97,15 +97,21 @@ void GraphicsResources::dropTexture(PGE::Texture* texture) {
     }
 }
 
+#include <iostream>
+
 ModelInstance* GraphicsResources::getModelInstance(const PGE::String& filename) {
     for (int i = 0; i < (int)modelEntries.size(); i++) {
         if (modelEntries[i].filename.equals(filename)) {
+            std::cout << "RETUNRING " << filename << "  " << modelEntries[i].model << std::endl;
+            modelEntries[i].refCount++;
             return new ModelInstance(modelEntries[i].model);
         }
     }
 
     Model* newModel = new Model(modelImporter, this, filename);
     modelEntries.push_back({ filename, newModel, 1 });
+
+    std::cout << "CREATING NEW " << filename << "  " << newModel << std::endl;
 
     return new ModelInstance(newModel);
 }
@@ -115,7 +121,9 @@ void GraphicsResources::dropModelInstance(ModelInstance* mi) {
         if (modelEntries[i].model == mi->getModel()) {
             modelEntries[i].refCount--;
             delete mi;
+            std::cout << "DROPPING! " << modelEntries[i].filename << "  " << modelEntries[i].model << std::endl;
             if (modelEntries[i].refCount <= 0) {
+                std::cout << "DELETING MODEL! " << modelEntries[i].filename << "  " << modelEntries[i].model << std::endl;
                 delete modelEntries[i].model;
                 modelEntries.erase(modelEntries.begin() + i);
             }

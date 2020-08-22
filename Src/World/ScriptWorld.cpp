@@ -20,6 +20,7 @@
 #include "../Scripting/NativeDefinitions/ModelDefinitions.h"
 #include "../Scripting/NativeDefinitions/RM2Definitions.h"
 #include "../Scripting/NativeDefinitions/CollisionDefinitions.h"
+#include "../Scripting/NativeDefinitions/PickableDefinitions.h"
 #include "../Scripting/NativeDefinitions/PlayerControllerDefinitions.h"
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 #include "../Scripting/NativeDefinitions/ReflectionDefinitions.h"
@@ -38,6 +39,7 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
     collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);
     modelDefinitions = new ModelDefinitions(manager, gfxRes);
     rm2Definitions = new RM2Definitions(manager, gfxRes);
+    pickableDefinitions = new PickableDefinitions(manager, refCounterManager);
     playerControllerDefinitions = new PlayerControllerDefinitions(manager, refCounterManager, camera);
     reflectionDefinitions = new ReflectionDefinitions(manager);
 
@@ -127,6 +129,7 @@ ScriptWorld::~ScriptWorld() {
     delete modelDefinitions;
     delete rm2Definitions;
     delete collisionDefinitions;
+    delete pickableDefinitions;
     delete playerControllerDefinitions;
     delete reflectionDefinitions;
 

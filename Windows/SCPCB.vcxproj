@@ -168,6 +168,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\MessageDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\ModelDefinitions.h" />
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\PickableDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\RefCounter.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.h" />
@@ -243,6 +244,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\MathDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\MessageDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\ModelDefinitions.cpp" />
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\PickableDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\RefCounter.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.cpp" />
