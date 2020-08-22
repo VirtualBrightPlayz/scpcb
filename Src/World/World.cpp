@@ -26,6 +26,11 @@
 #include "../Utils/MathUtil.h"
 #include "../Scripting/ScriptObject.h"
 
+#include "../World/Item.h"
+
+Item* i;
+Item* i2;
+
 World::World() {
     config = new Config("options.ini");
 
@@ -33,6 +38,7 @@ World::World() {
         vrm = new VRManager(config, gfxRes);
         camera = vrm->getCamera();
     } else {
+        vrm = nullptr;
         camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
     }
 
@@ -60,6 +66,8 @@ World::World() {
     console = new Console(this, uiMesh, largeFont, keyBinds, config, locMng, io);
     inventory = new Inventory(this, uiMesh, keyBinds, config, 10);
 
+    pickableManager = new PickableManager(camera, uiMesh, keyBinds);
+
     billboardManager = new BillboardManager(graphics, gfxRes);
 
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
@@ -79,10 +87,16 @@ World::World() {
     if (vrm != nullptr) {
         vrm->createTexture(graphics, config);
     }
+
+    keyBinds->mouse1->isHit();
+
+    i = new Item("SCPCB/GFX/Items/Gasmask/gasmask.fbx", "SCPCB/GFX/Items/Gasmask/inv_gasmask", 50, gfxRes, pickableManager, inventory);
+    i2 = new Item("SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 40, gfxRes, pickableManager, inventory);
 }
 
 World::~World() {
     delete fps;
+    delete pickableManager;
     delete billboardManager;
     delete pauseMenu;
     delete console;
@@ -288,11 +302,11 @@ void World::runTick(float timeStep) {
 }
 
 void World::draw(float interpolation, RenderType r) {
-    uiMesh->setTextureless();
-    uiMesh->addRect(PGE::Rectanglef(0, 0, 10, 10));
     if (r != RenderType::UIOnly) {
         drawPlaying(interpolation);
         scripting->draw(interpolation);
+        i->render();
+        i2->render();
 
         if (vrm != nullptr && vrm->getFade() > 0.f) {
             graphics->setDepthTest(false);
@@ -346,12 +360,15 @@ void World::updatePlaying(float timeStep) {
     // View/Projection matrix.
     camera->update();
 
+    pickableManager->update();
+
     msgMng->update(timeStep);
 }
 
 void World::drawPlaying(float interpolation) {
     camera->updateDrawTransform(interpolation);
     gfxRes->setCameraUniforms(camera);
+    pickableManager->render();
 }
 
 void World::quit() {

@@ -2,6 +2,7 @@
 
 #include "../Utils/MathUtil.h"
 #include "InvSlot.h"
+#include "../World/Item.h"
 
 Inventory::Inventory(World* wrld, UIMesh* um, KeyBinds* kb, Config* con, int size) : Menu(wrld, "inventory") {
     const int rows = MathUtil::ceil((float)size / maxItemsPerRow);
@@ -32,6 +33,16 @@ Inventory::~Inventory() {
         delete slots[i];
     }
     delete[] slots;
+}
+
+bool Inventory::addItem(Item* it) {
+    for (int i = 0; i < size; i++) {
+        if (!slots[i]->hasItem()) {
+            slots[i]->addItem(it);
+            return true;
+        }
+    }
+    return false;
 }
 
 void Inventory::setState(SubState state) {

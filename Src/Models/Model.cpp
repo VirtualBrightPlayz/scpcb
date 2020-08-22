@@ -8,7 +8,7 @@
 #include "../Graphics/GraphicsResources.h"
 
 Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::String& filename) {
-    this->gr = gr;
+    gfxRes = gr;
     shader = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/Model/"), true);
     modelMatrix = shader->getVertexShaderConstant("modelMatrix");
     PGE::Shader::Constant* colorConstant = shader->getFragmentShaderConstant("inColor");
@@ -94,13 +94,13 @@ Model::~Model() {
 
     for (unsigned int i = 0; i < materialCount; i++) {
         for (int j = 0; j < materials[i]->getTextureCount(); j++) {
-            gr->dropTexture(materials[i]->getTexture(j));
+            gfxRes->dropTexture(materials[i]->getTexture(j));
         }
         delete materials[i];
     }
     delete[] materials;
 
-    gr->dropShader(shader);
+    gfxRes->dropShader(shader);
 }
 
 void Model::render(const PGE::Matrix4x4f& modelMatrix) const {
@@ -112,30 +112,27 @@ void Model::render(const PGE::Matrix4x4f& modelMatrix) const {
 
 ModelInstance::ModelInstance(Model* model) {
     this->model = model;
-}
-
-void ModelInstance::recomputeModelMatrix() {
-    modelMatrix = PGE::Matrix4x4f::constructWorldMat(position, scale, rotation);
+    modelMatrixNeedsRecalculation = false;
 }
 
 void ModelInstance::setPosition(const PGE::Vector3f& pos) {
     if (position != pos) {
         position = pos;
-        recomputeModelMatrix();
+        modelMatrixNeedsRecalculation = true;
     }
 }
 
 void ModelInstance::setRotation(const PGE::Vector3f& rot) {
     if (rotation != rot) {
         rotation = rot;
-        recomputeModelMatrix();
+        modelMatrixNeedsRecalculation = true;
     }
 }
 
 void ModelInstance::setScale(const PGE::Vector3f& scl) {
     if (scale != scl) {
         scale = scl;
-        recomputeModelMatrix();
+        modelMatrixNeedsRecalculation = true;
     }
 }
 
@@ -155,6 +152,10 @@ Model* ModelInstance::getModel() const {
     return model;
 }
 
-void ModelInstance::render() const {
+void ModelInstance::render() {
+    if (modelMatrixNeedsRecalculation) {
+        modelMatrix = PGE::Matrix4x4f::constructWorldMat(position, scale, rotation);
+        modelMatrixNeedsRecalculation = false;
+    }
     model->render(modelMatrix);
 }

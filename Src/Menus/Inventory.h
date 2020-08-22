@@ -5,12 +5,14 @@
 
 #include "Menu.h"
 
+class Item;
 class InvSlot;
 class World;
 class UIMesh;
 class KeyBinds;
 class Config;
 
+// TODO: Move all of this to Angelscript.
 class Inventory : public Menu {
     private:
         static constexpr int maxItemsPerRow = 6;
@@ -30,6 +32,8 @@ class Inventory : public Menu {
     public:
         Inventory(World* wrld, UIMesh* um, KeyBinds* kb, Config* con, int size);
         ~Inventory();
+
+        bool addItem(Item* it);
     
         void update(const PGE::Vector2f& mousePosition, const PGE::Vector2i& mouseWheelDelta) override;
         void render() const override;
