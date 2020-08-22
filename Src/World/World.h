@@ -26,6 +26,7 @@ class LocalizationManager;
 class PauseMenu;
 class Console;
 class Inventory;
+class PickableManager;
 class FPSCounter;
 class GUIText;
 class Menu;
@@ -68,6 +69,8 @@ class World {
         PauseMenu* pauseMenu;
         Console* console;
         Inventory* inventory;
+
+        PickableManager* pickableManager;
 
         BillboardManager* billboardManager;
 

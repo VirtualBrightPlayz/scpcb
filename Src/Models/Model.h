@@ -11,7 +11,7 @@ class GraphicsResources;
 
 class Model {
     private:
-        GraphicsResources* gr;
+        GraphicsResources* gfxRes;
 
         PGE::Mesh** meshes;
         unsigned int meshCount;
@@ -36,6 +36,7 @@ class ModelInstance {
     private:
         Model* model;
 
+        bool modelMatrixNeedsRecalculation;
         PGE::Matrix4x4f modelMatrix;
 
         PGE::Vector3f position = PGE::Vector3f::zero;
@@ -43,8 +44,6 @@ class ModelInstance {
         PGE::Vector3f scale = PGE::Vector3f::one;
 
         ModelInstance(); // We don't want this.
-
-        void recomputeModelMatrix();
 
     public:
         ModelInstance(Model* model);
@@ -59,7 +58,7 @@ class ModelInstance {
 
         Model* getModel() const;
 
-        void render() const;
+        void render();
 };
 
 #endif // MODELMANAGER_H_INCLUDED

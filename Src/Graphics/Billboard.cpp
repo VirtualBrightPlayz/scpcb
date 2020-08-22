@@ -1,4 +1,5 @@
 #include "Billboard.h"
+
 #include <math.h>
 
 BillboardManager::BillboardManager(PGE::Graphics* gfx, GraphicsResources* gr) {

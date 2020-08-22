@@ -1,7 +1,9 @@
+#include "PlayerController.h"
+
 #include <cmath>
 #include <Math/Plane.h>
 
-#include "PlayerController.h"
+#include "../World/Pickable.h"
 
 using namespace PGE;
 
@@ -22,6 +24,7 @@ PlayerController::PlayerController(float r, float camHeight) {
 
 void PlayerController::setCollisionMeshCollection(CollisionMeshCollection* collection) {
     collisionMeshCollection = collection;
+    PickableManager::cmc = collection;
 }
 
 CollisionMeshCollection* PlayerController::getCollisionMeshCollection() const {

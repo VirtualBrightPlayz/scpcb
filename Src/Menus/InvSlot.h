@@ -7,13 +7,21 @@ class Item;
 class GUIFrame;
 class Config;
 
+// TODO: Move all of this to Angelscript.
 class InvSlot : public GUIComponent {
     private:
-        GUIFrame* frame;
+        PGE::Rectanglef background;
+        PGE::Rectanglef top;
+        PGE::Rectanglef bottom;
+        PGE::Rectanglef right;
+        PGE::Rectanglef left;
         
         Item* item;
 
-        bool doubleClicked;
+        bool hovered;
+        bool equipped;
+
+        void updateRectangles(bool doubled);
     
         void updateInternal(PGE::Vector2f mousePos) override;
         void renderInternal() override;
@@ -24,6 +32,7 @@ class InvSlot : public GUIComponent {
         InvSlot(UIMesh* um, KeyBinds* kb, Config* con, float x, float y);
         ~InvSlot();
 
+        void addItem(Item* it);
         bool hasItem() const;
 };
 

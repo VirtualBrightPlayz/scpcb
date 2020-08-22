@@ -12,7 +12,7 @@ class GUIFrame : public GUIComponent {
         PGE::String menublack;
 
         bool hovered;
-    
+
         void updateInternal(PGE::Vector2f mousePos) override;
         void renderInternal() override;
 

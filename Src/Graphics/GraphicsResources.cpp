@@ -73,7 +73,7 @@ PGE::Texture* GraphicsResources::getTexture(const PGE::String& filename) {
 
     PGE::FilePath path = rpm->getHighestModPath(filename);
     if (!path.exists()) {
-        return nullptr;
+        throw new std::runtime_error(PGE::String(("Couldn't find texture \"") + filename + '"').cstr());
     }
 
     Texture newTexture;
