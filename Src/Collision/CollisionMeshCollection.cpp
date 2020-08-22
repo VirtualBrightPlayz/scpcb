@@ -67,13 +67,13 @@ Collision CollisionMeshCollection::checkCollision(Line3f line, float height, flo
     Collision retVal; retVal.hit = false;
 
     AABBox lineBox(line.pointA,line.pointB);
-    lineBox.addPoint(lineBox.getMin().add(Vector3f(-radius,-height*0.5f,-radius)));
-    lineBox.addPoint(lineBox.getMax().add(Vector3f(radius,height*0.5f,radius)));
+    lineBox.addPoint(lineBox.getMin().add(Vector3f(-radius-0.5f,-height*0.5f-0.5f,-radius-0.5f)));
+    lineBox.addPoint(lineBox.getMax().add(Vector3f(radius+0.5f,height*0.5f+0.5f,radius+0.5f)));
 
-    for (std::map<int, Instance>::const_iterator it=instances.begin();it!=instances.end();it++) {
-        AABBox bbox = it->second.getBBox();
+    for (const auto& it : instances) {
+        AABBox bbox = it.second.getBBox();
         if (!bbox.intersects(lineBox)) { continue; }
-        Collision coll = it->second.checkCollision(line,height,radius);
+        Collision coll = it.second.checkCollision(line,height,radius);
         if (coll.hit) {
             if (!retVal.hit || retVal.coveredAmount>coll.coveredAmount) {
                 retVal = coll;
