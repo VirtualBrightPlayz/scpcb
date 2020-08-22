@@ -1,4 +1,4 @@
-external shared class Zone;
+external class Zone;
 
 class EntranceZone : Zone {
     //TODO: refactor

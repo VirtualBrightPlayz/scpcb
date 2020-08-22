@@ -17,11 +17,9 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
     PGE::String path = filename.substr(0, filename.findLast("/") + 1);
     
     const aiScene* scene = importer->ReadFile(PGE::FilePath::fromStr(filename).cstr(),
-#ifdef WINDOWS // D3D
         aiProcess_MakeLeftHanded |
         aiProcess_FlipUVs |
         aiProcess_FlipWindingOrder |
-#endif
         aiProcess_CalcTangentSpace |
         aiProcess_PreTransformVertices |
         aiProcess_JoinIdenticalVertices |

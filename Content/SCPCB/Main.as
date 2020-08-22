@@ -1,4 +1,4 @@
-external shared class Room;
+external class Room;
 
 serialize EntranceZone@ entranceZone;
 
@@ -10,7 +10,7 @@ serialize Matrix4x4f worldMatrix = Matrix4x4f::constructWorldMat(Vector3f(0.0, 0
 PlayerController@ testController;
 Collision::Collection@ testCollCollection;
 
-external shared enum RoomType;
+external enum RoomType;
 
 external Zone@ test_shared_global;
 external int testCounter;

@@ -2224,6 +2224,7 @@ int asCBuilder::RegisterClass(asCScriptNode *node, asCScriptCode *file, asSNameS
 				WriteWarning(msg, file, n);
 			}
 			isExternal = true;
+			isShared = true;
 		}
 		else if( file->TokenEquals(n->tokenPos, n->tokenLength, ABSTRACT_TOKEN) )
 		{
@@ -2413,9 +2414,10 @@ int asCBuilder::RegisterInterface(asCScriptNode *node, asCScriptCode *file, asSN
 	{
 		if (file->TokenEquals(n->tokenPos, n->tokenLength, SHARED_TOKEN))
 			isShared = true;
-		else if (file->TokenEquals(n->tokenPos, n->tokenLength, EXTERNAL_TOKEN))
+		else if (file->TokenEquals(n->tokenPos, n->tokenLength, EXTERNAL_TOKEN)) {
+			isShared = true;
 			isExternal = true;
-		else
+		} else
 			break;
 		n = n->next;
 	}
@@ -4400,9 +4402,10 @@ int asCBuilder::RegisterEnum(asCScriptNode *node, asCScriptCode *file, asSNameSp
 	{
 		if (file->TokenEquals(tmp->tokenPos, tmp->tokenLength, SHARED_TOKEN))
 			isShared = true;
-		else if (file->TokenEquals(tmp->tokenPos, tmp->tokenLength, EXTERNAL_TOKEN))
+		else if (file->TokenEquals(tmp->tokenPos, tmp->tokenLength, EXTERNAL_TOKEN)) {
+			isShared = true;
 			isExternal = true;
-		else
+		} else
 			break;
 		tmp = tmp->next;
 	}
@@ -4669,9 +4672,10 @@ void asCBuilder::GetParsedFunctionDetails(asCScriptNode *node, asCScriptCode *fi
 	{
 		if (file->TokenEquals(node->tokenPos, node->tokenLength, SHARED_TOKEN))
 			funcTraits.SetTrait(asTRAIT_SHARED, true);
-		else if (file->TokenEquals(node->tokenPos, node->tokenLength, EXTERNAL_TOKEN))
+		else if (file->TokenEquals(node->tokenPos, node->tokenLength, EXTERNAL_TOKEN)) {
+			funcTraits.SetTrait(asTRAIT_SHARED, true);
 			funcTraits.SetTrait(asTRAIT_EXTERNAL, true);
-		else
+		} else
 			break;
 		node = node->next;
 	}
