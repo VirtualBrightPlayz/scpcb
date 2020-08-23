@@ -143,7 +143,6 @@ class Reflection {
             //TODO: account for native types
             bool isRef = (typeId & asTYPEID_OBJHANDLE) != 0;
             Type* type = scriptManager->getClassByTypeId(typeId & (~asTYPEID_OBJHANDLE));
-            if (isRef) { type = type->asRef(); }
             
             asIScriptObject* angelScriptObject = (asIScriptObject*)val;
             angelScriptObject->AddRef();
@@ -164,7 +163,7 @@ class Reflection {
                         if (signature.arguments.size() != arguments.size()) { continue; }
                         bool signatureMatches = true;
                         for (int k=0;k<arguments.size();k++) {
-                            if (signature.arguments[k].type != arguments[k].type) {
+                            if (signature.arguments[k].type != arguments[k].type && signature.arguments[k].type != arguments[k].type->asRef()) {
                                 signatureMatches = false;
                                 break;
                             }

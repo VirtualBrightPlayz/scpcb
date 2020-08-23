@@ -17,10 +17,10 @@ shared abstract class Zone {
         reflection.setConstructorArgument(1, this);
         Room@ result = reflection.callConstructor(name);
         if (result == null) {
-            Debug::log("Constructor found");
+            Debug::log("Constructor not found");
             return Room(name, this);
         }
-        Debug::log("Constructor not found");
+        Debug::log("Constructor found");
         return result;
     }
 
