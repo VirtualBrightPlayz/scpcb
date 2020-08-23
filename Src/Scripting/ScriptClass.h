@@ -54,6 +54,7 @@ class ScriptClass : public Type {
 
     public:
         ScriptClass(ScriptModule* module, asITypeInfo* tInfo);
+        ~ScriptClass();
 
         bool isClassType() const override;
 

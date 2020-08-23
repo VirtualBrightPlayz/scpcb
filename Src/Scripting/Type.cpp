@@ -90,6 +90,7 @@ Type* ArrayType::getElementType() const {
 
 RefType::RefType(Type* type) {
     baseType = type;
+    typeName = baseType->getName()+"@";
     refType = nullptr;
     arrayType = nullptr;
 }

@@ -15,8 +15,6 @@ class ReflectionDefinitions : NativeDefinition {
         void reflectionDestructor(void* memory);
     public:
         ReflectionDefinitions(ScriptManager* mgr);
-
-        CScriptArray* getDerivedNames(Reflection* reflection);
 };
 
 #endif

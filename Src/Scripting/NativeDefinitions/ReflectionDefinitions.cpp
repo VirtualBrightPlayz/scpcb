@@ -20,6 +20,10 @@ class Reflection {
 
         void allocArguments(int index) {
             arguments.resize(index+1);
+            if (arguments[index].type != nullptr && arguments[index].type->isClassType()) {
+                asIScriptObject* angelScriptObject = (asIScriptObject*)arguments[index].value.ptr;
+                angelScriptObject->Release();
+            }
         }
 
         std::vector<ScriptClass*> getMatchingDerivedClasses() {
@@ -58,6 +62,10 @@ class Reflection {
             initialize(mgr);
         }
 
+        ~Reflection() {
+            clearArguments();
+        }
+
         void initialize(ScriptManager* mgr) {
             if (initialized) { return; }
 
@@ -92,6 +100,12 @@ class Reflection {
         }
 
         void clearArguments() {
+            for (int i=0;i<arguments.size();i++) {
+                if (arguments[i].type != nullptr && arguments[i].type->isClassType()) {
+                    asIScriptObject* angelScriptObject = (asIScriptObject*)arguments[i].value.ptr;
+                    angelScriptObject->Release();
+                }
+            }
             arguments.clear();
         }
 
@@ -126,8 +140,14 @@ class Reflection {
         }
 
         void setConstructorArgument(int index, void* val, int typeId) {
-            RefType* type = scriptManager->getClassByTypeId(typeId)->asRef();
+            //TODO: account for native types
+            bool isRef = (typeId & asTYPEID_OBJHANDLE) != 0;
+            Type* type = scriptManager->getClassByTypeId(typeId & (~asTYPEID_OBJHANDLE));
+            if (isRef) { type = type->asRef(); }
             
+            asIScriptObject* angelScriptObject = (asIScriptObject*)val;
+            angelScriptObject->AddRef();
+
             allocArguments(index);
             arguments[index].type = type;
             arguments[index].value.ptr = val;
@@ -163,7 +183,7 @@ class Reflection {
                                 constructors[j]->setArgument(signature.arguments[k].name, arguments[k].value.d);
                             } else if (arguments[k].type == Type::String) {
                                 constructors[j]->setArgument(signature.arguments[k].name, arguments[k].strValue);
-                            } else { 
+                            } else {
                                 constructors[j]->setArgumentNative(signature.arguments[k].name, arguments[k].value.ptr);
                             }
                         }
@@ -207,9 +227,4 @@ ReflectionDefinitions::ReflectionDefinitions(ScriptManager* mgr) {
     engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, const string&in val)", asMETHODPR(Reflection, setConstructorArgument, (int, const PGE::String&), void), asCALL_THISCALL);
     engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, ?&in val)", asMETHODPR(Reflection, setConstructorArgument, (int, void*, int), void), asCALL_THISCALL);
     engine->RegisterObjectMethod("Reflection<T>", "T@ callConstructor(const string&in derivedClassName)", asMETHOD(Reflection, callConstructor), asCALL_THISCALL);
-}
-
-CScriptArray* ReflectionDefinitions::getDerivedNames(Reflection* reflection) {
-    reflection->initialize(scriptManager);
-    return reflection->getDerivedNames();
 }

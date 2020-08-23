@@ -78,7 +78,8 @@ ScriptFunction::ScriptFunction(ScriptModule* module, asIScriptFunction* asScript
 }
 
 ScriptFunction::~ScriptFunction() {
-    scriptContext->Release();
+    unprepare();
+    if (returnedObject != nullptr) { delete returnedObject; }
 }
 
 void ScriptFunction::prepare() {
@@ -92,6 +93,17 @@ void ScriptFunction::prepare() {
         scriptContext = scriptModule->getAngelScriptModule()->GetEngine()->RequestContext();
     }
     scriptContext->Prepare(scriptFunction);
+}
+
+void ScriptFunction::unprepare() {
+    if (scriptContext == nullptr) { return; }
+
+    if (pushedState) {
+        scriptContext->PopState();
+    } else {
+        scriptModule->getAngelScriptModule()->GetEngine()->ReturnContext(scriptContext);
+    }
+    scriptContext = nullptr;
 }
 
 void ScriptFunction::setObject(ScriptObject* obj) {
@@ -162,12 +174,7 @@ void ScriptFunction::execute() {
         returnedObject = new ScriptObject(returnClass, asObj);
     }
 
-    if (pushedState) {
-        scriptContext->PopState();
-    } else {
-        scriptModule->getAngelScriptModule()->GetEngine()->ReturnContext(scriptContext);
-    }
-    scriptContext = nullptr;
+    unprepare();
 }
 
 int32_t ScriptFunction::getReturnInt32() const {

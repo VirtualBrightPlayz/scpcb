@@ -109,7 +109,7 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
         //scriptModule->save(doc);
         //doc.LoadFile("juanIsntReal.xml");
         //scriptModule->load(doc.FirstChildElement());
-        scriptModule->save(doc);
+        //scriptModule->save(doc);
     }
 
     doc.SaveFile("juanIsntReal.xml");

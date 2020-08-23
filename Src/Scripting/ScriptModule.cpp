@@ -22,6 +22,12 @@ ScriptModule::ScriptModule(ScriptManager* mgr, const PGE::String& nm) {
 }
 
 ScriptModule::~ScriptModule() {
+    for (int i=0;i<functions.size();i++) {
+        delete functions[i];
+    }
+    for (int i=0;i<classes.size();i++) {
+        delete classes[i];
+    }
     scriptModule->Discard();
 }
 
