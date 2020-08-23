@@ -50,6 +50,7 @@ class ScriptFunction {
         const Signature& getSignature() const;
 
         void prepare();
+        void unprepare();
         void setObject(ScriptObject* obj);
         void setObjectNative(void* obj);
         void setArgument(const PGE::String& argument, int32_t i32);

@@ -38,6 +38,7 @@ shared class Gasmask : Item {
         Debug::log("POG");
     }
     Gasmask(ItemTemplate it) {
+        Debug::log("Gasmask constructor");
         super(it);
     }
 }

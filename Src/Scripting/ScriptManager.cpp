@@ -66,8 +66,7 @@ ScriptManager::~ScriptManager() {
 void ScriptManager::contextExceptionCallback(asIScriptContext* context) {
     asSMessageInfo info;
     info.message = context->GetExceptionString();
-    int line = context->GetExceptionLineNumber(&info.row, &info.section);
-    info.col = 0; //TODO: fix?
+    info.row = context->GetExceptionLineNumber(&info.col, &info.section);
     info.type = asEMsgType::asMSGTYPE_ERROR;
     messageCallback(&info, nullptr);
 }

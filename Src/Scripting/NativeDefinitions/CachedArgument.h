@@ -6,7 +6,7 @@
 
 struct CachedArgument {
     PGE::String name;
-    Type* type;
+    Type* type = nullptr;
     union Value {
         Value();
         int32_t i32;

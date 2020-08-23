@@ -50,6 +50,15 @@ ScriptClass::ScriptClass(ScriptModule* module, asITypeInfo* tInfo) {
     }
 }
 
+ScriptClass::~ScriptClass() {
+    for (int i=0;i<methods.size();i++) {
+        delete methods[i];
+    }
+    for (int i=0;i<constructors.size();i++) {
+        delete constructors[i];
+    }
+}
+
 bool ScriptClass::isClassType() const {
     return true;
 }
