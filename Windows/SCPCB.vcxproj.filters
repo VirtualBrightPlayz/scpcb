@@ -200,6 +200,9 @@
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\PickableDefinitions.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\UIDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -396,6 +399,9 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\PickableDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\UIDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
   </ItemGroup>

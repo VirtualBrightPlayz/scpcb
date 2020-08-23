@@ -12,7 +12,7 @@ class UIMesh;
 class KeyBinds;
 class Config;
 
-// TODO: Move all of this to Angelscript.
+// Almost fully transferred
 class Inventory : public Menu {
     private:
         static constexpr int maxItemsPerRow = 6;

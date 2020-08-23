@@ -3,6 +3,7 @@
 #include "GUI/GUIFrame.h"
 #include "../World/Item.h"
 
+// Fully ported
 InvSlot::InvSlot(UIMesh* um, KeyBinds* kb, Config* con, float x, float y)
 : GUIComponent(um, kb, con, x, y, screenSize, screenSize, Alignment::CenterXY) {
     background = PGE::Rectanglef(getX() + um->borderThickness, getY() + um->borderThickness, getX2() - um->borderThickness, getY2() - um->borderThickness);

@@ -174,6 +174,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinition.h" />
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\UIDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\ScriptClass.h" />
     <ClInclude Include="..\Src\Scripting\ScriptFunction.h" />
     <ClInclude Include="..\Src\Scripting\Script.h" />
@@ -249,6 +250,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\RefCounter.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.cpp" />
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\UIDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptClass.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptFunction.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptGlobal.cpp" />

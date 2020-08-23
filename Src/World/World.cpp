@@ -70,7 +70,7 @@ World::World() {
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
 
-    scripting = new ScriptWorld(gfxRes, camera, keyBinds, msgMng, pickableManager, config, (float)timing->getTimeStep(), console, billboardManager);
+    scripting = new ScriptWorld(gfxRes, camera, keyBinds, msgMng, pickableManager, uiMesh, config, (float)timing->getTimeStep(), console, billboardManager);
 
     applyConfig(config);
 

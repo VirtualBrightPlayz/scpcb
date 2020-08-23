@@ -4,6 +4,7 @@
 #include "InvSlot.h"
 #include "../World/Item.h"
 
+// Almost fully transferred
 Inventory::Inventory(World* wrld, UIMesh* um, KeyBinds* kb, Config* con, int size) : Menu(wrld, "inventory") {
     const int rows = MathUtil::ceil((float)size / maxItemsPerRow);
     if (size % rows != 0) {

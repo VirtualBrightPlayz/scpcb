@@ -1,4 +1,5 @@
 external class Room;
+external class Inventory;
 
 serialize EntranceZone@ entranceZone;
 
@@ -15,6 +16,8 @@ external enum RoomType;
 external Zone@ test_shared_global;
 external int testCounter;
 
+external Inventory@ inventory;
+
 void Test(int testString) {
     //Debug::log("Parameter: "+testString);
 }
@@ -26,17 +29,29 @@ Model@ mask;
 Model@ mask2;
 
 external class Item;
-Item@ i = null;
+external class ItemTemplate;
+
+namespace Item {
+    external void register(const string&in name, const string&in model, const string&in icon, float scale);
+    external Item@ spawn(const string&in name, const Vector3f&in position);
+}
+
+shared class Gasmask : Item {
+    void onPick() override {
+        Debug::log("POG");
+    }
+    Gasmask(ItemTemplate it) {
+        super(it);
+    }
+}
 
 void main() {
     Debug::log("Starting up!");
 
-    Rectanglef rect = Rectanglef(Vector2f(-1, -1), Vector2f(4, 4));
-    
-    @i = Item();
-    i.position = Vector3f(0.0, 20.0, 20.0);
-
     Msg::set("LOL");
+
+    Item::register("Gasmask", "SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 0.5);
+    Item::spawn("Gasmask", Vector3f(0.0, 20.0, 20.0));
     
     Vector2f test = Vector2f(10.0, 10.0);
     Vector2f test2 = Vector2f(15.0, 10.0);
@@ -94,7 +109,7 @@ void update(float deltaTime) {
         two.visible = !two.visible;
         time = 0.0;
     }
-    i.update();
+    inventory.update(Vector2f::zero, Vector2f::zero);
 }
 
 void render(float interpolation) {
@@ -103,5 +118,5 @@ void render(float interpolation) {
     mask.render();
     mask2.render();
     Billboard::renderAll();
-    i.render();
+    inventory.render();
 }

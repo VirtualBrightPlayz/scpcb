@@ -2,6 +2,7 @@
 #include "../../Input/KeyBinds.h"
 #include "../../Save/Config.h"
 
+// Ported
 GUIComponent::GUIComponent(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment) { 
     uiMesh = um;
     keyBinds = kb;

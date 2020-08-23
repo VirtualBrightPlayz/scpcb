@@ -1,4 +1,36 @@
+namespace Item {
+    shared array<ItemTemplate> templates; // TODO: Replace with map.
+    shared void register(const string&in name, const string&in model, const string&in icon, float scale = 1.0) {
+        ItemTemplate it;
+        it.name = name;
+        it.model = model;
+        it.icon = icon;
+        templates.insertLast(it);
+        Debug::log(templates[0].name);
+    }
+    shared Item@ spawn(const string&in name, const Vector3f&in position) {
+        Debug::log("Creating item " + name);
+        Reflection<Item> reflection;
+        for (int i = 0; i < templates.length(); i++) {
+            if (templates[i].name == name) {
+                Debug::log("Found template!");
+                reflection.setConstructorArgument(0, templates[i]);
+                break;
+            }
+        }
+        Item@ result = reflection.callConstructor(name);
+        if (result == null) {
+            Debug::log(@result);
+            //throw("ERROR");
+        }
+        result.position = position;
+        return result;
+    }
+}
+
 shared class Item {
+    private ItemTemplate it;
+
     private Model@ model;
 
     private Pickable@ pickable;
@@ -20,8 +52,9 @@ shared class Item {
         set { model.scale = value; }
     }
 
-    Item() {
-        @model = Model::create("SCPCB/GFX/Items/Firstaid/firstaid.fbx");
+    Item(ItemTemplate it) {
+        this.it = it;
+        @model = Model::create(it.model);
         @pickable = Pickable();
         Pickable::activatePickable(pickable);
     }
@@ -57,4 +90,11 @@ shared class Item {
             model.render();
         }
     }
+}
+
+shared class ItemTemplate {
+    string model;
+    string icon;
+    string name;
+    string localName;
 }

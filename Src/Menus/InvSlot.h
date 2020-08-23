@@ -7,7 +7,7 @@ class Item;
 class GUIFrame;
 class Config;
 
-// TODO: Move all of this to Angelscript.
+// Fully ported
 class InvSlot : public GUIComponent {
     private:
         PGE::Rectanglef background;
