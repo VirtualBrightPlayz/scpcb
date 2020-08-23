@@ -1,5 +1,4 @@
 external class Room;
-external class Inventory;
 
 serialize EntranceZone@ entranceZone;
 
@@ -15,8 +14,6 @@ external enum RoomType;
 
 external Zone@ test_shared_global;
 external int testCounter;
-
-external Inventory@ inventory;
 
 void Test(int testString) {
     //Debug::log("Parameter: "+testString);
@@ -45,13 +42,21 @@ shared class Gasmask : Item {
     }
 }
 
+external class Inventory;
+external class MenuManager;
+external Inventory@ inventory;
+
+MenuManager@ menuManager;
+
 void main() {
     Debug::log("Starting up!");
+
+    @menuManager = MenuManager(inventory);
 
     Msg::set("LOL");
 
     Item::register("Gasmask", "SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 0.5);
-    Item::spawn("Gasmask", Vector3f(0.0, 20.0, 20.0));
+    //Item::spawn("Gasmask", Vector3f(0.0, 20.0, 20.0));
     
     Vector2f test = Vector2f(10.0, 10.0);
     Vector2f test2 = Vector2f(15.0, 10.0);
@@ -96,27 +101,33 @@ void main() {
     entranceZone.registerRoom("hll_plain_2_a", Room2);
     entranceZone.generate();
     PerTick::register(update);
-    PerFrame::register(render);
+    PerFrameGame::register(renderGame);
+    PerFrameMenu::register(renderMenu);
 }
 
 float time = 0.0;
 
 void update(float deltaTime) {
-    __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown());
-    entranceZone.update(deltaTime);
-    time += deltaTime;
-    if (time > 1.0) { // So you don't get a fucking seizure.
-        two.visible = !two.visible;
-        time = 0.0;
+    if (!World::paused) {
+        __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown());
+        entranceZone.update(deltaTime);
+        time += deltaTime;
+        if (time > 1.0) { // So you don't get a fucking seizure.
+            two.visible = !two.visible;
+            time = 0.0;
+        }
     }
-    inventory.update(Vector2f::zero, Vector2f::zero);
+    menuManager.update(Input::getMousePosition(), Input::getMouseWheelDelta());
 }
 
-void render(float interpolation) {
+void renderGame(float interpolation) {
     if (test_shared_global == null) { return; }
     test_shared_global.render(interpolation);
     mask.render();
     mask2.render();
     Billboard::renderAll();
-    inventory.render();
+}
+
+void renderMenu(float interpolation) {
+    menuManager.render();
 }

@@ -141,6 +141,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Graphics\UIMesh.h" />
     <ClInclude Include="..\Src\Input\Input.h" />
     <ClInclude Include="..\Src\Input\KeyBinds.h" />
+    <ClInclude Include="..\Src\Input\MouseData.h" />
     <ClInclude Include="..\Src\Menus\Console.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIComponent.h" />
     <ClInclude Include="..\Src\Menus\GUI\GUIButton.h" />
@@ -175,6 +176,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinition.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\UIDefinitions.h" />
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\WorldDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\ScriptClass.h" />
     <ClInclude Include="..\Src\Scripting\ScriptFunction.h" />
     <ClInclude Include="..\Src\Scripting\Script.h" />
@@ -216,6 +218,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Graphics\UIMesh.cpp" />
     <ClCompile Include="..\Src\Input\Input.cpp" />
     <ClCompile Include="..\Src\Input\KeyBinds.cpp" />
+    <ClCompile Include="..\Src\Input\MouseData.cpp" />
     <ClCompile Include="..\Src\Main.cpp" />
     <ClCompile Include="..\Src\Menus\Console.cpp" />
     <ClCompile Include="..\Src\Menus\GUI\GUIComponent.cpp" />
@@ -251,6 +254,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\UIDefinitions.cpp" />
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\WorldDefinitions.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptClass.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptFunction.cpp" />
     <ClCompile Include="..\Src\Scripting\ScriptGlobal.cpp" />

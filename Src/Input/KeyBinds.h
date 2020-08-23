@@ -17,8 +17,8 @@ class KeyBinds {
         Input hitInputs;
 
         struct UserInput {
-                PGE::UserInput* input;
-                int code; // Can be mouse button, controller button or key code.
+            PGE::UserInput* input;
+            int code; // Can be mouse button, controller button or key code.
         };
 
         PGE::IO* io;

@@ -203,6 +203,12 @@
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\UIDefinitions.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Input\MouseData.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\WorldDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -402,6 +408,12 @@
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\UIDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Input\MouseData.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\WorldDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,6 +10,7 @@
 #include "../Scripting/ScriptFunction.h"
 #include "../Scripting/ScriptClass.h"
 
+#include "../Scripting/NativeDefinitions/WorldDefinitions.h"
 #include "../Scripting/NativeDefinitions/ConsoleDefinitions.h"
 #include "../Scripting/NativeDefinitions/InputDefinitions.h"
 #include "../Scripting/NativeDefinitions/RefCounter.h"
@@ -26,15 +27,16 @@
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 #include "../Scripting/NativeDefinitions/ReflectionDefinitions.h"
 
-ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MessageManager* mm, PickableManager* pm, UIMesh* um, Config* config, float timestep, Console* con, BillboardManager* bm) {
+ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, MessageManager* mm, PickableManager* pm, UIMesh* um, Config* config, float timestep, Console* con, BillboardManager* bm) {
     manager = new ScriptManager();
 
     refCounterManager = new RefCounterManager();
 
-    consoleDefinition = new ConsoleDefinitions(manager, con);
-    inputDefinitions = new InputDefinitions(manager, keyBinds);
+    worldDefinitions = new WorldDefinitions(manager, world);
+    consoleDefinitions = new ConsoleDefinitions(manager, con);
     colorDefinitions = new ColorDefinitions(manager);
     mathDefinitions = new MathDefinitions(manager);
+    inputDefinitions = new InputDefinitions(manager, keyBinds, mouseData);
     uiDefinitions = new UIDefinitions(manager, um);
     messageDefinitions = new MessageDefinitions(manager, mm);
     billboardDefinitions = new BillboardDefinitions(manager, bm);
@@ -51,15 +53,23 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
     perTickSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "deltaTime"));
 
     perTickEventDefinition = new EventDefinition(manager, "PerTick", perTickSignature);
-    perTickEventDefinition->setArgument("deltaTime", timestep);
+    perTickEventDefinition->setArgument("deltaTime", timestep); // TODO: Make timestep const global.
 
-    ScriptFunction::Signature perFrameSignature;
-    perFrameSignature.functionName = "PerFrame";
-    perFrameSignature.returnType = Type::Void;
-    perFrameSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "interpolation"));
+    ScriptFunction::Signature perFrameGameSignature;
+    perFrameGameSignature.functionName = "PerFrameGame";
+    perFrameGameSignature.returnType = Type::Void;
+    perFrameGameSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "interpolation"));
 
-    perFrameEventDefinition = new EventDefinition(manager, "PerFrame", perFrameSignature);
-    perFrameEventDefinition->setArgument("interpolation", 1.0f);
+    perFrameGameEventDefinition = new EventDefinition(manager, "PerFrameGame", perFrameGameSignature);
+    perFrameGameEventDefinition->setArgument("interpolation", 1.0f);
+
+    ScriptFunction::Signature perFrameMenuSignature;
+    perFrameMenuSignature.functionName = "PerFrameMenu";
+    perFrameMenuSignature.returnType = Type::Void;
+    perFrameMenuSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "interpolation"));
+
+    perFrameMenuEventDefinition = new EventDefinition(manager, "PerFrameMenu", perFrameMenuSignature);
+    perFrameMenuEventDefinition->setArgument("interpolation", 1.0f);
 
     const std::vector<PGE::String>& enabledMods = config->enabledMods->value;
 
@@ -121,9 +131,11 @@ ScriptWorld::~ScriptWorld() {
     }
 
     delete perTickEventDefinition;
-    delete perFrameEventDefinition;
+    delete perFrameGameEventDefinition;
+    delete perFrameMenuEventDefinition;
 
-    delete consoleDefinition;
+    delete worldDefinitions;
+    delete consoleDefinitions;
     delete inputDefinitions;
     delete colorDefinitions;
     delete mathDefinitions;
@@ -146,8 +158,12 @@ void ScriptWorld::update() {
     perTickEventDefinition->execute();
 }
 
-void ScriptWorld::draw(float interpolation) {
-    perFrameEventDefinition->setArgument("interpolation", interpolation);
+void ScriptWorld::drawGame(float interpolation) {
+    perFrameGameEventDefinition->setArgument("interpolation", interpolation);
+    perFrameGameEventDefinition->execute();
+}
 
-    perFrameEventDefinition->execute();
+void ScriptWorld::drawMenu(float interpolation) {
+    perFrameMenuEventDefinition->setArgument("interpolation", interpolation);
+    perFrameMenuEventDefinition->execute();
 }

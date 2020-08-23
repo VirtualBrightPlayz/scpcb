@@ -1,9 +1,11 @@
 shared Inventory@ inventory = Inventory(10);
 
-shared class Inventory {
+shared class Inventory : Menu {
     private array<InvSlot@> slots;
 
     Inventory(int size) {
+        super("inventory");
+
         const int rows = Math::ceil(size / 6.0);
         if (size % rows != 0) {
             // throw("Invalid inventory size"); // TODO
@@ -33,13 +35,18 @@ shared class Inventory {
         return false;
     }
 
-    void update(const Vector2f&in mousePos, const Vector2f&in mouseWheelDelta) {
+    bool onEscapeHit() override {
+        return true;
+    }
+
+    bool update(const Vector2f&in mousePos, const Vector2f&in mouseWheelDelta) override {
         for (int i = 0; i < slots.length(); i++) {
             slots[i].update(mousePos);
         }
+        return (Input::getHit() & Input::Inventory) != 0;
     }
 
-    void render() {
+    void render() override {
         for (int i = 0; i < slots.length(); i++) {
             slots[i].render();
         }

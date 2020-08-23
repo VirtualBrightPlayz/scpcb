@@ -26,6 +26,7 @@ class LocalizationManager;
 class PauseMenu;
 class Console;
 class Inventory;
+class MouseData;
 class PickableManager;
 class FPSCounter;
 class GUIText;
@@ -34,6 +35,8 @@ class ScriptWorld;
 
 class World {
     private:
+        bool oldPaused;
+
         enum class RenderType {
             All,
             NoUI,
@@ -46,6 +49,7 @@ class World {
         Camera* camera;
 
         KeyBinds* keyBinds;
+        MouseData* mouseData;
         Config* config;
         Timing* timing;
 
@@ -98,6 +102,8 @@ class World {
         void draw(float interpolation, RenderType r);
 
     public:
+        bool paused;
+
         World();
         ~World();
 
