@@ -26,12 +26,12 @@ Model@ mask;
 Model@ mask2;
 
 external class Item;
-Item i;
+Item@ i = null;
 
 void main() {
     Debug::log("Starting up!");
     
-    i = Item();
+    @i = Item();
 
     Msg::set("LOL");
     

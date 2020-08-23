@@ -92,6 +92,8 @@ World::World() {
 }
 
 World::~World() {
+    delete scripting;
+
     delete fps;
     delete pickableManager;
     delete billboardManager;
@@ -110,7 +112,6 @@ World::~World() {
 
     delete camera;
     delete timing;
-    delete scripting;
     delete locMng;
     delete msgMng;
 
