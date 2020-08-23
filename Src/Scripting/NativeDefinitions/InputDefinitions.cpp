@@ -5,6 +5,8 @@
 InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* md) {
     engine = mgr->getAngelScriptEngine();
 
+    keyBinds = kb;
+
     engine->RegisterEnum("Input");
 
     engine->RegisterEnumValue("Input", "None", (int)Input::None);
@@ -22,11 +24,17 @@ InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* 
 
     engine->RegisterEnumValue("Input", "ToggleConsole", (int)Input::ToggleConsole);
 
-    engine->SetDefaultNamespace("Input");
+    engine->SetDefaultNamespace("Input::Mouse1");
+    engine->RegisterGlobalFunction("int getClickCount()", asMETHOD(InputDefinitions, getClickCount), asCALL_THISCALL_ASGLOBAL, this);
 
+    engine->SetDefaultNamespace("Input");
     engine->RegisterGlobalFunction("Input getDown()", asMETHOD(KeyBinds, getDownInputs), asCALL_THISCALL_ASGLOBAL, kb);
     engine->RegisterGlobalFunction("Input getHit()", asMETHOD(KeyBinds, getHitInputs), asCALL_THISCALL_ASGLOBAL, kb);
 
     engine->RegisterGlobalFunction("const Vector2f& getMousePosition()", asMETHOD(MouseData , getPosition), asCALL_THISCALL_ASGLOBAL, md);
     engine->RegisterGlobalFunction("const Vector2f& getMouseWheelDelta()", asMETHOD(MouseData, getWheelDelta), asCALL_THISCALL_ASGLOBAL, md);
+}
+
+int InputDefinitions::getClickCount() const {
+    return keyBinds->mouse1->getClickCount();
 }

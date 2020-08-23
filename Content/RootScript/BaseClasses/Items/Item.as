@@ -3,10 +3,22 @@ namespace Item {
     shared void register(const string&in name, const string&in model, const string&in icon, float scale = 1.0) {
         ItemTemplate it;
         it.name = name;
+        it.localName = name; // TODO
         it.model = model;
         it.icon = icon;
         templates.insertLast(it);
         Debug::log(templates[0].name);
+    }
+    shared array<Item@> items;
+    shared void updateAll() {
+        for (int i = 0; i < items.length(); i++) {
+            items[i].update();
+        }
+    }
+    shared void renderAll() {
+        for (int i = 0; i < items.length(); i++) {
+            items[i].render();
+        }
     }
     shared Item@ spawn(const string&in name, const Vector3f&in position) {
         Debug::log("Creating item " + name);
@@ -24,12 +36,21 @@ namespace Item {
             //throw("ERROR");
         }
         result.position = position;
+        items.insertLast(result);
         return result;
     }
 }
 
-shared class Item {
+shared abstract class Item {
     private ItemTemplate it;
+
+    string icon {
+        get { return it.icon; }
+    }
+
+    string name {
+        get { return it.localName; }
+    }
 
     private Model@ model;
 
@@ -53,6 +74,7 @@ shared class Item {
     }
 
     Item(ItemTemplate it) {
+        Debug::log(it.model);
         this.it = it;
         @model = Model::create(it.model);
         @pickable = Pickable();
@@ -64,7 +86,7 @@ shared class Item {
         Pickable::deactivatePickable(pickable);
     }
 
-    // Returns whether or not the item was equipped.
+    // Returns whether or not the item is now equipped.
     bool onUse() { return false; }
     void onDrop() {}
     void onPick() {}

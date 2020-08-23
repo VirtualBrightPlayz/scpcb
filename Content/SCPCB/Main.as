@@ -31,14 +31,16 @@ external class ItemTemplate;
 namespace Item {
     external void register(const string&in name, const string&in model, const string&in icon, float scale);
     external Item@ spawn(const string&in name, const Vector3f&in position);
+    external void updateAll();
+    external void renderAll();
 }
 
-shared class Gasmask : Item {
+shared class FirstAidKit : Item {
     void onPick() override {
         Debug::log("POG");
     }
-    Gasmask(ItemTemplate it) {
-        Debug::log("Gasmask constructor");
+    FirstAidKit(ItemTemplate it) {
+        Debug::log("FirstAidKit constructor");
         super(it);
     }
 }
@@ -56,8 +58,8 @@ void main() {
 
     Msg::set("LOL");
 
-    Item::register("Gasmask", "SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 0.5);
-    //Item::spawn("Gasmask", Vector3f(0.0, 20.0, 20.0));
+    Item::register("FirstAidKit", "SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 0.5);
+    Item::spawn("FirstAidKit", Vector3f(0.0, 20.0, 20.0));
     
     Vector2f test = Vector2f(10.0, 10.0);
     Vector2f test2 = Vector2f(15.0, 10.0);
@@ -118,6 +120,7 @@ void update(float deltaTime) {
             time = 0.0;
         }
     }
+    Item::updateAll();
     menuManager.update(Input::getMousePosition(), Input::getMouseWheelDelta());
 }
 
@@ -127,6 +130,7 @@ void renderGame(float interpolation) {
     mask.render();
     mask2.render();
     Billboard::renderAll();
+    Item::renderAll();
 }
 
 void renderMenu(float interpolation) {

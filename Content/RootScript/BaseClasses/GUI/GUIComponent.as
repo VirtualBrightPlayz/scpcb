@@ -13,7 +13,7 @@ shared enum Alignment {
     Bottom = 0x8
 }
 
-shared class GUIComponent {
+shared abstract class GUIComponent {
     private float trueX;
     private float trueY;
 

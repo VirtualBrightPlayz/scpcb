@@ -116,6 +116,8 @@ class World {
         // Prompts the world object to kill itself.
         void quit();
 
+        Font* getFont() const;
+
 };
 
 #endif // WORLD_H_INCLUDED

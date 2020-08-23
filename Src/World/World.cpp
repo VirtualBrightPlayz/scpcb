@@ -370,3 +370,7 @@ void World::drawPlaying(float interpolation) {
 void World::quit() {
     shutdownRequested = true;
 }
+
+Font* World::getFont() const {
+    return largeFont;
+}

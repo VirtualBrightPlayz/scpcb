@@ -37,7 +37,7 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     colorDefinitions = new ColorDefinitions(manager);
     mathDefinitions = new MathDefinitions(manager);
     inputDefinitions = new InputDefinitions(manager, keyBinds, mouseData);
-    uiDefinitions = new UIDefinitions(manager, um);
+    uiDefinitions = new UIDefinitions(manager, um, world);
     messageDefinitions = new MessageDefinitions(manager, mm);
     billboardDefinitions = new BillboardDefinitions(manager, bm);
     collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);

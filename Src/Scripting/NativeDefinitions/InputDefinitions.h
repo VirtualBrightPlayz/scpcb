@@ -8,6 +8,11 @@ class KeyBinds;
 class MouseData;
 
 class InputDefinitions : public NativeDefinition {
+    private:
+        KeyBinds* keyBinds;
+
+        int getClickCount() const;
+
     public:
         InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* md);
 };

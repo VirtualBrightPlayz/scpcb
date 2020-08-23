@@ -3,12 +3,13 @@ namespace InvSlot {
 }
 
 shared class InvSlot : GUIComponent {
-
     Rectanglef background;
     Rectanglef top;
     Rectanglef bottom;
     Rectanglef left;
     Rectanglef right;
+
+    GUIText@ text;
 
     Item@ item = null;
 
@@ -19,6 +20,7 @@ shared class InvSlot : GUIComponent {
         super(x, y, InvSlot::screenSize, InvSlot::screenSize);
         background = Rectanglef(x + GUIComponent::borderThickness, y + GUIComponent::borderThickness, x2 - GUIComponent::borderThickness, y2 - GUIComponent::borderThickness);
         updateRectangles(false);
+        @text = GUIText(0.0f, 0.0f, Alignment::CenterXY, true, true, false, Font::large);
     }
 
     private void updateRectangles(bool doubled) {
@@ -35,18 +37,19 @@ shared class InvSlot : GUIComponent {
 
     void setItem(Item@ it) {
         @item = it;
+        text.setText(it.name);
     }
 
     void update(const Vector2f&in mousePos) override {
         if (mousePos.x >= x && mousePos.y >= y && mousePos.x <= x2 && mousePos.y <= y2) {
             hovered = true;
             
-            /*if (keyBinds->mouse1->getClickCount() >= 2 && hasItem()) { // TODO
-                if (item->onUse() != equipped) {
+            if (hasItem() && Input::Mouse1::getClickCount() >= 2) {
+                if (item.onUse() != equipped) {
                     equipped = !equipped;
                     updateRectangles(equipped);
                 }
-            }*/
+            }
         } else {
             hovered = false;
         }
@@ -54,7 +57,7 @@ shared class InvSlot : GUIComponent {
 
     void render() override {
         if (hasItem()) {
-            //UI::setTextured(item->getInvIcon(), false);
+            UI::setTextured(item.icon, false);
             UI::addRect(background);
         } else {
             UI::setTextured("SCPCB/GFX/Menu/menublack", true);

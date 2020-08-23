@@ -5,10 +5,11 @@
 
 class ScriptManager;
 class UIMesh;
+class World;
 
 class UIDefinitions : NativeDefinition {
     public:
-        UIDefinitions(ScriptManager* mgr, UIMesh* uiMesh);
+        UIDefinitions(ScriptManager* mgr, UIMesh* uiMesh, World* world);
 };
 
 #endif
