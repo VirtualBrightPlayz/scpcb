@@ -1,10 +1,9 @@
 #include "InputDefinitions.h"
 #include "../../Input/KeyBinds.h"
+#include "../../Input/MouseData.h"
 
-InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb) {
+InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* md) {
     engine = mgr->getAngelScriptEngine();
-
-    keyBinds = kb;
 
     engine->RegisterEnum("Input");
 
@@ -25,8 +24,9 @@ InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb) {
 
     engine->SetDefaultNamespace("Input");
 
-    engine->RegisterGlobalFunction("Input getDown()", asMETHOD(KeyBinds, getDownInputs), asCALL_THISCALL_ASGLOBAL, keyBinds);
-    engine->RegisterGlobalFunction("Input getHit()", asMETHOD(KeyBinds, getHitInputs), asCALL_THISCALL_ASGLOBAL, keyBinds);
+    engine->RegisterGlobalFunction("Input getDown()", asMETHOD(KeyBinds, getDownInputs), asCALL_THISCALL_ASGLOBAL, kb);
+    engine->RegisterGlobalFunction("Input getHit()", asMETHOD(KeyBinds, getHitInputs), asCALL_THISCALL_ASGLOBAL, kb);
 
-    keyBinds->getDownInputs();
+    engine->RegisterGlobalFunction("const Vector2f& getMousePosition()", asMETHOD(MouseData , getPosition), asCALL_THISCALL_ASGLOBAL, md);
+    engine->RegisterGlobalFunction("const Vector2f& getMouseWheelDelta()", asMETHOD(MouseData, getWheelDelta), asCALL_THISCALL_ASGLOBAL, md);
 }

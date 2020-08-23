@@ -5,12 +5,11 @@
 #include "../ScriptManager.h"
 
 class KeyBinds;
+class MouseData;
 
 class InputDefinitions : public NativeDefinition {
-    private:
-        KeyBinds* keyBinds;
     public:
-        InputDefinitions(ScriptManager* mgr, KeyBinds* kb);
+        InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* md);
 };
 
-#endif
+#endif // INPUTDEFINITIONS_H_INCLUDED

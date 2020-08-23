@@ -21,6 +21,7 @@
 #include "../Menus/GUI/GUIText.h"
 #include "../Input/KeyBinds.h"
 #include "../Input/Input.h"
+#include "../Input/MouseData.h"
 #include "../Utils/MessageManager.h"
 #include "../Utils/LocalizationManager.h"
 #include "../Utils/MathUtil.h"
@@ -51,6 +52,7 @@ World::World() {
     largeFont = new Font(ftLibrary, gfxRes, config, PGE::FilePath::fromStr("SCPCB/GFX/Font/Inconsolata-Regular.ttf"), 20);
     uiMesh = new UIMesh(gfxRes);
     keyBinds = new KeyBinds(io);
+    mouseData = new MouseData(io, config);
 
     locMng = new LocalizationManager(config->languageCode->value);
     msgMng = new MessageManager(locMng, uiMesh, keyBinds, config, largeFont);
@@ -70,7 +72,10 @@ World::World() {
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
 
-    scripting = new ScriptWorld(gfxRes, camera, keyBinds, msgMng, pickableManager, uiMesh, config, (float)timing->getTimeStep(), console, billboardManager);
+    oldPaused = false;
+    paused = false;
+
+    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, msgMng, pickableManager, uiMesh, config, (float)timing->getTimeStep(), console, billboardManager);
 
     applyConfig(config);
 
@@ -84,8 +89,6 @@ World::World() {
     if (vrm != nullptr) {
         vrm->createTexture(graphics, config);
     }
-
-    keyBinds->mouse1->isHit();
 
     //i = new Item("SCPCB/GFX/Items/Gasmask/gasmask.fbx", "SCPCB/GFX/Items/Gasmask/inv_gasmask", 50, gfxRes, pickableManager, inventory);
     //i2 = new Item("SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 40, gfxRes, pickableManager, inventory);
@@ -102,6 +105,7 @@ World::~World() {
     delete inventory;
     delete uiMesh;
     delete keyBinds;
+    delete mouseData;
 
 #ifdef DEBUG
     delete mouseTxtX;
@@ -222,22 +226,10 @@ void World::runTick(float timeStep) {
     SysEvents::update();
     io->update();
     keyBinds->update();
+    mouseData->update();
 
     Input downInputs = keyBinds->getDownInputs();
     Input hitInputs = keyBinds->getHitInputs();
-
-    // Get mouse position and convert it to screen coordinates.
-
-    // Convert it to [0, 100].
-    PGE::Vector2f scale = PGE::Vector2f(GUIComponent::SCALE_MAGNITUDE * 2 / config->getWidth(), GUIComponent::SCALE_MAGNITUDE * 2 / config->getHeight());
-    PGE::Vector2f mousePosition = PGE::Vector2f(io->getMousePosition().x * scale.x, io->getMousePosition().y * scale.y);
-    mousePosition.x *= config->getAspectRatio();
-
-    // Subtract 50 to bring it inline with the [-50, 50] screen coordinates.
-    mousePosition.x -= GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio();
-    mousePosition.y -= GUIComponent::SCALE_MAGNITUDE;
-
-    PGE::Vector2i mouseWheelDelta = io->getMouseWheelDelta();
 
 #ifdef DEBUG
     mouseTxtX->setText(PGE::String("DownInputs: ") + (int)downInputs);
@@ -254,13 +246,15 @@ void World::runTick(float timeStep) {
         menuGraveyard = nullptr;
     }
 
-    bool menuWasOpened = currMenu != nullptr;
-    if (!menuWasOpened) {
+    if (!paused) {
         updatePlaying(timeStep);
-        scripting->update();
     } else {
-        currMenu->update(mousePosition, mouseWheelDelta);
+        if (currMenu != nullptr) {
+            currMenu->update(mouseData->getPosition(), mouseData->getWheelDelta());
+        }
     }
+
+    scripting->update();
 
     if (keyBinds->escape->isHit()) {
         // If a text input is active then escape de-selects it.
@@ -271,6 +265,7 @@ void World::runTick(float timeStep) {
             currMenu->onEscapeHit();
         } else {
             activateMenu(pauseMenu);
+            paused = true;
         }
     } else if (inputWasFired(hitInputs, Input::ToggleConsole)) {
         if (currMenu == nullptr) {
@@ -278,31 +273,34 @@ void World::runTick(float timeStep) {
         } else if (currMenu == console) {
             console->onEscapeHit();
         } // Otherwise another menu is already open.
-    } else if (inputWasFired(hitInputs, Input::Inventory)) {
+    }/* else if (inputWasFired(hitInputs, Input::Inventory)) {
         if (currMenu == nullptr) {
             activateMenu(inventory);
         } else if (currMenu == inventory) {
             inventory->onEscapeHit();
         } // Otherwise another menu is already open.
-    }
+    }*/
 
     if (currMenu == nullptr && !graphics->getWindow()->isFocused()) {
         activateMenu(pauseMenu);
     }
 
     // If a menu was closed this tick then reset the mouse position.
-    if (menuWasOpened && currMenu == nullptr) {
-        io->setMouseVisibility(false);
-        io->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
-    } else if (!menuWasOpened && currMenu != nullptr) {
-        io->setMouseVisibility(true);
+    if (paused != oldPaused) {
+        if (paused) {
+            io->setMouseVisibility(true);
+        } else {
+            io->setMouseVisibility(false);
+            io->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
+        }
+        oldPaused = paused;
     }
 }
 
 void World::draw(float interpolation, RenderType r) {
     if (r != RenderType::UIOnly) {
         drawPlaying(interpolation);
-        scripting->draw(interpolation);
+        scripting->drawGame(interpolation);
 
         if (vrm != nullptr && vrm->getFade() > 0.f) {
             graphics->setDepthTest(false);
@@ -325,6 +323,8 @@ void World::draw(float interpolation, RenderType r) {
 
     if (r != RenderType::NoUI) {
         graphics->setDepthTest(false);
+
+        scripting->drawMenu(interpolation);
         
         if (currMenu != nullptr) {
             currMenu->render();

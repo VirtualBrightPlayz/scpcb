@@ -32,7 +32,7 @@ void GUIText::updatePosition() {
         pos.x = pos.x - font->stringWidth(text, scale) / 2.f;
     }
     if (centerY) {
-        pos.y = pos.y - font->getHeight(scale) / 1.5;
+        pos.y = pos.y - font->getHeight(scale) / 1.5f;
     }
 }
 
