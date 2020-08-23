@@ -21,5 +21,5 @@ UIDefinitions::UIDefinitions(ScriptManager* mgr, UIMesh* uiMesh, World* world) {
     engine->RegisterObjectMethod("Font", "float getHeight(float scale) const", asMETHOD(Font, getHeight), asCALL_THISCALL);
 
     engine->SetDefaultNamespace("Font");
-    engine->RegisterGlobalProperty("Font@ large", world->getFont());
+    engine->RegisterGlobalFunction("Font@ get_large() property", asMETHOD(World, getFont), asCALL_THISCALL_ASGLOBAL, world);
 }
