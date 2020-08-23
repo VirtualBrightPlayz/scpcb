@@ -2703,11 +2703,13 @@ bool asCParser::IsVarDecl()
 	sToken t1;
 
 	bool isSharedOrExternal = false;
+	bool isExternal = false;
 	GetToken(&t1);
 	while (IdentifierIs(t1, SHARED_TOKEN) ||
 		   IdentifierIs(t1, EXTERNAL_TOKEN))
 	{
 		isSharedOrExternal = true;
+		if (IdentifierIs(t1, EXTERNAL_TOKEN)) { isExternal = true; }
 
 		GetToken(&t1);
 	}
@@ -2787,7 +2789,7 @@ bool asCParser::IsVarDecl()
 		}
 
 		RewindTo(&t);
-		return true;
+		return !isExternal;
 	}
 
 	RewindTo(&t);
