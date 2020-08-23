@@ -25,7 +25,7 @@
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 #include "../Scripting/NativeDefinitions/ReflectionDefinitions.h"
 
-ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MessageManager* mm, const Config* config, float timestep, Console* con, BillboardManager* bm) {
+ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MessageManager* mm, PickableManager* pm, Config* config, float timestep, Console* con, BillboardManager* bm) {
     manager = new ScriptManager();
 
     refCounterManager = new RefCounterManager();
@@ -39,7 +39,7 @@ ScriptWorld::ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* ke
     collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);
     modelDefinitions = new ModelDefinitions(manager, gfxRes);
     rm2Definitions = new RM2Definitions(manager, gfxRes);
-    pickableDefinitions = new PickableDefinitions(manager, refCounterManager);
+    pickableDefinitions = new PickableDefinitions(manager, refCounterManager, pm);
     playerControllerDefinitions = new PlayerControllerDefinitions(manager, refCounterManager, camera);
     reflectionDefinitions = new ReflectionDefinitions(manager);
 

@@ -5,6 +5,7 @@
 
 class ScriptManager;
 class Pickable;
+class PickableManager;
 
 class PickableDefinitions : RefCounter {
 	private:
@@ -15,7 +16,7 @@ class PickableDefinitions : RefCounter {
 
 
 	public:
-		PickableDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr);
+		PickableDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr, PickableManager* pm);
 };
 
 #endif // PICKABLEDEFINITIONS_H_INCLUDED

@@ -84,10 +84,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
     importer->FreeScene();
 }
 
-#include <iostream>
-
 Model::~Model() {
-    std::cout << "rip model" << std::endl;
     for (unsigned int i = 0; i < meshCount; i++) {
         delete meshes[i];
     }

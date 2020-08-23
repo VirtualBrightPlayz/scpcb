@@ -28,7 +28,7 @@ void PickableDefinitions::release(void* ptr) {
     }
 }
 
-PickableDefinitions::PickableDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr) {
+PickableDefinitions::PickableDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr, PickableManager* pm) {
     engine = mgr->getAngelScriptEngine();
 
     refCounterManager = rcMgr;
@@ -41,6 +41,10 @@ PickableDefinitions::PickableDefinitions(ScriptManager* mgr, RefCounterManager* 
 
     engine->RegisterObjectProperty("Pickable", "Vector3f position", asOFFSET(Pickable, position));
     engine->RegisterObjectMethod("Pickable", "bool getPicked()", asMETHOD(Pickable, getPicked), asCALL_THISCALL);
+
+    engine->SetDefaultNamespace("Pickable");
+    engine->RegisterGlobalFunction("void activatePickable(Pickable@ p)", asMETHOD(PickableManager, activatePickable), asCALL_THISCALL_ASGLOBAL, pm);
+    engine->RegisterGlobalFunction("void deactivatePickable(Pickable@ p)", asMETHOD(PickableManager, deactivatePickable), asCALL_THISCALL_ASGLOBAL, pm);
 }
 
 

@@ -24,6 +24,7 @@ class Config;
 class Camera;
 class Console;
 class MessageManager;
+class PickableManager;
 class BillboardManager;
 class RefCounterManager;
 
@@ -52,7 +53,7 @@ private:
     std::vector<ScriptModule*> modules;
 
 public:
-    ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MessageManager* mm, const Config* config, float timestep, Console* con, BillboardManager* bm);
+    ScriptWorld(GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MessageManager* mm, PickableManager* pm, Config* config, float timestep, Console* con, BillboardManager* bm);
     ~ScriptWorld();
 
     void update();

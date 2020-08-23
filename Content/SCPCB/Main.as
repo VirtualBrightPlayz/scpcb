@@ -30,8 +30,11 @@ Item@ i = null;
 
 void main() {
     Debug::log("Starting up!");
+
+    Rectanglef rect = Rectanglef(Vector2f(-1, -1), Vector2f(4, 4));
     
     @i = Item();
+    i.position = Vector3f(0.0, 20.0, 20.0);
 
     Msg::set("LOL");
     
@@ -91,6 +94,7 @@ void update(float deltaTime) {
         two.visible = !two.visible;
         time = 0.0;
     }
+    i.update();
 }
 
 void render(float interpolation) {
