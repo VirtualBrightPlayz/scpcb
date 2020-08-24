@@ -33,6 +33,9 @@ InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* 
     engine->RegisterGlobalFunction("Input getDown()", asMETHOD(KeyBinds, getDownInputs), asCALL_THISCALL_ASGLOBAL, kb);
     engine->RegisterGlobalFunction("Input getHit()", asMETHOD(KeyBinds, getHitInputs), asCALL_THISCALL_ASGLOBAL, kb);
 
+    engine->RegisterGlobalFunction("bool isEscapeDown()", asMETHOD(PGE::KeyboardInput, isDown), asCALL_THISCALL_ASGLOBAL, kb->escape);
+    engine->RegisterGlobalFunction("bool isEscapeHit()", asMETHOD(PGE::KeyboardInput, isHit), asCALL_THISCALL_ASGLOBAL, kb->escape);
+
     engine->RegisterGlobalFunction("const Vector2f& getMousePosition()", asMETHOD(MouseData , getPosition), asCALL_THISCALL_ASGLOBAL, md);
     engine->RegisterGlobalFunction("const Vector2f& getMouseWheelDelta()", asMETHOD(MouseData, getWheelDelta), asCALL_THISCALL_ASGLOBAL, md);
 }

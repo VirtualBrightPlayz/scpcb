@@ -1,8 +1,8 @@
-namespace InvSlot {
+namespace GUIInvSlot {
     const float screenSize = 7.5;
 }
 
-shared class InvSlot : GUIComponent {
+shared class GUIInvSlot : GUIComponent {
     private Rectanglef background;
     private Rectanglef top;
     private Rectanglef bottom;
@@ -26,11 +26,11 @@ shared class InvSlot : GUIComponent {
     private bool hovered = false;
     private bool equipped = false;
 
-    InvSlot(Menu@ menu, float x, float y) {
-        super(menu, x, y, InvSlot::screenSize, InvSlot::screenSize);
+    GUIInvSlot(Menu@ menu, float x, float y) {
+        super(menu, x, y, GUIInvSlot::screenSize, GUIInvSlot::screenSize);
         background = Rectanglef(x + GUIComponent::borderThickness, y + GUIComponent::borderThickness, x2 - GUIComponent::borderThickness, y2 - GUIComponent::borderThickness);
         updateRectangles(false);
-        @text = GUIText(menu, x + InvSlot::screenSize / 2, y2 + InvSlot::screenSize / 4, true, true, false);
+        @text = GUIText(menu, x + GUIInvSlot::screenSize / 2, y2 + GUIInvSlot::screenSize / 4, true, true, false);
     }
 
     private void updateRectangles(bool doubled) {
@@ -41,11 +41,9 @@ shared class InvSlot : GUIComponent {
         left = Rectanglef(x2 - thickness, y, x2, y2);
     }
 
-    void onClose() override {
-        hovered = false;
-    }
+    void update() override {
+        Vector2f mousePos = Input::getMousePosition();
 
-    void update(const Vector2f&in mousePos) override {
         if (mousePos.x >= x && mousePos.y >= y && mousePos.x <= x2 && mousePos.y <= y2) {
             hovered = true;
             

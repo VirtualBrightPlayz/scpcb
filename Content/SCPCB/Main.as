@@ -45,16 +45,14 @@ shared class FirstAid : Item {
     }
 }
 
-external class Inventory;
 external class MenuManager;
-external Inventory@ inventory;
 
 MenuManager@ menuManager;
 
 void main() {
     Debug::log("Starting up!");
 
-    @menuManager = MenuManager(inventory);
+    @menuManager = MenuManager();
 
     Msg::set("LOL");
 
@@ -121,7 +119,7 @@ void update(float deltaTime) {
         }
     }
     Item::updateAll();
-    menuManager.update(Input::getMousePosition(), Input::getMouseWheelDelta());
+    menuManager.update();
 }
 
 void renderGame(float interpolation) {

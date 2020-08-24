@@ -56,7 +56,7 @@ shared abstract class GUIComponent {
 
     Alignment alignment;
 
-    bool visible = true;
+    bool active = true;
 
     GUIComponent(Menu@ menu, float x, float y, float width, float height, Alignment alignment = Alignment::CenterXY) {
         menu.components.insertLast(this);
@@ -73,6 +73,6 @@ shared abstract class GUIComponent {
     void onClose() {}
     void onOpen() {}
 
-    void update(const Vector2f&in mousePos) {}
+    void update() {}
     void render() {}
 }

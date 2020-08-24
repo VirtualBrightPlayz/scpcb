@@ -8,12 +8,32 @@ shared class GUIFrame : GUIComponent {
     private Rectanglef foreground;
     private Rectanglef background;
 
+    Color color = GUIFrame::hoverColor;
+
     bool hovered = false;
+
+    void set_x(float value) property override {
+        GUIComponent::set_x(value);
+        updateRectangles();
+    }
+
+    void set_y(float value) property override {
+        GUIComponent::set_y(value);
+        updateRectangles();
+    }
 
     GUIFrame(Menu@ menu, float x, float y, float width, float height, Alignment alignment = Alignment::CenterXY) {
         super(menu, x, y, width, height, alignment);
+        updateRectangles();
+    }
+
+    private void updateRectangles() {
         foreground = Rectanglef(x + GUIComponent::borderThickness, y + GUIComponent::borderThickness, x2 - GUIComponent::borderThickness, y2 - GUIComponent::borderThickness);
         background = Rectanglef(x, y, x2, y2);
+    }
+
+    void onClose() override {
+        hovered = false;
     }
 
     void render() override {
@@ -24,7 +44,7 @@ shared class GUIFrame : GUIComponent {
 
         if (hovered) {
             UI::setTextureless();
-            UI::setColor(GUIFrame::hoverColor);
+            UI::setColor(color);
             UI::addRect(foreground);
             UI::setColor(Color::White);
         }

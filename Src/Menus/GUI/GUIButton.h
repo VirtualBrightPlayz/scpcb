@@ -8,6 +8,7 @@ class GUIFrame;
 class GUIText;
 class LocalizationManager;
 
+// Ported.
 class GUIButton : public GUIComponent {
     private:
         GUIFrame* frame;

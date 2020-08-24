@@ -5,6 +5,7 @@
 #include "../../Graphics/UIMesh.h"
 #include "../../Utils/LocalizationManager.h"
 
+// Ported.
 GUIButton::GUIButton(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, LocalizationManager* lm, float x, float y, float width, float height, const PGE::String& txt, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment) {
     frame = new GUIFrame(um, kb, con, x, y, width, height, alignment);

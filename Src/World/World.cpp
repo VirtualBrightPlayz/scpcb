@@ -7,6 +7,7 @@
 #include <filesystem>
 
 #include "Timing.h"
+#include "Pickable.h"
 #include "FPSCounter.h"
 #include "ScriptWorld.h"
 #include "../Graphics/Camera.h"
@@ -26,8 +27,6 @@
 #include "../Utils/LocalizationManager.h"
 #include "../Utils/MathUtil.h"
 #include "../Scripting/ScriptObject.h"
-
-#include "../World/Item.h"
 
 World::World() {
     config = new Config("options.ini");
@@ -89,9 +88,6 @@ World::World() {
     if (vrm != nullptr) {
         vrm->createTexture(graphics, config);
     }
-
-    //i = new Item("SCPCB/GFX/Items/Gasmask/gasmask.fbx", "SCPCB/GFX/Items/Gasmask/inv_gasmask", 50, gfxRes, pickableManager, inventory);
-    //i2 = new Item("SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 40, gfxRes, pickableManager, inventory);
 }
 
 World::~World() {
@@ -256,7 +252,7 @@ void World::runTick(float timeStep) {
 
     scripting->update();
 
-    if (keyBinds->escape->isHit()) {
+    /*if (keyBinds->escape->isHit()) {
         // If a text input is active then escape de-selects it.
         // Unless it's the console's input.
         if (GUITextInput::hasSubscriber() && currMenu != nullptr && !currMenu->getType().equals("console")) {
@@ -267,7 +263,7 @@ void World::runTick(float timeStep) {
             activateMenu(pauseMenu);
             paused = true;
         }
-    } else if (inputWasFired(hitInputs, Input::ToggleConsole)) {
+    } else */if (inputWasFired(hitInputs, Input::ToggleConsole)) {
         if (currMenu == nullptr) {
             activateMenu(console);
         } else if (currMenu == console) {
@@ -281,9 +277,9 @@ void World::runTick(float timeStep) {
         } // Otherwise another menu is already open.
     }*/
 
-    if (currMenu == nullptr && !graphics->getWindow()->isFocused()) {
+    /*if (currMenu == nullptr && !graphics->getWindow()->isFocused()) {
         activateMenu(pauseMenu);
-    }
+    }*/
 
     // If a menu was closed this tick then reset the mouse position.
     if (paused != oldPaused) {

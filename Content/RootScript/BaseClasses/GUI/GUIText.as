@@ -66,7 +66,7 @@ shared class GUIText : GUIComponent {
     }
 
     void render() override {
-        // Set textureless?
+        UI::setTextureless();
         font.draw(_text, pos, scale, rotation, color);
     }
 }

@@ -17,18 +17,12 @@ shared abstract class Menu {
     bool onEscapeHit() { return false; }
 
     // Returns whether this menu should detach.
-    bool update(const Vector2f&in mousePosition, const Vector2f&in mouseWheelDelta) { return false; }
+    bool update() { return false; }
     void render() {}
 }
 
 shared class MenuManager {
     Menu@ currMenu;
-
-    private Inventory@ inventory;
-
-    MenuManager(Inventory@ inventory) {
-        @this.inventory = inventory;
-    }
 
     void deactivateMenu(Menu@ mu) {
         if (@currMenu == @mu) {
@@ -56,17 +50,21 @@ shared class MenuManager {
         World::paused = true;
     }
 
-    void update(const Vector2f&in mousePosition, const Vector2f&in mouseWheelDelta) {
+    void update() {
         if (currMenu == null) {
-            if ((Input::getHit() & Input::Inventory) != 0) {
-                activateMenu(inventory);
+            if (Input::isEscapeHit()) {
+                activateMenu(pauseMenu);
+            } else if (Input::getHit() & Input::Inventory != 0) {
+                activateMenu(inventoryMenu);
             }
         } else {
-            if (currMenu.update(mousePosition, mouseWheelDelta)) {
+            if (Input::isEscapeHit() && currMenu.onEscapeHit() || currMenu.update()) {
                 deactivateMenu(currMenu);
             } else {
                 for (int i = 0; i < currMenu.components.length(); i++) {
-                    currMenu.components[i].update(mousePosition);
+                    if (currMenu.components[i].active) {
+                        currMenu.components[i].update();
+                    }
                 }
             }
         }
@@ -76,7 +74,7 @@ shared class MenuManager {
         if (currMenu != null) {
             currMenu.render();
             for (int i = 0; i < currMenu.components.length(); i++) {
-                if (currMenu.components[i].visible) {
+                if (currMenu.components[i].active) {
                     currMenu.components[i].render();
                 }
             }
