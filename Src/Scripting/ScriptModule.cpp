@@ -44,16 +44,35 @@ void ScriptModule::build() {
     int errorCode = scriptModule->Build();
     if (errorCode < 0) { throw std::runtime_error("whabammy!"); }
 
+    std::vector<asITypeInfo*> unprocessedTypes;
     int typeCount = scriptModule->GetObjectTypeCount();
     for (int i = 0; i < typeCount; i++) {
         asITypeInfo* typeInfo = scriptModule->GetObjectTypeByIndex(i);
-
         if (scriptManager->getSharedClassByTypeId(typeInfo->GetTypeId()) != nullptr) { continue; }
 
-        ScriptClass* newClass = new ScriptClass(this, typeInfo);
-        classes.push_back(newClass);
-        if ((typeInfo->GetFlags() & asOBJ_SHARED) != 0) {
-            scriptManager->registerSharedClass(newClass);
+        unprocessedTypes.push_back(typeInfo);
+    }
+
+    while (unprocessedTypes.size()>0) {
+        int unprocessedCount = unprocessedTypes.size();
+        for (int i=unprocessedTypes.size()-1;i>=0;i--) {
+            bool canProcess = true;
+            if (unprocessedTypes[i]->GetBaseType() != nullptr) {
+                int parentId = unprocessedTypes[i]->GetBaseType()->GetTypeId();
+                canProcess = scriptManager->getClassByTypeId(parentId) != nullptr;
+            }
+            if (!canProcess) { continue; }
+
+            asITypeInfo* typeInfo = unprocessedTypes[i];
+            ScriptClass* newClass = new ScriptClass(this, typeInfo);
+            classes.push_back(newClass);
+            if ((typeInfo->GetFlags() & asOBJ_SHARED) != 0) {
+                scriptManager->registerSharedClass(newClass);
+            }
+            unprocessedTypes.erase(unprocessedTypes.begin()+i);
+        }
+        if (unprocessedCount == unprocessedTypes.size()) {
+            throw std::runtime_error("Failed to process all classes");
         }
     }
 
