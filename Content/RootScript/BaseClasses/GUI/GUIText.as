@@ -5,12 +5,17 @@ shared class GUIText : GUIComponent {
 
     private Font@ font;
 
-    private string text;
+    private string text = "";
     private Vector2f pos;
 
-    Color color;
-    float rotation;
+    Color color = Color::White;
+    float rotation = 0.f;
     float scale;
+
+    void set_x(float value) property override {
+        GUIComponent::set_x(value);
+        updatePosition();
+    }
 
     GUIText(float x, float y, Alignment alignment, bool centerX, bool centerY, bool localized, Font@ font) {
         super(x, y, 0.f, 0.f, alignment);
@@ -20,9 +25,9 @@ shared class GUIText : GUIComponent {
 
         @this.font = font;
 
-        text = "";
+        scale = 100.f / UI::getScreenHeight();
         
-        //updatePosition();
+        updatePosition();
     }
 
     void updatePosition() {
@@ -36,8 +41,11 @@ shared class GUIText : GUIComponent {
     }
 
     void setText(const string&in newText) {
-        // TODO: Localization.
-        text = newText;
+        if (localized) {
+            text = Local::getTxt(newText);
+        } else {
+            text = newText;
+        }
         updatePosition();
     }
 

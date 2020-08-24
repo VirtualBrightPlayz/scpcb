@@ -22,11 +22,11 @@ shared abstract class GUIComponent {
         set {
             trueX = value;
             if ((alignment & Alignment::Left) != Alignment::CenterXY) {
-                trueX -= SCALE_MAGNITUDE;// * config->getAspectRatio();
+                trueX -= SCALE_MAGNITUDE * UI::getAspectRatio();
             }
 
             if ((alignment & Alignment::Right) != Alignment::CenterXY) {
-                trueX += SCALE_MAGNITUDE;// * config->getAspectRatio();
+                trueX += SCALE_MAGNITUDE * UI::getAspectRatio();
             }
         }
     }
@@ -36,11 +36,11 @@ shared abstract class GUIComponent {
         set {
             trueY = value;
             if ((alignment & Alignment::Left) != Alignment::CenterXY) {
-                trueY -= SCALE_MAGNITUDE;// * config->getAspectRatio();
+                trueY -= SCALE_MAGNITUDE * UI::getAspectRatio();
             }
 
             if ((alignment & Alignment::Right) != Alignment::CenterXY) {
-                trueY += SCALE_MAGNITUDE;// * config->getAspectRatio();
+                trueY += SCALE_MAGNITUDE * UI::getAspectRatio();
             }
         }
     }

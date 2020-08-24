@@ -74,9 +74,9 @@ class World {
         Console* console;
         Inventory* inventory;
 
-        PickableManager* pickableManager;
+        PickableManager* pickMng;
 
-        BillboardManager* billboardManager;
+        BillboardManager* billMng;
 
         FPSCounter* fps;
 

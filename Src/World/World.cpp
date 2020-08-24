@@ -65,9 +65,9 @@ World::World() {
     console = new Console(this, uiMesh, largeFont, keyBinds, config, locMng, io);
     inventory = new Inventory(this, uiMesh, keyBinds, config, 10);
 
-    pickableManager = new PickableManager(camera, uiMesh, keyBinds);
+    pickMng = new PickableManager(camera, uiMesh, keyBinds);
 
-    billboardManager = new BillboardManager(graphics, gfxRes);
+    billMng = new BillboardManager(graphics, gfxRes, camera);
 
     fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
     fps->visible = true;
@@ -75,7 +75,7 @@ World::World() {
     oldPaused = false;
     paused = false;
 
-    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, msgMng, pickableManager, uiMesh, config, (float)timing->getTimeStep(), console, billboardManager);
+    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, msgMng, locMng, pickMng, uiMesh, config, (float)timing->getTimeStep(), console, billMng);
 
     applyConfig(config);
 
@@ -98,8 +98,8 @@ World::~World() {
     delete scripting;
 
     delete fps;
-    delete pickableManager;
-    delete billboardManager;
+    delete pickMng;
+    delete billMng;
     delete pauseMenu;
     delete console;
     delete inventory;
@@ -356,7 +356,7 @@ void World::updatePlaying(float timeStep) {
     // View/Projection matrix.
     camera->update();
 
-    pickableManager->update();
+    pickMng->update();
 
     msgMng->update(timeStep);
 }
@@ -364,7 +364,7 @@ void World::updatePlaying(float timeStep) {
 void World::drawPlaying(float interpolation) {
     camera->updateDrawTransform(interpolation);
     gfxRes->setCameraUniforms(camera);
-    pickableManager->render();
+    pickMng->render();
 }
 
 void World::quit() {

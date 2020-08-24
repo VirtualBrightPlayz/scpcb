@@ -3,7 +3,7 @@ namespace Item {
     shared void register(const string&in name, const string&in model, const string&in icon, float scale = 1.0) {
         ItemTemplate it;
         it.name = name;
-        it.localName = name; // TODO
+        it.localName = Local::getTxt("Items." + name + ".Name");
         it.model = model;
         it.icon = icon;
         templates.insertLast(it);

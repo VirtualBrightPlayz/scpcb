@@ -209,6 +209,9 @@
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\WorldDefinitions.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\LocalizationDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -414,6 +417,9 @@
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\WorldDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\LocalizationDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
   </ItemGroup>

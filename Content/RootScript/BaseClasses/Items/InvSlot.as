@@ -20,7 +20,7 @@ shared class InvSlot : GUIComponent {
         super(x, y, InvSlot::screenSize, InvSlot::screenSize);
         background = Rectanglef(x + GUIComponent::borderThickness, y + GUIComponent::borderThickness, x2 - GUIComponent::borderThickness, y2 - GUIComponent::borderThickness);
         updateRectangles(false);
-        @text = GUIText(0.0f, 0.0f, Alignment::CenterXY, true, true, false, Font::large);
+        @text = GUIText(x + InvSlot::screenSize / 2, y2 + InvSlot::screenSize / 4, Alignment::CenterXY, true, true, false, Font::large);
     }
 
     private void updateRectangles(bool doubled) {
@@ -68,6 +68,9 @@ shared class InvSlot : GUIComponent {
             UI::setColor(Color(0.5f, 0.5f, 0.5f, 0.5f));
             UI::addRect(background);
             UI::setColor(Color::White);
+            if (hasItem()) {
+                text.render();
+            }
         }
         UI::setTextured("SCPCB/GFX/Menu/menuwhite", true);
         UI::addRect(top);

@@ -18,6 +18,7 @@
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
 #include "../Scripting/NativeDefinitions/UIDefinitions.h"
 #include "../Scripting/NativeDefinitions/MessageDefinitions.h"
+#include "../Scripting/NativeDefinitions/LocalizationDefinitions.h"
 #include "../Scripting/NativeDefinitions/BillboardDefinitions.h"
 #include "../Scripting/NativeDefinitions/ModelDefinitions.h"
 #include "../Scripting/NativeDefinitions/RM2Definitions.h"
@@ -27,7 +28,7 @@
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 #include "../Scripting/NativeDefinitions/ReflectionDefinitions.h"
 
-ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, MessageManager* mm, PickableManager* pm, UIMesh* um, Config* config, float timestep, Console* con, BillboardManager* bm) {
+ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, MessageManager* mm, LocalizationManager* lm, PickableManager* pm, UIMesh* um, Config* config, float timestep, Console* con, BillboardManager* bm) {
     manager = new ScriptManager();
 
     refCounterManager = new RefCounterManager();
@@ -37,8 +38,9 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     colorDefinitions = new ColorDefinitions(manager);
     mathDefinitions = new MathDefinitions(manager);
     inputDefinitions = new InputDefinitions(manager, keyBinds, mouseData);
-    uiDefinitions = new UIDefinitions(manager, um, world);
+    uiDefinitions = new UIDefinitions(manager, um, config, world);
     messageDefinitions = new MessageDefinitions(manager, mm);
+    localizationDefinitions = new LocalizationDefinitions(manager, lm);
     billboardDefinitions = new BillboardDefinitions(manager, bm);
     collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);
     modelDefinitions = new ModelDefinitions(manager, gfxRes);
@@ -141,6 +143,7 @@ ScriptWorld::~ScriptWorld() {
     delete mathDefinitions;
     delete uiDefinitions;
     delete messageDefinitions;
+    delete localizationDefinitions;
     delete billboardDefinitions;
     delete modelDefinitions;
     delete rm2Definitions;

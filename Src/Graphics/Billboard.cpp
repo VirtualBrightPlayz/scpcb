@@ -2,8 +2,11 @@
 
 #include <math.h>
 
-BillboardManager::BillboardManager(PGE::Graphics* gfx, GraphicsResources* gr) {
+#include "Camera.h"
+
+BillboardManager::BillboardManager(PGE::Graphics* gfx, GraphicsResources* gr, Camera* cam) {
     gfxRes = gr;
+    camera = cam;
     shader = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/Billboard/"), true);
 }
 
@@ -53,13 +56,31 @@ void BillboardManager::removeBillboard(Billboard* billboard) {
     }
 }
 
-GraphicsResources* BillboardManager::getGfxRes() const {
-    return gfxRes;
-}
-
 void BillboardManager::render() {
     for (std::map<long long, BillboardMesh>::iterator it=meshes.begin();it!=meshes.end();it++) {
         BillboardMesh& mesh = it->second;
+        const PGE::Vector3f camPos = camera->position;
+        // Insertion sort.
+        for (int i = 0; i < mesh.billboards.size(); i++) {
+            mesh.billboards[i]->camDistance = mesh.billboards[i]->getPosition().distanceSquared(camPos);
+            if (i == 0) { continue; }
+            if (mesh.billboards[i]->camDistance > mesh.billboards[i-1]->camDistance) {
+                if (i == 1) {
+                    std::swap(mesh.billboards[i], mesh.billboards[i-1]);
+                } else {
+                    int j = i - 2;
+                    while (mesh.billboards[i]->camDistance > mesh.billboards[j]->camDistance) {
+                        j--;
+                    }
+                    // Alternative to std::swap that saves on writes.
+                    Billboard* b = mesh.billboards[i];
+                    for (int k = i; k > j; k--) {
+                        mesh.billboards[k] = mesh.billboards[k-1];
+                    }
+                    mesh.billboards[j+1] = b;
+                }
+            }
+        }
         bool geomChanged = false;
         if (mesh.vertices.size() != mesh.billboards.size()*4) {
             geomChanged = true;
@@ -136,6 +157,10 @@ PGE::String Billboard::getTexture() const {
 void Billboard::setPosition(const PGE::Vector3f& position) {
     this->position = position;
     vertexStartIndex = -1;
+}
+
+const PGE::Vector3f& Billboard::getPosition() const {
+    return position;
 }
 
 void Billboard::setRotation(const PGE::Vector3f& rotation) {

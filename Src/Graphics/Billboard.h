@@ -7,10 +7,13 @@
 
 #include "GraphicsResources.h"
 
+class Camera;
+
 class Billboard;
 class BillboardManager {
     private:
         GraphicsResources* gfxRes;
+        Camera* camera;
         
         struct BillboardMesh {
             PGE::Mesh* mesh;
@@ -27,13 +30,11 @@ class BillboardManager {
         PGE::Shader* shader;
 
     public:
-        BillboardManager(PGE::Graphics* gfx, GraphicsResources* gr);
+        BillboardManager(PGE::Graphics* gfx, GraphicsResources* gr, Camera* cam);
         ~BillboardManager();
 
         void addBillboard(Billboard* billboard);
         void removeBillboard(Billboard* billboard);
-
-        GraphicsResources* getGfxRes() const;
 
         void render();
 };
@@ -54,6 +55,8 @@ class Billboard {
         PGE::String textureName;
 
     public:
+        float camDistance;
+
         Billboard(BillboardManager* bm, const PGE::String& textureName, const PGE::Vector3f& pos, float rotation, const PGE::Vector2f& scale, const PGE::Color& color);
         Billboard(BillboardManager* bm, const PGE::String& textureName, const PGE::Vector3f& pos, const PGE::Vector3f& rotation, const PGE::Vector2f& scale, const PGE::Color& color);
         ~Billboard();
@@ -61,6 +64,7 @@ class Billboard {
         void setTexture(const PGE::String& textureName);
         PGE::String getTexture() const;
         void setPosition(const PGE::Vector3f& position);
+        const PGE::Vector3f& getPosition() const;
         void setRotation(const PGE::Vector3f& rotation);
         void setRotation(float rotation);
         void setScale(const PGE::Vector2f& scale);

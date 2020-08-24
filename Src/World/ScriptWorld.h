@@ -10,6 +10,7 @@ class ColorDefinitions;
 class MathDefinitions;
 class UIDefinitions;
 class MessageDefinitions;
+class LocalizationDefinitions;
 class ModelDefinitions;
 class RM2Definitions;
 class CollisionDefinitions;
@@ -29,6 +30,7 @@ class Camera;
 class Console;
 class UIMesh;
 class MessageManager;
+class LocalizationManager;
 class PickableManager;
 class BillboardManager;
 class RefCounterManager;
@@ -46,6 +48,7 @@ class ScriptWorld {
         MathDefinitions* mathDefinitions;
         UIDefinitions* uiDefinitions;
         MessageDefinitions* messageDefinitions;
+        LocalizationDefinitions* localizationDefinitions;
         BillboardDefinitions* billboardDefinitions;
         ModelDefinitions* modelDefinitions;
         RM2Definitions* rm2Definitions;
@@ -61,7 +64,7 @@ class ScriptWorld {
         std::vector<ScriptModule*> modules;
 
     public:
-        ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, MessageManager* mm, PickableManager* pm, UIMesh* um,  Config* config, float timestep, Console* con, BillboardManager* bm);
+        ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, MessageManager* mm, LocalizationManager* lm, PickableManager* pm, UIMesh* um,  Config* config, float timestep, Console* con, BillboardManager* bm);
         ~ScriptWorld();
 
         void update();

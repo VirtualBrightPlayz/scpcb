@@ -1,11 +1,12 @@
 #include "UIDefinitions.h"
 
 #include "../../World/World.h"
+#include "../../Save/Config.h"
 #include "../../Graphics/Font.h"
 #include "../../Graphics/UIMesh.h"
 #include "../ScriptManager.h"
 
-UIDefinitions::UIDefinitions(ScriptManager* mgr, UIMesh* uiMesh, World* world) {
+UIDefinitions::UIDefinitions(ScriptManager* mgr, UIMesh* uiMesh, Config* config, World* world) {
     engine = mgr->getAngelScriptEngine();
 
     engine->SetDefaultNamespace("UI");
@@ -13,6 +14,10 @@ UIDefinitions::UIDefinitions(ScriptManager* mgr, UIMesh* uiMesh, World* world) {
     engine->RegisterGlobalFunction("void setTextureless()", asMETHOD(UIMesh, setTextureless), asCALL_THISCALL_ASGLOBAL, uiMesh);
     engine->RegisterGlobalFunction("void setTextured(const string&in textureName, bool tile)", asMETHODPR(UIMesh, setTextured, (const PGE::String&, bool), void), asCALL_THISCALL_ASGLOBAL, uiMesh);
     engine->RegisterGlobalFunction("void addRect(const Rectanglef&in rect)", asMETHOD(UIMesh, addRect), asCALL_THISCALL_ASGLOBAL, uiMesh);
+
+    engine->RegisterGlobalFunction("int getScreenWidth()", asMETHOD(Config, getWidth), asCALL_THISCALL_ASGLOBAL, config);
+    engine->RegisterGlobalFunction("int getScreenHeight()", asMETHOD(Config, getHeight), asCALL_THISCALL_ASGLOBAL, config);
+    engine->RegisterGlobalFunction("float getAspectRatio()", asMETHOD(Config, getAspectRatio), asCALL_THISCALL_ASGLOBAL, config);
 
     engine->SetDefaultNamespace("");
     engine->RegisterObjectType("Font", sizeof(Font), asOBJ_REF | asOBJ_NOCOUNT);

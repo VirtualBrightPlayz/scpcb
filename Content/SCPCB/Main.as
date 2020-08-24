@@ -35,12 +35,12 @@ namespace Item {
     external void renderAll();
 }
 
-shared class FirstAidKit : Item {
+shared class FirstAid : Item {
     void onPick() override {
         Debug::log("POG");
     }
-    FirstAidKit(ItemTemplate it) {
-        Debug::log("FirstAidKit constructor");
+    FirstAid(ItemTemplate it) {
+        Debug::log("FirstAid constructor");
         super(it);
     }
 }
@@ -58,8 +58,8 @@ void main() {
 
     Msg::set("LOL");
 
-    Item::register("FirstAidKit", "SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 0.5);
-    Item::spawn("FirstAidKit", Vector3f(0.0, 20.0, 20.0));
+    Item::register("FirstAid", "SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 0.5);
+    Item::spawn("FirstAid", Vector3f(0.0, 20.0, 20.0));
     
     Vector2f test = Vector2f(10.0, 10.0);
     Vector2f test2 = Vector2f(15.0, 10.0);
