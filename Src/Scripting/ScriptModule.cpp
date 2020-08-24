@@ -67,6 +67,9 @@ void ScriptModule::build() {
 
             asITypeInfo* typeInfo = unprocessedTypes[i];
             ScriptClass* newClass = new ScriptClass(this, typeInfo, parentClass);
+            if (parentClass != nullptr) {
+                parentClass->registerDerivedClass(newClass);
+            }
             classes.push_back(newClass);
             if ((typeInfo->GetFlags() & asOBJ_SHARED) != 0) {
                 scriptManager->registerSharedClass(newClass);
