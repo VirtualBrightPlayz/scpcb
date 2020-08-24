@@ -67,16 +67,17 @@ void BillboardManager::render() {
         bool& geomChanged = mesh.geomChanged;
         for (int i = 0; i < mesh.billboards.size(); i++) {
             mesh.billboards[i]->camDistance = mesh.billboards[i]->getPosition().distanceSquared(camPos);
-            for (int j=i;j>=1;j--) {
-                Billboard* b = mesh.billboards[j];
-                if (b->camDistance > mesh.billboards[j-1]->camDistance) {
-                    mesh.billboards[j] = mesh.billboards[j-1];
-                    mesh.billboards[j-1] = b;
+            Billboard* b = mesh.billboards[i];
+            int j;
+            for (j=i-1;j>=0;j--) {
+                if (b->camDistance > mesh.billboards[j]->camDistance) {
+                    mesh.billboards[j+1] = mesh.billboards[j];
                     geomChanged = true;
                 } else {
                     break;
                 }
             }
+            mesh.billboards[j+1] = b;
         }
         if (mesh.vertices.size() < mesh.billboards.size()*4) {
             geomChanged = true;
