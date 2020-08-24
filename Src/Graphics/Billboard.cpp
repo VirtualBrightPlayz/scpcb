@@ -73,6 +73,8 @@ void BillboardManager::render() {
                     mesh.billboards[j] = mesh.billboards[j-1];
                     mesh.billboards[j-1] = b;
                     geomChanged = true;
+                } else {
+                    break;
                 }
             }
         }
