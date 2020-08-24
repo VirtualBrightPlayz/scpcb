@@ -3976,7 +3976,7 @@ void asCCompiler::CompileStatement(asCScriptNode *statement, bool *hasReturn, as
 		asASSERT(false);
 }
 
-void asCCompiler::CompileSwitchStatement(asCScriptNode *snode, bool *, asCByteCode *bc)
+void asCCompiler::CompileSwitchStatement(asCScriptNode *snode, bool *hasReturn, asCByteCode *bc)
 {
 	// TODO: inheritance: Must guarantee that all options in the switch case call a constructor, or that none call it.
 
@@ -4096,8 +4096,12 @@ void asCCompiler::CompileSwitchStatement(asCScriptNode *snode, bool *, asCByteCo
 		return;
 	}
 
+	*hasReturn = true;
 	if( defaultLabel == 0 )
+	{
 		defaultLabel = breakLabel;
+		*hasReturn = false;
+	}
 
 	//---------------------------------
 	// Output the optimized case comparisons
@@ -4236,7 +4240,9 @@ void asCCompiler::CompileSwitchStatement(asCScriptNode *snode, bool *, asCByteCo
 		{
 			expr.bc.Label((short)firstCaseLabel++);
 
-			CompileCase(cnode->firstChild->next, &expr.bc);
+			bool caseHasReturn;
+			CompileCase(cnode->firstChild->next, &caseHasReturn, &expr.bc);
+			*hasReturn &= caseHasReturn;
 		}
 		else
 		{
@@ -4249,7 +4255,9 @@ void asCCompiler::CompileSwitchStatement(asCScriptNode *snode, bool *, asCByteCo
 				break;
 			}
 
-			CompileCase(cnode->firstChild, &expr.bc);
+			bool caseHasReturn;
+			CompileCase(cnode->firstChild, &caseHasReturn, &expr.bc);
+			*hasReturn &= caseHasReturn;
 		}
 
 		cnode = cnode->next;
@@ -4266,14 +4274,14 @@ void asCCompiler::CompileSwitchStatement(asCScriptNode *snode, bool *, asCByteCo
 	RemoveVariableScope();
 }
 
-void asCCompiler::CompileCase(asCScriptNode *node, asCByteCode *bc)
+void asCCompiler::CompileCase(asCScriptNode *node, bool *hasReturn, asCByteCode *bc)
 {
 	bool isFinished = false;
-	bool hasReturn = false;
+	*hasReturn = false;
 	bool hasUnreachableCode = false;
 	while( node )
 	{
-		if( !hasUnreachableCode && (hasReturn || isFinished) )
+		if( !hasUnreachableCode && ((*hasReturn) || isFinished) )
 		{
 			hasUnreachableCode = true;
 			Warning(TXT_UNREACHABLE_CODE, node);
@@ -4292,7 +4300,7 @@ void asCCompiler::CompileCase(asCScriptNode *node, asCByteCode *bc)
 			CompileDeclaration(node, &statement);
 		}
 		else
-			CompileStatement(node, &hasReturn, &statement);
+			CompileStatement(node, hasReturn, &statement);
 
 		LineInstr(bc, node->tokenPos);
 		bc->AddCode(&statement);
