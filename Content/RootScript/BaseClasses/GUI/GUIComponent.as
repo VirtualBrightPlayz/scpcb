@@ -1,9 +1,7 @@
-shared const float SCALE_MAGNITUDE = 50.0;
-
 namespace GUIComponent {
+    shared const float SCALE_MAGNITUDE = 50.0;
     shared float borderThickness = 0.5;
 }
-
 
 shared enum Alignment {
     CenterXY = 0x0,
@@ -22,11 +20,11 @@ shared abstract class GUIComponent {
         set {
             trueX = value;
             if ((alignment & Alignment::Left) != Alignment::CenterXY) {
-                trueX -= SCALE_MAGNITUDE * UI::getAspectRatio();
+                trueX -= GUIComponent::SCALE_MAGNITUDE * UI::getAspectRatio();
             }
 
             if ((alignment & Alignment::Right) != Alignment::CenterXY) {
-                trueX += SCALE_MAGNITUDE * UI::getAspectRatio();
+                trueX += GUIComponent::SCALE_MAGNITUDE * UI::getAspectRatio();
             }
         }
     }
@@ -36,11 +34,11 @@ shared abstract class GUIComponent {
         set {
             trueY = value;
             if ((alignment & Alignment::Left) != Alignment::CenterXY) {
-                trueY -= SCALE_MAGNITUDE * UI::getAspectRatio();
+                trueY -= GUIComponent::SCALE_MAGNITUDE * UI::getAspectRatio();
             }
 
             if ((alignment & Alignment::Right) != Alignment::CenterXY) {
-                trueY += SCALE_MAGNITUDE * UI::getAspectRatio();
+                trueY += GUIComponent::SCALE_MAGNITUDE * UI::getAspectRatio();
             }
         }
     }
@@ -58,7 +56,11 @@ shared abstract class GUIComponent {
 
     Alignment alignment;
 
-    GUIComponent(float x, float y, float width, float height, Alignment alignment = Alignment::CenterXY) {
+    bool visible = true;
+
+    GUIComponent(Menu@ menu, float x, float y, float width, float height, Alignment alignment = Alignment::CenterXY) {
+        menu.components.insertLast(this);
+
         this.width = width;
         this.height = height;
 
@@ -67,6 +69,9 @@ shared abstract class GUIComponent {
         this.x = x;
         this.y = y;
     }
+
+    void onClose() {}
+    void onOpen() {}
 
     void update(const Vector2f&in mousePos) {}
     void render() {}

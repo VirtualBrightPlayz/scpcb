@@ -6,6 +6,7 @@
 class Font;
 class LocalizationManager;
 
+// Ported.
 class GUIText : public GUIComponent {
     private:
         Font* font;

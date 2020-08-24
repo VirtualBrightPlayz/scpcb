@@ -12,6 +12,8 @@ class InputDefinitions : public NativeDefinition {
         KeyBinds* keyBinds;
 
         int getClickCount() const;
+        bool isHit() const;
+        bool isDown() const;
 
     public:
         InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* md);

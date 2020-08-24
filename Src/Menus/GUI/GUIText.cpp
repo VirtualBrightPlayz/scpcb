@@ -4,6 +4,7 @@
 #include "../../Utils/LocalizationManager.h"
 #include "../../Save/Config.h"
 
+// Ported to AS.
 GUIText::GUIText(UIMesh* um, KeyBinds* kb, Config* con, Font* fnt, LocalizationManager* lm, float x, float y, bool centerX, bool centerY, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, 0.f, 0.f, alignment) {
     this->font = fnt;

@@ -116,7 +116,7 @@ void update(float deltaTime) {
         entranceZone.update(deltaTime);
         time += deltaTime;
         if (time > 1.0) { // So you don't get a fucking seizure.
-            two.visible = !two.visible;
+            lol.visible = !lol.visible;
             time = 0.0;
         }
     }

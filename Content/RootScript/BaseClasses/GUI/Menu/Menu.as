@@ -4,6 +4,8 @@ shared abstract class Menu {
         get { return _type; }
     }
 
+    array<GUIComponent@> components;
+
     Menu(const string&in type) {
         _type = type;
     }
@@ -32,6 +34,9 @@ shared class MenuManager {
         if (@currMenu == @mu) {
             @currMenu = null;
             mu.onDeactivate();
+            for (int i = 0; i < mu.components.length(); i++) {
+                mu.components[i].onClose();
+            }
         } else {
             // Throw
         }
@@ -41,7 +46,10 @@ shared class MenuManager {
     void activateMenu(Menu@ mu) {
         if (currMenu == null) {
             @currMenu = mu;
-            currMenu.onActivate();
+            mu.onActivate();
+            for (int i = 0; i < mu.components.length(); i++) {
+                mu.components[i].onOpen();
+            }
         } else {
             // Throw
         }
@@ -56,6 +64,10 @@ shared class MenuManager {
         } else {
             if (currMenu.update(mousePosition, mouseWheelDelta)) {
                 deactivateMenu(currMenu);
+            } else {
+                for (int i = 0; i < currMenu.components.length(); i++) {
+                    currMenu.components[i].update(mousePosition);
+                }
             }
         }
     }
@@ -63,6 +75,11 @@ shared class MenuManager {
     void render() {
         if (currMenu != null) {
             currMenu.render();
+            for (int i = 0; i < currMenu.components.length(); i++) {
+                if (currMenu.components[i].visible) {
+                    currMenu.components[i].render();
+                }
+            }
         }
     }
 }

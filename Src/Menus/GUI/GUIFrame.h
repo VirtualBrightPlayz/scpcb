@@ -3,6 +3,7 @@
 
 #include "GUIComponent.h"
 
+// Ported.
 class GUIFrame : public GUIComponent {
     private:
         PGE::Rectanglef foreground;

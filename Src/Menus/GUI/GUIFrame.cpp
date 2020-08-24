@@ -3,6 +3,7 @@
 
 static const PGE::Color hoverColor = PGE::Color(70, 70, 150, 200);
 
+// Ported.
 GUIFrame::GUIFrame(UIMesh* um, KeyBinds* kb, Config* con, float x, float y, float width, float height, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment) {
     foreground = PGE::Rectanglef(getX() + uiMesh->borderThickness, getY() + uiMesh->borderThickness, getX2() - uiMesh->borderThickness, getY2() - uiMesh->borderThickness);

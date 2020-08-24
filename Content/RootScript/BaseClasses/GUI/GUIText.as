@@ -1,55 +1,72 @@
+namespace GUIText {
+    shared const float defaultScale = 100.f / UI::getScreenHeight();
+}
+
 shared class GUIText : GUIComponent {
     private bool centerX;
     private bool centerY;
     private bool localized;
 
-    private Font@ font;
-
-    private string text = "";
     private Vector2f pos;
+
+    private Font@ font;
+    private string _text = "";
+
+    string text {
+        get {
+            return _text;
+        }
+        set {
+            if (localized) {
+                _text = Local::getTxt(value);
+            } else {
+                _text = value;
+            }
+            updatePosition();
+        }
+    }
 
     Color color = Color::White;
     float rotation = 0.f;
-    float scale;
+    float scale = GUIText::defaultScale;
 
     void set_x(float value) property override {
         GUIComponent::set_x(value);
         updatePosition();
     }
 
-    GUIText(float x, float y, Alignment alignment, bool centerX, bool centerY, bool localized, Font@ font) {
-        super(x, y, 0.f, 0.f, alignment);
+    void set_y(float value) property override {
+        GUIComponent::set_y(value);
+        updatePosition();
+    }
+
+    GUIText(Menu@ menu, float x, float y, bool centerX, bool centerY, bool localized, Alignment alignment = Alignment::CenterXY, Font@ font = Font::large) {
+        super(menu, x, y, 0.f, 0.f, alignment);
         this.centerX = centerX;
         this.centerY = centerY;
         this.localized = localized;
 
         @this.font = font;
-
-        scale = 100.f / UI::getScreenHeight();
         
         updatePosition();
     }
 
-    void updatePosition() {
+    private void updatePosition() {
         pos = Vector2f(x, y);
         if (centerX) {
-            pos.x -= font.stringWidth(text, scale) / 2.f;
+            pos.x -= font.stringWidth(_text, scale) / 2.f;
         }
         if (centerY) {
             pos.y -= font.getHeight(scale) / 1.5f;
         }
     }
 
-    void setText(const string&in newText) {
-        if (localized) {
-            text = Local::getTxt(newText);
-        } else {
-            text = newText;
-        }
-        updatePosition();
+    const Vector2f& getTextPos() {
+        return pos;
     }
 
     void render() override {
-        font.draw(text, pos, scale, rotation, color);
+        // Set textureless?
+        font.draw(_text, pos, scale, rotation, color);
     }
 }

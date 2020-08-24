@@ -18,7 +18,7 @@ shared class Inventory : Menu {
         for (int y = 0; y < rows; y++) {
             screenX = -(itemsPerRow * 2 - 1) * InvSlot::screenSize / 2;
             for (int x = 0; x < itemsPerRow; x++) {
-                @slots[x + y * itemsPerRow] = InvSlot(screenX, screenY);
+                @slots[x + y * itemsPerRow] = InvSlot(this, screenX, screenY);
                 screenX += InvSlot::screenSize * 2;
             }
             screenY += InvSlot::screenSize * 2;
@@ -27,12 +27,18 @@ shared class Inventory : Menu {
 
     bool addItem(Item@ it) {
         for (int i = 0; i < slots.length(); i++) {
-            if (!slots[i].hasItem()) {
-                slots[i].setItem(it);
+            if (slots[i].item == null) {
+                @slots[i].item = it;
                 return true;
             }
         }
         return false;
+    }
+
+    void onDeactivate() override {
+        for (int i = 0; i < slots.length(); i++) {
+            slots[i].onClose();
+        }
     }
 
     bool onEscapeHit() override {
@@ -40,15 +46,6 @@ shared class Inventory : Menu {
     }
 
     bool update(const Vector2f&in mousePos, const Vector2f&in mouseWheelDelta) override {
-        for (int i = 0; i < slots.length(); i++) {
-            slots[i].update(mousePos);
-        }
         return (Input::getHit() & Input::Inventory) != 0;
-    }
-
-    void render() override {
-        for (int i = 0; i < slots.length(); i++) {
-            slots[i].render();
-        }
     }
 }

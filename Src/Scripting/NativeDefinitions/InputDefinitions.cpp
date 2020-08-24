@@ -26,6 +26,8 @@ InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* 
 
     engine->SetDefaultNamespace("Input::Mouse1");
     engine->RegisterGlobalFunction("int getClickCount()", asMETHOD(InputDefinitions, getClickCount), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterGlobalFunction("bool isHit()", asMETHOD(InputDefinitions, isHit), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterGlobalFunction("bool isDown()", asMETHOD(InputDefinitions, isDown), asCALL_THISCALL_ASGLOBAL, this);
 
     engine->SetDefaultNamespace("Input");
     engine->RegisterGlobalFunction("Input getDown()", asMETHOD(KeyBinds, getDownInputs), asCALL_THISCALL_ASGLOBAL, kb);
@@ -37,4 +39,12 @@ InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* 
 
 int InputDefinitions::getClickCount() const {
     return keyBinds->mouse1->getClickCount();
+}
+
+bool InputDefinitions::isHit() const {
+    return keyBinds->mouse1->isHit();
+}
+
+bool InputDefinitions::isDown() const {
+    return keyBinds->mouse1->isDown();
 }
