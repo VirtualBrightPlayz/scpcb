@@ -22,6 +22,7 @@ BillboardManager::~BillboardManager() {
 }
 
 void BillboardManager::addBillboard(Billboard* billboard) {
+    billboard->markAsDirty();
     PGE::String texName = billboard->getTexture();
     std::map<long long, BillboardMesh>::iterator it = meshes.find(texName.getHashCode());
     if (it == meshes.end()) {
@@ -33,6 +34,7 @@ void BillboardManager::addBillboard(Billboard* billboard) {
         meshes.emplace(texName.getHashCode(), newMesh);
         it = meshes.find(texName.getHashCode());
     }
+    it->second.geomChanged = true;
     it->second.billboards.push_back(billboard);
 }
 
@@ -43,6 +45,7 @@ void BillboardManager::removeBillboard(Billboard* billboard) {
         std::vector<Billboard*>& billboards = it->second.billboards;
         for (int i=0;i<billboards.size();i++) {
             if (billboards[i] == billboard) {
+                it->second.geomChanged = true;
                 billboards.erase(billboards.begin()+i);
                 break;
             }
@@ -61,43 +64,33 @@ void BillboardManager::render() {
         BillboardMesh& mesh = it->second;
         const PGE::Vector3f camPos = camera->position;
         // Insertion sort.
+        bool& geomChanged = mesh.geomChanged;
         for (int i = 0; i < mesh.billboards.size(); i++) {
             mesh.billboards[i]->camDistance = mesh.billboards[i]->getPosition().distanceSquared(camPos);
-            if (i == 0) { continue; }
-            if (mesh.billboards[i]->camDistance > mesh.billboards[i-1]->camDistance) {
-                if (i == 1) {
-                    std::swap(mesh.billboards[i], mesh.billboards[i-1]);
-                } else {
-                    int j = i - 2;
-                    while (mesh.billboards[i]->camDistance > mesh.billboards[j]->camDistance) {
-                        j--;
-                    }
-                    // Alternative to std::swap that saves on writes.
-                    Billboard* b = mesh.billboards[i];
-                    for (int k = i; k > j; k--) {
-                        mesh.billboards[k] = mesh.billboards[k-1];
-                    }
-                    mesh.billboards[j+1] = b;
+            for (int j=i;j>=1;j--) {
+                Billboard* b = mesh.billboards[j];
+                if (b->camDistance > mesh.billboards[j-1]->camDistance) {
+                    mesh.billboards[j] = mesh.billboards[j-1];
+                    mesh.billboards[j-1] = b;
+                    geomChanged = true;
                 }
             }
         }
-        bool geomChanged = false;
-        if (mesh.vertices.size() != mesh.billboards.size()*4) {
+        if (mesh.vertices.size() < mesh.billboards.size()*4) {
             geomChanged = true;
             mesh.vertices.resize(mesh.billboards.size()*4);
-            if (primitives.size() < (mesh.vertices.size() / 2)) {
-                int prevSize = (int)primitives.size();
-                for (int i=prevSize;i<(mesh.vertices.size() / 2);i+=2) {
-                    primitives.push_back(PGE::Primitive((i*2)+2, (i*2)+1, (i*2)+0));
-                    primitives.push_back(PGE::Primitive((i*2)+1, (i*2)+2, (i*2)+3));
-                }
+            int prevSize = (int)primitives.size();
+            for (int i=prevSize;i<(mesh.vertices.size() / 2);i+=2) {
+                primitives.push_back(PGE::Primitive((i*2)+2, (i*2)+1, (i*2)+0));
+                primitives.push_back(PGE::Primitive((i*2)+1, (i*2)+2, (i*2)+3));
             }
         }
-        for (int i=0;i<mesh.billboards.size();i++) { //TODO: sort based on distance to camera?
+        for (int i=0;i<mesh.billboards.size();i++) {
             geomChanged |= mesh.billboards[i]->updateVertices(mesh.vertices, i*4);
         }
         if (geomChanged) {
-            mesh.mesh->setGeometry((int)mesh.vertices.size(), mesh.vertices, (int)mesh.vertices.size() / 2, primitives);
+            mesh.mesh->setGeometry(mesh.billboards.size() * 4, mesh.vertices, mesh.billboards.size() * 2, primitives);
+            geomChanged = false;
         }
         mesh.mesh->render();
     }
@@ -146,7 +139,7 @@ Billboard::~Billboard() {
 void Billboard::setTexture(const PGE::String& textureName) {
     bm->removeBillboard(this);
     this->textureName = textureName;
-    vertexStartIndex = -1;
+    markAsDirty();
     bm->addBillboard(this);
 }
 
@@ -156,7 +149,7 @@ PGE::String Billboard::getTexture() const {
 
 void Billboard::setPosition(const PGE::Vector3f& position) {
     this->position = position;
-    vertexStartIndex = -1;
+    markAsDirty();
 }
 
 const PGE::Vector3f& Billboard::getPosition() const {
@@ -165,22 +158,22 @@ const PGE::Vector3f& Billboard::getPosition() const {
 
 void Billboard::setRotation(const PGE::Vector3f& rotation) {
     this->rotation = rotation; alwaysFacingCamera = false;
-    vertexStartIndex = -1;
+    markAsDirty();
 }
 
 void Billboard::setRotation(float rotation) {
     this->rotation.x = rotation; alwaysFacingCamera = true;
-    vertexStartIndex = -1;
+    markAsDirty();
 }
 
 void Billboard::setScale(const PGE::Vector2f& scale) {
     this->scale = scale;
-    vertexStartIndex = -1;
+    markAsDirty();
 }
 
 void Billboard::setColor(const PGE::Color& color) {
     this->color = color;
-    vertexStartIndex = -1;
+    markAsDirty();
 }
 
 void Billboard::setVisible(bool vis) {
@@ -196,6 +189,10 @@ void Billboard::setVisible(bool vis) {
 
 bool Billboard::getVisible() {
     return visible;
+}
+
+void Billboard::markAsDirty() {
+    vertexStartIndex = -1;
 }
 
 bool Billboard::updateVertices(std::vector<PGE::Vertex>& vertices, int startIndex) {

@@ -22,6 +22,8 @@ class BillboardManager {
 
             std::vector<PGE::Vertex> vertices;
             std::vector<Billboard*> billboards;
+
+            bool geomChanged;
         };
 
         std::vector<PGE::Primitive> primitives;
@@ -71,6 +73,8 @@ class Billboard {
         void setColor(const PGE::Color& color);
         void setVisible(bool vis);
         bool getVisible();
+
+        void markAsDirty();
 
         bool updateVertices(std::vector<PGE::Vertex>& vertices, int startIndex);
 };
