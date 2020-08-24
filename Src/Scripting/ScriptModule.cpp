@@ -57,14 +57,16 @@ void ScriptModule::build() {
         int unprocessedCount = unprocessedTypes.size();
         for (int i=unprocessedTypes.size()-1;i>=0;i--) {
             bool canProcess = true;
+            ScriptClass* parentClass = nullptr;
             if (unprocessedTypes[i]->GetBaseType() != nullptr) {
                 int parentId = unprocessedTypes[i]->GetBaseType()->GetTypeId();
-                canProcess = scriptManager->getClassByTypeId(parentId) != nullptr;
+                parentClass = scriptManager->getClassByTypeId(parentId);
+                canProcess = parentClass != nullptr;
             }
             if (!canProcess) { continue; }
 
             asITypeInfo* typeInfo = unprocessedTypes[i];
-            ScriptClass* newClass = new ScriptClass(this, typeInfo);
+            ScriptClass* newClass = new ScriptClass(this, typeInfo, parentClass);
             classes.push_back(newClass);
             if ((typeInfo->GetFlags() & asOBJ_SHARED) != 0) {
                 scriptManager->registerSharedClass(newClass);

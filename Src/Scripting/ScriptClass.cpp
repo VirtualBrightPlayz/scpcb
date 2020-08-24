@@ -5,17 +5,12 @@
 #include "ScriptModule.h"
 #include "ScriptManager.h"
 
-ScriptClass::ScriptClass(ScriptModule* module, asITypeInfo* tInfo) {
+ScriptClass::ScriptClass(ScriptModule* module, asITypeInfo* tInfo, ScriptClass* prntClass) {
     scriptModule = module;
 
     typeName = tInfo->GetName();
 
-    parentClass = nullptr;
-    if (tInfo->GetBaseType() != nullptr) {
-        int parentId = tInfo->GetBaseType()->GetTypeId();
-        parentClass = module->getScriptManager()->getClassByTypeId(parentId);
-        parentClass->registerDerivedClass(this);
-    }
+    parentClass = prntClass;
 
     refType = new RefType(this);
     arrayType = nullptr;

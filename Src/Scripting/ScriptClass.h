@@ -53,7 +53,7 @@ class ScriptClass : public Type {
         ScriptClass* parentClass;
 
     public:
-        ScriptClass(ScriptModule* module, asITypeInfo* tInfo);
+        ScriptClass(ScriptModule* module, asITypeInfo* tInfo, ScriptClass* prntClass);
         ~ScriptClass();
 
         bool isClassType() const override;
