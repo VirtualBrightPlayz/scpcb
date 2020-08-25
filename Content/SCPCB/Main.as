@@ -106,6 +106,10 @@ void main() {
     PerFrameMenu::register(renderMenu);
 }
 
+void exit() {
+    Debug::log("YEAH");
+}
+
 float time = 0.0;
 
 void update(float deltaTime) {

@@ -10,6 +10,8 @@ shared class GUITextInput : GUIComponent {
     private GUIFrame@ frame;
     private GUIText@ text;
 
+    private MementoManager@ mementoManager;
+
     // Apple only
     // Basically shift+arrow key after a drag or multi-click on macOS has different behavior than on Windows.
     // On macOS after a select drag or multi-click select the first shift+arrow combo you hit determines which side of the selection you're manipulating.
@@ -46,9 +48,9 @@ shared class GUITextInput : GUIComponent {
     GUITextInput(Menu@ menu, float x, float y, float width, float height, bool alignLeft, int mementoMaxSize, const string&in defaultTxt = "", int charLimit = 2147483647, const string&in pattern = "", Alignment alignment = Alignment::CenterXY) {
         super(menu, x, y, width, height, alignment);
         @frame = GUIFrame(null, x, y, width, height, alignment);
-        @text = GUIText(null , alignLeft ? x + GUIComponent::borderThickness * 2 : x + width/2, y + height/2, !alignLeft, true, false, alignment);
+        @text = GUIText(menu , alignLeft ? x + GUIComponent::borderThickness * 2 : x + width/2, y + height/2, !alignLeft, true, false, alignment);
 
-        children.insertLast(text);
+        @mementoManager = MementoManager::create(mementoMaxSize);
 
         float textHeight = text.getHeight();
         caretTop = y + (height - textHeight)/2 - GUITextInput::caretBreathingSpace;
@@ -61,6 +63,10 @@ shared class GUITextInput : GUIComponent {
         text.color = Color::Gray;
 
         this.charLimit = charLimit;
+    }
+
+    ~GUITextInput() {
+        MementoManager::destroy(mementoManager);
     }
 
     private void setCaretAndSelection(int pos) {
@@ -98,9 +104,9 @@ shared class GUITextInput : GUIComponent {
         }
 
         if (selectionStartPosition != selectionEndPosition) {
-            //mementoManager->push(Memento(selectionStartPosition, text->getText().substr(selectionStartPosition, selectionEndPosition - selectionStartPosition), false, true));
+            mementoManager.push(selectionStartPosition, text.text.substr(selectionStartPosition, selectionEndPosition - selectionStartPosition), false, true);
         }
-        //mementoManager->push(Memento(selectionStartPosition, append, true, selectionStartPosition != selectionEndPosition));
+        mementoManager.push(selectionStartPosition, append, true, selectionStartPosition != selectionEndPosition);
 
         // If any text was selected then delete it.
         if (selectionEndPosition >= text.text.length()) {
@@ -121,7 +127,7 @@ shared class GUITextInput : GUIComponent {
 
     // This is one of the three functions that must be used internally in order for mementos to work correctly.
     private void removeText(int start, int end) {
-        //mementoManager->push(Memento(start, text->getText().substr(start, end - start), false));
+        mementoManager.push(start, text.text.substr(start, end - start), false);
         text.text = text.text.substr(0, start) + text.text.substr(end);
     }
 
@@ -404,8 +410,9 @@ shared class GUITextInput : GUIComponent {
                     addText(append);
                 }
             } else if (Input::undoIsHit() || Input::redoIsHit()) {
-                //text.text = mementoManager->execute(text->getText(), caretPosition, keyBinds->undoIsHit());
+                text.text = mementoManager.execute(text.text, caretPosition, caretPosition, Input::undoIsHit());
                 setCaretAndSelection(caretPosition);
+                oldCaretPosition = -1;
             } else if (Input::selectAllIsHit()) {
                 selectionStartPosition = 0;
                 selectionEndPosition = text.text.length();

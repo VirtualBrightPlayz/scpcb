@@ -29,9 +29,6 @@ shared class MenuManager {
             mu.onDeactivate();
             for (int i = 0; i < mu.components.length(); i++) {
                 mu.components[i].onClose();
-                for (int j = 0; j < mu.components[i].children.length(); j++) {
-                    mu.components[i].children[j].onClose();
-                }
             }
         } else {
             // Throw
@@ -45,9 +42,6 @@ shared class MenuManager {
             mu.onActivate();
             for (int i = 0; i < mu.components.length(); i++) {
                 mu.components[i].onOpen();
-                for (int j = 0; j < mu.components[i].children.length(); j++) {
-                    mu.components[i].children[j].onOpen();
-                }
             }
         } else {
             // Throw
@@ -76,11 +70,6 @@ shared class MenuManager {
                 for (int i = 0; i < currMenu.components.length(); i++) {
                     if (currMenu.components[i].active) {
                         currMenu.components[i].update();
-                        for (int j = 0; j < currMenu.components[i].children.length(); j++) {
-                            if (currMenu.components[i].children[j].active) {
-                                currMenu.components[i].children[j].update();
-                            }
-                        }
                     }
                 }
             }
@@ -92,11 +81,6 @@ shared class MenuManager {
             for (int i = 0; i < currMenu.components.length(); i++) {
                 if (currMenu.components[i].active) {
                     currMenu.components[i].render();
-                    for (int j = 0; j < currMenu.components[i].children.length(); j++) {
-                        if (currMenu.components[i].children[j].active) {
-                            currMenu.components[i].children[j].render();
-                        }
-                    }
                 }
             }
         }

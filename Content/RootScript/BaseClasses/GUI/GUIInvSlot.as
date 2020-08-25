@@ -30,8 +30,7 @@ shared class GUIInvSlot : GUIComponent {
         super(menu, x, y, GUIInvSlot::screenSize, GUIInvSlot::screenSize);
         background = Rectanglef(x + GUIComponent::borderThickness, y + GUIComponent::borderThickness, x2 - GUIComponent::borderThickness, y2 - GUIComponent::borderThickness);
         updateRectangles(false);
-        @text = GUIText(null, x + GUIInvSlot::screenSize / 2, y2 + GUIInvSlot::screenSize / 4, true, true, false);
-        children.insertLast(text);
+        @text = GUIText(menu, x + GUIInvSlot::screenSize / 2, y2 + GUIInvSlot::screenSize / 4, true, true, false);
     }
 
     private void updateRectangles(bool doubled) {
@@ -70,7 +69,7 @@ shared class GUIInvSlot : GUIComponent {
             UI::setTextured(item.icon, false);
             UI::addRect(background);
         } else {
-            UI::setTextured("SCPCB/GFX/Menu/menublack", true);
+            UI::setTextured(GUIFrame::menublack, true);
             UI::addRect(background);
         }
         if (hovered) {
@@ -82,7 +81,7 @@ shared class GUIInvSlot : GUIComponent {
                 text.active = true;
             }
         }
-        UI::setTextured("SCPCB/GFX/Menu/menuwhite", true);
+        UI::setTextured(GUIFrame::menuwhite, true);
         UI::addRect(top);
         UI::addRect(bottom);
         UI::addRect(right);

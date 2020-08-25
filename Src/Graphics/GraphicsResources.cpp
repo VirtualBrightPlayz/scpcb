@@ -34,41 +34,41 @@ GraphicsResources::~GraphicsResources() {
 }
 
 PGE::Shader* GraphicsResources::getShader(const PGE::FilePath& filename, bool needsViewProjection) {
-    for (int i = 0; i < (int)shaders.size(); i++) {
-        if (shaders[i].filename.equals(filename)) {
-            shaders[i].refCount++;
-            return shaders[i].shader;
-        }
+    std::map<long long, Shader*>::iterator find = pathToShaders.find(filename.getHashCode());
+    if (find != pathToShaders.end()) {
+        find->second->refCount++;
+        return find->second->shader;
     }
 
-    Shader newShader;
-    newShader.refCount = 1;
-    newShader.shader = PGE::Shader::load(graphics, filename);
-    newShader.filename = filename;
-    newShader.needsViewProjection = needsViewProjection;
-    shaders.push_back(newShader);
-    return newShader.shader;
+    Shader* newShader = new Shader();
+    newShader->refCount = 1;
+    newShader->shader = PGE::Shader::load(graphics, filename);
+    newShader->filename = filename;
+    newShader->needsViewProjection = needsViewProjection;
+    pathToShaders.emplace(filename.getHashCode(), newShader);
+    shaderToShaders.emplace(newShader->shader, newShader);
+    return newShader->shader;
 }
 
 void GraphicsResources::dropShader(PGE::Shader* shader) {
-    for (int i = 0; i < (int)shaders.size(); i++) {
-        if (shaders[i].shader == shader) {
-            shaders[i].refCount--;
-            if (shaders[i].refCount <= 0) {
-                delete shaders[i].shader;
-                shaders.erase(shaders.begin() + i);
-            }
-            return;
+    std::map<PGE::Shader*, Shader*>::iterator find = shaderToShaders.find(shader);
+    if (find != shaderToShaders.end()) {
+        Shader* shaderEntry = find->second;
+        shaderEntry->refCount--;
+        if (shaderEntry->refCount <= 0) {
+            delete shaderEntry->shader;
+            pathToShaders.erase(shaderEntry->filename.getHashCode());
+            shaderToShaders.erase(find);
+            delete shaderEntry;
         }
     }
 }
 
 PGE::Texture* GraphicsResources::getTexture(const PGE::String& filename) {
-    for (int i = 0; i < (int)textures.size(); i++) {
-        if (textures[i].name.equals(filename)) {
-            textures[i].refCount++;
-            return textures[i].texture;
-        }
+    std::map<long long, Texture*>::iterator find = pathToTextures.find(filename.getHashCode());
+    if (find != pathToTextures.end()) {
+        find->second->refCount++;
+        return find->second->texture;
     }
 
     PGE::FilePath path = rpm->getHighestModPath(filename);
@@ -76,51 +76,55 @@ PGE::Texture* GraphicsResources::getTexture(const PGE::String& filename) {
         throw new std::runtime_error(PGE::String(("Couldn't find texture \"") + filename + '"').cstr());
     }
 
-    Texture newTexture;
-    newTexture.refCount = 1;
-    newTexture.texture = PGE::Texture::load(graphics, path);
-    newTexture.name = filename;
-    textures.push_back(newTexture);
-    return newTexture.texture;
+    Texture* newTexture = new Texture();
+    newTexture->refCount = 1;
+    newTexture->texture = PGE::Texture::load(graphics, path);
+    newTexture->name = filename;
+    pathToTextures.emplace(filename.getHashCode(), newTexture);
+    textureToTextures.emplace(newTexture->texture, newTexture);
+    return newTexture->texture;
 }
 
 void GraphicsResources::dropTexture(PGE::Texture* texture) {
-    for (int i = 0; i < (int)textures.size(); i++) {
-        if (textures[i].texture == texture) {
-            textures[i].refCount--;
-            if (textures[i].refCount <= 0) {
-                delete textures[i].texture;
-                textures.erase(textures.begin() + i);
-            }
-            return;
+    std::map<PGE::Texture*, Texture*>::iterator find = textureToTextures.find(texture);
+    if (find != textureToTextures.end()) {
+        Texture* textureEntry = find->second;
+        textureEntry->refCount--;
+        if (textureEntry->refCount <= 0) {
+            delete textureEntry->texture;
+            pathToTextures.erase(textureEntry->name.getHashCode());
+            textureToTextures.erase(find);
+            delete textureEntry;
         }
     }
 }
 
 ModelInstance* GraphicsResources::getModelInstance(const PGE::String& filename) {
-    for (int i = 0; i < (int)modelEntries.size(); i++) {
-        if (modelEntries[i].filename.equals(filename)) {
-            modelEntries[i].refCount++;
-            return new ModelInstance(modelEntries[i].model);
-        }
+    std::map<long long, ModelEntry*>::iterator find = pathToModels.find(filename.getHashCode());
+    if (find != pathToModels.end()) {
+        find->second->refCount++;
+        return new ModelInstance(find->second->model);
     }
 
-    Model* newModel = new Model(modelImporter, this, filename);
-    modelEntries.push_back({ filename, newModel, 1 });
-
-    return new ModelInstance(newModel);
+    ModelEntry* newModel = new ModelEntry();
+    newModel->refCount = 1;
+    newModel->model = new Model(modelImporter, this, filename);
+    newModel->filename = filename;
+    pathToModels.emplace(filename.getHashCode(), newModel);
+    modelToModels.emplace(newModel->model, newModel);
+    return new ModelInstance(newModel->model);
 }
 
 void GraphicsResources::dropModelInstance(ModelInstance* mi) {
-    for (int i = 0; i < (int)modelEntries.size(); i++) {
-        if (modelEntries[i].model == mi->getModel()) {
-            modelEntries[i].refCount--;
-            delete mi;
-            if (modelEntries[i].refCount <= 0) {
-                delete modelEntries[i].model;
-                modelEntries.erase(modelEntries.begin() + i);
-            }
-            return;
+    std::map<Model*, ModelEntry*>::iterator find = modelToModels.find(mi->getModel());
+    if (find != modelToModels.end()) {
+        ModelEntry* model = find->second;
+        model->refCount--;
+        if (model->refCount <= 0) {
+            delete model->model;
+            pathToModels.erase(model->filename.getHashCode());
+            modelToModels.erase(find);
+            delete model;
         }
     }
 }
@@ -135,11 +139,6 @@ void GraphicsResources::updateOrthoMat(float aspectRatio) {
     float nearZ = 0.01f;
     float farZ = 1.f;
     orthoMat = PGE::Matrix4x4f::constructOrthographicMat(w, h, nearZ, farZ);
-    
-    // Update existing shaders.
-    updateShaderConstant(uiShaderPath, "projectionMatrix", orthoMat);
-    updateShaderConstant(uiTexturelessShaderPath, "projectionMatrix", orthoMat);
-    updateShaderConstant(fontShaderPath, "projectionMatrix", orthoMat);
 }
 
 PGE::Matrix4x4f GraphicsResources::getOrthoMat() const {
@@ -147,12 +146,13 @@ PGE::Matrix4x4f GraphicsResources::getOrthoMat() const {
 }
 
 void GraphicsResources::setCameraUniforms(const Camera* cam) const {
-    for (int i = 0; i < (int)shaders.size(); i++) {
-        if (shaders[i].needsViewProjection) {
-            shaders[i].shader->getVertexShaderConstant("viewMatrix")->setValue(cam->getViewMatrix());
-            shaders[i].shader->getVertexShaderConstant("projectionMatrix")->setValue(cam->getProjectionMatrix());
+    for (const auto& entry : shaderToShaders) {
+        if (entry.second->needsViewProjection) {
+            entry.first->getVertexShaderConstant("viewMatrix")->setValue(cam->getViewMatrix());
+            entry.first->getVertexShaderConstant("projectionMatrix")->setValue(cam->getProjectionMatrix());
         }
     }
+
     debugGraphics->setViewMatrix(cam->getViewMatrix());
     debugGraphics->setProjectionMatrix(cam->getProjectionMatrix());
 }
@@ -163,14 +163,4 @@ PGE::Graphics* GraphicsResources::getGraphics() const {
 
 DebugGraphics* GraphicsResources::getDebugGraphics() const {
     return debugGraphics;
-}
-
-void GraphicsResources::updateShaderConstant(const PGE::FilePath& shd, const PGE::String& name, const PGE::Matrix4x4f& val) {
-    for (int i = 0; i < (int)shaders.size(); i++) {
-        if (shaders[i].filename.equals(shd)) {
-            PGE::Shader::Constant* constant = shaders[i].shader->getVertexShaderConstant(name);
-            constant->setValue(val);
-            return;
-        }
-    }
 }

@@ -58,8 +58,8 @@ std::regex leftBoundWord("(\\b)\\w+$|\\w(\\b)\\W+$");
 std::regex rightBoundWord("^\\w+(\\b)|^\\W+(\\b)\\w");
 
 void GUITextInput::setText(const PGE::String& txt) {
-    mementoManager->push(Memento(0, text->getText(), false, true));
-    mementoManager->push(Memento(0, txt, true, true));
+    /*mementoManager->push(Memento(0, text->getText(), false, true));
+    mementoManager->push(Memento(0, txt, true, true));*/
     text->setText(txt);
     setCaretAndSelection(text->getText().size());
 }
@@ -191,9 +191,9 @@ void GUITextInput::addText(PGE::String& append) {
     }
 
     if (selectionStartPosition != selectionEndPosition) {
-        mementoManager->push(Memento(selectionStartPosition, text->getText().substr(selectionStartPosition, selectionEndPosition - selectionStartPosition), false, true));
+        //->push(Memento(selectionStartPosition, text->getText().substr(selectionStartPosition, selectionEndPosition - selectionStartPosition), false, true));
     }
-    mementoManager->push(Memento(selectionStartPosition, append, true, selectionStartPosition != selectionEndPosition));
+    //mementoManager->push(Memento(selectionStartPosition, append, true, selectionStartPosition != selectionEndPosition));
 
     // If any text was selected then delete it.
     if (selectionEndPosition >= text->getText().size()) {
@@ -212,7 +212,7 @@ void GUITextInput::deleteSelectedText() {
 }
 
 void GUITextInput::removeText(int start, int end) {
-    mementoManager->push(Memento(start, text->getText().substr(start, end - start), false));
+    //mementoManager->push(Memento(start, text->getText().substr(start, end - start), false));
     text->setText(text->getText().substr(0, start) + text->getText().substr(end));
 }
 
@@ -497,7 +497,7 @@ void GUITextInput::updateShortcutActions() {
 #endif
         }
     } else if (keyBinds->undoIsHit() || keyBinds->redoIsHit()) {
-        text->setText(mementoManager->execute(text->getText(), caretPosition, keyBinds->undoIsHit()));
+        //text->setText(mementoManager->execute(text->getText(), caretPosition, keyBinds->undoIsHit()));
         setCaretAndSelection(caretPosition);
     } else if (keyBinds->selectAllIsHit()) {
         selectionStartPosition = 0;

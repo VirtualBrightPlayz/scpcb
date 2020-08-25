@@ -7,10 +7,12 @@ class ScriptManager;
 
 class WorldDefinitions;
 class RegexDefinitions;
+class MementoDefinitions;
 class BillboardDefinitions;
 class ConsoleDefinitions;
 class ColorDefinitions;
 class MathDefinitions;
+class TextureDefinitions;
 class UIDefinitions;
 class MessageDefinitions;
 class LocalizationDefinitions;
@@ -46,10 +48,12 @@ class ScriptWorld {
 
         WorldDefinitions* worldDefinitions;
         RegexDefinitions* regexDefinitions;
+        MementoDefinitions* mementoDefinitions;
         ConsoleDefinitions* consoleDefinitions;
         InputDefinitions* inputDefinitions;
         ColorDefinitions* colorDefinitions;
         MathDefinitions* mathDefinitions;
+        TextureDefinitions* textureDefinitions;
         UIDefinitions* uiDefinitions;
         MessageDefinitions* messageDefinitions;
         LocalizationDefinitions* localizationDefinitions;

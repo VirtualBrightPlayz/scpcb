@@ -33,8 +33,6 @@ class UIMesh {
         // Whether the mesh has a texture or just a color fill.
         bool textureless;
 
-        bool startedRender;
-
         std::vector<PGE::Vertex> vertices;
         std::vector<PGE::Primitive> primitives;
 
@@ -44,6 +42,7 @@ class UIMesh {
             PGE::Texture* pgeTexture;
         };
         std::vector<Texture> textures;
+
     public:
         float borderThickness;
 

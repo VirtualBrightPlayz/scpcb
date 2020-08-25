@@ -1,6 +1,6 @@
 namespace GUIFrame {
-    shared const string menuwhite = "SCPCB/GFX/Menu/menuwhite";
-    shared const string menublack = "SCPCB/GFX/Menu/menublack";
+    shared Texture@ menuwhite = Texture::get("SCPCB/GFX/Menu/menuwhite");
+    shared Texture@ menublack = Texture::get("SCPCB/GFX/Menu/menublack");
     shared const Color hoverColor = Color(70, 70, 150, 200);
 }
 

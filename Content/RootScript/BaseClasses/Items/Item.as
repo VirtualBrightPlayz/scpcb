@@ -5,9 +5,8 @@ namespace Item {
         it.name = name;
         it.localName = Local::getTxt("Items." + name + ".Name");
         it.model = model;
-        it.icon = icon;
+        @it.icon = Texture::get(icon);
         templates.insertLast(it);
-        Debug::log(templates[0].name);
     }
     shared array<Item@> items;
     shared void updateAll() {
@@ -44,12 +43,12 @@ namespace Item {
 shared abstract class Item {
     private ItemTemplate it;
 
-    string icon {
-        get { return it.icon; }
-    }
-
     string name {
         get { return it.localName; }
+    }
+
+    Texture@ icon {
+        get { return it.icon; }
     }
 
     private Model@ model;
@@ -116,7 +115,7 @@ shared abstract class Item {
 
 shared class ItemTemplate {
     string model;
-    string icon;
     string name;
     string localName;
+    Texture@ icon;
 }

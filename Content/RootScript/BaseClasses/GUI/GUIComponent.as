@@ -12,8 +12,6 @@ shared enum Alignment {
 }
 
 shared abstract class GUIComponent {
-    array<GUIComponent@> children;
-
     private float trueX;
     private float trueY;
 

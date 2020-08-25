@@ -12,12 +12,14 @@
 
 #include "../Scripting/NativeDefinitions/WorldDefinitions.h"
 #include "../Scripting/NativeDefinitions/RegexDefinitions.h"
+#include "../Scripting/NativeDefinitions/MementoDefinitions.h"
 #include "../Scripting/NativeDefinitions/ConsoleDefinitions.h"
 #include "../Scripting/NativeDefinitions/InputDefinitions.h"
 #include "../Scripting/NativeDefinitions/RefCounter.h"
 #include "../Scripting/NativeDefinitions/ColorDefinitions.h"
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
 #include "../Scripting/NativeDefinitions/UIDefinitions.h"
+#include "../Scripting/NativeDefinitions/TextureDefinitions.h"
 #include "../Scripting/NativeDefinitions/MessageDefinitions.h"
 #include "../Scripting/NativeDefinitions/LocalizationDefinitions.h"
 #include "../Scripting/NativeDefinitions/BillboardDefinitions.h"
@@ -36,10 +38,12 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
 
     worldDefinitions = new WorldDefinitions(manager, world);
     regexDefinitions = new RegexDefinitions(manager, refCounterManager);
+    mementoDefinitions = new MementoDefinitions(manager);
     consoleDefinitions = new ConsoleDefinitions(manager, con);
     colorDefinitions = new ColorDefinitions(manager);
     mathDefinitions = new MathDefinitions(manager);
     inputDefinitions = new InputDefinitions(manager, keyBinds, mouseData, io);
+    textureDefinitions = new TextureDefinitions(manager, gfxRes);
     uiDefinitions = new UIDefinitions(manager, um, config, world);
     messageDefinitions = new MessageDefinitions(manager, mm);
     localizationDefinitions = new LocalizationDefinitions(manager, lm);
@@ -55,7 +59,6 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     perTickSignature.functionName = "PerTick";
     perTickSignature.returnType = Type::Void;
     perTickSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "deltaTime"));
-
     perTickEventDefinition = new EventDefinition(manager, "PerTick", perTickSignature);
     perTickEventDefinition->setArgument("deltaTime", timestep); // TODO: Make timestep const global.
 
@@ -63,7 +66,6 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     perFrameGameSignature.functionName = "PerFrameGame";
     perFrameGameSignature.returnType = Type::Void;
     perFrameGameSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "interpolation"));
-
     perFrameGameEventDefinition = new EventDefinition(manager, "PerFrameGame", perFrameGameSignature);
     perFrameGameEventDefinition->setArgument("interpolation", 1.0f);
 
@@ -71,7 +73,6 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     perFrameMenuSignature.functionName = "PerFrameMenu";
     perFrameMenuSignature.returnType = Type::Void;
     perFrameMenuSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "interpolation"));
-
     perFrameMenuEventDefinition = new EventDefinition(manager, "PerFrameMenu", perFrameMenuSignature);
     perFrameMenuEventDefinition->setArgument("interpolation", 1.0f);
 
@@ -130,6 +131,16 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
 }
 
 ScriptWorld::~ScriptWorld() {
+    for (int i = 0; i < modules.size(); i++) {
+        ScriptModule* scriptModule = modules[i];
+
+        ScriptFunction* exitFunction = scriptModule->getFunctionByName("exit");
+        if (exitFunction != nullptr) {
+            exitFunction->prepare();
+            exitFunction->execute();
+        }
+    }
+
     for (int i = (int)modules.size()-1; i >= 0; i--) {
         delete modules[i];
     }

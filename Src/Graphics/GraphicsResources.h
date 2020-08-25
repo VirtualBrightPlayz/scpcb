@@ -1,6 +1,8 @@
 #ifndef GRAPHICSRESOURCES_H_INCLUDED
 #define GRAPHICSRESOURCES_H_INCLUDED
 
+#include <map>
+
 #include <assimp/Importer.hpp>
 
 #include <Graphics/Graphics.h>
@@ -22,7 +24,8 @@ class GraphicsResources {
             int refCount;
             bool needsViewProjection;
         };
-        std::vector<Shader> shaders;
+        std::map<PGE::Shader*, Shader*> shaderToShaders;
+        std::map<long long, Shader*> pathToShaders;
 
         struct Texture {
             // This needs to stay a string for the Resource Packs to work.
@@ -30,7 +33,8 @@ class GraphicsResources {
             PGE::Texture* texture;
             int refCount;
         };
-        std::vector<Texture> textures;
+        std::map<PGE::Texture*, Texture*> textureToTextures;
+        std::map<long long, Texture*> pathToTextures;
 
         struct ModelEntry {
             // Having this as a string makes the loading of textures easier.
@@ -38,12 +42,10 @@ class GraphicsResources {
             Model* model;
             int refCount;
         };
-        std::vector<ModelEntry> modelEntries;
+        std::map<Model*, ModelEntry*> modelToModels;
+        std::map<long long, ModelEntry*> pathToModels;
 
         PGE::Matrix4x4f orthoMat;
-        PGE::FilePath uiShaderPath = PGE::FilePath::fromStr("GFX/Shaders/UI/");
-        PGE::FilePath uiTexturelessShaderPath = PGE::FilePath::fromStr("GFX/Shaders/UITextureless/");
-        PGE::FilePath fontShaderPath = PGE::FilePath::fromStr("GFX/Shaders/Text/");
 
         PGE::Graphics* graphics;
 
@@ -59,7 +61,6 @@ class GraphicsResources {
 
         PGE::Shader* getShader(const PGE::FilePath& filename, bool needsViewProjection);
         void dropShader(PGE::Shader* shader);
-        void updateShaderConstant(const PGE::FilePath& shd, const PGE::String& constant, const PGE::Matrix4x4f& val);
 
         PGE::Texture* getTexture(const PGE::String& filename);
         void dropTexture(PGE::Texture* texture);

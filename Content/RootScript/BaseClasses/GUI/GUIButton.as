@@ -30,11 +30,9 @@ shared class GUIButton : GUIComponent {
 
     GUIButton(Menu@ menu, float x, float y, float width, float height, const string&in txt, Alignment alignment = Alignment::CenterXY, Font@ font = Font::large) {
         super(menu, x, y, width, height, alignment);
-        @frame = GUIFrame(null, x, y, width, height, alignment);
-        @text = GUIText(null, x + width / 2, y + height / 2, true, true, true, alignment, font);
+        @frame = GUIFrame(menu, x, y, width, height, alignment);
+        @text = GUIText(menu, x + width / 2, y + height / 2, true, true, true, alignment, font);
         text.text = txt;
-        children.insertLast(frame);
-        children.insertLast(text);
     }
 
     bool getHit() {

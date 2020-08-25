@@ -50,7 +50,7 @@ InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* 
     engine->RegisterGlobalFunction("void stopTextInputCapture()", asMETHOD(PGE::IO, stopTextInputCapture), asCALL_THISCALL_ASGLOBAL, io);
     engine->RegisterGlobalFunction("string getTextInput()", asMETHOD(PGE::IO, getTextInput), asCALL_THISCALL_ASGLOBAL, io);
 
-    engine->RegisterGlobalFunction("void setClipboardText(const string&in str)", asMETHOD(PGE::IO, setClipboardText), asCALL_THISCALL_ASGLOBAL, io);
+    engine->RegisterGlobalFunction("void setClipboardText(string str)", asMETHOD(PGE::IO, setClipboardText), asCALL_THISCALL_ASGLOBAL, io);
     engine->RegisterGlobalFunction("string getClipboardText()", asMETHOD(PGE::IO, getClipboardText), asCALL_THISCALL_ASGLOBAL, io);
 
     engine->RegisterGlobalFunction("const Vector2f& getMousePosition()", asMETHOD(MouseData , getPosition), asCALL_THISCALL_ASGLOBAL, md);

@@ -14,30 +14,26 @@ UIMesh::UIMesh(GraphicsResources* gr) {
     shaderTexturedColorConstant = shaderTextured->getFragmentShaderConstant("imageColor");
     shaderTexturelessColorConstant = shaderTextureless->getFragmentShaderConstant("imageColor");
     
-    color = PGE::Color(1.f, 1.f, 1.f);
+    color = PGE::Color::White;
     shaderTexturedColorConstant->setValue(color);
     shaderTexturelessColorConstant->setValue(color);
-
-    startedRender = false;
+    
     textureless = false;
     tiled = false;
 
     borderThickness = 0.5f;
 
-    PGE::Matrix4x4f orthoMat = gr->getOrthoMat();
-
-    shaderTextured->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);
-    shaderTextureless->getVertexShaderConstant("projectionMatrix")->setValue(orthoMat);
+    shaderTextured->getVertexShaderConstant("projectionMatrix")->setValue(gr->getOrthoMat());
+    shaderTextureless->getVertexShaderConstant("projectionMatrix")->setValue(gr->getOrthoMat());
 }
 
 UIMesh::~UIMesh() {
+    delete mesh;
     gfxRes->dropShader(shaderTextured);
     gfxRes->dropShader(shaderTextureless);
 }
 
 void UIMesh::startRender() {
-    startedRender = true;
-
     mesh->clearGeometry();
     vertices.clear(); primitives.clear();
 }
@@ -47,15 +43,15 @@ void UIMesh::endRender() {
         mesh->setGeometry((int)vertices.size(), vertices, (int)primitives.size(), primitives);
         mesh->render();
     }
-    startedRender = false;
 
     mesh->clearGeometry();
     vertices.clear(); primitives.clear();
 }
 
 void UIMesh::setTextured(PGE::Texture* texture, bool tile) {
-    if (tiled != tile || material == nullptr || material->getTextureCount() == 0 || texture != material->getTexture(0)) {
+    if (textureless || tiled != tile || material == nullptr || texture != material->getTexture(0)) {
         endRender();
+
         tiled = tile;
         textureless = false;
 
