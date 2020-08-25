@@ -67,6 +67,10 @@ static void copyConstructString(const PGE::String& other, PGE::String* thisPoint
     new(thisPointer) PGE::String(other);
 }
 
+static void constructStringFromChar(char chr, PGE::String* thisPointer) {
+    new(thisPointer) PGE::String(chr);
+}
+
 static void destructString(PGE::String* thisPointer) {
     thisPointer->~String();
 }
@@ -118,9 +122,10 @@ StringFactory::StringFactory(asIScriptEngine* engine) {
 
     engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f()",asFUNCTION(constructString), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f(const string& in)",asFUNCTION(copyConstructString), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f(uint8)",asFUNCTION(constructStringFromChar), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("string",asBEHAVE_DESTRUCT,"void f()",asFUNCTION(destructString), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("string","string &opAssign(const string& in)",asFUNCTION(assignString), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("string","string &opAddAssign(const string& in)",asFUNCTION(addAssignString), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectMethod("string","string& opAssign(const string& in)",asFUNCTION(assignString), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectMethod("string","string& opAddAssign(const string& in)",asFUNCTION(addAssignString), asCALL_CDECL_OBJLAST);
 
     engine->RegisterObjectMethod("string","bool opEquals(const string& in) const",asFUNCTION(stringEquals), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectMethod("string","string opAdd(const string& in) const",asFUNCTION(stringAdd), asCALL_CDECL_OBJLAST);
