@@ -26,11 +26,6 @@ shared class GUIInvSlot : GUIComponent {
     private bool hovered = false;
     private bool equipped = false;
 
-    void set_active(bool value) property override {
-        GUIComponent::set_active(value);
-        text.active = value;
-    }
-
     GUIInvSlot(Menu@ menu, float x, float y) {
         super(menu, x, y, GUIInvSlot::screenSize, GUIInvSlot::screenSize);
         background = Rectanglef(x + GUIComponent::borderThickness, y + GUIComponent::borderThickness, x2 - GUIComponent::borderThickness, y2 - GUIComponent::borderThickness);
@@ -45,6 +40,11 @@ shared class GUIInvSlot : GUIComponent {
         bottom = Rectanglef(x, y2, x2, y2 - thickness);
         right = Rectanglef(x, y + thickness, x + thickness, y2 - thickness);
         left = Rectanglef(x2 - thickness, y, x2, y2);
+    }
+
+    void onClose() override {
+        text.active = false;
+        hovered = false;
     }
 
     void update() override {
@@ -65,6 +65,7 @@ shared class GUIInvSlot : GUIComponent {
     }
 
     void render() override {
+        text.active = false;
         if (item != null) {
             UI::setTextured(item.icon, false);
             UI::addRect(background);
@@ -78,7 +79,7 @@ shared class GUIInvSlot : GUIComponent {
             UI::addRect(background);
             UI::setColor(Color::White);
             if (item != null) {
-                text.render();
+                text.active = true;
             }
         }
         UI::setTextured("SCPCB/GFX/Menu/menuwhite", true);

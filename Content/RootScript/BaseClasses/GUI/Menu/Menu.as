@@ -77,7 +77,9 @@ shared class MenuManager {
                     if (currMenu.components[i].active) {
                         currMenu.components[i].update();
                         for (int j = 0; j < currMenu.components[i].children.length(); j++) {
-                            currMenu.components[i].children[j].update();
+                            if (currMenu.components[i].children[j].active) {
+                                currMenu.components[i].children[j].update();
+                            }
                         }
                     }
                 }
@@ -91,7 +93,9 @@ shared class MenuManager {
                 if (currMenu.components[i].active) {
                     currMenu.components[i].render();
                     for (int j = 0; j < currMenu.components[i].children.length(); j++) {
+                        if (currMenu.components[i].children[j].active) {
                             currMenu.components[i].children[j].render();
+                        }
                     }
                 }
             }

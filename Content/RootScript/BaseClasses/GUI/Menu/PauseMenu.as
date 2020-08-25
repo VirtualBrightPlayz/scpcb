@@ -74,7 +74,6 @@ shared class PauseMenu : Menu {
                 setState(PauseMenu::State::Main);
                 return false;
         }
-        return true;
     }
 
     bool update() override {
