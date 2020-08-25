@@ -12,6 +12,8 @@ shared enum Alignment {
 }
 
 shared abstract class GUIComponent {
+    array<GUIComponent@> children;
+
     private float trueX;
     private float trueY;
 
@@ -51,18 +53,30 @@ shared abstract class GUIComponent {
         get { return trueY + height; }
     }
 
-    protected float width;
-    protected float height;
+    private float _width;
+    protected float width {
+        get { return _width; }
+    }
+    private float _height;
+    protected float height {
+        get { return _height; }
+    }
 
     Alignment alignment;
 
-    bool active = true;
+    private bool _active = true;
+    bool active {
+        get { return _active; }
+        set { _active = value; }
+    }
 
     GUIComponent(Menu@ menu, float x, float y, float width, float height, Alignment alignment = Alignment::CenterXY) {
-        menu.components.insertLast(this);
+        if (menu != null) {
+            menu.components.insertLast(this);
+        }
 
-        this.width = width;
-        this.height = height;
+        _width = width;
+        _height = height;
 
         this.alignment = alignment;
 

@@ -1,9 +1,12 @@
 #ifndef SCRIPTWORLD_H_INCLUDED
 #define SCRIPTWORLD_H_INCLUDED
 
+#include <IO/IO.h>
+
 class ScriptManager;
 
 class WorldDefinitions;
+class RegexDefinitions;
 class BillboardDefinitions;
 class ConsoleDefinitions;
 class ColorDefinitions;
@@ -42,6 +45,7 @@ class ScriptWorld {
         RefCounterManager* refCounterManager;
 
         WorldDefinitions* worldDefinitions;
+        RegexDefinitions* regexDefinitions;
         ConsoleDefinitions* consoleDefinitions;
         InputDefinitions* inputDefinitions;
         ColorDefinitions* colorDefinitions;
@@ -64,7 +68,7 @@ class ScriptWorld {
         std::vector<ScriptModule*> modules;
 
     public:
-        ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, MessageManager* mm, LocalizationManager* lm, PickableManager* pm, UIMesh* um,  Config* config, float timestep, Console* con, BillboardManager* bm);
+        ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, MessageManager* mm, LocalizationManager* lm, PickableManager* pm, UIMesh* um,  Config* config, float timestep, Console* con, BillboardManager* bm);
         ~ScriptWorld();
 
         void update();

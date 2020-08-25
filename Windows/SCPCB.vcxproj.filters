@@ -212,6 +212,9 @@
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\LocalizationDefinitions.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\RegexDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -416,10 +419,13 @@
     <ClInclude Include="..\Src\Input\MouseData.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\WorldDefinitions.h">
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\LocalizationDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\LocalizationDefinitions.h">
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\WorldDefinitions.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\RegexDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
   </ItemGroup>

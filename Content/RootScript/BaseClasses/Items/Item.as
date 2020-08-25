@@ -96,7 +96,7 @@ shared abstract class Item {
     void update() {
         if (pickable.getPicked()) {
             if (canPick()) {
-                if (inventoryMenu.addItem(this)) {
+                if (InventoryMenu::instance.addItem(this)) {
                     onPick();
                     picked = true;
                     Pickable::deactivatePickable(pickable);

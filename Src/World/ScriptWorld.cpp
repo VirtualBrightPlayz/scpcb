@@ -1,6 +1,6 @@
-#include <Misc/FileUtil.h>
-
 #include "ScriptWorld.h"
+
+#include <Misc/FileUtil.h>
 
 #include "../Save/Config.h"
 
@@ -11,6 +11,7 @@
 #include "../Scripting/ScriptClass.h"
 
 #include "../Scripting/NativeDefinitions/WorldDefinitions.h"
+#include "../Scripting/NativeDefinitions/RegexDefinitions.h"
 #include "../Scripting/NativeDefinitions/ConsoleDefinitions.h"
 #include "../Scripting/NativeDefinitions/InputDefinitions.h"
 #include "../Scripting/NativeDefinitions/RefCounter.h"
@@ -28,16 +29,17 @@
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 #include "../Scripting/NativeDefinitions/ReflectionDefinitions.h"
 
-ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, MessageManager* mm, LocalizationManager* lm, PickableManager* pm, UIMesh* um, Config* config, float timestep, Console* con, BillboardManager* bm) {
+ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, MessageManager* mm, LocalizationManager* lm, PickableManager* pm, UIMesh* um, Config* config, float timestep, Console* con, BillboardManager* bm) {
     manager = new ScriptManager();
 
     refCounterManager = new RefCounterManager();
 
     worldDefinitions = new WorldDefinitions(manager, world);
+    regexDefinitions = new RegexDefinitions(manager, refCounterManager);
     consoleDefinitions = new ConsoleDefinitions(manager, con);
     colorDefinitions = new ColorDefinitions(manager);
     mathDefinitions = new MathDefinitions(manager);
-    inputDefinitions = new InputDefinitions(manager, keyBinds, mouseData);
+    inputDefinitions = new InputDefinitions(manager, keyBinds, mouseData, io);
     uiDefinitions = new UIDefinitions(manager, um, config, world);
     messageDefinitions = new MessageDefinitions(manager, mm);
     localizationDefinitions = new LocalizationDefinitions(manager, lm);
@@ -137,6 +139,7 @@ ScriptWorld::~ScriptWorld() {
     delete perFrameMenuEventDefinition;
 
     delete worldDefinitions;
+    delete regexDefinitions;
     delete consoleDefinitions;
     delete inputDefinitions;
     delete colorDefinitions;

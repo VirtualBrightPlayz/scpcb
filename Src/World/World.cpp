@@ -74,7 +74,7 @@ World::World() {
     oldPaused = false;
     paused = false;
 
-    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, msgMng, locMng, pickMng, uiMesh, config, (float)timing->getTimeStep(), console, billMng);
+    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, io, msgMng, locMng, pickMng, uiMesh, config, (float)timing->getTimeStep(), console, billMng);
 
     applyConfig(config);
 

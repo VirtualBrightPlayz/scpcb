@@ -26,11 +26,17 @@ shared class GUIInvSlot : GUIComponent {
     private bool hovered = false;
     private bool equipped = false;
 
+    void set_active(bool value) property override {
+        GUIComponent::set_active(value);
+        text.active = value;
+    }
+
     GUIInvSlot(Menu@ menu, float x, float y) {
         super(menu, x, y, GUIInvSlot::screenSize, GUIInvSlot::screenSize);
         background = Rectanglef(x + GUIComponent::borderThickness, y + GUIComponent::borderThickness, x2 - GUIComponent::borderThickness, y2 - GUIComponent::borderThickness);
         updateRectangles(false);
-        @text = GUIText(menu, x + GUIInvSlot::screenSize / 2, y2 + GUIInvSlot::screenSize / 4, true, true, false);
+        @text = GUIText(null, x + GUIInvSlot::screenSize / 2, y2 + GUIInvSlot::screenSize / 4, true, true, false);
+        children.insertLast(text);
     }
 
     private void updateRectangles(bool doubled) {

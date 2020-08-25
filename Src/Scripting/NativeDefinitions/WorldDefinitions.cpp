@@ -9,4 +9,5 @@ WorldDefinitions::WorldDefinitions(ScriptManager* mgr, World* w) {
     engine->SetDefaultNamespace("World");
 
     engine->RegisterGlobalProperty("bool paused", &w->paused);
+    engine->RegisterGlobalFunction("void quit()", asMETHOD(World, quit), asCALL_THISCALL_ASGLOBAL, w);
 }

@@ -12,7 +12,7 @@ shared class GUIText : GUIComponent {
     private Font@ font;
     private string _text = "";
 
-    string text {
+    string text { // TODO: Rename to txt.
         get {
             return _text;
         }
@@ -49,6 +49,18 @@ shared class GUIText : GUIComponent {
         @this.font = font;
         
         updatePosition();
+    }
+
+    float getWidth() const {
+        return font.stringWidth(_text, scale);
+    }
+
+    float getWidth(const string&in text) const {
+        return font.stringWidth(text, scale);
+    }
+
+    float getHeight() const {
+        return font.getHeight(scale);
     }
 
     private void updatePosition() {

@@ -8,14 +8,33 @@ shared class GUIButton : GUIComponent {
 
     private bool hit = false;
     private bool down = false;
+    private bool hasBeenDown = false;
 
-    bool locked = false;
+    private bool _locked = false;
+    bool locked {
+        set {
+            _locked = value;
+            if (value) {
+                hit = false;
+                down = false;
+                frame.hovered = false;
+            }
+        }
+    }
+
+    void set_active(bool value) property override {
+        GUIComponent::set_active(value);
+        frame.active = value;
+        text.active = value;
+    }
 
     GUIButton(Menu@ menu, float x, float y, float width, float height, const string&in txt, Alignment alignment = Alignment::CenterXY, Font@ font = Font::large) {
         super(menu, x, y, width, height, alignment);
-        @frame = GUIFrame(menu, x, y, width, height, alignment);
-        @text = GUIText(menu, x + width / 2, y + height / 2, true, true, true, alignment, font);
+        @frame = GUIFrame(null, x, y, width, height, alignment);
+        @text = GUIText(null, x + width / 2, y + height / 2, true, true, true, alignment, font);
         text.text = txt;
+        children.insertLast(frame);
+        children.insertLast(text);
     }
 
     bool getHit() {
@@ -29,15 +48,16 @@ shared class GUIButton : GUIComponent {
     void update() override {
         hit = false;
 
-        if (locked) { return; }
+        if (_locked) { return; }
 
         Vector2f mousePos = Input::getMousePosition();
 
         if (mousePos.x >= x && mousePos.y >= y && mousePos.x <= x2 && mousePos.y <= y2) {
-            frame.hovered = !locked;
+            frame.hovered = true;
 
-            if (Input::Mouse1::isHit()) {
+            if (Input::Mouse1::isHit() || hasBeenDown) {
                 down = true;
+                hasBeenDown = true;
             } else if (!Input::Mouse1::isDown() && down) {
                 hit = true;
                 down = false;
@@ -45,6 +65,10 @@ shared class GUIButton : GUIComponent {
         } else {
             frame.hovered = false;
             down = false;
+        }
+
+        if (hasBeenDown && !Input::Mouse1::isDown()) {
+            hasBeenDown = false; // TODO: Move?
         }
     }
 

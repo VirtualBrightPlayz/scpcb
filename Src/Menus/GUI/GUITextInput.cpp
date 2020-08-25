@@ -78,7 +78,6 @@ void GUITextInput::setCaretAndSelection(int pos) {
     caretPosition = pos;
     selectionStartPosition = pos;
     selectionEndPosition = pos;
-
 }
 
 bool GUITextInput::anyTextSelected() const {
@@ -507,7 +506,7 @@ void GUITextInput::updateShortcutActions() {
 }
 
 void GUITextInput::renderInternal() {
-    frame->render();
+    /*frame->render();
 
     // Render caret.
     if (selectionStartPosition == selectionEndPosition) {
@@ -523,5 +522,5 @@ void GUITextInput::renderInternal() {
         uiMesh->setColor(PGE::Color::White);
     }
 
-    text->render();
+    text->render();*/
 }

@@ -1,4 +1,6 @@
-shared InventoryMenu@ inventoryMenu = InventoryMenu(10);
+namespace InventoryMenu {
+    shared InventoryMenu@ instance = InventoryMenu(10);
+}
 
 shared class InventoryMenu : Menu {
     private array<GUIInvSlot@> slots;

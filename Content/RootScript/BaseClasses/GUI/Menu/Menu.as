@@ -18,7 +18,6 @@ shared abstract class Menu {
 
     // Returns whether this menu should detach.
     bool update() { return false; }
-    void render() {}
 }
 
 shared class MenuManager {
@@ -30,6 +29,9 @@ shared class MenuManager {
             mu.onDeactivate();
             for (int i = 0; i < mu.components.length(); i++) {
                 mu.components[i].onClose();
+                for (int j = 0; j < mu.components[i].children.length(); j++) {
+                    mu.components[i].children[j].onClose();
+                }
             }
         } else {
             // Throw
@@ -43,6 +45,9 @@ shared class MenuManager {
             mu.onActivate();
             for (int i = 0; i < mu.components.length(); i++) {
                 mu.components[i].onOpen();
+                for (int j = 0; j < mu.components[i].children.length(); j++) {
+                    mu.components[i].children[j].onOpen();
+                }
             }
         } else {
             // Throw
@@ -51,19 +56,29 @@ shared class MenuManager {
     }
 
     void update() {
+        if (Input::Escape::isHit()) {
+            if (GUITextInput::subscriber != null) {
+                GUITextInput::subscriber.deselect();
+            } else if (currMenu == null) {
+                activateMenu(PauseMenu::instance);
+            } else if (currMenu.onEscapeHit()) {
+                deactivateMenu(currMenu);
+            }
+        }
         if (currMenu == null) {
-            if (Input::isEscapeHit()) {
-                activateMenu(pauseMenu);
-            } else if (Input::getHit() & Input::Inventory != 0) {
-                activateMenu(inventoryMenu);
+            if (Input::getHit() & Input::Inventory != 0) {
+                activateMenu(InventoryMenu::instance);
             }
         } else {
-            if (Input::isEscapeHit() && currMenu.onEscapeHit() || currMenu.update()) {
+            if (currMenu.update()) {
                 deactivateMenu(currMenu);
             } else {
                 for (int i = 0; i < currMenu.components.length(); i++) {
                     if (currMenu.components[i].active) {
                         currMenu.components[i].update();
+                        for (int j = 0; j < currMenu.components[i].children.length(); j++) {
+                            currMenu.components[i].children[j].update();
+                        }
                     }
                 }
             }
@@ -72,10 +87,12 @@ shared class MenuManager {
 
     void render() {
         if (currMenu != null) {
-            currMenu.render();
             for (int i = 0; i < currMenu.components.length(); i++) {
                 if (currMenu.components[i].active) {
                     currMenu.components[i].render();
+                    for (int j = 0; j < currMenu.components[i].children.length(); j++) {
+                            currMenu.components[i].children[j].render();
+                    }
                 }
             }
         }
