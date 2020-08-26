@@ -17,6 +17,15 @@ ScriptGlobal::ScriptGlobal(ScriptModule* module, int index) {
     varNamespace = outNamespace;
     isSerialize = outIsSerialize;
     type = module->typeFromTypeId(outTypeID);
+
+    object = nullptr; //TODO: add support for primitive types
+    if (type->isClassType()) {
+        object = new ScriptObject((ScriptClass*)type, (asIScriptObject*)module->getAngelScriptModule()->GetAddressOfGlobalVar(index));
+    }
+}
+
+ScriptGlobal::~ScriptGlobal() {
+    if (object != nullptr) { delete object; }
 }
 
 PGE::String ScriptGlobal::getName() const {
@@ -29,6 +38,10 @@ PGE::String ScriptGlobal::getNamespace() const {
 
 bool ScriptGlobal::isSerializable() const {
     return isSerialize;
+}
+
+ScriptObject* ScriptGlobal::getObject() const {
+    return object;
 }
 
 void ScriptGlobal::saveXML(tinyxml2::XMLElement* parent) const {

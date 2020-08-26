@@ -69,7 +69,7 @@ shared class GUIText : GUIComponent {
             pos.x -= font.stringWidth(_text, scale) / 2.f;
         }
         if (centerY) {
-            pos.y -= font.getHeight(scale) / 1.5f;
+            pos.y -= font.getHeight(scale) / 2.f;
         }
     }
 

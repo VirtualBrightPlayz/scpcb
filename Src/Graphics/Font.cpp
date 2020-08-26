@@ -104,7 +104,7 @@ void Font::renderAtlas(long chr) {
                     GlyphData gd;
                     gd.atlasIndex = (int)atlases.size();
                     gd.horizontalAdvance = (float)(freeTypeFace->glyph->metrics.horiAdvance>>6);
-                    gd.drawOffset = PGE::Vector2f((float)-freeTypeFace->glyph->bitmap_left, (float)(freeTypeFace->glyph->bitmap_top-height*10/14));
+                    gd.drawOffset = PGE::Vector2f((float)-freeTypeFace->glyph->bitmap_left, (float)(freeTypeFace->glyph->bitmap_top-height*10/15));
                     gd.srcRect = PGE::Rectanglef((float)x/(float)atlasDims,(float)y/(float)atlasDims,(float)(x+glyphWidth)/(float)atlasDims,(float)(y+glyphHeight)/(float)atlasDims);
 
                     x+=glyphWidth+1;
@@ -228,5 +228,5 @@ float Font::stringWidth(const PGE::String& text, float scale) {
 }
 
 float Font::getHeight(float scale) const {
-    return glyphData.find(L'T')->second.srcRect.height() * (float)atlasDims * scale;
+    return (float)height * scale * 10.f / 15.f;
 }
