@@ -7,6 +7,9 @@ class ScriptManager;
 class World;
 
 class WorldDefinitions : NativeDefinition {
+    private:
+        const int platform;
+
     public:
         WorldDefinitions(ScriptManager* mgr, World* w);
 };

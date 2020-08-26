@@ -11,6 +11,7 @@
 
 GUITextInput* GUITextInput::subscriber = nullptr;
 
+// Ported.
 GUITextInput::GUITextInput(UIMesh* um, Font* fnt, KeyBinds* kb, Config* con, PGE::IO* inIo, float x, float y, float width, float height, bool alignLeft, int mementoMaxMemSize, const PGE::String& defaultText, int limit, const PGE::String& pattern, Alignment alignment)
 : GUIComponent(um, kb, con, x, y, width, height, alignment) {
     frame = new GUIFrame(um, kb, con, x, y, width, height, alignment);

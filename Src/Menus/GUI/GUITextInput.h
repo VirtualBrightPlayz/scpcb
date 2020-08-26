@@ -10,6 +10,7 @@
 class GUIFrame;
 class GUIText;
 
+// Ported.
 class GUITextInput : public GUIComponent {
     private:
         GUIFrame* frame;
