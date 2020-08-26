@@ -7,10 +7,12 @@
 
 class ScriptModule;
 class Type;
+class ScriptObject;
 
 class ScriptGlobal {
 private:
     const ScriptModule* module;
+    ScriptObject* object;
 
     int index;
     PGE::String name;
@@ -21,11 +23,13 @@ private:
 
 public:
     ScriptGlobal(ScriptModule* module, int index);
-    ~ScriptGlobal()=default;
+    ~ScriptGlobal();
 
     PGE::String getName() const;
     PGE::String getNamespace() const;
     bool isSerializable() const;
+
+    ScriptObject* getObject() const;
 
     void saveXML(tinyxml2::XMLElement* element) const;
     void loadXML(tinyxml2::XMLElement* element) const;

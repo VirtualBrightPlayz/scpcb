@@ -28,6 +28,9 @@ ScriptModule::~ScriptModule() {
     for (int i=0;i<classes.size();i++) {
         delete classes[i];
     }
+    for (int i=0;i<globals.size();i++) {
+        delete globals[i];
+    }
     scriptModule->Discard();
 }
 
@@ -132,6 +135,13 @@ ScriptFunction* ScriptModule::getFunctionByName(const PGE::String& name) const {
 ScriptFunction* ScriptModule::getFunctionByAngelScriptPtr(asIScriptFunction* f) const {
     for (int i = 0; i < functions.size(); i++) {
         if (functions[i]->getAngelScriptFunction() == f) { return functions[i]; }
+    }
+    return nullptr;
+}
+
+ScriptGlobal* ScriptModule::getGlobalByName(const PGE::String& name) const {
+    for (int i = 0; i < globals.size(); i++) {
+        if (globals[i]->getName().equals(name)) { return globals[i]; }
     }
     return nullptr;
 }
