@@ -33,7 +33,7 @@ class MementoManager {
     public:
         MementoManager(int mementoMaxMemSize);
 
-        PGE::String execute(const PGE::String& txt, int pos, int& posOut, bool undo);
+        PGE::String execute(const PGE::String& txt, int& pos, bool undo);
         void clear();
         void push(int startPos, const PGE::String& content, bool write, bool linked = false);
 };

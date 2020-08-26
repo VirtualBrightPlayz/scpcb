@@ -25,8 +25,7 @@ MementoManager::MementoManager(int mementoMaxMemSize) {
     memSize = 0;
 }
 
-PGE::String MementoManager::execute(const PGE::String& txt, int pos, int& posOut, bool undo) {
-    posOut = pos; // TODO: inout for integers please.
+PGE::String MementoManager::execute(const PGE::String& txt, int& pos, bool undo) {
     if (undo) {
         if (position >= 0) {
             PGE::String temp = history[position].execute(txt, false);
@@ -35,7 +34,7 @@ PGE::String MementoManager::execute(const PGE::String& txt, int pos, int& posOut
                 temp = history[position].execute(temp, false);
                 position--;
             }
-            posOut = 0; // TODO: Caret position setting.
+            pos = 0; // TODO: Caret position setting.
             return temp;
         } else {
             return txt;
@@ -48,7 +47,7 @@ PGE::String MementoManager::execute(const PGE::String& txt, int pos, int& posOut
                 position++;
                 temp = history[position].execute(temp, true);
             }
-            posOut = 0;
+            pos = 0;
             return temp;
         } else {
             return txt;

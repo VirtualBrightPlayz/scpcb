@@ -16,7 +16,7 @@ MementoDefinitions::MementoDefinitions(ScriptManager* mgr) {
 
 	engine->RegisterObjectType("MementoManager", sizeof(MementoManager), asOBJ_REF | asOBJ_NOCOUNT);
 
-	engine->RegisterObjectMethod("MementoManager", "string execute(const string&in txt, int pos, int&out posOut, bool undo)", asMETHOD(MementoManager, execute), asCALL_THISCALL);
+	engine->RegisterObjectMethod("MementoManager", "string execute(const string&in txt, int&inout pos, bool undo)", asMETHOD(MementoManager, execute), asCALL_THISCALL);
 	engine->RegisterObjectMethod("MementoManager", "void clear()", asMETHOD(MementoManager, clear), asCALL_THISCALL);
 	engine->RegisterObjectMethod("MementoManager", "void push(int startPos, const string&in content, bool write, bool linked = false)", asMETHOD(MementoManager, push), asCALL_THISCALL);
 	

@@ -45,6 +45,16 @@ shared class GUITextInput : GUIComponent {
     // Max amount of characters the input box can have.
     private int charLimit;
 
+    string txt {
+        get { return text.text; }
+        set {
+            mementoManager.push(0, text.text, false, true);
+            mementoManager.push(0, value, true, true);
+            text.text = value;
+            setCaretAndSelection(value.length());
+        }
+    }
+
     GUITextInput(Menu@ menu, float x, float y, float width, float height, bool alignLeft, int mementoMaxSize, const string&in defaultTxt = "", int charLimit = 2147483647, const string&in pattern = "", Alignment alignment = Alignment::CenterXY) {
         super(menu, x, y, width, height, alignment);
         @frame = GUIFrame(null, x, y, width, height, alignment);
@@ -129,6 +139,12 @@ shared class GUITextInput : GUIComponent {
     private void removeText(int start, int end) {
         mementoManager.push(start, text.text.substr(start, end - start), false);
         text.text = text.text.substr(0, start) + text.text.substr(end);
+    }
+
+    void clearTextAndMementos() {
+        text.text = "";
+        setCaretAndSelection(0);
+        mementoManager.clear();
     }
 
     private int getCaretPosition(float mouseX) {
@@ -218,6 +234,9 @@ shared class GUITextInput : GUIComponent {
             string append = Input::getTextInput();
             if (append != "" && text.text.length() < charLimit) {
                 addText(append);
+                if (World::Platform::active == World::Platform::Apple) {
+                    selectionWasDraggedOrClicked = false;
+                }
             }
 
         // Delete key actions.
@@ -256,7 +275,14 @@ shared class GUITextInput : GUIComponent {
                             setCaretAndSelection(Math::clampInt(right ? caretPosition + 1 : caretPosition - 1, 0, text.text.length()));
                         }
                     }
+                    if (World::Platform::active == World::Platform::Apple) {
+                        selectionWasDraggedOrClicked = false;
+                    }
                 } else {
+                    if (selectionWasDraggedOrClicked) {
+                        caretPosition = right ? selectionStartPosition : selectionEndPosition;
+                        selectionWasDraggedOrClicked = false;
+                    }
                     // Shift the selection index.
                     if (Input::anyShortcutDown()) {
                         if (right) {
@@ -340,9 +366,13 @@ shared class GUITextInput : GUIComponent {
                     }
                     draggable = false; // Prevents a double click from being registered as a drag action.
 
-                    // If you shift+arrow after a click selection on Windows, it defaults to manipulating the right-hand side.
-                    // So move the caret to the left to replicate that behavior.
-                    caretPosition = selectionStartPosition;
+                    if (World::Platform::active == World::Platform::Apple) {
+                        selectionWasDraggedOrClicked = true;
+                    } else if (World::Platform::active == World::Platform::Windows) {
+                        // If you shift+arrow after a click selection on Windows, it defaults to manipulating the right-hand side.
+                        // So move the caret to the left to replicate that behavior.
+                        caretPosition = selectionStartPosition;
+                    }
                 }
             } else if (Input::Mouse1::getClickCount() >= 3) {
                 // Select all.
@@ -350,6 +380,14 @@ shared class GUITextInput : GUIComponent {
                 selectionEndPosition = text.text.length();
                 caretPosition = 0;
                 draggable = false; // Prevents a triple click from being registered as a drag action.
+
+                if (World::Platform::active == World::Platform::Apple) {
+                    selectionWasDraggedOrClicked = true;
+                } else if (World::Platform::active == World::Platform::Windows) {
+                    // If you shift+arrow after a click selection on Windows, it defaults to manipulating the right-hand side.
+                    // So move the caret to the left to replicate that behavior.
+                    caretPosition = selectionStartPosition;
+                }
 
                 // If you shift+arrow after a click selection on Windows, it defaults to manipulating the right-hand side.
                 // So move the caret to the left to replicate that behavior.
@@ -378,6 +416,9 @@ shared class GUITextInput : GUIComponent {
                     // Mouse click outside of textbox.
                     deselect();
                 }
+                if (World::Platform::active == World::Platform::Apple) {
+                    selectionWasDraggedOrClicked = false;
+                }
             } else if (draggable && Input::Mouse1::isDown()) {
                 // If we're dragging then select any text between the cursor and the caret.
                 int mouseSnap = getCaretPosition(mousePos.x);
@@ -388,6 +429,9 @@ shared class GUITextInput : GUIComponent {
                     } else {
                         selectionStartPosition = mouseSnap;
                         selectionEndPosition = caretPosition;
+                    }
+                    if (World::Platform::active == World::Platform::Apple) {
+                        selectionWasDraggedOrClicked = true;
                     }
                 } else {
                     selectionStartPosition = caretPosition;
@@ -410,14 +454,13 @@ shared class GUITextInput : GUIComponent {
                     addText(append);
                 }
             } else if (Input::undoIsHit() || Input::redoIsHit()) {
-                text.text = mementoManager.execute(text.text, caretPosition, caretPosition, Input::undoIsHit());
+                text.text = mementoManager.execute(text.text, caretPosition, Input::undoIsHit());
                 setCaretAndSelection(caretPosition);
                 oldCaretPosition = -1;
             } else if (Input::selectAllIsHit()) {
                 selectionStartPosition = 0;
                 selectionEndPosition = text.text.length();
             }
-
 
             updateCoordinates();
         }
