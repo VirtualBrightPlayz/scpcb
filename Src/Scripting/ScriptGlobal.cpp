@@ -18,10 +18,7 @@ ScriptGlobal::ScriptGlobal(ScriptModule* module, int index) {
     isSerialize = outIsSerialize;
     type = module->typeFromTypeId(outTypeID);
 
-    object = nullptr; //TODO: add support for primitive types
-    if (type->isClassType()) {
-        object = new ScriptObject((ScriptClass*)type, (asIScriptObject*)module->getAngelScriptModule()->GetAddressOfGlobalVar(index));
-    }
+    object = nullptr;
 }
 
 ScriptGlobal::~ScriptGlobal() {
@@ -40,7 +37,18 @@ bool ScriptGlobal::isSerializable() const {
     return isSerialize;
 }
 
-ScriptObject* ScriptGlobal::getObject() const {
+ScriptObject* ScriptGlobal::getObject() {
+    if (!type->isClassType()) { return nullptr; }
+
+    void* ptr = module->getAngelScriptModule()->GetAddressOfGlobalVar(index);
+    asIScriptObject* asObj = (asIScriptObject*)ptr;
+    if (type->isRefType()) {
+        asObj = *((asIScriptObject**)ptr);
+    }
+    if (object == nullptr || object->getAngelScriptObject() != asObj) {
+        if (object != nullptr) { delete object; }
+        object = new ScriptObject((ScriptClass*)type, asObj);
+    }
     return object;
 }
 

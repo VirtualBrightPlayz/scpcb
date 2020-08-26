@@ -29,7 +29,7 @@ public:
     PGE::String getNamespace() const;
     bool isSerializable() const;
 
-    ScriptObject* getObject() const;
+    ScriptObject* getObject();
 
     void saveXML(tinyxml2::XMLElement* element) const;
     void loadXML(tinyxml2::XMLElement* element) const;
