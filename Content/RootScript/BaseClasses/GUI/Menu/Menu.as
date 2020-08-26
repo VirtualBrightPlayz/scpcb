@@ -51,7 +51,7 @@ shared class MenuManager {
 
     void update() {
         if (Input::Escape::isHit()) {
-            if (GUITextInput::subscriber != null) {
+            if (GUITextInput::subscriber != null && currMenu != null && currMenu.type != "console") {
                 GUITextInput::subscriber.deselect();
             } else if (currMenu == null) {
                 activateMenu(PauseMenu::instance);
@@ -62,6 +62,8 @@ shared class MenuManager {
         if (currMenu == null) {
             if (Input::getHit() & Input::Inventory != 0) {
                 activateMenu(InventoryMenu::instance);
+            } else if (Input::getHit() & Input::ToggleConsole != 0) {
+                activateMenu(ConsoleMenu::instance);
             }
         } else {
             if (currMenu.update()) {

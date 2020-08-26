@@ -74,7 +74,7 @@ World::World() {
     oldPaused = false;
     paused = false;
 
-    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, io, msgMng, locMng, pickMng, uiMesh, config, (float)timing->getTimeStep(), console, billMng);
+    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, io, msgMng, locMng, pickMng, uiMesh, config, (float)timing->getTimeStep(), billMng);
 
     applyConfig(config);
 
@@ -263,13 +263,13 @@ void World::runTick(float timeStep) {
             activateMenu(pauseMenu);
             paused = true;
         }
-    } else */if (inputWasFired(hitInputs, Input::ToggleConsole)) {
+    } else if (inputWasFired(hitInputs, Input::ToggleConsole)) {
         if (currMenu == nullptr) {
             activateMenu(console);
         } else if (currMenu == console) {
             console->onEscapeHit();
         } // Otherwise another menu is already open.
-    }/* else if (inputWasFired(hitInputs, Input::Inventory)) {
+    } else if (inputWasFired(hitInputs, Input::Inventory)) {
         if (currMenu == nullptr) {
             activateMenu(inventory);
         } else if (currMenu == inventory) {

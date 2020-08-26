@@ -47,7 +47,6 @@ float Message::lineHeight;
 float Message::bottomOfConsoleWindow;
 
 Console::Console(World* wrld, UIMesh* um, Font* font, KeyBinds* kb, Config* con, LocalizationManager* tm, PGE::IO* io) : Menu(wrld, "console") {
-    //TODO: Figure out alignment issues and simplify this.
     float frameX = -GUIComponent::SCALE_MAGNITUDE * con->getAspectRatio();
     float frameY = -GUIComponent::SCALE_MAGNITUDE + 2.f;
     float frameWidth = GUIComponent::SCALE_MAGNITUDE * 2.f * con->getAspectRatio();

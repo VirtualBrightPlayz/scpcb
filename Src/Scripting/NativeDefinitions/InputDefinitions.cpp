@@ -61,6 +61,7 @@ InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* 
     registerKey("Delete", kb->del);
     registerKey("LeftArrow", kb->leftArrow);
     registerKey("RightArrow", kb->rightArrow);
+    registerKey("Enter", kb->enter);
 }
 
 void InputDefinitions::registerKey(const PGE::String& name, PGE::KeyboardInput* input) {

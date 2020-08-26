@@ -77,15 +77,15 @@ void main() {
 
     //Debug::log(test_shared_global);
 
-    registerCommand("mytest", "THIS COMKMAND IS VERY EPIC", Test);
-    registerCommand(
+    Console::register("mytest", "THIS COMKMAND IS VERY EPIC", Test);
+    Console::register(
         "teleport",
         "Teleports the player to the coordinates sent as input",
         function(float x,float y,float z) {
             Debug::log("Called teleport!");
             testController.setPosition(Vector3f(x,y,z));
         });
-	registerCommand(
+	Console::register(
         "hElP",
         ":(",
         function(string s) {

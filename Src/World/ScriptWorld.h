@@ -32,7 +32,6 @@ class KeyBinds;
 class MouseData;
 class Config;
 class Camera;
-class Console;
 class UIMesh;
 class MessageManager;
 class LocalizationManager;
@@ -72,7 +71,7 @@ class ScriptWorld {
         std::vector<ScriptModule*> modules;
 
     public:
-        ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, MessageManager* mm, LocalizationManager* lm, PickableManager* pm, UIMesh* um,  Config* config, float timestep, Console* con, BillboardManager* bm);
+        ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, MessageManager* mm, LocalizationManager* lm, PickableManager* pm, UIMesh* um,  Config* config, float timestep, BillboardManager* bm);
         ~ScriptWorld();
 
         void update();

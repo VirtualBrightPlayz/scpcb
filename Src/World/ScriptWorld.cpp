@@ -31,7 +31,7 @@
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 #include "../Scripting/NativeDefinitions/ReflectionDefinitions.h"
 
-ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, MessageManager* mm, LocalizationManager* lm, PickableManager* pm, UIMesh* um, Config* config, float timestep, Console* con, BillboardManager* bm) {
+ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, MessageManager* mm, LocalizationManager* lm, PickableManager* pm, UIMesh* um, Config* config, float timestep, BillboardManager* bm) {
     manager = new ScriptManager();
 
     refCounterManager = new RefCounterManager();
@@ -39,7 +39,7 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     worldDefinitions = new WorldDefinitions(manager, world);
     regexDefinitions = new RegexDefinitions(manager, refCounterManager);
     mementoDefinitions = new MementoDefinitions(manager);
-    consoleDefinitions = new ConsoleDefinitions(manager, con);
+    consoleDefinitions = new ConsoleDefinitions(manager);
     colorDefinitions = new ColorDefinitions(manager);
     mathDefinitions = new MathDefinitions(manager);
     inputDefinitions = new InputDefinitions(manager, keyBinds, mouseData, io);
@@ -111,6 +111,8 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
         scriptModule->build();
         modules.push_back(scriptModule);
     }
+
+    //consoleDefinitions->setUp(manager);
 
     for (int i=0;i<modules.size();i++) {
         ScriptModule* scriptModule = modules[i];
