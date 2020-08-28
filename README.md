@@ -5,6 +5,8 @@ The original game's source code can be found here: https://github.com/Regalis11/
 The game is based on the works of the [SCP Foundation community][scp-wiki].
 
 # Requirements:
+* [OpenAL SDK][openal]
+
 Windows:
 * [Visual Studio 2019][vs2019].
 
@@ -37,6 +39,7 @@ Licensing terms can be found in [License.txt](Content/License.txt).
 * Placing the pointer/reference symbol anywhere other than next to the type.
 * Initialization lists (except when used to initialize a variable that needs to be `const`).
 
+[openal]: https://www.openal.org/
 [vs2019]: https://visualstudio.microsoft.com/vs/
 [scp-wiki]: http://www.scp-wiki.net/
 [cc3.0]: http://creativecommons.org/licenses/by-sa/3.0/
