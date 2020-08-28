@@ -112,7 +112,7 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
         modules.push_back(scriptModule);
     }
 
-    //consoleDefinitions->setUp(manager);
+    consoleDefinitions->setUp(manager);
 
     for (int i=0;i<modules.size();i++) {
         ScriptModule* scriptModule = modules[i];

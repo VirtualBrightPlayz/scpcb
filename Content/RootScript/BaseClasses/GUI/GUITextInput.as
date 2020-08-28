@@ -56,9 +56,9 @@ shared class GUITextInput : GUIComponent {
     }
 
     GUITextInput(Menu@ menu, float x, float y, float width, float height, bool alignLeft, int mementoMaxSize = 1048576, const string&in defaultTxt = "", int charLimit = 2147483647, const string&in pattern = "", Alignment alignment = Alignment::CenterXY) {
-        super(menu, x, y, width, height, alignment);
         @frame = GUIFrame(null, x, y, width, height, alignment);
-        @text = GUIText(menu , alignLeft ? x + GUIComponent::borderThickness * 2 : x + width/2, y + height/2, !alignLeft, true, false, alignment);
+        @text = GUIText(null , alignLeft ? x + GUIComponent::borderThickness * 2 : x + width/2, y + height/2, !alignLeft, true, false, alignment);
+        super(menu, x, y, width, height, alignment);
 
         @mementoManager = MementoManager::create(mementoMaxSize);
 
@@ -77,6 +77,11 @@ shared class GUITextInput : GUIComponent {
 
     ~GUITextInput() {
         MementoManager::destroy(mementoManager);
+    }
+
+    void addToMenu(Menu@ menu) override {
+        GUIComponent::addToMenu(menu);
+        text.addToMenu(menu);
     }
 
     private void setCaretAndSelection(int pos) {

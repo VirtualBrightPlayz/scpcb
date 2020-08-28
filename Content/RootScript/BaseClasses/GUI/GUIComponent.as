@@ -69,8 +69,9 @@ shared abstract class GUIComponent {
     }
 
     GUIComponent(Menu@ menu, float x, float y, float width, float height, Alignment alignment = Alignment::CenterXY) {
+        // If menu == null we are being managed by our parent component.
         if (menu != null) {
-            menu.components.insertLast(this);
+            addToMenu(menu);
         }
 
         _width = width;
@@ -80,6 +81,10 @@ shared abstract class GUIComponent {
 
         this.x = x;
         this.y = y;
+    }
+
+    void addToMenu(Menu@ menu) {
+        menu.components.insertLast(this);
     }
 
     void onClose() {}

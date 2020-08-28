@@ -139,9 +139,9 @@ ScriptFunction* ScriptModule::getFunctionByAngelScriptPtr(asIScriptFunction* f) 
     return nullptr;
 }
 
-ScriptGlobal* ScriptModule::getGlobalByName(const PGE::String& name) const {
+ScriptGlobal* ScriptModule::getGlobalByName(const PGE::String& name, const PGE::String& nmspc) const {
     for (int i = 0; i < globals.size(); i++) {
-        if (globals[i]->getName().equals(name)) { return globals[i]; }
+        if (globals[i]->getName().equals(name) && globals[i]->getNamespace() == nmspc) { return globals[i]; }
     }
     return nullptr;
 }

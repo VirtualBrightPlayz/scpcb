@@ -11,7 +11,7 @@
 ConsoleDefinitions::ConsoleDefinitions(ScriptManager* mgr) {
     engine = mgr->getAngelScriptEngine();
     scriptContext = engine->CreateContext();
-    //addMsgCtx = engine->CreateContext();
+    msgContext = engine->CreateContext();
 
     engine->SetDefaultNamespace("Console");
     engine->RegisterGlobalFunction("void register(const string&in name, const string&in helpText, function&in command)", asMETHOD(ConsoleDefinitions, registerCommand), asCALL_THISCALL_ASGLOBAL, this);
@@ -26,17 +26,36 @@ ConsoleDefinitions::ConsoleDefinitions(ScriptManager* mgr) {
 
 ConsoleDefinitions::~ConsoleDefinitions() {
     scriptContext->Release();
-    addMsgCtx->Release();
+    msgContext->Release();
 }
 
 void ConsoleDefinitions::setUp(ScriptManager* mgr) {
     std::vector<ScriptModule*> modules = mgr->getScriptModules();
     for (const auto& mod : modules) {
-        if (mod->getAngelScriptModule()->GetName() == "RootScript") {
-            addMsgCtx->Prepare(engine->GetModule("RootScript")->GetTypeInfoByName("ConsoleMenu")->GetMethodByName("addConsoleMessage"));
-            std::cout << "POGGERS " << mod->getGlobalByName("ConsoleMenu::instance") << std::endl;
-            addMsgCtx->SetObject(mod->getGlobalByName("ConsoleMenu::instance")->getObject()->getAngelScriptObject());
+        if (PGE::String(mod->getAngelScriptModule()->GetName()) == "RootScript") {
+            consoleInstance = mod->getGlobalByName("instance", "ConsoleMenu")->getObject()->getAngelScriptObject();
+            addConsoleMsgFunc = engine->GetModule("RootScript")->GetTypeInfoByName("ConsoleMenu")->GetMethodByName("addConsoleMessage");
             break;
+        }
+    }
+}
+
+void ConsoleDefinitions::printHelpList() {
+    for (const auto& comSet : commands) {
+        Command command = comSet.second;
+        addConsoleMessage(command.name, PGE::Color::Cyan);
+    }
+}
+
+void ConsoleDefinitions::printHelpCommand(const PGE::String& command) {
+    std::map<long long, Command>::iterator find = commands.find(command.getHashCode());
+    if (find == commands.end()) {
+        addConsoleMessage("That command doesn't exist", PGE::Color::Yellow);
+    } else {
+        if (find->second.helpText.isEmpty()) {
+            addConsoleMessage("There is no help available for that command.", PGE::Color::Yellow);
+        } else {
+            addConsoleMessage(find->second.helpText, PGE::Color::Blue);
         }
     }
 }
@@ -53,23 +72,9 @@ void ConsoleDefinitions::registerCommand(const PGE::String& name, const PGE::Str
             }
         }
     }
-    // TODO: Maybe reconsider map, performance increase when executing, longer load times.
-    Command newCommand = { func, name, helpText, false };
-    for (auto comSet : commands) {
-        Command otherCommand = comSet.second;
-        // This will also catch a command that already has had its name changed.
-        if (otherCommand.name.equalsIgnoreCase(otherCommand.duplicateName ? PGE::String(otherCommand.func->GetModuleName()) + ":" + name : name)) {
-            if (!otherCommand.duplicateName) {
-                otherCommand.duplicateName = true;
-                commands.erase(commands.find(otherCommand.name.getHashCode()));
-                commands.emplace((PGE::String(otherCommand.func->GetModuleName()) + ":" + otherCommand.name).getHashCode(), otherCommand);
-            }
-            
-            newCommand.duplicateName = true;
-            if (otherCommand.name.equalsIgnoreCase(newCommand.name)) { throw std::runtime_error("lol double command"); }
-        }
-    }
-    commands.emplace((newCommand.duplicateName ? PGE::String(func->GetModuleName()) + ":" + name : name).getHashCode(), newCommand);
+    Command newCommand = { func, name, helpText };
+    commands.emplace(name.getHashCode(), newCommand);
+    std::cout << "Command: " << name << std::endl;
 }
 
 void ConsoleDefinitions::registerCommandNoHelp(const PGE::String& name, void* f, int typeId) {
@@ -82,13 +87,19 @@ void ConsoleDefinitions::executeCommand(const PGE::String& in) {
     if (find != commands.end()) {
         asIScriptFunction* func = find->second.func;
         params.erase(params.begin());
-        if (func->GetParamCount() != params.size()) {
-            //console->addConsoleMessage("ARGUMENT SIZE MISMATCH", PGE::Color::Red);
-            return;
-        }
+        // TODO: Do we need to check all AS funcs or none?
         if (scriptContext->Prepare(func) < 0) { throw std::runtime_error("ptooey! 2"); }
+        if (func->GetParamCount() != params.size()) {
+            const char* defaultParam;
+            func->GetParam(params.size(), nullptr, nullptr, nullptr, &defaultParam);
+            if (defaultParam == nullptr) {
+                scriptContext->Unprepare();
+                addConsoleMessage("ARGUMENT SIZE MISMATCH", PGE::Color::Red);
+                return;
+            }
+        }
         PGE::String errMsg;
-        for (unsigned int i = 0; i < func->GetParamCount(); i++) {
+        for (unsigned int i = 0; i < params.size(); i++) {
             int paramTypeId;
             if (func->GetParam(i, &paramTypeId) >= 0) {
                 if (paramTypeId == asTYPEID_BOOL) {
@@ -110,7 +121,7 @@ void ConsoleDefinitions::executeCommand(const PGE::String& in) {
 
                     // If the user enters a float.
                     if (!MathUtil::equalFloats((float)arg, params[i].toFloat())) {
-                        //console->addConsoleMessage("Loss of data!", PGE::Color::Yellow);
+                        addConsoleMessage("Loss of data!", PGE::Color::Yellow);
                     }
 
                     scriptContext->SetArgDWord(i, arg);
@@ -134,24 +145,37 @@ void ConsoleDefinitions::executeCommand(const PGE::String& in) {
         if (errMsg.isEmpty()) {
             scriptContext->Execute();
         } else {
-            //console->addConsoleMessage(errMsg, PGE::Color::Red);
+            addConsoleMessage(errMsg, PGE::Color::Red);
         }
         scriptContext->Unprepare();
     } else {
-        //addConsoleMessage("No command found", PGE::Color::Red);
+        addConsoleMessage("No command found", PGE::Color::Red);
     }
 }
 
-void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) const {
+void ConsoleDefinitions::addConsoleMessage(const PGE::String& msg, const PGE::Color& color) {
+    if (msgContext->Prepare(addConsoleMsgFunc) < 0) { throw new std::runtime_error("prepare fail"); };
+    if (msgContext->SetObject(consoleInstance) < 0) { throw new std::runtime_error("setobj fail"); };
+    if (msgContext->SetArgObject(0, (void*)&msg) < 0) { throw new std::runtime_error("setarg0 fail"); };
+    if (msgContext->SetArgObject(1, (void*)&color) < 0) { throw new std::runtime_error("setarg1 fail"); };
+    if (msgContext->Execute() < 0) { throw new std::runtime_error("execute fail"); };
+    if (msgContext->Unprepare() < 0) { throw new std::runtime_error("unprepare fail"); };
+}
+
+void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
     PGE::String typeString;
+    PGE::Color color;
     switch (type) {
         case LogType::Log: {
+            color = PGE::Color::Cyan;
             typeString = "Log";
         } break;
         case LogType::Warning: {
+            color = PGE::Color::Yellow;
             typeString = "Warn";
         } break;
         case LogType::Error: {
+            color = PGE::Color::Red;
             typeString = "Err";
         } break;
     }
@@ -219,20 +243,20 @@ void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) const 
     std::ostream& out = (type == LogType::Error ? std::cerr : std::cout);
     out << "Debug::" << typeString << ": " << content << std::endl;
 #endif
-    //console->addConsoleMessage("Debug::" + typeString + ": " + content);
+    addConsoleMessage("Debug::" + typeString + ": " + content, color);
     if (type == LogType::Error) {
         throw new std::runtime_error(("ERROR! " + content).cstr());
     }
 }
 
-void ConsoleDefinitions::log(void* ref, int typeId) const {
+void ConsoleDefinitions::log(void* ref, int typeId) {
     internalLog(ref, typeId, LogType::Log);
 }
 
-void ConsoleDefinitions::warning(void* ref, int typeId) const {
+void ConsoleDefinitions::warning(void* ref, int typeId) {
     internalLog(ref, typeId, LogType::Warning);
 }
 
-void ConsoleDefinitions::error(void* ref, int typeId) const {
+void ConsoleDefinitions::error(void* ref, int typeId) {
     internalLog(ref, typeId, LogType::Error);
 }

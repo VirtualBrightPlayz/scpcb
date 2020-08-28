@@ -43,7 +43,7 @@ class ScriptModule {
         ScriptFunction* getFunctionByName(const PGE::String& name) const;
         ScriptFunction* getFunctionByAngelScriptPtr(asIScriptFunction* f) const;
 
-        ScriptGlobal* getGlobalByName(const PGE::String& name) const;
+        ScriptGlobal* getGlobalByName(const PGE::String& name, const PGE::String& nmspc = "") const;
 
         Type* typeFromTypeId(int typeId) const;
 

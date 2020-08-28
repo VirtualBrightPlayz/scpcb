@@ -15,7 +15,7 @@ external enum RoomType;
 external Zone@ test_shared_global;
 external int testCounter;
 
-void Test(int testString) {
+void Test(int i, int i2, int i3 = 5) {
     //Debug::log("Parameter: "+testString);
 }
 
@@ -48,6 +48,15 @@ shared class FirstAid : Item {
 external class MenuManager;
 
 MenuManager@ menuManager;
+
+external class ConsoleMenu;
+namespace ConsoleMenu {
+    external ConsoleMenu@ instance;
+}
+
+namespace Console {
+    external void addMessage(const string&in msg, const Color&in color = Color::White);
+}
 
 void main() {
     Debug::log("Starting up!");
@@ -84,13 +93,29 @@ void main() {
         function(float x,float y,float z) {
             Debug::log("Called teleport!");
             testController.setPosition(Vector3f(x,y,z));
-        });
+        }
+    );
 	Console::register(
         "hElP",
         ":(",
         function(string s) {
             Debug::log(s);
-        });
+        }
+    );
+    Console::register(
+        "jorge",
+        "There is no help available for you.",
+        function(int i, int i2, int i3) {
+            Console::addMessage("" + 74 + 111 + 114 + 103 + 101 + 32 + 104 + 97 + 115 + 32 + 98 + 101 + 101 + 110 + 32 + 101 + 120 + 112 + 101 + 99 + 116 + 105 + 110 + 103 + 32 + 121 + 111 + 117 + 46, Color::Orange);
+        }
+    );
+    Console::register(
+        "clear",
+        "Clears the console.",
+        function(int i) {
+            ConsoleMenu::instance.clear();
+        }
+    );
     
     @entranceZone = EntranceZone();
     @test_shared_global = @entranceZone;

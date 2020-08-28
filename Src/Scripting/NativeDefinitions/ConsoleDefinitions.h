@@ -3,6 +3,8 @@
 
 #include <map>
 
+#include <Color/Color.h>
+
 #include "../NativeDefinition.h"
 #include "../ScriptGlobal.h"
 
@@ -20,22 +22,28 @@ class ConsoleDefinitions : public NativeDefinition {
             asIScriptFunction* func;
             PGE::String name;
             PGE::String helpText;
-            bool duplicateName;
         };
         std::map<long long, Command> commands;
 
         asIScriptContext* scriptContext;
-        asIScriptContext* addMsgCtx;
+        asIScriptContext* msgContext;
+        asIScriptObject* consoleInstance;
+        asIScriptFunction* addConsoleMsgFunc;
+
+        void printHelpList();
+        void printHelpCommand(const PGE::String& command);
 
         void registerCommand(const PGE::String& name, const PGE::String& helpText, void* f, int typeId);
         void registerCommandNoHelp(const PGE::String& name, void* f, int typeId);
         void executeCommand(const PGE::String& in);
 
-        void internalLog(void* ref, int typeId, LogType type) const;
+        void addConsoleMessage(const PGE::String& msg, const PGE::Color& color);
 
-        void log(void* ref, int typeId) const;
-        void warning(void* ref, int typeId) const;
-        void error(void* ref, int typeId) const;
+        void internalLog(void* ref, int typeId, LogType type);
+
+        void log(void* ref, int typeId);
+        void warning(void* ref, int typeId);
+        void error(void* ref, int typeId);
 
     public:
         ConsoleDefinitions(ScriptManager* mgr);

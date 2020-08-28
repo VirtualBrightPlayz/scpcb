@@ -27,10 +27,15 @@ shared class GUIInvSlot : GUIComponent {
     private bool equipped = false;
 
     GUIInvSlot(Menu@ menu, float x, float y) {
+        @text = GUIText(null, x + GUIInvSlot::screenSize / 2, y2 + GUIInvSlot::screenSize / 4, true, true, false);
         super(menu, x, y, GUIInvSlot::screenSize, GUIInvSlot::screenSize);
         background = Rectanglef(x + GUIComponent::borderThickness, y + GUIComponent::borderThickness, x2 - GUIComponent::borderThickness, y2 - GUIComponent::borderThickness);
         updateRectangles(false);
-        @text = GUIText(menu, x + GUIInvSlot::screenSize / 2, y2 + GUIInvSlot::screenSize / 4, true, true, false);
+    }
+
+    void addToMenu(Menu@ menu) override {
+        GUIComponent::addToMenu(menu);
+        text.addToMenu(menu);
     }
 
     private void updateRectangles(bool doubled) {
