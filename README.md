@@ -5,7 +5,7 @@ The original game's source code can be found here: https://github.com/Regalis11/
 The game is based on the works of the [SCP Foundation community][scp-wiki].
 
 # Requirements:
-* [OpenAL SDK][openal]
+* [OpenAL SDK][openal].
 
 Windows:
 * [Visual Studio 2019][vs2019].
@@ -13,6 +13,9 @@ Windows:
 macOS:
 * Mojave (10.14) or higher.
 * Xcode 10.3 or higher.
+
+# Before compiling:
+* Make sure the Working Directory of the SCPCB project is set to `$(TargetDir)` (Configuration Properties -> Debugging).
 
 # License
 Licensing terms can be found in [License.txt](Content/License.txt).
