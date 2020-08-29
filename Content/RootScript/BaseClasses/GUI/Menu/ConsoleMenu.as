@@ -12,6 +12,7 @@ namespace Console {
 shared class ConsoleMenu : Menu {
     private GUIFrame@ frame;
     private GUITextInput@ input;
+    private GUIScrollbar@ scrollbar;
 
     private array<string> commandHistory;
     private array<GUIText@> messageHistory;
@@ -26,12 +27,14 @@ shared class ConsoleMenu : Menu {
 
         @frame = GUIFrame(this, frameX, -GUIComponent::SCALE_MAGNITUDE, frameWidth, GUIComponent::SCALE_MAGNITUDE);
         @input = GUITextInput(this, frameX, 0, frameWidth, 5.f, true);
+        @scrollbar = GUIScrollbar(this, GUIComponent::SCALE_MAGNITUDE * UI::getAspectRatio() - 5.f, -GUIComponent::SCALE_MAGNITUDE + GUIComponent::borderThickness, 5.f, GUIComponent::SCALE_MAGNITUDE - GUIComponent::borderThickness * 2);
+        scrollbar.sourceDisplayedSize = GUIComponent::SCALE_MAGNITUDE - GUIComponent::borderThickness * 2.f;
 
         firstMessagePosition = -Font::large.getHeight(GUIText::defaultScale) - GUIComponent::borderThickness * 2;
     }
 
     private void updateCoordinates() {
-        scrollOffset = Math::minFloat(0.f, scrollOffset - Input::getMouseWheelDelta().y);
+        scrollOffset = Math::minFloat(0.f, scrollOffset + Input::getMouseWheelDelta().y);
         float currentHeight = firstMessagePosition - scrollOffset;
         float lowestPoint = -Font::large.getHeight(GUIText::defaultScale) - GUIComponent::borderThickness * 2;
         float highestPoint = -GUIComponent::SCALE_MAGNITUDE + GUIComponent::borderThickness * 2;
@@ -44,6 +47,8 @@ shared class ConsoleMenu : Menu {
             }
             currentHeight -= ConsoleMenu::lineHeight;
         }
+        scrollbar.sourceTotalSize = messageHistory.length() * ConsoleMenu::lineHeight;
+        scrollbar.position = -scrollOffset;
     }
 
     void addConsoleMessage(const string&in msg, const Color&in color) {
@@ -51,14 +56,16 @@ shared class ConsoleMenu : Menu {
         newText.text = msg;
         newText.color = color;
         messageHistory.insertLast(newText);
-        updateCoordinates();
+        updateCoordinates(); // TODO: Only update here when we are open.
     }
 
     void clear() {
         components = array<GUIComponent@>(0);
         messageHistory = array<GUIText@>(0);
-        frame.addToMenu(this);
-        input.addToMenu(this);
+        components.insertLast(frame);
+        components.insertLast(input);
+        components.insertLast(scrollbar);
+        // TODO: Reinitialize input properly.
     }
 
     void onActivate() override {
