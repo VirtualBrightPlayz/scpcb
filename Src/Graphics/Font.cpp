@@ -24,14 +24,14 @@ Font::Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::
                        0,
                        height);
 
-    renderAtlas(0);
-
     shader = gr->getShader(shaderPath, false);
 
     modelMatrixConstant = shader->getVertexShaderConstant("modelMatrix");
     colorConstant = shader->getFragmentShaderConstant("imageColor");
 
     shader->getVertexShaderConstant("projectionMatrix")->setValue(gr->getOrthoMat());
+
+    renderAtlas(0);
 }
 
 Font::~Font() {
