@@ -57,8 +57,8 @@ void ScriptModule::build() {
     }
 
     while (unprocessedTypes.size()>0) {
-        int unprocessedCount = unprocessedTypes.size();
-        for (int i=unprocessedTypes.size()-1;i>=0;i--) {
+        int unprocessedCount = (int)unprocessedTypes.size();
+        for (int i=(int)unprocessedTypes.size()-1;i>=0;i--) {
             bool canProcess = true;
             ScriptClass* parentClass = nullptr;
             if (unprocessedTypes[i]->GetBaseType() != nullptr) {

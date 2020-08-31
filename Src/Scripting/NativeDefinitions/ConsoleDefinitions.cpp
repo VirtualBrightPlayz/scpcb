@@ -91,7 +91,7 @@ void ConsoleDefinitions::executeCommand(const PGE::String& in) {
         if (scriptContext->Prepare(func) < 0) { throw std::runtime_error("ptooey! 2"); }
         if (func->GetParamCount() != params.size()) {
             const char* defaultParam;
-            func->GetParam(params.size(), nullptr, nullptr, nullptr, &defaultParam);
+            func->GetParam((asUINT)params.size(), nullptr, nullptr, nullptr, &defaultParam);
             if (defaultParam == nullptr) {
                 scriptContext->Unprepare();
                 addConsoleMessage("ARGUMENT SIZE MISMATCH", PGE::Color::Red);
