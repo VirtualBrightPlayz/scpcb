@@ -6537,15 +6537,15 @@ asUINT asCCompiler::ImplicitConvLambdaToNewFunc(asCExprContext *ctx, asCScriptNo
 			argNode = argNode->next;
 		}
 
-		endPos = argNode->tokenPos;
 		if( argNode->nodeType == snIdentifier )
 			count++;
 		argNode = argNode->next;
 		
+		endPos = argNode->tokenPos;
 	}
 
-	asCString params(&script->code[startPos], endPos-startPos);
-	params = "void "+autoFuncdefName+"("+params+"___finalParam)";
+	asCString params(&script->code[startPos], endPos-startPos-2);
+	params = "void "+autoFuncdefName+"("+params+")";
 	engine->RegisterFuncdef(params.AddressOf());
 
 	return ImplicitConvLambdaToNewFunc(ctx, node, convType, generateCode);
