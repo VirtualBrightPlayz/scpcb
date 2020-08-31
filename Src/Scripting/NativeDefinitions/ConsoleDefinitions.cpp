@@ -164,18 +164,14 @@ void ConsoleDefinitions::addConsoleMessage(const PGE::String& msg, const PGE::Co
 
 void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
     PGE::String typeString;
-    PGE::Color color;
     switch (type) {
         case LogType::Log: {
-            color = PGE::Color::Cyan;
             typeString = "Log";
         } break;
         case LogType::Warning: {
-            color = PGE::Color::Yellow;
             typeString = "Warn";
         } break;
         case LogType::Error: {
-            color = PGE::Color::Red;
             typeString = "Err";
         } break;
     }
@@ -243,7 +239,6 @@ void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
     std::ostream& out = (type == LogType::Error ? std::cerr : std::cout);
     out << "Debug::" << typeString << ": " << content << std::endl;
 #endif
-    addConsoleMessage("Debug::" + typeString + ": " + content, color);
     if (type == LogType::Error) {
         throw new std::runtime_error(("ERROR! " + content).cstr());
     }

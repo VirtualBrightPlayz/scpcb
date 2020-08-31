@@ -112,7 +112,7 @@ void main() {
     Console::register(
         "clear",
         "Clears the console.",
-        function(int i) {
+        function() {
             ConsoleMenu::instance.clear();
         }
     );

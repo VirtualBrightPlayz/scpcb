@@ -28,13 +28,16 @@ shared class ConsoleMenu : Menu {
         @frame = GUIFrame(this, frameX, -GUIComponent::SCALE_MAGNITUDE, frameWidth, GUIComponent::SCALE_MAGNITUDE);
         @input = GUITextInput(this, frameX, 0, frameWidth, 5.f, true);
         @scrollbar = GUIScrollbar(this, GUIComponent::SCALE_MAGNITUDE * UI::getAspectRatio() - 5.f, -GUIComponent::SCALE_MAGNITUDE + GUIComponent::borderThickness, 5.f, GUIComponent::SCALE_MAGNITUDE - GUIComponent::borderThickness * 2);
-        scrollbar.sourceDisplayedSize = GUIComponent::SCALE_MAGNITUDE - GUIComponent::borderThickness * 2.f;
+        scrollbar.sourceDisplayedSize = GUIComponent::SCALE_MAGNITUDE - GUIComponent::borderThickness * 4.f;
 
         firstMessagePosition = -Font::large.getHeight(GUIText::defaultScale) - GUIComponent::borderThickness * 2;
     }
 
     private void updateCoordinates() {
-        scrollOffset = Math::minFloat(0.f, scrollOffset + Input::getMouseWheelDelta().y);
+        scrollOffset = Math::minFloat(0.f, scrollOffset + Input::getMouseWheelDelta().y); // TODO: Scale this with window size to prevent weird edge behavior?
+        scrollbar.sourceTotalSize = messageHistory.length() * ConsoleMenu::lineHeight;
+        scrollbar.position = -scrollOffset; // TODO: Replace with inout func?
+        scrollOffset = -scrollbar.position;
         float currentHeight = firstMessagePosition - scrollOffset;
         float lowestPoint = -Font::large.getHeight(GUIText::defaultScale) - GUIComponent::borderThickness * 2;
         float highestPoint = -GUIComponent::SCALE_MAGNITUDE + GUIComponent::borderThickness * 2;
@@ -47,8 +50,6 @@ shared class ConsoleMenu : Menu {
             }
             currentHeight -= ConsoleMenu::lineHeight;
         }
-        scrollbar.sourceTotalSize = messageHistory.length() * ConsoleMenu::lineHeight;
-        scrollbar.position = -scrollOffset;
     }
 
     void addConsoleMessage(const string&in msg, const Color&in color) {
