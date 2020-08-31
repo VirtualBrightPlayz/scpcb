@@ -15,8 +15,6 @@ Font::Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::
     filename = fn;
     height = h;
 
-    shader = gr->getShader(shaderPath, false);
-
     FT_New_Face(ftLibrary,
                 filename.cstr(),
                 0,
@@ -26,10 +24,9 @@ Font::Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::
                        0,
                        height);
 
-    glyphData.clear();
-    atlases.clear();
-
     renderAtlas(0);
+
+    shader = gr->getShader(shaderPath, false);
 
     modelMatrixConstant = shader->getVertexShaderConstant("modelMatrix");
     colorConstant = shader->getFragmentShaderConstant("imageColor");
@@ -149,10 +146,11 @@ void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Ve
 
     PGE::Vector3f currPos = PGE::Vector3f::zero;
 
+    modelMatrixConstant->setValue(modelMatrix);
+    colorConstant->setValue(color);
+
     for (int i=0;i<atlases.size();i++) {
         atlases[i].mesh->clearGeometry();
-        modelMatrixConstant->setValue(modelMatrix);
-        colorConstant->setValue(color);
 
         atlases[i].vertices.clear();
         atlases[i].primitives.clear();
