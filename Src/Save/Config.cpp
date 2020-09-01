@@ -122,7 +122,7 @@ void Config::saveFile() const {
             strToJoin.clear();
             currInput = it.first;
         }
-        strToJoin.push_back(PGE::String((int)it.second));
+        strToJoin.push_back(PGE::String::fromInt((int)it.second));
     }
     optionsFile->setString(secCon, getBindingName(currInput) + "_keyboard", PGE::String::join(strToJoin, ","));
 
@@ -131,7 +131,7 @@ void Config::saveFile() const {
 
 void Config::setResolution(int width, int height) {
     if (width <= 0 || height <= 0) {
-        throw std::runtime_error((PGE::String("Invalid display resolution. (width: ") + width + ", height: " + height + ")").cstr());
+        throw std::runtime_error((PGE::String("Invalid display resolution. (width: ") + PGE::String::fromInt(width) + ", height: " + PGE::String::fromInt(height) + ")").cstr());
     }
 
     this->width->value = width;

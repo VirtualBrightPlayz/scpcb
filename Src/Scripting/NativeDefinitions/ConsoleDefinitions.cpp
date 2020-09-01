@@ -181,40 +181,41 @@ void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
     } else {
         switch (typeId) {
             case asTYPEID_VOID: { // This should never happen.
-                throw new std::runtime_error(("VOID PARAMETER! " + PGE::String((uint64_t)ref, true)).cstr());
+                throw new std::runtime_error("VOID PARAMETER!");
             } break;
             case asTYPEID_BOOL: {
                 content = (*(bool*)ref) ? "True" : "False";
             } break;
             case asTYPEID_INT8: {
-                content = PGE::String((int32_t) * (int8_t*)ref);
+                content = PGE::String::fromInt((int) *(int8_t*)ref);
             } break;
             case asTYPEID_INT16: {
-                content = PGE::String((int32_t) * (int16_t*)ref);
+                content = PGE::String::fromInt((int) *(int16_t*)ref);
             } break;
             case asTYPEID_INT32: {
-                content = PGE::String(*(int32_t*)ref);
+                // TODO: We assume that an int holds 32 bits here.
+                content = PGE::String::format(*(int32_t*)ref, "%li");
             } break;
             case asTYPEID_INT64: {
-                content = PGE::String(*(int64_t*)ref);
+                content = PGE::String::format(*(int64_t*)ref, "%lli");
             } break;
             case asTYPEID_UINT8: {
-                content = PGE::String((uint32_t) * (uint8_t*)ref);
+                content = PGE::String::format(*(uint8_t*)ref, "%u");
             } break;
             case asTYPEID_UINT16: {
-                content = PGE::String((uint32_t) * (uint16_t*)ref);
+                content = PGE::String::format(*(uint16_t*)ref, "%u");
             } break;
             case asTYPEID_UINT32: {
-                content = PGE::String(*(uint32_t*)ref);
+                content = PGE::String::format(*(uint32_t*)ref, "%lu");
             } break;
             case asTYPEID_UINT64: {
-                content = PGE::String(*(uint64_t*)ref);
+                content = PGE::String::format(*(uint64_t*)ref, "%llu");
             } break;
             case asTYPEID_FLOAT: {
-                content = PGE::String(*(float*)ref);
+                content = PGE::String::fromFloat(*(float*)ref);
             } break;
             case asTYPEID_DOUBLE: {
-                content = PGE::String(*(double*)ref);
+                content = PGE::String::format(*(double*)ref, "%lf");
             } break;
             default: { // Object.
                 asITypeInfo* typeInfo = engine->GetTypeInfoById(typeId);
@@ -231,7 +232,7 @@ void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
                         break;
                     }
                 }
-                content = PGE::String(typeInfo->GetName()) + "@" + PGE::String((uint64_t)ref, true);
+                content = PGE::String(typeInfo->GetName()) + "@" + PGE::String::format((long long) ref, "%#010llx");
             } break;
         }
     }

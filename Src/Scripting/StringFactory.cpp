@@ -110,11 +110,11 @@ static char stringCharAt(int index, const PGE::String& str) {
 }
 
 static PGE::String intToString(int i) {
-    return PGE::String(i);
+    return PGE::String::fromInt(i);
 }
 
 static PGE::String floatToString(float f) {
-    return PGE::String(f);
+    return PGE::String::fromFloat(f);
 }
 
 StringFactory::StringFactory(asIScriptEngine* engine) {

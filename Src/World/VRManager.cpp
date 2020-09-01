@@ -32,7 +32,7 @@ static PGE::Vector3f vrMatrixToPosition(vr::HmdMatrix34_t vrm) {
 
 static void vrThrowOnInputError(vr::EVRInputError ierr, PGE::String msg) {
     if (ierr != vr::VRInputError_None) {
-        throw new std::runtime_error((msg + " " + ierr).cstr());
+        throw new std::runtime_error((msg + " " + PGE::String::fromInt(ierr)).cstr());
     }
 }
 

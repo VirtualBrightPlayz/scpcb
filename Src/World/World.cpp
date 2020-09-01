@@ -228,8 +228,8 @@ void World::runTick(float timeStep) {
     Input hitInputs = keyBinds->getHitInputs();
 
 #ifdef DEBUG
-    mouseTxtX->setText(PGE::String("DownInputs: ") + (int)downInputs);
-    mouseTxtY->setText(PGE::String("MouseWheelX: ") + io->getMouseWheelDelta().y);
+    mouseTxtX->setText(PGE::String("DownInputs: ") + PGE::String::fromInt((int)downInputs));
+    mouseTxtY->setText(PGE::String("MouseWheelX: ") + PGE::String::fromInt(io->getMouseWheelDelta().y));
 #endif
 
     if (vrm != nullptr) {

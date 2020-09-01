@@ -28,7 +28,7 @@ void FPSCounter::update(double elapsedSeconds) {
     }
 
     avgFPS = sum / sampleBuffer.size();
-    display->setText(PGE::String("FPS: ") + (int)avgFPS);
+    display->setText(PGE::String("FPS: ") + PGE::String::fromFloat(avgFPS));
 }
 
 void FPSCounter::draw() {
