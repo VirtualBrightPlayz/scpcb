@@ -11,7 +11,7 @@ class MouseData {
         Config* config;
 
         PGE::Vector2f mousePosition;
-        PGE::Vector2i mouseWheelDelta;
+        PGE::Vector2f mouseWheelDelta;
 
     public:
         MouseData(PGE::IO* io, Config* config);

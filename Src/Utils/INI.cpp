@@ -26,7 +26,7 @@ INIFile::INIFile(const PGE::String& filename) {
                     sections.push_back(currSection);
                 }
                 currSection = new Section();
-                currLine = currLine.substr(1,currLine.size()-2).trim();
+                currLine = currLine.substr(1,currLine.length()-2).trim();
                 currSection->names = currLine.split('|', true);
             } else if (currLine.charAt(0) != ';') {
                 if (currSection != nullptr) {

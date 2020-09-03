@@ -155,10 +155,8 @@ void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Ve
         atlases[i].vertices.clear();
         atlases[i].primitives.clear();
     }
-    wchar_t* wstr = new wchar_t[text.size() + 1];
-    text.wstr(wstr);
-    for (int i=0;i<text.size();i++) {
-        long chr = (long)wstr[i];
+    for (int i=0;i<text.length();i++) {
+        long chr = (long)text.charAt(i);
         std::map<long,GlyphData>::iterator it = glyphData.find(chr);
         if (it==glyphData.end()) {
             renderAtlas(chr);
@@ -201,7 +199,6 @@ void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Ve
             currPos = currPos.add(PGE::Vector3f(it->second.horizontalAdvance,0.f,0.f));
         }
     }
-    delete[] wstr;
     for (int i=0;i<atlases.size();i++) {
         atlases[i].mesh->setGeometry((int)atlases[i].vertices.size(), atlases[i].vertices, (int)atlases[i].primitives.size(), atlases[i].primitives);
 
@@ -214,10 +211,8 @@ void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Ve
 float Font::stringWidth(const PGE::String& text, float scale) {
     float width = 0.f;
 
-    wchar_t* wstr = new wchar_t[text.size() + 1];
-    text.wstr(wstr);
-    for (int i = 0; i < text.size(); i++) {
-        long chr = (long)wstr[i];
+    for (int i = 0; i < text.length(); i++) {
+        long chr = (long)text.charAt(i);
         std::map<long, GlyphData>::iterator it = glyphData.find(chr);
         if (it == glyphData.end()) {
             renderAtlas(chr);
@@ -226,7 +221,6 @@ float Font::stringWidth(const PGE::String& text, float scale) {
 
         width += it->second.horizontalAdvance;
     }
-    delete[] wstr;
 
     return width * scale;
 }

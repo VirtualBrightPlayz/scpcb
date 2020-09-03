@@ -37,7 +37,7 @@ ScriptModule::~ScriptModule() {
 void ScriptModule::addScript(const PGE::String& sectionName, Script* script) {
     if (built) { throw std::runtime_error("Module already built!"); }
 
-    int errorCode = scriptModule->AddScriptSection(sectionName.cstr(), script->getScriptContents().cstr(), script->getScriptContents().size());
+    int errorCode = scriptModule->AddScriptSection(sectionName.cstr(), script->getScriptContents().cstr(), script->getScriptContents().length());
     if (errorCode < 0) { throw std::runtime_error("kablooey!"); }
 
     scripts.push_back(script);

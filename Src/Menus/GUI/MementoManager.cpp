@@ -9,14 +9,14 @@ Memento::Memento(int startPos, PGE::String content, bool write, bool linked) {
 
 PGE::String Memento::execute(const PGE::String& txt, bool flip) const {
     if (write ^ flip) {
-        return txt.substr(0, startPos) + txt.substr(startPos + content.size());
+        return txt.substr(0, startPos) + txt.substr(startPos + content.length());
     } else {
         return txt.substr(0, startPos) + content + txt.substr(startPos);
     }
 }
 
 int Memento::getSize() const {
-    return content.byteSize() + content.size() * 2 + sizeof(Memento) + sizeof(PGE::String);
+    return content.byteLength() + content.byteLength() * 2 + sizeof(Memento) + sizeof(PGE::String);
 }
 
 MementoManager::MementoManager(int mementoMaxMemSize) {

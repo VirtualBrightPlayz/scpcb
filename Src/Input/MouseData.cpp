@@ -20,13 +20,13 @@ void MouseData::update() {
     mousePosition.x -= GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio();
     mousePosition.y -= GUIComponent::SCALE_MAGNITUDE;
 
-    mouseWheelDelta = io->getMouseWheelDelta();
+    mouseWheelDelta = io->getMouseWheelDelta(); // Casting to 2f for AngelScript.
 }
 
 const PGE::Vector2f& MouseData::getPosition() const {
     return mousePosition;
 }
 
-const PGE::Vector2f& MouseData::getWheelDelta() const { // Casting to 2f for AngelScript.
+const PGE::Vector2f& MouseData::getWheelDelta() const {
     return mouseWheelDelta;
 }

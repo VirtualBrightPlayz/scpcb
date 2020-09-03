@@ -50,10 +50,10 @@ int StringFactory::GetRawStringData(const void* str, char* data, asUINT* length)
     PGE::String deref = *((PGE::String*)str);
     if (length != nullptr) {
         asUINT& lengthRef = *length;
-        lengthRef = deref.size();
+        lengthRef = deref.byteLength();
     }
     if (data != nullptr) {
-        memcpy(data, deref.cstr(), sizeof(char)*deref.size());
+        memcpy(data, deref.cstr(), sizeof(char)*deref.byteLength());
     }
 
     return asSUCCESS;
@@ -94,7 +94,7 @@ static PGE::String stringAdd(const PGE::String& rhs, const PGE::String& lhs) {
 }
 
 static int stringLength(const PGE::String& str) {
-    return str.size();
+    return str.length();
 }
 
 static long long stringGetHashCode(const PGE::String& str) {
@@ -105,7 +105,7 @@ static PGE::String stringSubstrStartLen(int start, int count, const PGE::String&
     return str.substr(start, count);
 }
 
-static char stringCharAt(int index, const PGE::String& str) {
+static PGE::wchar stringCharAt(int index, const PGE::String& str) {
     return str.charAt(index);
 }
 
@@ -134,7 +134,7 @@ StringFactory::StringFactory(asIScriptEngine* engine) {
     engine->RegisterObjectMethod("string", "uint64 getHashCode() const", asFUNCTION(stringGetHashCode), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectMethod("string","string substr(int start, int end=-1) const",asFUNCTION(stringSubstrStartLen), asCALL_CDECL_OBJLAST);
 
-    engine->RegisterObjectMethod("string","uint8 opIndex(uint) const",asFUNCTION(stringCharAt), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectMethod("string","uint16 opIndex(uint) const",asFUNCTION(stringCharAt), asCALL_CDECL_OBJLAST);
 
     engine->RegisterStringFactory("string", this);
 

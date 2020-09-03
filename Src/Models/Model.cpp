@@ -50,7 +50,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
         if (scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath) == aiReturn_SUCCESS) {
             PGE::String textureName = PGE::String(texturePath.C_Str()).replace("\\", "/");
             int lastSlash = textureName.findLast("/");
-            textureName = textureName.substr(lastSlash + 1, textureName.size() - lastSlash - 5);
+            textureName = textureName.substr(lastSlash + 1, textureName.length() - lastSlash - 5);
             materials[i] = new PGE::Material(shader, gr->getTexture(path + textureName));
         } else {
             throw new std::runtime_error(("Texture for model " + filename + " failed to load.").cstr());

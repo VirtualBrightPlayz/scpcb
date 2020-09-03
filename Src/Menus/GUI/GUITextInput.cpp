@@ -62,7 +62,7 @@ void GUITextInput::setText(const PGE::String& txt) {
     /*mementoManager->push(Memento(0, text->getText(), false, true));
     mementoManager->push(Memento(0, txt, true, true));*/
     text->setText(txt);
-    setCaretAndSelection(text->getText().size());
+    setCaretAndSelection(text->getText().length());
 }
 
 void GUITextInput::clearTextAndMementos() {
@@ -98,8 +98,8 @@ int GUITextInput::getFirstLeftWordBoundary(int startingPosition) const {
 }
 
 int GUITextInput::getFirstRightWordBoundary(int startingPosition) const {
-    if (startingPosition < getText().size()) {
-        PGE::String rightmostString = getText().substr(startingPosition, getText().size() - startingPosition);
+    if (startingPosition < getText().length()) {
+        PGE::String rightmostString = getText().substr(startingPosition, getText().length() - startingPosition);
         std::cmatch matches = rightmostString.regexMatch(rightBoundWord);
         int position = (int) (matches[1].matched ? matches.position(1) : matches.position(2));
 
@@ -145,7 +145,7 @@ bool GUITextInput::hasSubscriber() {
 
 int GUITextInput::getCaretPosition(float mouseX) {
     float caretX = text->getTextPos().x + text->getWidth();
-    for (int newCaret = text->getText().size(); newCaret > 0; newCaret--) {
+    for (int newCaret = text->getText().length(); newCaret > 0; newCaret--) {
         float charWidth = text->getWidth(text->getText().charAt(newCaret - 1));
         if (mouseX > caretX - charWidth / 2.f) {
             return newCaret;
@@ -186,9 +186,9 @@ void GUITextInput::updateCoordinates() {
 
 void GUITextInput::addText(PGE::String& append) {
     // Truncate the string if it's over the capacity.
-    int newSize = text->getText().size() + append.size();
+    int newSize = text->getText().length() + append.length();
     if (newSize > characterLimit) {
-        append = append.substr(0, characterLimit - text->getText().size());
+        append = append.substr(0, characterLimit - text->getText().length());
     }
 
     if (selectionStartPosition != selectionEndPosition) {
@@ -197,13 +197,13 @@ void GUITextInput::addText(PGE::String& append) {
     //mementoManager->push(Memento(selectionStartPosition, append, true, selectionStartPosition != selectionEndPosition));
 
     // If any text was selected then delete it.
-    if (selectionEndPosition >= text->getText().size()) {
+    if (selectionEndPosition >= text->getText().length()) {
         text->setText(text->getText().substr(0, selectionStartPosition) + append);
     } else {
         text->setText(text->getText().substr(0, selectionStartPosition) + append + text->getText().substr(selectionEndPosition));
     }
 
-    setCaretAndSelection(selectionStartPosition + append.size());
+    setCaretAndSelection(selectionStartPosition + append.length());
 }
 
 void GUITextInput::deleteSelectedText() {
@@ -243,7 +243,7 @@ void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
 #if DEBUG
         // Debug printing highlighted text.
         PGE::String str = "";
-        for (int i = 0; i < text->getText().size(); i++) {
+        for (int i = 0; i < text->getText().length(); i++) {
             if (i == selectionStartPosition) {
                 str = str + "[";
             }
@@ -264,7 +264,7 @@ void GUITextInput::updateInternal(PGE::Vector2f mousePos) {
 
 void GUITextInput::updateTextActions() {
     PGE::String append = io->getTextInput();
-    if (!append.isEmpty() && text->getText().size() < characterLimit) {
+    if (!append.isEmpty() && text->getText().length() < characterLimit) {
         addText(append);
 #ifdef __APPLE__
         selectionWasDraggedOrClicked = false;
@@ -283,7 +283,7 @@ void GUITextInput::updateDeleteKeyActions() {
                 int deletionStart = keyBinds->anyShortcutDown() ? getFirstLeftWordBoundary(caretPosition) : caretPosition - 1;
                 removeText(deletionStart, caretPosition);
                 setCaretAndSelection(deletionStart);
-            } else if (keyBinds->del->isHit() && caretPosition < text->getText().size()) {
+            } else if (keyBinds->del->isHit() && caretPosition < text->getText().length()) {
                 removeText(caretPosition, keyBinds->anyShortcutDown() ? getFirstRightWordBoundary(caretPosition) : caretPosition + 1);
             }
         }
@@ -309,7 +309,7 @@ void GUITextInput::updateArrowActions() {
                         setCaretAndSelection(getFirstLeftWordBoundary(caretPosition));
                     }
                 } else {
-                    setCaretAndSelection(MathUtil::clampInt(right ? caretPosition + 1 : caretPosition - 1, 0, text->getText().size()));
+                    setCaretAndSelection(MathUtil::clampInt(right ? caretPosition + 1 : caretPosition - 1, 0, text->getText().length()));
                 }
             }
 #ifdef __APPLE__
@@ -360,7 +360,7 @@ void GUITextInput::updateArrowActions() {
                 }
             }
             if (selectionStartPosition < 0) { selectionStartPosition = 0; }
-            if (selectionEndPosition > text->getText().size()) { selectionEndPosition = text->getText().size(); }
+            if (selectionEndPosition > text->getText().length()) { selectionEndPosition = text->getText().length(); }
         }
     }
 }
@@ -373,7 +373,7 @@ void GUITextInput::updateMouseActions(PGE::Vector2f mousePos) {
             selectionEndPosition = caretPosition;
 
             // What direction are we going in?
-            bool right = (mousePos.x >= caretX && caretPosition != text->getText().size()) || caretPosition == 0;
+            bool right = (mousePos.x >= caretX && caretPosition != text->getText().length()) || caretPosition == 0;
 
             // Select all word-based characters until either the end or a boundary.
             // Unless the first character found IS a boundary, then we ONLY select that.
@@ -389,7 +389,7 @@ void GUITextInput::updateMouseActions(PGE::Vector2f mousePos) {
 
             if (!boundaryContact) {
                 // Scan both left and right sides of the caret for word characters.
-                while (selectionEndPosition < text->getText().size()) {
+                while (selectionEndPosition < text->getText().length()) {
                     if (std::regex_match(std::string(1, text->getText().charAt(selectionEndPosition)), word, std::regex_constants::match_any)) {
                         selectionEndPosition++;
                     } else {
@@ -417,7 +417,7 @@ void GUITextInput::updateMouseActions(PGE::Vector2f mousePos) {
     } else if (keyBinds->mouse1->getClickCount() >= 3) {
         // Select all.
         selectionStartPosition = 0;
-        selectionEndPosition = text->getText().size();
+        selectionEndPosition = text->getText().length();
         caretPosition = 0;
         draggable = false; // Prevents a triple click from being registered as a drag action.
 
@@ -488,7 +488,7 @@ void GUITextInput::updateShortcutActions() {
 #endif
     } else if (keyBinds->pasteIsHit()) {
         PGE::String append = io->getClipboardText();
-        if (!append.isEmpty() && text->getText().size() < characterLimit) {
+        if (!append.isEmpty() && text->getText().length() < characterLimit) {
             if (anyTextSelected()) {
                 deleteSelectedText();
             }
@@ -502,7 +502,7 @@ void GUITextInput::updateShortcutActions() {
         setCaretAndSelection(caretPosition);
     } else if (keyBinds->selectAllIsHit()) {
         selectionStartPosition = 0;
-        selectionEndPosition = text->getText().size();
+        selectionEndPosition = text->getText().length();
     }
 }
 
