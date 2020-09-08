@@ -1,6 +1,7 @@
 #include "PickableDefinitions.h"
 
 #include "../ScriptManager.h"
+
 #include "../../World/Pickable.h"
 
 Pickable* PickableDefinitions::pickableFactory() {

@@ -1,6 +1,8 @@
 #include "PlayerControllerDefinitions.h"
-#include "../../PlayerController/PlayerController.h"
 
+#include "../ScriptManager.h"
+
+#include "../../PlayerController/PlayerController.h"
 #include "../../Graphics/Camera.h"
 
 PlayerController* PlayerControllerDefinitions::playerControllerFactory(float radius, float height) {

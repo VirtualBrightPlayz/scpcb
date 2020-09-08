@@ -1,7 +1,8 @@
 #include "MementoDefinitions.h"
 
-#include "../../Menus/GUI/MementoManager.h"
 #include "../ScriptManager.h"
+
+#include "../../Menus/GUI/MementoManager.h"
 
 static MementoManager* createMM(int mementoMaxMemSize) {
 	return new MementoManager(mementoMaxMemSize);

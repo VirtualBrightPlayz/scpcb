@@ -1,6 +1,7 @@
 #include "UIMesh.h"
 
 #include "../Graphics/GraphicsResources.h"
+#include "../Utils/ResourcePackManager.h"
 
 UIMesh::UIMesh(GraphicsResources* gr) {
     gfxRes = gr;

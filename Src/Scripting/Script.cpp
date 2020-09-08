@@ -1,5 +1,6 @@
-#include "ScriptManager.h"
 #include "Script.h"
+
+#include "ScriptManager.h"
 #include "ScriptClass.h"
 #include "ScriptFunction.h"
 #include "ScriptModule.h"

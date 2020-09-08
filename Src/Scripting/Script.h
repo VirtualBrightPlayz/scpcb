@@ -6,7 +6,6 @@
 #include <Misc/String.h>
 #include <map>
 #include <inttypes.h>
-#include "Type.h"
 
 class ScriptFunction;
 class ScriptClass;

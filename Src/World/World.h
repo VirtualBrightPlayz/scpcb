@@ -8,30 +8,26 @@
 #include <IO/IO.h>
 #include <Misc/String.h>
 
-#include "../Graphics/UIMesh.h"
-#include "../Graphics/Billboard.h"
-#include "../Graphics/Font.h"
-#include "../Input/KeyBinds.h"
-#include "../Save/Config.h"
-#include "../Models/RM2.h"
-#include "../PlayerController/PlayerController.h"
-#include "../Collision/CollisionMeshCollection.h"
-#include "VRManager.h"
-
 class Camera;
+class Config;
 class Timing;
 class GraphicsResources;
+class Font;
 class MessageManager;
 class LocalizationManager;
 class PauseMenu;
 class Console;
 class Inventory;
 class MouseData;
+class KeyBinds;
+class BillboardManager;
 class PickableManager;
 class FPSCounter;
 class GUIText;
 class Menu;
 class ScriptWorld;
+class UIMesh;
+class VRManager;
 
 class World {
     private:

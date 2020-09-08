@@ -1,8 +1,8 @@
 #include "EventDefinition.h"
+
 #include "../Type.h"
 #include "../ScriptManager.h"
 #include "../ScriptModule.h"
-#include <stdexcept>
 
 EventDefinition::EventDefinition(ScriptManager* mgr, const PGE::String& nm, const ScriptFunction::Signature& sgntr) {
     scriptManager = mgr;

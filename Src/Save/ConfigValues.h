@@ -1,7 +1,7 @@
 #ifndef CONFIGVALUES_H_INCLUDED
 #define CONFIGVALUES_H_INCLUDED
 
-#include<vector>
+#include <vector>
 
 #include <Misc/String.h>
 

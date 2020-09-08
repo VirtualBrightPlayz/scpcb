@@ -1,9 +1,9 @@
 #ifndef REFLECTIONDEFINITIONS_H_INCLUDED
 #define REFLECTIONDEFINITIONS_H_INCLUDED
 
-#include "../ScriptManager.h"
 #include "../NativeDefinition.h"
 
+class ScriptManager;
 class CScriptArray;
 class ScriptClass;
 class Reflection;

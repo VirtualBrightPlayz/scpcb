@@ -5,7 +5,7 @@
 
 #include <Misc/FilePath.h>
 
-#include "../Save/ConfigValues.h"
+class ArrayConfigValue;
 
 class ResourcePackManager {
     private:

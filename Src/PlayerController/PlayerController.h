@@ -2,10 +2,9 @@
 #define CBN_PLAYERCONTROLLER_H_INCLUDED
 
 #include <Math/Vector.h>
-#include "../Collision/Collision.h"
-#include "../Collision/CollisionMesh.h"
-#include "../Collision/CollisionMeshCollection.h"
 #include "../Input/Input.h"
+
+class CollisionMeshCollection;
 
 class PlayerController {
     public:

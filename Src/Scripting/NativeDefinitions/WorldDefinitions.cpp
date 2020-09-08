@@ -1,6 +1,7 @@
 #include "WorldDefinitions.h"
 
 #include "../ScriptManager.h"
+
 #include "../../World/World.h"
 
 WorldDefinitions::WorldDefinitions(ScriptManager* mgr, World* w) :

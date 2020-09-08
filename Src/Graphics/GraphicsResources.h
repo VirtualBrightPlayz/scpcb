@@ -9,32 +9,32 @@
 #include <Shader/Shader.h>
 #include <Texture/Texture.h>
 
-#include "../Utils/ResourcePackManager.h"
-#include "../Models/Model.h"
-
+class Model;
+class ModelInstance;
+class ResourcePackManager;
 class Config;
 class Camera;
 class DebugGraphics;
 
 class GraphicsResources {
     private:
-        struct Shader {
+        struct ShaderEntry {
             PGE::FilePath filename;
             PGE::Shader* shader;
             int refCount;
             bool needsViewProjection;
         };
-        std::map<PGE::Shader*, Shader*> shaderToShaders;
-        std::map<long long, Shader*> pathToShaders;
+        std::map<PGE::Shader*, ShaderEntry*> shaderToShaders;
+        std::map<long long, ShaderEntry*> pathToShaders;
 
-        struct Texture {
+        struct TextureEntry {
             // This needs to stay a string for the Resource Packs to work.
             PGE::String name;
             PGE::Texture* texture;
             int refCount;
         };
-        std::map<PGE::Texture*, Texture*> textureToTextures;
-        std::map<long long, Texture*> pathToTextures;
+        std::map<PGE::Texture*, TextureEntry*> textureToTextures;
+        std::map<long long, TextureEntry*> pathToTextures;
 
         struct ModelEntry {
             // Having this as a string makes the loading of textures easier.

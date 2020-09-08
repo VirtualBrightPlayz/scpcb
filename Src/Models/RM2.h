@@ -10,9 +10,10 @@
 #include <Material/Material.h>
 #include <Misc/FilePath.h>
 #include <Color/Color.h>
-#include "../Collision/CollisionMesh.h"
-#include "../Graphics/GraphicsResources.h"
-#include "../Graphics/Camera.h"
+
+class CollisionMesh;
+class GraphicsResources;
+class Camera;
 
 struct PointLight {
     PGE::Vector3f position;

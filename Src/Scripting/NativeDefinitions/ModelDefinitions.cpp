@@ -1,8 +1,9 @@
 #include "ModelDefinitions.h"
 
+#include "../ScriptManager.h"
+
 #include "../../Graphics/GraphicsResources.h"
 #include "../../Models/Model.h"
-#include "../ScriptManager.h"
 
 ModelDefinitions::ModelDefinitions(ScriptManager* mgr, GraphicsResources* gr) {
     engine = mgr->getAngelScriptEngine();

@@ -1,5 +1,7 @@
 #include "MessageDefinitions.h"
 
+#include "../ScriptManager.h"
+
 #include "../../Utils/MessageManager.h"
 
 MessageDefinitions::MessageDefinitions(ScriptManager* mgr, MessageManager* mm) {

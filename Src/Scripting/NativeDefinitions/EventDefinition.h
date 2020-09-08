@@ -8,6 +8,8 @@
 #include "../NativeDefinition.h"
 #include "CachedArgument.h"
 
+class ScriptManager;
+
 class EventDefinition : public NativeDefinition {
     private:
         PGE::String name;
@@ -21,6 +23,7 @@ class EventDefinition : public NativeDefinition {
         std::vector<CachedArgument> arguments;
 
         ScriptManager* scriptManager;
+
     public:
         EventDefinition(ScriptManager* mgr, const PGE::String& nm, const ScriptFunction::Signature& sgntr);
 

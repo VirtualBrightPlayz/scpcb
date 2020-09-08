@@ -6,8 +6,9 @@
 #include <Math/Line.h>
 #include <Math/Matrix.h>
 #include <Math/AABBox.h>
-#include "CollisionMesh.h"
 #include "Collision.h"
+
+class CollisionMesh;
 
 class CollisionMeshCollection {
     public:

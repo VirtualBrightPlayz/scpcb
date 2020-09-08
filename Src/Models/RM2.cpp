@@ -4,6 +4,10 @@
 
 #include <Math/Matrix.h>
 
+#include "../Collision/CollisionMesh.h"
+#include "../Graphics/GraphicsResources.h"
+#include "../Graphics/Camera.h"
+
 const PGE::FilePath RM2::opaqueShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/");
 const PGE::FilePath RM2::opaqueNormalMapShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaqueNormalMap/");
 const PGE::FilePath RM2::alphaShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomAlpha/");

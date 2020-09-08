@@ -2,10 +2,10 @@
 #define INPUTDEFINITIONS_H_INCLUDED
 
 #include "../NativeDefinition.h"
-#include "../ScriptManager.h"
 
 #include <IO/IO.h>
 
+class ScriptManager;
 class KeyBinds;
 class MouseData;
 

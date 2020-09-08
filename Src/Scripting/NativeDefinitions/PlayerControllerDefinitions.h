@@ -1,10 +1,10 @@
 #ifndef PLAYERCONTROLLERDEFINITIONS_H_INCLUDED
 #define PLAYERCONTROLLERDEFINITIONS_H_INCLUDED
 
-#include "../ScriptManager.h"
 #include "RefCounter.h"
 #include <map>
 
+class ScriptManager;
 enum class Input;
 class PlayerController;
 class Camera;

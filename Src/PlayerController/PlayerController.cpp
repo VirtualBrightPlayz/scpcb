@@ -3,6 +3,7 @@
 #include <cmath>
 #include <Math/Plane.h>
 
+#include "../Collision/CollisionMeshCollection.h"
 #include "../World/Pickable.h"
 
 using namespace PGE;

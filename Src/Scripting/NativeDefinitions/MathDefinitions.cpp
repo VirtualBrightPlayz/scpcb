@@ -1,4 +1,7 @@
 #include "MathDefinitions.h"
+
+#include "../ScriptManager.h"
+
 #include "../../Utils/MathUtil.h"
 
 static void vector2fConstructor(void* memory) {

@@ -1,5 +1,7 @@
 #include "CollisionMeshCollection.h"
 
+#include "CollisionMesh.h"
+
 using namespace PGE;
 
 CollisionMeshCollection::Instance::Instance(CollisionMeshCollection* coll,CollisionMesh* msh,Matrix4x4f mtrx, int id) {

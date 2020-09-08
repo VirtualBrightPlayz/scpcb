@@ -1,11 +1,11 @@
 #ifndef COLLISIONDEFINITIONS_H_INCLUDED
 #define COLLISIONDEFINITIONS_H_INCLUDED
 
-#include "../ScriptManager.h"
 #include "RefCounter.h"
 #include <Misc/String.h>
 #include <map>
 
+class ScriptManager;
 class CollisionMesh;
 class CollisionMeshCollection;
 class CScriptArray;
@@ -18,6 +18,7 @@ class CollisionDefinitions : public RefCounter {
         CollisionMeshCollection* collectionFactory();
         void addRef(void* mesh);
         void release(void* mesh);
+
     public:
         CollisionDefinitions(ScriptManager* scriptMgr, RefCounterManager* rcMgr);
 };

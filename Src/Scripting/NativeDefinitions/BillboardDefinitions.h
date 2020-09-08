@@ -4,8 +4,9 @@
 #include <Math/Vector.h>
 #include <Color/Color.h>
 
-#include "../ScriptManager.h"
 #include "../NativeDefinition.h"
+
+class ScriptManager;
 
 class BillboardManager;
 class Billboard;

@@ -2,6 +2,8 @@
 
 #include <Color/Color.h>
 
+#include "../ScriptManager.h"
+
 static void colorConstructor(void* memory) {
     new(memory) PGE::Color();
 }

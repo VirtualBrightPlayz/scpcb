@@ -3,6 +3,8 @@
 #include <iostream>
 #include <filesystem>
 
+#include "../Save/Config.h"
+#include "../Graphics/GraphicsResources.h"
 #include "../Utils/MathUtil.h"
 
 void VRCamera::setViewMatrix(const PGE::Matrix4x4f& viewMatrix) {

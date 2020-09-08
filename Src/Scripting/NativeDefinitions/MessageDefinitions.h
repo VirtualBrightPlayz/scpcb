@@ -1,9 +1,9 @@
 #ifndef MESSAGEDEFINITIONS_H_INCLUDED
 #define MESSAGEDEFINITIONS_H_INCLUDED
 
-#include "../ScriptManager.h"
 #include "../NativeDefinition.h"
 
+class ScriptManager;
 class MessageManager;
 
 class MessageDefinitions : NativeDefinition {

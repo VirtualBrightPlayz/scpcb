@@ -1,5 +1,7 @@
 #include "InputDefinitions.h"
 
+#include "../ScriptManager.h"
+
 #include "../../Input/KeyBinds.h"
 #include "../../Input/MouseData.h"
 

@@ -1,5 +1,7 @@
 #include "BillboardDefinitions.h"
 
+#include "../ScriptManager.h"
+
 #include "../../Graphics/Billboard.h"
 
 BillboardDefinitions::BillboardDefinitions(ScriptManager* mgr, BillboardManager* bm) {

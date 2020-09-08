@@ -1,4 +1,7 @@
 #include "ReflectionDefinitions.h"
+
+#include "../ScriptManager.h"
+
 #include "../ScriptFunction.h"
 #include "../ScriptObject.h"
 #include "../ScriptClass.h"

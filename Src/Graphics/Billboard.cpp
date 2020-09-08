@@ -2,6 +2,7 @@
 
 #include <math.h>
 
+#include "GraphicsResources.h"
 #include "Camera.h"
 
 BillboardManager::BillboardManager(PGE::Graphics* gfx, GraphicsResources* gr, Camera* cam) {

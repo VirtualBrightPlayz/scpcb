@@ -1,6 +1,7 @@
 #include "LocalizationDefinitions.h"
 
 #include "../ScriptManager.h"
+
 #include "../../Utils/LocalizationManager.h"
 
 LocalizationDefinitions::LocalizationDefinitions(ScriptManager* mgr, LocalizationManager* lm) {

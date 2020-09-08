@@ -2,6 +2,7 @@
 #define REFCOUNTER_H_INCLUDED
 
 #include <map>
+
 #include "../NativeDefinition.h"
 
 class RefCounter;

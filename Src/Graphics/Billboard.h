@@ -5,8 +5,7 @@
 
 #include <Mesh/Mesh.h>
 
-#include "GraphicsResources.h"
-
+class GraphicsResources;
 class Camera;
 
 class Billboard;

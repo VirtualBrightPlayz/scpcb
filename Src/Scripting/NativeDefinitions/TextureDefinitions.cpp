@@ -1,6 +1,7 @@
 #include "TextureDefinitions.h"
 
 #include "../ScriptManager.h"
+
 #include "../../Graphics/GraphicsResources.h"
 
 TextureDefinitions::TextureDefinitions(ScriptManager* mgr, GraphicsResources* gr) {

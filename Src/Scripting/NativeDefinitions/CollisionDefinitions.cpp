@@ -1,6 +1,11 @@
 #include "CollisionDefinitions.h"
-#include "../../Collision/CollisionMeshCollection.h"
+
 #include <vector>
+
+#include "../ScriptManager.h"
+
+#include "../../Collision/CollisionMesh.h"
+#include "../../Collision/CollisionMeshCollection.h"
 #include "../AngelScriptAddons/scriptarray/scriptarray.h"
 
 CollisionMesh* CollisionDefinitions::meshFactory(CScriptArray* verts, CScriptArray* inds) {

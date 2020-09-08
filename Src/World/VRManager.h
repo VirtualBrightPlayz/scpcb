@@ -3,9 +3,10 @@
 
 #include <openvr.h>
 
-#include "../Save/Config.h"
 #include "../Graphics/Camera.h"
-#include "../Graphics/GraphicsResources.h"
+
+class GraphicsResources;
+class Config;
 
 class VRCamera : public Camera {
 	private:

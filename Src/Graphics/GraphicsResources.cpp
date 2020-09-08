@@ -2,9 +2,10 @@
 
 #include <assimp/mesh.h>
 
-#include "Camera.h"
+#include "../Models/Model.h"
+#include "../Utils/ResourcePackManager.h"
 #include "../Save/Config.h"
-#include "../Menus/GUI/GUIComponent.h"
+#include "Camera.h"
 #include "DebugGraphics.h"
 
 GraphicsResources::GraphicsResources(PGE::Graphics* gfx, Config* con) {
@@ -34,13 +35,13 @@ GraphicsResources::~GraphicsResources() {
 }
 
 PGE::Shader* GraphicsResources::getShader(const PGE::FilePath& filename, bool needsViewProjection) {
-    std::map<long long, Shader*>::iterator find = pathToShaders.find(filename.getHashCode());
+    std::map<long long, ShaderEntry*>::iterator find = pathToShaders.find(filename.getHashCode());
     if (find != pathToShaders.end()) {
         find->second->refCount++;
         return find->second->shader;
     }
 
-    Shader* newShader = new Shader();
+    ShaderEntry* newShader = new ShaderEntry();
     newShader->refCount = 1;
     newShader->shader = PGE::Shader::load(graphics, filename);
     newShader->filename = filename;
@@ -51,9 +52,9 @@ PGE::Shader* GraphicsResources::getShader(const PGE::FilePath& filename, bool ne
 }
 
 void GraphicsResources::dropShader(PGE::Shader* shader) {
-    std::map<PGE::Shader*, Shader*>::iterator find = shaderToShaders.find(shader);
+    std::map<PGE::Shader*, ShaderEntry*>::iterator find = shaderToShaders.find(shader);
     if (find != shaderToShaders.end()) {
-        Shader* shaderEntry = find->second;
+        ShaderEntry* shaderEntry = find->second;
         shaderEntry->refCount--;
         if (shaderEntry->refCount <= 0) {
             delete shaderEntry->shader;
@@ -65,7 +66,7 @@ void GraphicsResources::dropShader(PGE::Shader* shader) {
 }
 
 PGE::Texture* GraphicsResources::getTexture(const PGE::String& filename) {
-    std::map<long long, Texture*>::iterator find = pathToTextures.find(filename.getHashCode());
+    std::map<long long, TextureEntry*>::iterator find = pathToTextures.find(filename.getHashCode());
     if (find != pathToTextures.end()) {
         find->second->refCount++;
         return find->second->texture;
@@ -76,7 +77,7 @@ PGE::Texture* GraphicsResources::getTexture(const PGE::String& filename) {
         throw new std::runtime_error(PGE::String(("Couldn't find texture \"") + filename + '"').cstr());
     }
 
-    Texture* newTexture = new Texture();
+    TextureEntry* newTexture = new TextureEntry();
     newTexture->refCount = 1;
     newTexture->texture = PGE::Texture::load(graphics, path);
     newTexture->name = filename;
@@ -86,9 +87,9 @@ PGE::Texture* GraphicsResources::getTexture(const PGE::String& filename) {
 }
 
 void GraphicsResources::dropTexture(PGE::Texture* texture) {
-    std::map<PGE::Texture*, Texture*>::iterator find = textureToTextures.find(texture);
+    std::map<PGE::Texture*, TextureEntry*>::iterator find = textureToTextures.find(texture);
     if (find != textureToTextures.end()) {
-        Texture* textureEntry = find->second;
+        TextureEntry* textureEntry = find->second;
         textureEntry->refCount--;
         if (textureEntry->refCount <= 0) {
             delete textureEntry->texture;
@@ -134,8 +135,8 @@ void GraphicsResources::updateOrthoMat(float aspectRatio) {
     // Top Left     - [-50, -50]
     // Bottom Right - [50, 50]
     // Horizontal plane is scaled with the aspect ratio.
-    float w = GUIComponent::SCALE_MAGNITUDE * aspectRatio * 2.f;
-    float h = GUIComponent::SCALE_MAGNITUDE * 2.f;
+    float w = 100.f * aspectRatio;
+    float h = 100.f;
     float nearZ = 0.01f;
     float farZ = 1.f;
     orthoMat = PGE::Matrix4x4f::constructOrthographicMat(w, h, nearZ, farZ);

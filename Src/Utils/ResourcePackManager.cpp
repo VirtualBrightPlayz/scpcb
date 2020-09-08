@@ -3,6 +3,8 @@
 #include <tinyxml2.h>
 #include <Misc/FileUtil.h>
 
+#include "../Save/ConfigValues.h"
+
 ResourcePackManager::ResourcePackManager(ArrayConfigValue* resPackLocs, ArrayConfigValue* activeResPackNames) {
 	this->resPackLocs = resPackLocs;
 	this->activeResPackNames = activeResPackNames;

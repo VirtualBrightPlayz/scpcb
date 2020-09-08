@@ -1,10 +1,11 @@
 #include "UIDefinitions.h"
 
+#include "../ScriptManager.h"
+
 #include "../../World/World.h"
 #include "../../Save/Config.h"
 #include "../../Graphics/Font.h"
 #include "../../Graphics/UIMesh.h"
-#include "../ScriptManager.h"
 
 UIDefinitions::UIDefinitions(ScriptManager* mgr, UIMesh* uiMesh, Config* config, World* world) {
     engine = mgr->getAngelScriptEngine();

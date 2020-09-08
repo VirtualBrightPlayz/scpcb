@@ -9,6 +9,7 @@
 #include "Timing.h"
 #include "Pickable.h"
 #include "FPSCounter.h"
+#include "VRManager.h"
 #include "ScriptWorld.h"
 #include "../Graphics/Camera.h"
 #include "../Graphics/GraphicsResources.h"
@@ -27,6 +28,11 @@
 #include "../Utils/LocalizationManager.h"
 #include "../Utils/MathUtil.h"
 #include "../Scripting/ScriptObject.h"
+#include "../Graphics/UIMesh.h"
+#include "../Graphics/Billboard.h"
+#include "../Graphics/Font.h"
+#include "../Input/KeyBinds.h"
+#include "../Save/Config.h"
 
 World::World() {
     config = new Config("options.ini");

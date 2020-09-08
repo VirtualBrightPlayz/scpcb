@@ -1,6 +1,9 @@
 #include "RM2Definitions.h"
+
 #include <fstream>
 #include <stdio.h>
+
+#include "../ScriptManager.h"
 
 RM2Definitions::RM2Definitions(ScriptManager* mgr, GraphicsResources* gfxRes) {
     graphicsResources = gfxRes;
