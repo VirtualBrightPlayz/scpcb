@@ -6,7 +6,7 @@
 #include "../ScriptObject.h"
 #include "../ScriptClass.h"
 #include "../ScriptModule.h"
-#include "CachedArgument.h"
+#include "../CachedArgument.h"
 #include "../AngelScriptAddons/scriptarray/scriptarray.h"
 
 class Reflection {

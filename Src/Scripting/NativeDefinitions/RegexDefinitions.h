@@ -5,7 +5,7 @@
 
 #include <Misc/String.h>
 
-#include "RefCounter.h"
+#include "../RefCounter.h"
 #include "../NativeDefinition.h"
 
 class ScriptManager;

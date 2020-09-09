@@ -1,7 +1,7 @@
 #ifndef PICKABLEDEFINITIONS_H_INCLUDED
 #define PICKABLEDEFINITIONS_H_INCLUDED
 
-#include "../NativeDefinitions/RefCounter.h"
+#include "../RefCounter.h"
 
 class ScriptManager;
 class Pickable;

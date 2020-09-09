@@ -110,16 +110,10 @@
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\RefCounter.cpp">
-      <Filter>Scripting\NativeDefinitions</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.cpp">
-      <Filter>Scripting\NativeDefinitions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\CachedArgument.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.cpp">
@@ -220,6 +214,12 @@
     </ClCompile>
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\MementoDefinitions.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\RefCounter.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\CachedArgument.cpp">
+      <Filter>Scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -332,16 +332,10 @@
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\PlayerControllerDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\RefCounter.h">
-      <Filter>Scripting\NativeDefinitions</Filter>
-    </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\ReflectionDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.h">
-      <Filter>Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\CachedArgument.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.h">
@@ -428,9 +422,6 @@
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\LocalizationDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\WorldDefinitions.h">
-      <Filter>World</Filter>
-    </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\RegexDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
@@ -439,6 +430,15 @@
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\MementoDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\WorldDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\RefCounter.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\CachedArgument.h">
+      <Filter>Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

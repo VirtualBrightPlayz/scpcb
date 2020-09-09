@@ -4,6 +4,7 @@
 
 #include "../Save/Config.h"
 
+#include "../Scripting/RefCounter.h"
 #include "../Scripting/ScriptManager.h"
 #include "../Scripting/ScriptModule.h"
 #include "../Scripting/Script.h"
@@ -15,7 +16,6 @@
 #include "../Scripting/NativeDefinitions/MementoDefinitions.h"
 #include "../Scripting/NativeDefinitions/ConsoleDefinitions.h"
 #include "../Scripting/NativeDefinitions/InputDefinitions.h"
-#include "../Scripting/NativeDefinitions/RefCounter.h"
 #include "../Scripting/NativeDefinitions/ColorDefinitions.h"
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
 #include "../Scripting/NativeDefinitions/UIDefinitions.h"

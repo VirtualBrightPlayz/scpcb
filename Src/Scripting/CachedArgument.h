@@ -2,7 +2,7 @@
 #define CACHEDARGUMENT_H_INCLUDED
 
 #include <Misc/String.h>
-#include "../Type.h"
+#include "Type.h"
 
 struct CachedArgument {
     PGE::String name;

@@ -3,7 +3,7 @@
 
 #include <map>
 
-#include "../NativeDefinition.h"
+#include "NativeDefinition.h"
 
 class RefCounter;
 class RefCounterManager;

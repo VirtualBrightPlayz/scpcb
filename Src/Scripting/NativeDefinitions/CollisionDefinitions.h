@@ -1,7 +1,7 @@
 #ifndef COLLISIONDEFINITIONS_H_INCLUDED
 #define COLLISIONDEFINITIONS_H_INCLUDED
 
-#include "RefCounter.h"
+#include "../RefCounter.h"
 #include <Misc/String.h>
 #include <map>
 

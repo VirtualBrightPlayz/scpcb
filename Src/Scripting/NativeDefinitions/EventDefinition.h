@@ -6,7 +6,7 @@
 #include <Misc/String.h>
 #include "../ScriptFunction.h"
 #include "../NativeDefinition.h"
-#include "CachedArgument.h"
+#include "../CachedArgument.h"
 
 class ScriptManager;
 

@@ -1,8 +1,9 @@
 #ifndef PLAYERCONTROLLERDEFINITIONS_H_INCLUDED
 #define PLAYERCONTROLLERDEFINITIONS_H_INCLUDED
 
-#include "RefCounter.h"
 #include <map>
+
+#include "../RefCounter.h"
 
 class ScriptManager;
 enum class Input;
