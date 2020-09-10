@@ -63,7 +63,7 @@ void main() {
 
     @menuManager = MenuManager();
 
-    Msg::set("LOL");
+    //Msg::set("LOL");
 
     Item::register("FirstAid", "SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 0.5);
     Item::spawn("FirstAid", Vector3f(0.0, 20.0, 20.0));
@@ -89,7 +89,7 @@ void main() {
     Console::register("mytest", "THIS COMKMAND IS VERY EPIC", Test);
     Console::register(
         "teleport",
-        "Teleports the player to the coordinates sent as input",
+        "Teleports the player to the coordinates sent as input.",
         function(float x,float y,float z) {
             Debug::log("Called teleport!");
             testController.setPosition(Vector3f(x,y,z));

@@ -14,6 +14,7 @@ shared class ConsoleMenu : Menu {
     private GUITextInput@ input;
     private GUIScrollbar@ scrollbar;
 
+    private int commandHistoryIndex = -1;
     private array<string> commandHistory;
     private array<GUIText@> messageHistory;
     private float scrollOffset = 0.f;
@@ -87,8 +88,24 @@ shared class ConsoleMenu : Menu {
             addConsoleMessage("> " + input.txt, Color::Yellow);
 
             Console::execute(input.txt);
+            commandHistory.insertLast(input.txt);
+            commandHistoryIndex = -1;
 
             input.clearTextAndMementos();
+        }
+        if (Input::UpArrow::isHit() || Input::DownArrow::isHit()) {
+            commandHistoryIndex += Input::UpArrow::isHit() ? -1 : 1;
+            if (commandHistoryIndex < -1) {
+                commandHistoryIndex = commandHistory.length() - 1;
+            } else if (commandHistoryIndex >= commandHistory.length()) {
+                commandHistoryIndex = -1;
+            }
+            if (commandHistoryIndex >= 0) {
+                input.txt = commandHistory[commandHistoryIndex];
+            } else {
+                input.txt = "";
+            }
+            Debug::log(commandHistoryIndex);
         }
         if (Input::getMouseWheelDelta().y != 0.0) {
             updateCoordinates();

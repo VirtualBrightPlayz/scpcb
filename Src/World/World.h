@@ -15,16 +15,11 @@ class GraphicsResources;
 class Font;
 class MessageManager;
 class LocalizationManager;
-class PauseMenu;
-class Console;
-class Inventory;
 class MouseData;
 class KeyBinds;
 class BillboardManager;
 class PickableManager;
-class FPSCounter;
-class GUIText;
-class Menu;
+class FPSManager;
 class ScriptWorld;
 class UIMesh;
 class VRManager;
@@ -53,28 +48,14 @@ class World {
         Font* largeFont;
         UIMesh* uiMesh;
 
-        Menu* currMenu;
-        // When a menu is markedForRemoval it's moved here where it'll be deleted in the update loop.
-        Menu* menuGraveyard;
-
-#ifdef DEBUG
-        GUIText* mouseTxtX;
-        GUIText* mouseTxtY;
-#endif
-
         GraphicsResources* gfxRes;
         LocalizationManager* locMng;
-        MessageManager* msgMng;
-
-        PauseMenu* pauseMenu;
-        Console* console;
-        Inventory* inventory;
 
         PickableManager* pickMng;
 
         BillboardManager* billMng;
 
-        FPSCounter* fps;
+        FPSManager* fps;
 
         VRManager* vrm;
 
@@ -102,9 +83,6 @@ class World {
 
         World();
         ~World();
-
-        void activateMenu(Menu* mu);
-        void deactivateMenu(Menu* mu);
 
         // Goes through the update/draw phrase of a single frame.
         bool run();

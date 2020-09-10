@@ -61,6 +61,8 @@ InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* 
     registerKey("Escape", kb->escape);
     registerKey("Backspace", kb->backspace);
     registerKey("Delete", kb->del);
+    registerKey("UpArrow", kb->upArrow);
+    registerKey("DownArrow", kb->downArrow);
     registerKey("LeftArrow", kb->leftArrow);
     registerKey("RightArrow", kb->rightArrow);
     registerKey("Enter", kb->enter);

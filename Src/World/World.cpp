@@ -8,24 +8,17 @@
 
 #include "Timing.h"
 #include "Pickable.h"
-#include "FPSCounter.h"
 #include "VRManager.h"
 #include "ScriptWorld.h"
 #include "../Graphics/Camera.h"
 #include "../Graphics/GraphicsResources.h"
 #include "../Graphics/DebugGraphics.h"
-#include "../Menus/PauseMenu.h"
-#include "../Menus/Console.h"
-#include "../Menus/Inventory.h"
-#include "../Menus/Menu.h"
 #include "../Save/Config.h"
-#include "../Menus/GUI/GUIComponent.h"
-#include "../Menus/GUI/GUIText.h"
 #include "../Input/KeyBinds.h"
 #include "../Input/Input.h"
 #include "../Input/MouseData.h"
-#include "../Utils/MessageManager.h"
 #include "../Utils/LocalizationManager.h"
+#include "../Utils/FPSManager.h"
 #include "../Utils/MathUtil.h"
 #include "../Scripting/ScriptObject.h"
 #include "../Graphics/UIMesh.h"
@@ -60,34 +53,22 @@ World::World() {
     mouseData = new MouseData(io, config);
 
     locMng = new LocalizationManager(config->languageCode->value);
-    msgMng = new MessageManager(locMng, uiMesh, keyBinds, config, largeFont);
     
-    currMenu = nullptr;
-    menuGraveyard = nullptr;
     io->setMouseVisibility(false);
     io->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
-    pauseMenu = new PauseMenu(this, uiMesh, largeFont, keyBinds, config, locMng, io);
-    console = new Console(this, uiMesh, largeFont, keyBinds, config, locMng, io);
-    inventory = new Inventory(this, uiMesh, keyBinds, config, 10);
 
     pickMng = new PickableManager(camera, uiMesh, keyBinds);
 
     billMng = new BillboardManager(graphics, gfxRes, camera);
 
-    fps = new FPSCounter(uiMesh, keyBinds, config, largeFont);
-    fps->visible = true;
+    fps = new FPSManager();
 
     oldPaused = false;
     paused = false;
 
-    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, io, msgMng, locMng, pickMng, uiMesh, config, (float)timing->getTimeStep(), billMng);
+    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, io, locMng, pickMng, uiMesh, config, (float)timing->getTimeStep(), billMng);
 
     applyConfig(config);
-
-#ifdef DEBUG
-    mouseTxtX = new GUIText(uiMesh, keyBinds, config, largeFont, nullptr, 0.f, -5.f, false, false, Alignment::Bottom | Alignment::Left);
-    mouseTxtY = new GUIText(uiMesh, keyBinds, config, largeFont, nullptr, 0.f, -2.5f, false, false, Alignment::Bottom | Alignment::Left);
-#endif
 
     shutdownRequested = false;
     
@@ -102,24 +83,15 @@ World::~World() {
     delete fps;
     delete pickMng;
     delete billMng;
-    delete pauseMenu;
-    delete console;
-    delete inventory;
     delete uiMesh;
     delete keyBinds;
     delete mouseData;
-
-#ifdef DEBUG
-    delete mouseTxtX;
-    delete mouseTxtY;
-#endif
 
     delete vrm;
 
     delete camera;
     delete timing;
     delete locMng;
-    delete msgMng;
 
     delete io;
     delete graphics;
@@ -131,27 +103,6 @@ void World::applyConfig(const Config* config) {
     for (const auto& it : keyboardMappings) {
         keyBinds->bindInput(it.first, it.second);
     }
-}
-
-void World::activateMenu(Menu* mu) {
-    if (currMenu != nullptr) {
-        throw std::runtime_error("Attempted to activate a menu while another was active.");
-    }
-
-    currMenu = mu;
-    currMenu->onActivate();
-}
-
-void World::deactivateMenu(Menu* mu) {
-    if (mu != currMenu) {
-        throw std::runtime_error("Attempted to deactivate a menu that wasn't active.");
-    }
-
-    if (mu->isMarkedForDeath()) {
-        menuGraveyard = mu;
-    }
-    currMenu = nullptr;
-    mu->onDeactivate();
 }
 
 bool World::run() {
@@ -208,10 +159,10 @@ bool World::run() {
         graphics->resetRenderTarget();
         graphics->setDepthTest(false);
         uiMesh->setTextured(vrm->getTexture(), false);
-        uiMesh->addRect(PGE::Rectanglef(-GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio(),
-            -GUIComponent::SCALE_MAGNITUDE,
-            GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio(),
-            GUIComponent::SCALE_MAGNITUDE));
+        uiMesh->addRect(PGE::Rectanglef(-50.f * config->getAspectRatio(),
+            -50.f,
+            50.f * config->getAspectRatio(),
+            50.f));
         uiMesh->endRender();
         draw(1.f, RenderType::UIOnly);
     }
@@ -233,61 +184,17 @@ void World::runTick(float timeStep) {
     Input downInputs = keyBinds->getDownInputs();
     Input hitInputs = keyBinds->getHitInputs();
 
-#ifdef DEBUG
-    mouseTxtX->setText(PGE::String("DownInputs: ") + PGE::String::fromInt((int)downInputs));
-    mouseTxtY->setText(PGE::String("MouseWheelX: ") + PGE::String::fromInt(io->getMouseWheelDelta().y));
-#endif
-
     if (vrm != nullptr) {
         vrm->tick(timeStep);
     }
 
-    // If a menu is in the graveyard then remove it.
-    if (menuGraveyard != nullptr) {
-        delete menuGraveyard;
-        menuGraveyard = nullptr;
-    }
-
     if (!paused) {
         updatePlaying(timeStep);
-    } else {
-        if (currMenu != nullptr) {
-            currMenu->update(mouseData->getPosition(), mouseData->getWheelDelta());
-        }
     }
 
     scripting->update();
 
-    /*if (keyBinds->escape->isHit()) {
-        // If a text input is active then escape de-selects it.
-        // Unless it's the console's input.
-        if (GUITextInput::hasSubscriber() && currMenu != nullptr && !currMenu->getType().equals("console")) {
-            GUITextInput::deselectSubscribed();
-        } else if (currMenu != nullptr) {
-            currMenu->onEscapeHit();
-        } else {
-            activateMenu(pauseMenu);
-            paused = true;
-        }
-    } else if (inputWasFired(hitInputs, Input::ToggleConsole)) {
-        if (currMenu == nullptr) {
-            activateMenu(console);
-        } else if (currMenu == console) {
-            console->onEscapeHit();
-        } // Otherwise another menu is already open.
-    } else if (inputWasFired(hitInputs, Input::Inventory)) {
-        if (currMenu == nullptr) {
-            activateMenu(inventory);
-        } else if (currMenu == inventory) {
-            inventory->onEscapeHit();
-        } // Otherwise another menu is already open.
-    }*/
-
-    /*if (currMenu == nullptr && !graphics->getWindow()->isFocused()) {
-        activateMenu(pauseMenu);
-    }*/
-
-    // If a menu was closed this tick then reset the mouse position.
+    // If the game was (un-/)paused this tick then reset the mouse position.
     if (paused != oldPaused) {
         if (paused) {
             io->setMouseVisibility(true);
@@ -309,10 +216,10 @@ void World::draw(float interpolation, RenderType r) {
 
             uiMesh->setTextureless();
             uiMesh->setColor(PGE::Color(0.f, 0.f, 0.f, vrm->getFade()));
-            uiMesh->addRect(PGE::Rectanglef(-GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio(),
-                -GUIComponent::SCALE_MAGNITUDE,
-                GUIComponent::SCALE_MAGNITUDE * config->getAspectRatio(),
-                GUIComponent::SCALE_MAGNITUDE));
+            uiMesh->addRect(PGE::Rectanglef(-50.f * config->getAspectRatio(),
+                -50.f,
+                50.f * config->getAspectRatio(),
+                50.f));
             uiMesh->endRender();
             graphics->setDepthTest(true);
         }
@@ -325,21 +232,7 @@ void World::draw(float interpolation, RenderType r) {
 
     if (r != RenderType::NoUI) {
         graphics->setDepthTest(false);
-
         scripting->drawMenu(interpolation);
-        
-        if (currMenu != nullptr) {
-            currMenu->render();
-        } else {
-            msgMng->draw();
-        }
-
-        fps->draw();
-#ifdef DEBUG
-        mouseTxtX->render();
-        mouseTxtY->render();
-#endif
-
         graphics->setDepthTest(true);
     }
 
@@ -359,8 +252,6 @@ void World::updatePlaying(float timeStep) {
     camera->update();
 
     pickMng->update();
-
-    msgMng->update(timeStep);
 }
 
 void World::drawPlaying(float interpolation) {

@@ -10,7 +10,7 @@ shared class InventoryMenu : Menu {
 
         const int rows = Math::ceil(size / 6.0);
         if (size % rows != 0) {
-            // throw("Invalid inventory size"); // TODO
+            Debug::error("Invalid inventory size");
         }
         const int itemsPerRow = size / rows;
 

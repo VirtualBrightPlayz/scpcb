@@ -20,7 +20,6 @@
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
 #include "../Scripting/NativeDefinitions/UIDefinitions.h"
 #include "../Scripting/NativeDefinitions/TextureDefinitions.h"
-#include "../Scripting/NativeDefinitions/MessageDefinitions.h"
 #include "../Scripting/NativeDefinitions/LocalizationDefinitions.h"
 #include "../Scripting/NativeDefinitions/BillboardDefinitions.h"
 #include "../Scripting/NativeDefinitions/ModelDefinitions.h"
@@ -31,7 +30,7 @@
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 #include "../Scripting/NativeDefinitions/ReflectionDefinitions.h"
 
-ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, MessageManager* mm, LocalizationManager* lm, PickableManager* pm, UIMesh* um, Config* config, float timestep, BillboardManager* bm) {
+ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, LocalizationManager* lm, PickableManager* pm, UIMesh* um, Config* config, float timestep, BillboardManager* bm) {
     manager = new ScriptManager();
 
     refCounterManager = new RefCounterManager();
@@ -45,7 +44,6 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     inputDefinitions = new InputDefinitions(manager, keyBinds, mouseData, io);
     textureDefinitions = new TextureDefinitions(manager, gfxRes);
     uiDefinitions = new UIDefinitions(manager, um, config, world);
-    messageDefinitions = new MessageDefinitions(manager, mm);
     localizationDefinitions = new LocalizationDefinitions(manager, lm);
     billboardDefinitions = new BillboardDefinitions(manager, bm);
     collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);
@@ -158,7 +156,6 @@ ScriptWorld::~ScriptWorld() {
     delete colorDefinitions;
     delete mathDefinitions;
     delete uiDefinitions;
-    delete messageDefinitions;
     delete localizationDefinitions;
     delete billboardDefinitions;
     delete modelDefinitions;

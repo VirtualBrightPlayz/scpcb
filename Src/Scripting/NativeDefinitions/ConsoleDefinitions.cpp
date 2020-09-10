@@ -22,6 +22,9 @@ ConsoleDefinitions::ConsoleDefinitions(ScriptManager* mgr) {
     engine->RegisterGlobalFunction("void log(?&in content)", asMETHOD(ConsoleDefinitions, log), asCALL_THISCALL_ASGLOBAL, this);
     engine->RegisterGlobalFunction("void warning(?&in content)", asMETHOD(ConsoleDefinitions, warning), asCALL_THISCALL_ASGLOBAL, this);
     engine->RegisterGlobalFunction("void error(?&in content)", asMETHOD(ConsoleDefinitions, error), asCALL_THISCALL_ASGLOBAL, this);
+
+    Command newCommand = { nullptr, "help", "Provides a description of a specified command. Use it with no parameters to list all commands." };
+    commands.emplace(PGE::String("help").getHashCode(), newCommand);
 }
 
 ConsoleDefinitions::~ConsoleDefinitions() {
@@ -36,26 +39,6 @@ void ConsoleDefinitions::setUp(ScriptManager* mgr) {
             consoleInstance = mod->getGlobalByName("instance", "ConsoleMenu")->getObject()->getAngelScriptObject();
             addConsoleMsgFunc = engine->GetModule("RootScript")->GetTypeInfoByName("ConsoleMenu")->GetMethodByName("addConsoleMessage");
             break;
-        }
-    }
-}
-
-void ConsoleDefinitions::printHelpList() {
-    for (const auto& comSet : commands) {
-        Command command = comSet.second;
-        addConsoleMessage(command.name, PGE::Color::Cyan);
-    }
-}
-
-void ConsoleDefinitions::printHelpCommand(const PGE::String& command) {
-    std::map<long long, Command>::iterator find = commands.find(command.getHashCode());
-    if (find == commands.end()) {
-        addConsoleMessage("That command doesn't exist", PGE::Color::Yellow);
-    } else {
-        if (find->second.helpText.isEmpty()) {
-            addConsoleMessage("There is no help available for that command.", PGE::Color::Yellow);
-        } else {
-            addConsoleMessage(find->second.helpText, PGE::Color::Blue);
         }
     }
 }
@@ -83,73 +66,96 @@ void ConsoleDefinitions::registerCommandNoHelp(const PGE::String& name, void* f,
 
 void ConsoleDefinitions::executeCommand(const PGE::String& in) {
     std::vector<PGE::String> params = in.split(" ", true);
-    std::map<long long, Command>::iterator find = commands.find(params[0].getHashCode());
-    if (find != commands.end()) {
-        asIScriptFunction* func = find->second.func;
-        params.erase(params.begin());
-        // TODO: Do we need to check all AS funcs or none?
-        if (scriptContext->Prepare(func) < 0) { throw std::runtime_error("ptooey! 2"); }
-        if (func->GetParamCount() != params.size()) {
-            const char* defaultParam;
-            func->GetParam((asUINT)params.size(), nullptr, nullptr, nullptr, &defaultParam);
-            if (defaultParam == nullptr) {
-                scriptContext->Unprepare();
-                addConsoleMessage("ARGUMENT SIZE MISMATCH", PGE::Color::Red);
-                return;
-            }
-        }
-        PGE::String errMsg;
-        for (unsigned int i = 0; i < params.size(); i++) {
-            int paramTypeId;
-            if (func->GetParam(i, &paramTypeId) >= 0) {
-                if (paramTypeId == asTYPEID_BOOL) {
-                    if (params[i].toLower().equals("true") || params[i].equals("1")) {
-                        scriptContext->SetArgByte(i, 1);
-                    } else if (params[i].toLower().equals("false") || params[i].equals("0")) {
-                        scriptContext->SetArgByte(i, 0);
-                    } else {
-                        errMsg = "NOT BOOL";
-                        break;
-                    }
-                } else if (paramTypeId == asTYPEID_INT32) {
-                    bool success;
-                    int arg = params[i].toInt(success);
-                    if (!success) {
-                        errMsg = "NOT INT";
-                        break;
-                    }
-
-                    // If the user enters a float.
-                    if (!MathUtil::equalFloats((float)arg, params[i].toFloat())) {
-                        addConsoleMessage("Loss of data!", PGE::Color::Yellow);
-                    }
-
-                    scriptContext->SetArgDWord(i, arg);
-                } else if (paramTypeId == asTYPEID_FLOAT) {
-                    bool success;
-                    float arg = params[i].toFloat(success);
-                    if (!success) {
-                        errMsg = "NOT FLOAT";
-                        break;
-                    }
-
-                    scriptContext->SetArgFloat(i, arg);
-                } else if (paramTypeId == scriptContext->GetEngine()->GetStringFactoryReturnTypeId()) {
-                    scriptContext->SetArgObject(i, (void*)&(params[i]));
-                }
+    // Hijacking this is probably the best approach.
+    if (params[0] == "help") {
+        if (params.size() == 2) {
+            std::map<long long, Command>::iterator find = commands.find(params[1].getHashCode());
+            if (find == commands.end()) {
+                addConsoleMessage("That command doesn't exist", PGE::Color::Yellow);
             } else {
-                throw std::runtime_error("ptooey! 3");
+                if (find->second.helpText.isEmpty()) {
+                    addConsoleMessage("There is no help available for that command.", PGE::Color::Yellow);
+                } else {
+                    addConsoleMessage(find->second.helpText, PGE::Color::Blue);
+                }
             }
-        }
-
-        if (errMsg.isEmpty()) {
-            scriptContext->Execute();
+        } else if (params.size() == 1) {
+            for (const auto& comSet : commands) {
+                Command command = comSet.second;
+                addConsoleMessage(command.name, PGE::Color::Cyan);
+            }
         } else {
-            addConsoleMessage(errMsg, PGE::Color::Red);
+            addConsoleMessage("ARGUMENT SIZE MISMATCH", PGE::Color::Red);
         }
-        scriptContext->Unprepare();
     } else {
-        addConsoleMessage("No command found", PGE::Color::Red);
+        std::map<long long, Command>::iterator find = commands.find(params[0].getHashCode());
+        if (find != commands.end()) {
+            asIScriptFunction* func = find->second.func;
+            params.erase(params.begin());
+            // TODO: Do we need to check all AS funcs or none?
+            if (scriptContext->Prepare(func) < 0) { throw std::runtime_error("ptooey! 2"); }
+            if (func->GetParamCount() != params.size()) {
+                const char* defaultParam;
+                func->GetParam((asUINT)params.size(), nullptr, nullptr, nullptr, &defaultParam);
+                if (defaultParam == nullptr) {
+                    scriptContext->Unprepare();
+                    addConsoleMessage("ARGUMENT SIZE MISMATCH", PGE::Color::Red);
+                    return;
+                }
+            }
+            PGE::String errMsg;
+            for (unsigned int i = 0; i < params.size(); i++) {
+                int paramTypeId;
+                if (func->GetParam(i, &paramTypeId) >= 0) {
+                    if (paramTypeId == asTYPEID_BOOL) {
+                        if (params[i].toLower().equals("true") || params[i].equals("1")) {
+                            scriptContext->SetArgByte(i, 1);
+                        } else if (params[i].toLower().equals("false") || params[i].equals("0")) {
+                            scriptContext->SetArgByte(i, 0);
+                        } else {
+                            errMsg = "NOT BOOL";
+                            break;
+                        }
+                    } else if (paramTypeId == asTYPEID_INT32) {
+                        bool success;
+                        int arg = params[i].toInt(success);
+                        if (!success) {
+                            errMsg = "NOT INT";
+                            break;
+                        }
+
+                        // If the user enters a float.
+                        if (!MathUtil::equalFloats((float)arg, params[i].toFloat())) {
+                            addConsoleMessage("Loss of data!", PGE::Color::Yellow);
+                        }
+
+                        scriptContext->SetArgDWord(i, arg);
+                    } else if (paramTypeId == asTYPEID_FLOAT) {
+                        bool success;
+                        float arg = params[i].toFloat(success);
+                        if (!success) {
+                            errMsg = "NOT FLOAT";
+                            break;
+                        }
+
+                        scriptContext->SetArgFloat(i, arg);
+                    } else if (paramTypeId == scriptContext->GetEngine()->GetStringFactoryReturnTypeId()) {
+                        scriptContext->SetArgObject(i, (void*)&(params[i]));
+                    }
+                } else {
+                    throw std::runtime_error("ptooey! 3");
+                }
+            }
+
+            if (errMsg.isEmpty()) {
+                scriptContext->Execute();
+            } else {
+                addConsoleMessage(errMsg, PGE::Color::Red);
+            }
+            scriptContext->Unprepare();
+        } else {
+            addConsoleMessage("No command found", PGE::Color::Red);
+        }
     }
 }
 

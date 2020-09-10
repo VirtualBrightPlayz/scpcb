@@ -31,8 +31,7 @@ namespace Item {
         }
         Item@ result = reflection.callConstructor(name);
         if (result == null) {
-            Debug::log(@result);
-            //throw("ERROR");
+            Debug::error(@result);
         }
         result.position = position;
         items.insertLast(result);
@@ -100,7 +99,7 @@ shared abstract class Item {
                     picked = true;
                     Pickable::deactivatePickable(pickable);
                 } else {
-                    Msg::set("Inventory full!");
+                    //Msg::set("Inventory full!");
                 }
             }
         }

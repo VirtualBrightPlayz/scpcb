@@ -29,39 +29,6 @@
     <ClCompile Include="..\Src\Input\Input.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Menus\Console.cpp">
-      <Filter>Menus</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\PauseMenu.cpp">
-      <Filter>Menus</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\InvSlot.cpp">
-      <Filter>Menus</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\Inventory.cpp">
-      <Filter>Menus</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\Menu.cpp">
-      <Filter>Menus</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\GUIButton.cpp">
-      <Filter>Menus\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\GUIComponent.cpp">
-      <Filter>Menus\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\GUIFrame.cpp">
-      <Filter>Menus\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\GUIText.cpp">
-      <Filter>Menus\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\GUITextInput.cpp">
-      <Filter>Menus\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Menus\GUI\MementoManager.cpp">
-      <Filter>Menus\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\Models\RM2.cpp">
       <Filter>Models</Filter>
     </ClCompile>
@@ -137,9 +104,6 @@
     <ClCompile Include="..\Src\World\DataInterpolator.cpp">
       <Filter>World</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\World\FPSCounter.cpp">
-      <Filter>World</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\World\Timing.cpp">
       <Filter>World</Filter>
     </ClCompile>
@@ -172,15 +136,6 @@
     </ClCompile>
     <ClCompile Include="..\Src\Utils\LocalizationManager.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Utils\MessageManager.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\MessageDefinitions.cpp">
-      <Filter>Scripting\NativeDefinitions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Src\World\Item.cpp">
-      <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="..\Src\Models\Model.cpp">
       <Filter>Models</Filter>
@@ -221,6 +176,9 @@
     <ClCompile Include="..\Src\Scripting\CachedArgument.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Utils\FPSManager.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -250,39 +208,6 @@
     </ClInclude>
     <ClInclude Include="..\Src\Input\Input.h">
       <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\Console.h">
-      <Filter>Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\PauseMenu.h">
-      <Filter>Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\InvSlot.h">
-      <Filter>Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\Inventory.h">
-      <Filter>Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\Menu.h">
-      <Filter>Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\GUIButton.h">
-      <Filter>Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\GUIComponent.h">
-      <Filter>Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\GUIFrame.h">
-      <Filter>Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\GUIText.h">
-      <Filter>Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\GUITextInput.h">
-      <Filter>Menus\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Menus\GUI\MementoManager.h">
-      <Filter>Menus\GUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Models\RM2.h">
       <Filter>Models</Filter>
@@ -359,9 +284,6 @@
     <ClInclude Include="..\Src\World\DataInterpolator.h">
       <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="..\Src\World\FPSCounter.h">
-      <Filter>World</Filter>
-    </ClInclude>
     <ClInclude Include="..\Src\World\Timing.h">
       <Filter>World</Filter>
     </ClInclude>
@@ -391,15 +313,6 @@
     </ClInclude>
     <ClInclude Include="..\Src\Utils\LocalizationManager.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Utils\MessageManager.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\MessageDefinitions.h">
-      <Filter>Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\World\Item.h">
-      <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Models\Model.h">
       <Filter>Models</Filter>
@@ -440,6 +353,9 @@
     <ClInclude Include="..\Src\Scripting\CachedArgument.h">
       <Filter>Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\Utils\FPSManager.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SCPCB.rc" />
@@ -456,9 +372,6 @@
     </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{4abb87db-25a4-42aa-bb9d-e170497d40b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Menus">
-      <UniqueIdentifier>{53dd1267-112b-4fd3-a4a3-68315807ffd2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Models">
       <UniqueIdentifier>{305c7b48-b016-4d67-afa0-606e4f42bf66}</UniqueIdentifier>
@@ -477,9 +390,6 @@
     </Filter>
     <Filter Include="World">
       <UniqueIdentifier>{d3bae494-bf83-461d-ae68-26caf9f49b05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Menus\GUI">
-      <UniqueIdentifier>{76b2ce64-f7bb-42b0-bb87-2d9b6f6e5e4f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripting\NativeDefinitions">
       <UniqueIdentifier>{385a7202-e0ec-4d8e-86b3-f82e1bb41485}</UniqueIdentifier>
