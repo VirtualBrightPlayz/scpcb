@@ -58,7 +58,9 @@ shared class ConsoleMenu : Menu {
         newText.text = msg;
         newText.color = color;
         messageHistory.insertLast(newText);
-        updateCoordinates(); // TODO: Only update here when we are open.
+        if (@GUITextInput::subscriber == @input) {
+            updateCoordinates();
+        }
     }
 
     void clear() {
@@ -105,7 +107,6 @@ shared class ConsoleMenu : Menu {
             } else {
                 input.txt = "";
             }
-            Debug::log(commandHistoryIndex);
         }
         if (Input::getMouseWheelDelta().y != 0.0) {
             updateCoordinates();

@@ -31,7 +31,7 @@ shared class MenuManager {
                 mu.components[i].onClose();
             }
         } else {
-            // Throw
+            Debug::error("Attempted to deactivate a menu that wasn't active.");
         }
         World::paused = false;
     }
@@ -44,7 +44,7 @@ shared class MenuManager {
                 mu.components[i].onOpen();
             }
         } else {
-            // Throw
+            Debug::error("Attempted to activate a menu while another was active.");
         }
         World::paused = true;
     }
