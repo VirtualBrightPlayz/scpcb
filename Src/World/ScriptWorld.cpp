@@ -35,44 +35,34 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
 
     refCounterManager = new RefCounterManager();
 
-    worldDefinitions = new WorldDefinitions(manager, world);
-    regexDefinitions = new RegexDefinitions(manager, refCounterManager);
-    mementoDefinitions = new MementoDefinitions(manager);
-    consoleDefinitions = new ConsoleDefinitions(manager);
-    colorDefinitions = new ColorDefinitions(manager);
-    mathDefinitions = new MathDefinitions(manager);
-    inputDefinitions = new InputDefinitions(manager, keyBinds, mouseData, io);
-    textureDefinitions = new TextureDefinitions(manager, gfxRes);
-    uiDefinitions = new UIDefinitions(manager, um, config, world);
-    localizationDefinitions = new LocalizationDefinitions(manager, lm);
-    billboardDefinitions = new BillboardDefinitions(manager, bm);
-    collisionDefinitions = new CollisionDefinitions(manager, refCounterManager);
-    modelDefinitions = new ModelDefinitions(manager, gfxRes);
-    rm2Definitions = new RM2Definitions(manager, gfxRes);
-    pickableDefinitions = new PickableDefinitions(manager, refCounterManager, pm);
-    playerControllerDefinitions = new PlayerControllerDefinitions(manager, refCounterManager, camera);
-    reflectionDefinitions = new ReflectionDefinitions(manager);
+    nativeDefs.push_back(new WorldDefinitions(manager, world));
+    nativeDefs.push_back(new RegexDefinitions(manager, refCounterManager));
+    nativeDefs.push_back(new MementoDefinitions(manager));
+    nativeDefs.push_back(new ColorDefinitions(manager));
+    nativeDefs.push_back(new MathDefinitions(manager));
+    nativeDefs.push_back(new InputDefinitions(manager, keyBinds, mouseData, io));
+    nativeDefs.push_back(new TextureDefinitions(manager, gfxRes));
+    nativeDefs.push_back(new UIDefinitions(manager, um, config, world));
+    nativeDefs.push_back(new LocalizationDefinitions(manager, lm));
+    nativeDefs.push_back(new BillboardDefinitions(manager, bm));
+    nativeDefs.push_back(new CollisionDefinitions(manager, refCounterManager));
+    nativeDefs.push_back(new ModelDefinitions(manager, gfxRes));
+    nativeDefs.push_back(new RM2Definitions(manager, gfxRes));
+    nativeDefs.push_back(new PickableDefinitions(manager, refCounterManager, pm));
+    nativeDefs.push_back(new PlayerControllerDefinitions(manager, refCounterManager, camera));
+    nativeDefs.push_back(new ReflectionDefinitions(manager));
+    ConsoleDefinitions* conDef = new ConsoleDefinitions(manager);
+    nativeDefs.push_back(conDef);
 
-    ScriptFunction::Signature perTickSignature;
-    perTickSignature.functionName = "PerTick";
-    perTickSignature.returnType = Type::Void;
-    perTickSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "deltaTime"));
-    perTickEventDefinition = new EventDefinition(manager, "PerTick", perTickSignature);
+    perTickEventDefinition = new EventDefinition(manager, "PerTick",
+        std::vector<ScriptFunction::Signature::Argument> { ScriptFunction::Signature::Argument(Type::Float, "deltaTime") });
     perTickEventDefinition->setArgument("deltaTime", timestep); // TODO: Make timestep const global.
 
-    ScriptFunction::Signature perFrameGameSignature;
-    perFrameGameSignature.functionName = "PerFrameGame";
-    perFrameGameSignature.returnType = Type::Void;
-    perFrameGameSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "interpolation"));
-    perFrameGameEventDefinition = new EventDefinition(manager, "PerFrameGame", perFrameGameSignature);
-    perFrameGameEventDefinition->setArgument("interpolation", 1.0f);
+    perFrameGameEventDefinition = new EventDefinition(manager, "PerFrameGame",
+        std::vector<ScriptFunction::Signature::Argument> { ScriptFunction::Signature::Argument(Type::Float, "interpolation") });
 
-    ScriptFunction::Signature perFrameMenuSignature;
-    perFrameMenuSignature.functionName = "PerFrameMenu";
-    perFrameMenuSignature.returnType = Type::Void;
-    perFrameMenuSignature.arguments.push_back(ScriptFunction::Signature::Argument(Type::Float, "interpolation"));
-    perFrameMenuEventDefinition = new EventDefinition(manager, "PerFrameMenu", perFrameMenuSignature);
-    perFrameMenuEventDefinition->setArgument("interpolation", 1.0f);
+    perFrameMenuEventDefinition = new EventDefinition(manager, "PerFrameMenu",
+        std::vector<ScriptFunction::Signature::Argument> { ScriptFunction::Signature::Argument(Type::Float, "interpolation") });
 
     const std::vector<PGE::String>& enabledMods = config->enabledMods->value;
 
@@ -110,7 +100,7 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
         modules.push_back(scriptModule);
     }
 
-    consoleDefinitions->setUp(manager);
+    conDef->setUp(manager);
 
     for (int i=0;i<modules.size();i++) {
         ScriptModule* scriptModule = modules[i];
@@ -149,21 +139,9 @@ ScriptWorld::~ScriptWorld() {
     delete perFrameGameEventDefinition;
     delete perFrameMenuEventDefinition;
 
-    delete worldDefinitions;
-    delete regexDefinitions;
-    delete consoleDefinitions;
-    delete inputDefinitions;
-    delete colorDefinitions;
-    delete mathDefinitions;
-    delete uiDefinitions;
-    delete localizationDefinitions;
-    delete billboardDefinitions;
-    delete modelDefinitions;
-    delete rm2Definitions;
-    delete collisionDefinitions;
-    delete pickableDefinitions;
-    delete playerControllerDefinitions;
-    delete reflectionDefinitions;
+    for (NativeDefinition* nd : nativeDefs) {
+        delete nd;
+    }
 
     delete refCounterManager;
 

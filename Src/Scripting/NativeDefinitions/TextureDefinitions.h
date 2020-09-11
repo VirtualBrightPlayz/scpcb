@@ -6,7 +6,7 @@
 class ScriptManager;
 class GraphicsResources;
 
-class TextureDefinitions : NativeDefinition {
+class TextureDefinitions : public NativeDefinition {
     public:
         TextureDefinitions(ScriptManager* mgr, GraphicsResources* gr);
 };

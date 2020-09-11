@@ -7,7 +7,7 @@ class ScriptManager;
 class CScriptArray;
 class ScriptClass;
 class Reflection;
-class ReflectionDefinitions : NativeDefinition {
+class ReflectionDefinitions : public NativeDefinition {
     private:
         ScriptManager* scriptManager;
 

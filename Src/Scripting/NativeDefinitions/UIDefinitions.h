@@ -8,7 +8,7 @@ class UIMesh;
 class Config;
 class World;
 
-class UIDefinitions : NativeDefinition {
+class UIDefinitions : public NativeDefinition {
     public:
         UIDefinitions(ScriptManager* mgr, UIMesh* uiMesh, Config* config, World* world);
 };

@@ -14,6 +14,9 @@ class Type;
 class ScriptFunction {
     public:
         struct Signature {
+            Type* returnType;
+            PGE::String functionName;
+
             struct Argument {
                 Type* type;
                 PGE::String name;
@@ -21,8 +24,6 @@ class ScriptFunction {
                 Argument(Type* t, const PGE::String& n);
             };
             std::vector<Argument> arguments;
-            Type* returnType;
-            PGE::String functionName;
 
             PGE::String toString() const;
         };

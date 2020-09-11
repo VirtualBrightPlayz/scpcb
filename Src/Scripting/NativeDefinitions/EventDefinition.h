@@ -25,7 +25,7 @@ class EventDefinition : public NativeDefinition {
         ScriptManager* scriptManager;
 
     public:
-        EventDefinition(ScriptManager* mgr, const PGE::String& nm, const ScriptFunction::Signature& sgntr);
+        EventDefinition(ScriptManager* mgr, const PGE::String& nm, std::vector<ScriptFunction::Signature::Argument> argList);
 
         void setArgument(const PGE::String& argument, int32_t i32);
         void setArgument(const PGE::String& argument, uint32_t u32);

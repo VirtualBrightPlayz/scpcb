@@ -5,24 +5,8 @@
 
 class ScriptManager;
 
-class WorldDefinitions;
-class RegexDefinitions;
-class MementoDefinitions;
-class BillboardDefinitions;
-class ConsoleDefinitions;
-class ColorDefinitions;
-class MathDefinitions;
-class TextureDefinitions;
-class UIDefinitions;
-class LocalizationDefinitions;
-class ModelDefinitions;
-class RM2Definitions;
-class CollisionDefinitions;
-class PickableDefinitions;
-class PlayerControllerDefinitions;
-class InputDefinitions;
 class EventDefinition;
-class ReflectionDefinitions;
+class NativeDefinition;
 
 class ScriptModule;
 class World;
@@ -43,23 +27,7 @@ class ScriptWorld {
 
         RefCounterManager* refCounterManager;
 
-        WorldDefinitions* worldDefinitions;
-        RegexDefinitions* regexDefinitions;
-        MementoDefinitions* mementoDefinitions;
-        ConsoleDefinitions* consoleDefinitions;
-        InputDefinitions* inputDefinitions;
-        ColorDefinitions* colorDefinitions;
-        MathDefinitions* mathDefinitions;
-        TextureDefinitions* textureDefinitions;
-        UIDefinitions* uiDefinitions;
-        LocalizationDefinitions* localizationDefinitions;
-        BillboardDefinitions* billboardDefinitions;
-        ModelDefinitions* modelDefinitions;
-        RM2Definitions* rm2Definitions;
-        CollisionDefinitions* collisionDefinitions;
-        PickableDefinitions* pickableDefinitions;
-        PlayerControllerDefinitions* playerControllerDefinitions;
-        ReflectionDefinitions* reflectionDefinitions;
+        std::vector<NativeDefinition*> nativeDefs;
 
         EventDefinition* perTickEventDefinition;
         EventDefinition* perFrameGameEventDefinition;

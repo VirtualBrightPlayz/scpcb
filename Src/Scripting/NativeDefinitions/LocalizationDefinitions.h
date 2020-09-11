@@ -6,7 +6,7 @@
 class ScriptManager;
 class LocalizationManager;
 
-class LocalizationDefinitions : NativeDefinition {
+class LocalizationDefinitions : public NativeDefinition {
     public:
         LocalizationDefinitions(ScriptManager* mgr, LocalizationManager* lm);
 };

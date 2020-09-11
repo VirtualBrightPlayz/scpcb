@@ -4,6 +4,10 @@
 #include <angelscript.h>
 
 class NativeDefinition {
+    public:
+        // Virtual so we can safely call delete on children.
+        virtual ~NativeDefinition() {};
+
     protected:
         template<class BASE, class DERIVED>
 		void registerInheritance(const char* base, const char* derived);

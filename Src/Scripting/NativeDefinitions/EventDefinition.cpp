@@ -4,17 +4,14 @@
 #include "../ScriptManager.h"
 #include "../ScriptModule.h"
 
-EventDefinition::EventDefinition(ScriptManager* mgr, const PGE::String& nm, const ScriptFunction::Signature& sgntr) {
+EventDefinition::EventDefinition(ScriptManager* mgr, const PGE::String& nm, std::vector<ScriptFunction::Signature::Argument> argList) {
     scriptManager = mgr;
 
     name = nm;
-    signature = sgntr;
-    signature.returnType = Type::Void;
-    signature.functionName = name + "Callback";
+    signature = { Type::Void,  name + "Callback", argList };
 
-    for (int i = 0; i < sgntr.arguments.size(); i++) {
-        CachedArgument arg = CachedArgument(sgntr.arguments[i].name, sgntr.arguments[i].type);
-        arguments.push_back(arg);
+    for (const auto& arg : signature.arguments) {
+        arguments.push_back(CachedArgument(arg.name, arg.type));
     }
 
     engine = mgr->getAngelScriptEngine();

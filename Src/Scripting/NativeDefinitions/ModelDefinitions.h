@@ -6,7 +6,7 @@
 class ScriptManager;
 class GraphicsResources;
 
-class ModelDefinitions : NativeDefinition {
+class ModelDefinitions : public NativeDefinition {
     public:
         ModelDefinitions(ScriptManager* mgr, GraphicsResources* gr);
 };

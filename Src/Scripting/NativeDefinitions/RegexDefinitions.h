@@ -10,7 +10,7 @@
 
 class ScriptManager;
 
-class RegexDefinitions : RefCounter {
+class RegexDefinitions : public RefCounter {
     private:
         std::map<std::regex*,int> refCount;
         std::regex* regexFactory(const PGE::String& regex);

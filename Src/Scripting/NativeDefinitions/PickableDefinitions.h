@@ -7,7 +7,7 @@ class ScriptManager;
 class Pickable;
 class PickableManager;
 
-class PickableDefinitions : RefCounter {
+class PickableDefinitions : public RefCounter {
 	private:
 		std::map<Pickable*,int> refCount;
 		Pickable* pickableFactory();

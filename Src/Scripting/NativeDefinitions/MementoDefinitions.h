@@ -5,7 +5,7 @@
 
 class ScriptManager;
 
-class MementoDefinitions : NativeDefinition {
+class MementoDefinitions : public NativeDefinition {
     public:
         MementoDefinitions(ScriptManager* mgr);
 };
