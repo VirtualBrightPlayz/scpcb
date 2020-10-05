@@ -176,9 +176,6 @@
     <ClCompile Include="..\Src\Scripting\CachedArgument.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Utils\FPSManager.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -352,9 +349,6 @@
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\CachedArgument.h">
       <Filter>Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Utils\FPSManager.h">
-      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

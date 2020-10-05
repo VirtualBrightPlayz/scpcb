@@ -18,7 +18,6 @@
 #include "../Input/Input.h"
 #include "../Input/MouseData.h"
 #include "../Utils/LocalizationManager.h"
-#include "../Utils/FPSManager.h"
 #include "../Utils/MathUtil.h"
 #include "../Scripting/ScriptObject.h"
 #include "../Graphics/UIMesh.h"
@@ -61,8 +60,6 @@ World::World() {
 
     billMng = new BillboardManager(graphics, gfxRes, camera);
 
-    fps = new FPSManager();
-
     oldPaused = false;
     paused = false;
 
@@ -80,7 +77,6 @@ World::World() {
 World::~World() {
     delete scripting;
 
-    delete fps;
     delete pickMng;
     delete billMng;
     delete uiMesh;
@@ -170,7 +166,6 @@ bool World::run() {
     // Get elapsed seconds since last run.
     double secondsPassed = timing->getElapsedSeconds();
     timing->addSecondsToAccumulator(secondsPassed);
-    fps->update(secondsPassed);
 
     return graphics->getWindow()->isOpen();
 }

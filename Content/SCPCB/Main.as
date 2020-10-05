@@ -46,8 +46,13 @@ shared class FirstAid : Item {
 }
 
 external class MenuManager;
-
 MenuManager@ menuManager;
+
+int fps;
+external class GUIText;
+GUIText@ fpsCounter;
+
+external enum Alignment;
 
 external class ConsoleMenu;
 namespace ConsoleMenu {
@@ -62,6 +67,9 @@ void main() {
     Debug::log("Starting up!");
 
     @menuManager = MenuManager();
+
+    @fpsCounter = GUIText(null, -50.0 * UI::getAspectRatio(), -50.0, false, false, false);
+    fpsCounter.text = "test";
 
     //Msg::set("LOL");
 
@@ -145,6 +153,8 @@ void update(float deltaTime) {
         if (time > 1.0) { // So you don't get a fucking seizure.
             lol.visible = !lol.visible;
             time = 0.0;
+            fpsCounter.text = "FPS: " + toString(fps);
+            fps = 0;
         }
     }
     Item::updateAll();
@@ -158,6 +168,8 @@ void renderGame(float interpolation) {
     mask2.render();
     Billboard::renderAll();
     Item::renderAll();
+    fpsCounter.render();
+    fps++;
 }
 
 void renderMenu(float interpolation) {

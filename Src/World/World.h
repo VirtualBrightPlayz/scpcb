@@ -19,7 +19,6 @@ class MouseData;
 class KeyBinds;
 class BillboardManager;
 class PickableManager;
-class FPSManager;
 class ScriptWorld;
 class UIMesh;
 class VRManager;
@@ -54,8 +53,6 @@ class World {
         PickableManager* pickMng;
 
         BillboardManager* billMng;
-
-        FPSManager* fps;
 
         VRManager* vrm;
 
