@@ -29,20 +29,16 @@
 #include "../Models/Model.h"
 
 PGE::Texture* World::getEpicTexture() {
-    PGE::Texture* test = PGE::Texture::create(graphics, 100, 100, true, nullptr, PGE::Texture::FORMAT::RGBA32);
-    Camera c = Camera(gfxRes, 100, 100, 90, 0.0001f, 30.f, false);
+    PGE::Texture* test = PGE::Texture::create(graphics, 1000, 1000, true, nullptr, PGE::Texture::FORMAT::RGBA32);
+    Camera c = Camera(gfxRes, 1000, 1000, 70, 0.0001f, 3000.f, true);
     c.updateDrawTransform(0.f);
     graphics->setRenderTarget(test);
     gfxRes->setCameraUniforms(&c);
     graphics->clear(PGE::Color::Orange);
-    uiMesh->startRender();
-    uiMesh->setTextureless();
-    uiMesh->setColor(PGE::Color::Green);
-    uiMesh->addRect(PGE::Rectanglef(0, 10, 0, 10));
-    uiMesh->endRender();
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 100; i++) {
         ModelInstance* lol = gfxRes->getModelInstance("SCPCB/GFX/Items/Gasmask/gasmask.fbx");
-        lol->setPosition(PGE::Vector3f(rand() % 20 - 10, rand() % 20 - 10, rand() % 20 - 10));
+        lol->setRotation(PGE::Vector3f(-1.5, 0, 0));
+        lol->setPosition(PGE::Vector3f(rand() % 50, rand() % 50, rand() % 50));
         lol->render();
     }
     graphics->swap();
@@ -59,7 +55,7 @@ World::World() {
         camera = vrm->getCamera();
     } else {
         vrm = nullptr;
-        camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
+        camera = new Camera(gfxRes, config->getWidth(), config->getHeight(), 90, 0.00001, 300.f, true);
     }
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
