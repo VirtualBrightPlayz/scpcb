@@ -28,20 +28,23 @@
 
 #include "../Models/Model.h"
 
-PGE::Texture* World::getEpicTexture() {
-    PGE::Texture* test = PGE::Texture::create(graphics, 1000, 1000, true, nullptr, PGE::Texture::FORMAT::RGBA32);
+static PGE::Vector3f poggers = PGE::Vector3f(1.57079632679f, 3.14159265359f, 0);
+
+PGE::Texture* World::getEpicTexture(PGE::Texture* test) {
     Camera c = Camera(gfxRes, 1000, 1000, 70, -100000000000.f, 30000000000.f, true);
     c.updateDrawTransform(0.f);
     graphics->setRenderTarget(test);
     gfxRes->setCameraUniforms(&c);
     graphics->clear(PGE::Color::Orange);
-    for (int i = 0; i < 100; i++) {
-        ModelInstance* lol = gfxRes->getModelInstance("SCPCB/GFX/Items/Gasmask/gasmask.fbx");
-        lol->setRotation(PGE::Vector3f(-1.5, 0, 0));
-        lol->setPosition(PGE::Vector3f(rand() % 50 - 50, rand() % 50 - 50, rand() % 50 - 50));
-        lol->render();
-    }
+    ModelInstance* xd = gfxRes->getModelInstance("SCPCB/GFX/Items/Gasmask/gasmask.fbx");
+    xd->setRotation(poggers);
+    xd->setPosition(PGE::Vector3f(0, 0, 0));
+    xd->setScale(PGE::Vector3f(50.f));
+    xd->render();
+    gfxRes->dropModelInstance(xd);
     graphics->swap();
+    gfxRes->setCameraUniforms(camera);
+    graphics->resetRenderTarget();
     return test;
 }
 
@@ -55,7 +58,7 @@ World::World() {
         camera = vrm->getCamera();
     } else {
         vrm = nullptr;
-        camera = new Camera(gfxRes, config->getWidth(), config->getHeight(), 90, 0.00001, 300.f, true);
+        camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
     }
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
@@ -94,7 +97,7 @@ World::World() {
         vrm->createTexture(graphics, config);
     }
 
-    lol = getEpicTexture();
+    lol = PGE::Texture::create(graphics, 1000, 1000, true, nullptr, PGE::Texture::FORMAT::RGBA32);
 }
 
 World::~World() {
@@ -230,7 +233,7 @@ void World::draw(float interpolation, RenderType r) {
         scripting->drawGame(interpolation);
         graphics->setDepthTest(false);
         uiMesh->startRender();
-        uiMesh->setTextured(lol, false);
+        uiMesh->setTextured(getEpicTexture(lol), false);
         uiMesh->addRect(PGE::Rectanglef(0, -50, 20, -30));
         uiMesh->endRender();
 
