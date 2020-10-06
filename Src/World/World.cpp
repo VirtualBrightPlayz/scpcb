@@ -30,7 +30,7 @@
 
 PGE::Texture* World::getEpicTexture() {
     PGE::Texture* test = PGE::Texture::create(graphics, 1000, 1000, true, nullptr, PGE::Texture::FORMAT::RGBA32);
-    Camera c = Camera(gfxRes, 1000, 1000, 70, 0.0001f, 3000.f, true);
+    Camera c = Camera(gfxRes, 1000, 1000, 70, -100000000000.f, 30000000000.f, true);
     c.updateDrawTransform(0.f);
     graphics->setRenderTarget(test);
     gfxRes->setCameraUniforms(&c);
@@ -38,7 +38,7 @@ PGE::Texture* World::getEpicTexture() {
     for (int i = 0; i < 100; i++) {
         ModelInstance* lol = gfxRes->getModelInstance("SCPCB/GFX/Items/Gasmask/gasmask.fbx");
         lol->setRotation(PGE::Vector3f(-1.5, 0, 0));
-        lol->setPosition(PGE::Vector3f(rand() % 50, rand() % 50, rand() % 50));
+        lol->setPosition(PGE::Vector3f(rand() % 50 - 50, rand() % 50 - 50, rand() % 50 - 50));
         lol->render();
     }
     graphics->swap();
