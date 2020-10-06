@@ -89,6 +89,8 @@ class World {
 
         Font* getFont() const;
 
+        PGE::Texture* getEpicTexture();
+
 };
 
 #endif // WORLD_H_INCLUDED

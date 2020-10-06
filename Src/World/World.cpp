@@ -26,6 +26,31 @@
 #include "../Input/KeyBinds.h"
 #include "../Save/Config.h"
 
+#include "../Models/Model.h"
+
+PGE::Texture* World::getEpicTexture() {
+    PGE::Texture* test = PGE::Texture::create(graphics, 100, 100, true, nullptr, PGE::Texture::FORMAT::RGBA32);
+    Camera c = Camera(gfxRes, 100, 100, 90, 0.0001f, 30.f, false);
+    c.updateDrawTransform(0.f);
+    graphics->setRenderTarget(test);
+    gfxRes->setCameraUniforms(&c);
+    graphics->clear(PGE::Color::Orange);
+    uiMesh->startRender();
+    uiMesh->setTextureless();
+    uiMesh->setColor(PGE::Color::Green);
+    uiMesh->addRect(PGE::Rectanglef(0, 10, 0, 10));
+    uiMesh->endRender();
+    for (int i = 0; i < 10; i++) {
+        ModelInstance* lol = gfxRes->getModelInstance("SCPCB/GFX/Items/Gasmask/gasmask.fbx");
+        lol->setPosition(PGE::Vector3f(rand() % 20 - 10, rand() % 20 - 10, rand() % 20 - 10));
+        lol->render();
+    }
+    graphics->swap();
+    return test;
+}
+
+static PGE::Texture* lol;
+
 World::World() {
     config = new Config("options.ini");
 
@@ -72,6 +97,8 @@ World::World() {
     if (vrm != nullptr) {
         vrm->createTexture(graphics, config);
     }
+
+    lol = getEpicTexture();
 }
 
 World::~World() {
@@ -205,6 +232,11 @@ void World::draw(float interpolation, RenderType r) {
     if (r != RenderType::UIOnly) {
         drawPlaying(interpolation);
         scripting->drawGame(interpolation);
+        graphics->setDepthTest(false);
+        uiMesh->startRender();
+        uiMesh->setTextured(lol, false);
+        uiMesh->addRect(PGE::Rectanglef(0, -50, 20, -30));
+        uiMesh->endRender();
 
         if (vrm != nullptr && vrm->getFade() > 0.f) {
             graphics->setDepthTest(false);
