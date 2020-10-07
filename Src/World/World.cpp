@@ -28,24 +28,31 @@
 
 #include "../Models/Model.h"
 
-static PGE::Vector3f poggers = PGE::Vector3f(1.57079632679f, 3.14159265359f, 0);
-
-PGE::Texture* World::getEpicTexture(PGE::Texture* test) {
-    Camera c = Camera(gfxRes, 1000, 1000, 70, -100000000000.f, 30000000000.f, true);
+// This might be optimized further by removing the setup and restore steps from the function itself.
+PGE::Texture* World::getEpicTexture(int texSize, const PGE::String& model, float scale, const PGE::Vector3f& rotation, PGE::Vector2f position) {
+    PGE::Texture* tex = PGE::Texture::create(graphics, texSize, texSize, true, nullptr, PGE::Texture::FORMAT::RGBA32);
+    Camera c = Camera(gfxRes, texSize, texSize, 0.f, INFINITY, -INFINITY, true);
     c.updateDrawTransform(0.f);
-    graphics->setRenderTarget(test);
+
+    PGE::Rectanglei oldViewport = graphics->getViewport();
+    graphics->setViewport(PGE::Rectanglei(0, 0, texSize, texSize));
+    graphics->setRenderTarget(tex);
     gfxRes->setCameraUniforms(&c);
+
     graphics->clear(PGE::Color::Orange);
-    ModelInstance* xd = gfxRes->getModelInstance("SCPCB/GFX/Items/Gasmask/gasmask.fbx");
-    xd->setRotation(poggers);
-    xd->setPosition(PGE::Vector3f(0, 0, 0));
-    xd->setScale(PGE::Vector3f(50.f));
-    xd->render();
-    gfxRes->dropModelInstance(xd);
-    graphics->swap();
+    ModelInstance* mi = gfxRes->getModelInstance(model);
+    position = position * texSize;
+    mi->setPosition(PGE::Vector3f(position.x, position.y, 0.f));
+    mi->setRotation(rotation);
+    mi->setScale(PGE::Vector3f(scale * texSize));
+    mi->render();
+    gfxRes->dropModelInstance(mi);
+
     gfxRes->setCameraUniforms(camera);
     graphics->resetRenderTarget();
-    return test;
+    graphics->setViewport(oldViewport);
+
+    return tex;
 }
 
 static PGE::Texture* lol;
@@ -97,7 +104,7 @@ World::World() {
         vrm->createTexture(graphics, config);
     }
 
-    lol = PGE::Texture::create(graphics, 1000, 1000, true, nullptr, PGE::Texture::FORMAT::RGBA32);
+    lol = getEpicTexture(1000, "SCPCB/GFX/Items/Gasmask/gasmask.fbx", 0.08f, PGE::Vector3f(2.3f, 2.7f, 0), PGE::Vector2f(0.f, 0.2f));
 }
 
 World::~World() {
@@ -233,7 +240,7 @@ void World::draw(float interpolation, RenderType r) {
         scripting->drawGame(interpolation);
         graphics->setDepthTest(false);
         uiMesh->startRender();
-        uiMesh->setTextured(getEpicTexture(lol), false);
+        uiMesh->setTextured(lol, false);
         uiMesh->addRect(PGE::Rectanglef(0, -50, 20, -30));
         uiMesh->endRender();
 
