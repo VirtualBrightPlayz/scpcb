@@ -14,7 +14,7 @@ shared abstract class Menu {
     void onDeactivate() {}
 
     // Returns whether this menu should detach.
-    bool onEscapeHit() { return false; }
+    bool onEscapeHit() { return true; }
 
     // Returns whether this menu should detach.
     bool update() { return false; }
@@ -64,6 +64,8 @@ shared class MenuManager {
                 activateMenu(InventoryMenu::instance);
             } else if (Input::getHit() & Input::ToggleConsole != 0) {
                 activateMenu(ConsoleMenu::instance);
+            } else if (Input::getHit() & Input::Blink != 0) {
+                activateMenu(DebugInvIconMenu::instance);
             }
         } else {
             if (currMenu.update()) {

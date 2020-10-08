@@ -63,7 +63,7 @@ void main() {
 
     //Msg::set("LOL");
 
-    Item::register("FirstAid", "SCPCB/GFX/Items/Firstaid/firstaid.fbx", 0.08, Vector3f(2.3, 2.7, 0), Vector2f(0, 0.2), 0.5);
+    Item::register("FirstAid", "SCPCB/GFX/Items/Firstaid/firstaid.fbx", 0.1, Vector3f(-2.3, -0.3, 0.2), Vector2f(0, 0.05), 0.5);
     Item::register("Gasmask", "SCPCB/GFX/Items/Gasmask/gasmask.fbx", 0.08, Vector3f(2.3, 2.7, 0), Vector2f(0, 0.2), 0.5);
 
     Item::spawn("FirstAid", Vector3f(0.0, 20.0, 20.0));

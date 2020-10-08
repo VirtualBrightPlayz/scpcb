@@ -18,6 +18,7 @@
 #include "../Input/Input.h"
 #include "../Input/MouseData.h"
 #include "../Utils/LocalizationManager.h"
+#include "../Graphics/ModelImageGenerator.h"
 #include "../Utils/MathUtil.h"
 #include "../Scripting/ScriptObject.h"
 #include "../Graphics/UIMesh.h"
@@ -25,10 +26,6 @@
 #include "../Graphics/Font.h"
 #include "../Input/KeyBinds.h"
 #include "../Save/Config.h"
-
-#include "../Graphics/ModelImageGenerator.h"
-
-static PGE::Texture* lol;
 
 World::World() {
     config = new Config("options.ini");
@@ -69,7 +66,6 @@ World::World() {
 
     miGen = new ModelImageGenerator(graphics, gfxRes);
     miGen->initialize(256);
-    lol = miGen->generate("SCPCB/GFX/Items/Gasmask/gasmask.fbx", 0.08f, PGE::Vector3f(2.3f, 2.7f, 0), PGE::Vector2f(0.f, 0.2f));
 
     scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, io, locMng, pickMng, uiMesh, config, (float)timing->getTimeStep(), billMng, miGen);
 
@@ -216,11 +212,6 @@ void World::draw(float interpolation, RenderType r) {
     if (r != RenderType::UIOnly) {
         drawPlaying(interpolation);
         scripting->drawGame(interpolation);
-        graphics->setDepthTest(false);
-        uiMesh->startRender();
-        uiMesh->setTextured(lol, false);
-        uiMesh->addRect(PGE::Rectanglef(0, -50, 20, -30));
-        uiMesh->endRender();
 
         if (vrm != nullptr && vrm->getFade() > 0.f) {
             graphics->setDepthTest(false);

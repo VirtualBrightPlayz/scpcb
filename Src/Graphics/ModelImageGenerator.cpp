@@ -18,6 +18,10 @@ ModelImageGenerator::~ModelImageGenerator() {
 }
 
 void ModelImageGenerator::initialize(int texSize) {
+    if (initialized) {
+        throw std::runtime_error("Model Image Generator has already been initialized!");
+    }
+
     this->texSize = texSize;
 
     cam = new Camera(gfxRes, texSize, texSize, 0.f, INFINITY, -INFINITY, true);
@@ -30,6 +34,10 @@ void ModelImageGenerator::initialize(int texSize) {
 }
 
 void ModelImageGenerator::deinitialize() {
+    if (!initialized) {
+        throw std::runtime_error("Model Image Generator has not been initialized!");
+    }
+
     delete cam;
     graphics->resetRenderTarget();
     graphics->setViewport(oldViewport);
@@ -41,9 +49,11 @@ bool ModelImageGenerator::getInitialized() const {
     return initialized;
 }
 
+#include <iostream>
+
 PGE::Texture* ModelImageGenerator::generate(const PGE::String& model, float scale, const PGE::Vector3f& rotation, PGE::Vector2f position) {
     if (!initialized) {
-        throw std::runtime_error("ModelImageGenerator has not been initialized!");
+        throw std::runtime_error("Model image generator has not been initialized!");
     }
 
     PGE::Texture* tex = PGE::Texture::create(graphics, texSize, texSize, true, nullptr, PGE::Texture::FORMAT::RGBA32);
@@ -51,17 +61,22 @@ PGE::Texture* ModelImageGenerator::generate(const PGE::String& model, float scal
     graphics->setRenderTarget(tex);
     graphics->clear(PGE::Color::Black);
 
-    ModelInstance* mi = gfxRes->getModelInstance(model);
+    try {
+        ModelInstance* mi = gfxRes->getModelInstance(model);
 
-    // Further optimized if in initialization step, requires Model shader to be loaded at that point.
-    gfxRes->setCameraUniforms(cam);
+        // Further optimized if in initialization step, requires Model shader to be loaded at that point.
+        gfxRes->setCameraUniforms(cam);
 
-    position = position * texSize;
-    mi->setPosition(PGE::Vector3f(position.x, position.y, 0.f));
-    mi->setRotation(rotation);
-    mi->setScale(PGE::Vector3f(scale * texSize));
-    mi->render();
-    gfxRes->dropModelInstance(mi);
+        position = position * texSize;
+        mi->setPosition(PGE::Vector3f(position.x, position.y, 0.f));
+        mi->setRotation(rotation);
+        mi->setScale(PGE::Vector3f(scale * texSize));
+        mi->render();
+        gfxRes->dropModelInstance(mi);
 
-    return tex;
+        return tex;
+    } catch (std::exception e) {
+        std::cout << e.what() << std::endl;
+        return nullptr;
+    }
 }

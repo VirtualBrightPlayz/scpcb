@@ -48,10 +48,13 @@ shared class GUITextInput : GUIComponent {
     string txt {
         get { return text.text; }
         set {
+            // Selecting to correctly deal with defaultTxt.
+            select();
             mementoManager.push(0, text.text, false, true);
             mementoManager.push(0, value, true, true);
             text.text = value;
             setCaretAndSelection(value.length());
+            deselect();
         }
     }
 

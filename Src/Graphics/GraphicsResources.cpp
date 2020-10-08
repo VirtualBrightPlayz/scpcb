@@ -97,6 +97,8 @@ void GraphicsResources::dropTexture(PGE::Texture* texture) {
             textureToTextures.erase(find);
             delete textureEntry;
         }
+    } else {
+        delete texture;
     }
 }
 
