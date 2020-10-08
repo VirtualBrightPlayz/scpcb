@@ -28,12 +28,10 @@ Billboard@ two;
 Model@ mask;
 Model@ mask2;
 
-namespace Item {
-    external void register(const string&in name, const string&in model, float iconScl, const Vector3f&in iconRot, const Vector2f&in iconPos, float scale);
-    external Item@ spawn(const string&in name, const Vector3f&in position);
-    external void updateAll();
-    external void renderAll();
-}
+external void Item::register(const string&in name, const string&in model, float iconScl, const Vector3f&in iconRot, const Vector2f&in iconPos, float scale);
+external Item@ Item::spawn(const string&in name, const Vector3f&in position);
+external void Item::updateAll();
+external void Item::renderAll();
 
 external class MenuManager;
 MenuManager@ menuManager;
@@ -45,13 +43,8 @@ GUIText@ fpsCounter;
 external enum Alignment;
 
 external class ConsoleMenu;
-namespace ConsoleMenu {
-    external ConsoleMenu@ instance;
-}
-
-namespace Console {
-    external void addMessage(const string&in msg, const Color&in color = Color::White);
-}
+external ConsoleMenu@ ConsoleMenu::instance;
+external void Console::addMessage(const string&in msg, const Color&in color = Color::White);
 
 void main() {
     Debug::log("Starting up!");

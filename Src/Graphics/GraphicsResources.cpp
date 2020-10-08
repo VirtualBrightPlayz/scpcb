@@ -92,7 +92,7 @@ void GraphicsResources::dropTexture(PGE::Texture* texture) {
         TextureEntry* textureEntry = find->second;
         textureEntry->refCount--;
         if (textureEntry->refCount <= 0) {
-            delete textureEntry->texture;
+            delete texture;
             pathToTextures.erase(textureEntry->name.getHashCode());
             textureToTextures.erase(find);
             delete textureEntry;

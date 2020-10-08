@@ -122,6 +122,7 @@ protected:
 	asCScriptNode *ParseImport();
 	asCScriptNode *ParseScript(bool inBlock);
 	asCScriptNode *ParseNamespace();
+	asCScriptNode *ParseShorthandNamespaceIfAvailable(asCScriptNode *node);
 	asCScriptNode *ParseFunction(bool isMethod = false);
 	asCScriptNode *ParseFuncDef();
 	asCScriptNode *ParseClass();

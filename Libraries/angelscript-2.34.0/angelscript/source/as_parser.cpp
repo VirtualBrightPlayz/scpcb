@@ -2539,6 +2539,43 @@ asCScriptNode *asCParser::ParseNamespace()
 	return node;
 }
 
+asCScriptNode* asCParser::ParseShorthandNamespaceIfAvailable(asCScriptNode* node) {
+	sToken t1;
+	GetToken(&t1);
+	if (t1.type == ttIdentifier)
+	{
+		sToken t2;
+		GetToken(&t2);
+		if (t2.type == ttScope)
+		{
+			RewindTo(&t1);
+			asCScriptNode* nsnode = CreateNode(snNamespace);
+			if (nsnode == 0) return 0;
+
+			// TODO: namespace: Allow declaration of multiple nested namespace with namespace A::B::C { } (refer to ParseNamespace)
+			nsnode->AddChildLast(ParseIdentifier());
+			if (isSyntaxError) return nsnode;
+
+			asCScriptNode* snode = CreateNode(snScript);
+			if (snode == 0) return 0;
+
+			snode->AddChildLast(node);
+			if (isSyntaxError) return nsnode;
+
+			nsnode->AddChildLast(snode);
+			if (isSyntaxError) return nsnode;
+
+			// Skip scope
+			GetToken(&t2);
+
+			return nsnode;
+		}
+	}
+	// We don't have a namespace, go back
+	RewindTo(&t1);
+	return node;
+}
+
 int asCParser::ParseStatementBlock(asCScriptCode *in_script, asCScriptNode *in_block)
 {
 	TimeIt("asCParser::ParseStatementBlock");
@@ -2746,8 +2783,22 @@ bool asCParser::IsVarDecl()
 		return false;
 	}
 
-	// It can be followed by an initialization
 	GetToken(&t1);
+	// Is can be within a scope
+	if ( isExternal && t1.type == ttScope )
+	{
+		GetToken(&t1);
+		if ( t1.type == ttIdentifier )
+		{
+			GetToken(&t1);
+			if ( t1.type == ttEndStatement )
+			{
+				RewindTo(&t);
+				return true;
+			}
+		}
+	}
+	// It can be followed by an initialization
 	if( t1.type == ttEndStatement || t1.type == ttAssignment || t1.type == ttListSeparator )
 	{
 		RewindTo(&t);
@@ -3071,11 +3122,17 @@ asCScriptNode *asCParser::ParseFunction(bool isMethod)
 		if( isSyntaxError ) return node;
 	}
 
+	asCScriptNode* retNode = node;
+	if (!isMethod)
+	{
+		retNode = ParseShorthandNamespaceIfAvailable(node);
+	}
+
 	node->AddChildLast(ParseIdentifier());
-	if( isSyntaxError ) return node;
+	if( isSyntaxError ) return retNode;
 
 	node->AddChildLast(ParseParameterList());
-	if( isSyntaxError ) return node;
+	if( isSyntaxError ) return retNode;
 
 	if( isMethod )
 	{
@@ -3085,11 +3142,11 @@ asCScriptNode *asCParser::ParseFunction(bool isMethod)
 		// Is the method a const?
 		if( t1.type == ttConst )
 			node->AddChildLast(ParseToken(ttConst));
-	}
 
-	// TODO: Should support abstract methods, in which case no statement block should be provided
-	ParseMethodAttributes(node);
-	if( isSyntaxError ) return node;
+		// TODO: Should support abstract methods, in which case no statement block should be provided
+		ParseMethodAttributes(node);
+		if (isSyntaxError) return retNode;
+	}
 
 	// External shared functions must be ended with ';'
 	GetToken(&t1);
@@ -3097,14 +3154,19 @@ asCScriptNode *asCParser::ParseFunction(bool isMethod)
 	if (t1.type == ttEndStatement)
 	{
 		node->AddChildLast(ParseToken(ttEndStatement));
-		return node;
+		return retNode;
+	} else if (node != retNode) {
+		// The method has a namespace but tries to define a body!
+		Error(ExpectedToken(";"), &t1);
+		Error(InsteadFound(t1), &t1);
+		return retNode;
 	}
 
 	// We should just find the end of the statement block here. The statements
 	// will be parsed on request by the compiler once it starts the compilation.
 	node->AddChildLast(SuperficiallyParseStatementBlock());
 
-	return node;
+	return retNode;
 }
 
 // BNF:2: INTFMTHD      ::= TYPE ['&'] IDENTIFIER PARAMLIST ['const'] ';'
@@ -3413,6 +3475,8 @@ asCScriptNode *asCParser::ParseClass()
 			RewindTo(&t);
 	}
 
+	asCScriptNode* retNode = ParseShorthandNamespaceIfAvailable(node);
+
 	node->AddChildLast(ParseIdentifier());
 
 	// External shared declarations are ended with ';'
@@ -3421,7 +3485,7 @@ asCScriptNode *asCParser::ParseClass()
 	{
 		RewindTo(&t);
 		node->AddChildLast(ParseToken(ttEndStatement));
-		return node;
+		return retNode;
 	}
 
 	// Optional list of interfaces that are being implemented and classes that are being inherited
@@ -3448,7 +3512,7 @@ asCScriptNode *asCParser::ParseClass()
 	{
 		Error(ExpectedToken("{"), &t);
 		Error(InsteadFound(t), &t);
-		return node;
+		return retNode;
 	}
 
 	// Parse properties
@@ -3472,11 +3536,11 @@ asCScriptNode *asCParser::ParseClass()
 		{
 			Error(TXT_EXPECTED_METHOD_OR_PROPERTY, &t);
 			Error(InsteadFound(t), &t);
-			return node;
+			return retNode;
 		}
 
 		if( isSyntaxError )
-			return node;
+			return retNode;
 
 		GetToken(&t);
 		RewindTo(&t);
@@ -3487,11 +3551,11 @@ asCScriptNode *asCParser::ParseClass()
 	{
 		Error(ExpectedToken("}"), &t);
 		Error(InsteadFound(t), &t);
-		return node;
+		return retNode;
 	}
 	node->UpdateSourcePos(t.pos, t.length);
 
-	return node;
+	return retNode;
 }
 
 int asCParser::ParseVarInit(asCScriptCode *in_script, asCScriptNode *in_init)
@@ -3915,58 +3979,62 @@ asCScriptNode *asCParser::ParseDeclaration(bool isClassProp, bool isGlobalVar)
 	node->AddChildLast(ParseType(true, false, !isClassProp));
 	if( isSyntaxError ) return node;
 
+	asCScriptNode* retNode = node;
+	if ( isExternal )
+	{
+		retNode = ParseShorthandNamespaceIfAvailable(node);
+	}
+
 	for(;;)
 	{
 		// Parse identifier
 		node->AddChildLast(ParseIdentifier());
-		if( isSyntaxError ) return node;
+		if( isSyntaxError ) return retNode;
 
-		if( isClassProp || isGlobalVar )
-		{
-			// Only superficially parse the initialization info for the class property
-			GetToken(&t);
-			RewindTo(&t);
-			if( t.type == ttAssignment || t.type == ttOpenParanthesis )
+		if (!isExternal) {
+			if (isClassProp || isGlobalVar)
 			{
-				if (isExternal)
-				{
-					asCString str;
-					str.Format(TXT_EXPECTED_s, ";");
-					Error(str, &t);
-
-					return node;
-				}
-				node->AddChildLast(SuperficiallyParseVarInit());
-				if( isSyntaxError ) return node;
-			}
-		}
-		else
-		{
-			// If next token is assignment, parse expression
-			GetToken(&t);
-			if( t.type == ttOpenParanthesis )
-			{
-				RewindTo(&t);
-				node->AddChildLast(ParseArgList());
-				if( isSyntaxError ) return node;
-			}
-			else if( t.type == ttAssignment )
-			{
+				// Only superficially parse the initialization info for the class property
 				GetToken(&t);
 				RewindTo(&t);
-				if( t.type == ttStartStatementBlock )
+				if (t.type == ttAssignment || t.type == ttOpenParanthesis)
 				{
-					node->AddChildLast(ParseInitList());
-					if( isSyntaxError ) return node;
+					if (isExternal)
+					{
+						asCString str;
+						str.Format(TXT_EXPECTED_s, ";");
+						Error(str, &t);
+
+						return retNode;
+					}
+					node->AddChildLast(SuperficiallyParseVarInit());
+					if (isSyntaxError) return retNode;
 				}
-				else
+			} else
+			{
+				// If next token is assignment, parse expression
+				GetToken(&t);
+				if (t.type == ttOpenParanthesis)
 				{
-					node->AddChildLast(ParseAssignment());
-					if( isSyntaxError ) return node;
-				}
+					RewindTo(&t);
+					node->AddChildLast(ParseArgList());
+					if (isSyntaxError) return retNode;
+				} else if (t.type == ttAssignment)
+				{
+					GetToken(&t);
+					RewindTo(&t);
+					if (t.type == ttStartStatementBlock)
+					{
+						node->AddChildLast(ParseInitList());
+						if (isSyntaxError) return retNode;
+					} else
+					{
+						node->AddChildLast(ParseAssignment());
+						if (isSyntaxError) return retNode;
+					}
+				} else
+					RewindTo(&t);
 			}
-			else
-				RewindTo(&t);
 		}
 
 		// continue if list separator, else terminate with end statement
@@ -3977,13 +4045,13 @@ asCScriptNode *asCParser::ParseDeclaration(bool isClassProp, bool isGlobalVar)
 		{
 			node->UpdateSourcePos(t.pos, t.length);
 
-			return node;
+			return retNode;
 		}
 		else
 		{
 			Error(ExpectedTokens(",", ";"), &t);
 			Error(InsteadFound(t), &t);
-			return node;
+			return retNode;
 		}
 	}
 	UNREACHABLE_RETURN;
