@@ -109,6 +109,22 @@ static PGE::wchar stringCharAt(int index, const PGE::String& str) {
     return str.charAt(index);
 }
 
+static int stringToInt(const PGE::String& str) {
+    return str.toInt();
+}
+
+static int stringToIntWithCheck(const PGE::String& str, bool& success) {
+    return str.toInt(success);
+}
+
+static float stringToFloat(const PGE::String& str) {
+    return str.toFloat();
+}
+
+static float stringToFloatWithCheck(const PGE::String& str, bool& success) {
+    return str.toFloat(success);
+}
+
 static PGE::String intToString(int i) {
     return PGE::String::fromInt(i);
 }
@@ -123,18 +139,23 @@ StringFactory::StringFactory(asIScriptEngine* engine) {
     engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f()",asFUNCTION(constructString), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f(const string& in)",asFUNCTION(copyConstructString), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("string", asBEHAVE_CONSTRUCT,"void f(uint8)",asFUNCTION(constructStringFromChar), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectBehaviour("string",asBEHAVE_DESTRUCT,"void f()",asFUNCTION(destructString), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("string","string& opAssign(const string& in)",asFUNCTION(assignString), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("string","string& opAddAssign(const string& in)",asFUNCTION(addAssignString), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectBehaviour("string", asBEHAVE_DESTRUCT,"void f()",asFUNCTION(destructString), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectMethod("string", "string& opAssign(const string& in)",asFUNCTION(assignString), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectMethod("string", "string& opAddAssign(const string& in)",asFUNCTION(addAssignString), asCALL_CDECL_OBJLAST);
 
-    engine->RegisterObjectMethod("string","bool opEquals(const string& in) const",asFUNCTION(stringEquals), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("string","string opAdd(const string& in) const",asFUNCTION(stringAdd), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectMethod("string", "bool opEquals(const string& in) const",asFUNCTION(stringEquals), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectMethod("string", "string opAdd(const string& in) const",asFUNCTION(stringAdd), asCALL_CDECL_OBJLAST);
 
     engine->RegisterObjectMethod("string", "uint length() const", asFUNCTION(stringLength), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectMethod("string", "uint64 getHashCode() const", asFUNCTION(stringGetHashCode), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("string","string substr(int start, int end=-1) const",asFUNCTION(stringSubstrStartLen), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectMethod("string", "string substr(int start, int end=-1) const",asFUNCTION(stringSubstrStartLen), asCALL_CDECL_OBJLAST);
 
-    engine->RegisterObjectMethod("string","uint16 opIndex(uint) const",asFUNCTION(stringCharAt), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectMethod("string", "uint16 opIndex(uint) const",asFUNCTION(stringCharAt), asCALL_CDECL_OBJLAST);
+
+    engine->RegisterObjectMethod("string", "int toInt(bool&out success) const", asFUNCTION(stringToIntWithCheck), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod("string", "int toInt() const", asFUNCTION(stringToInt), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectMethod("string", "float toFloat(bool&out success) const", asFUNCTION(stringToFloatWithCheck), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod("string", "float toFloat() const", asFUNCTION(stringToFloat), asCALL_CDECL_OBJFIRST);
 
     engine->RegisterStringFactory("string", this);
 
