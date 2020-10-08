@@ -12,6 +12,7 @@ class Camera;
 class Config;
 class Timing;
 class GraphicsResources;
+class ModelImageGenerator;
 class Font;
 class MessageManager;
 class LocalizationManager;
@@ -48,12 +49,11 @@ class World {
         UIMesh* uiMesh;
 
         GraphicsResources* gfxRes;
+        ModelImageGenerator* miGen;
+
         LocalizationManager* locMng;
-
         PickableManager* pickMng;
-
         BillboardManager* billMng;
-
         VRManager* vrm;
 
         ScriptWorld* scripting;

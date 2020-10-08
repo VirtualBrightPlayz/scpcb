@@ -19,6 +19,7 @@ class UIMesh;
 class LocalizationManager;
 class PickableManager;
 class BillboardManager;
+class ModelImageGenerator;
 class RefCounterManager;
 
 class ScriptWorld {
@@ -36,7 +37,7 @@ class ScriptWorld {
         std::vector<ScriptModule*> modules;
 
     public:
-        ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, LocalizationManager* lm, PickableManager* pm, UIMesh* um,  Config* config, float timestep, BillboardManager* bm);
+        ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, LocalizationManager* lm, PickableManager* pm, UIMesh* um,  Config* config, float timestep, BillboardManager* bm, ModelImageGenerator* mig);
         ~ScriptWorld();
 
         void update();

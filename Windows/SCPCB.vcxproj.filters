@@ -176,6 +176,12 @@
     <ClCompile Include="..\Src\Scripting\CachedArgument.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Graphics\ModelImageGenerator.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Scripting\NativeDefinitions\ModelImageGeneratorDefinitions.cpp">
+      <Filter>Scripting\NativeDefinitions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -349,6 +355,12 @@
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\CachedArgument.h">
       <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Graphics\ModelImageGenerator.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Scripting\NativeDefinitions\ModelImageGeneratorDefinitions.h">
+      <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

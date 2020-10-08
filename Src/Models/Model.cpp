@@ -15,7 +15,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
     colorConstant->setValue(PGE::Color::White);
 
     PGE::String path = filename.substr(0, filename.findLast("/") + 1);
-    
+
     const aiScene* scene = importer->ReadFile(PGE::FilePath::fromStr(filename).cstr(),
         aiProcess_MakeLeftHanded |
         aiProcess_FlipUVs |

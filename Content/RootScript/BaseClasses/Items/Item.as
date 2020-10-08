@@ -1,11 +1,11 @@
 namespace Item {
     shared array<ItemTemplate> templates; // TODO: Replace with map.
-    shared void register(const string&in name, const string&in model, const string&in icon, float scale = 1.0) {
+    shared void register(const string&in name, const string&in model, float iconScl, const Vector3f&in iconRot, const Vector2f&in iconPos, float scale = 1.0) {
         ItemTemplate it;
         it.name = name;
         it.localName = Local::getTxt("Items." + name + ".Name");
         it.model = model;
-        @it.icon = Texture::get(icon);
+        @it.icon = ModelImageGenerator::generate(model, iconScl, iconRot, iconPos);
         templates.insertLast(it);
     }
     shared array<Item@> items;

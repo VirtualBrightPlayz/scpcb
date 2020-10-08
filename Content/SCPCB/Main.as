@@ -2,6 +2,9 @@ external class Room;
 
 serialize EntranceZone@ entranceZone;
 
+external class Item;
+external class ItemTemplate;
+
 // TODO: remove these globals, they only exist for testing purposes
 serialize Vector3f whVy = Vector3f(17, 14, 14);
 serialize string uh = "aaah";
@@ -25,24 +28,11 @@ Billboard@ two;
 Model@ mask;
 Model@ mask2;
 
-external class Item;
-external class ItemTemplate;
-
 namespace Item {
-    external void register(const string&in name, const string&in model, const string&in icon, float scale);
+    external void register(const string&in name, const string&in model, float iconScl, const Vector3f&in iconRot, const Vector2f&in iconPos, float scale);
     external Item@ spawn(const string&in name, const Vector3f&in position);
     external void updateAll();
     external void renderAll();
-}
-
-shared class FirstAid : Item {
-    void onPick() override {
-        Debug::log("POG");
-    }
-    FirstAid(ItemTemplate it) {
-        Debug::log("FirstAid constructor");
-        super(it);
-    }
 }
 
 external class MenuManager;
@@ -73,8 +63,12 @@ void main() {
 
     //Msg::set("LOL");
 
-    Item::register("FirstAid", "SCPCB/GFX/Items/Firstaid/firstaid.fbx", "SCPCB/GFX/Items/Firstaid/inv_firstaid", 0.5);
+    Item::register("FirstAid", "SCPCB/GFX/Items/Firstaid/firstaid.fbx", 0.08, Vector3f(2.3, 2.7, 0), Vector2f(0, 0.2), 0.5);
+    Item::register("Gasmask", "SCPCB/GFX/Items/Gasmask/gasmask.fbx", 0.08, Vector3f(2.3, 2.7, 0), Vector2f(0, 0.2), 0.5);
+
     Item::spawn("FirstAid", Vector3f(0.0, 20.0, 20.0));
+    Item::spawn("FirstAid", Vector3f(10.0, 20.0, 20.0));
+    Item::spawn("Gasmask", Vector3f(-15.0, 5.0, 20.0));
     
     Vector2f test = Vector2f(10.0, 10.0);
     Vector2f test2 = Vector2f(15.0, 10.0);

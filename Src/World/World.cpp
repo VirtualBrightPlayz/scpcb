@@ -26,34 +26,7 @@
 #include "../Input/KeyBinds.h"
 #include "../Save/Config.h"
 
-#include "../Models/Model.h"
-
-// This might be optimized further by removing the setup and restore steps from the function itself.
-PGE::Texture* World::getEpicTexture(int texSize, const PGE::String& model, float scale, const PGE::Vector3f& rotation, PGE::Vector2f position) {
-    PGE::Texture* tex = PGE::Texture::create(graphics, texSize, texSize, true, nullptr, PGE::Texture::FORMAT::RGBA32);
-    Camera c = Camera(gfxRes, texSize, texSize, 0.f, INFINITY, -INFINITY, true);
-    c.updateDrawTransform(0.f);
-
-    PGE::Rectanglei oldViewport = graphics->getViewport();
-    graphics->setViewport(PGE::Rectanglei(0, 0, texSize, texSize));
-    graphics->setRenderTarget(tex);
-    gfxRes->setCameraUniforms(&c);
-
-    graphics->clear(PGE::Color::Orange);
-    ModelInstance* mi = gfxRes->getModelInstance(model);
-    position = position * texSize;
-    mi->setPosition(PGE::Vector3f(position.x, position.y, 0.f));
-    mi->setRotation(rotation);
-    mi->setScale(PGE::Vector3f(scale * texSize));
-    mi->render();
-    gfxRes->dropModelInstance(mi);
-
-    gfxRes->setCameraUniforms(camera);
-    graphics->resetRenderTarget();
-    graphics->setViewport(oldViewport);
-
-    return tex;
-}
+#include "../Graphics/ModelImageGenerator.h"
 
 static PGE::Texture* lol;
 
@@ -94,7 +67,13 @@ World::World() {
     oldPaused = false;
     paused = false;
 
-    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, io, locMng, pickMng, uiMesh, config, (float)timing->getTimeStep(), billMng);
+    miGen = new ModelImageGenerator(graphics, gfxRes);
+    miGen->initialize(256);
+    lol = miGen->generate("SCPCB/GFX/Items/Gasmask/gasmask.fbx", 0.08f, PGE::Vector3f(2.3f, 2.7f, 0), PGE::Vector2f(0.f, 0.2f));
+
+    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, io, locMng, pickMng, uiMesh, config, (float)timing->getTimeStep(), billMng, miGen);
+
+    miGen->deinitialize();
 
     applyConfig(config);
 
@@ -103,8 +82,6 @@ World::World() {
     if (vrm != nullptr) {
         vrm->createTexture(graphics, config);
     }
-
-    lol = getEpicTexture(1000, "SCPCB/GFX/Items/Gasmask/gasmask.fbx", 0.08f, PGE::Vector3f(2.3f, 2.7f, 0), PGE::Vector2f(0.f, 0.2f));
 }
 
 World::~World() {
@@ -121,6 +98,7 @@ World::~World() {
     delete camera;
     delete timing;
     delete locMng;
+    delete miGen;
 
     delete io;
     delete graphics;

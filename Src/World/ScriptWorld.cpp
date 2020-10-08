@@ -20,6 +20,7 @@
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
 #include "../Scripting/NativeDefinitions/UIDefinitions.h"
 #include "../Scripting/NativeDefinitions/TextureDefinitions.h"
+#include "../Scripting/NativeDefinitions/ModelImageGeneratorDefinitions.h"
 #include "../Scripting/NativeDefinitions/LocalizationDefinitions.h"
 #include "../Scripting/NativeDefinitions/BillboardDefinitions.h"
 #include "../Scripting/NativeDefinitions/ModelDefinitions.h"
@@ -30,7 +31,7 @@
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 #include "../Scripting/NativeDefinitions/ReflectionDefinitions.h"
 
-ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, LocalizationManager* lm, PickableManager* pm, UIMesh* um, Config* config, float timestep, BillboardManager* bm) {
+ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, LocalizationManager* lm, PickableManager* pm, UIMesh* um, Config* config, float timestep, BillboardManager* bm, ModelImageGenerator* mig) {
     manager = new ScriptManager();
 
     refCounterManager = new RefCounterManager();
@@ -42,6 +43,7 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     nativeDefs.push_back(new MathDefinitions(manager));
     nativeDefs.push_back(new InputDefinitions(manager, keyBinds, mouseData, io));
     nativeDefs.push_back(new TextureDefinitions(manager, gfxRes));
+    nativeDefs.push_back(new ModelImageGeneratorDefinitions(manager, mig));
     nativeDefs.push_back(new UIDefinitions(manager, um, config, world));
     nativeDefs.push_back(new LocalizationDefinitions(manager, lm));
     nativeDefs.push_back(new BillboardDefinitions(manager, bm));
