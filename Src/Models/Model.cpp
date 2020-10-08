@@ -40,7 +40,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
 
     PGE::String err = importer->GetErrorString();
     if (!err.isEmpty()) {
-        throw new std::runtime_error(err.cstr());
+        throw std::runtime_error(err.cstr());
     }
 
     materialCount = scene->mNumMaterials;
@@ -53,7 +53,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
             textureName = textureName.substr(lastSlash + 1, textureName.length() - lastSlash - 5);
             materials[i] = new PGE::Material(shader, gr->getTexture(path + textureName));
         } else {
-            throw new std::runtime_error(("Texture for model " + filename + " failed to load.").cstr());
+            throw std::runtime_error(("Texture for model " + filename + " failed to load.").cstr());
         }
     }
 

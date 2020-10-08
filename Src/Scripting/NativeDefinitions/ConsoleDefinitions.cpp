@@ -160,12 +160,12 @@ void ConsoleDefinitions::executeCommand(const PGE::String& in) {
 }
 
 void ConsoleDefinitions::addConsoleMessage(const PGE::String& msg, const PGE::Color& color) {
-    if (msgContext->Prepare(addConsoleMsgFunc) < 0) { throw new std::runtime_error("prepare fail"); };
-    if (msgContext->SetObject(consoleInstance) < 0) { throw new std::runtime_error("setobj fail"); };
-    if (msgContext->SetArgObject(0, (void*)&msg) < 0) { throw new std::runtime_error("setarg0 fail"); };
-    if (msgContext->SetArgObject(1, (void*)&color) < 0) { throw new std::runtime_error("setarg1 fail"); };
-    if (msgContext->Execute() < 0) { throw new std::runtime_error("execute fail"); };
-    if (msgContext->Unprepare() < 0) { throw new std::runtime_error("unprepare fail"); };
+    if (msgContext->Prepare(addConsoleMsgFunc) < 0) { throw std::runtime_error("prepare fail"); };
+    if (msgContext->SetObject(consoleInstance) < 0) { throw std::runtime_error("setobj fail"); };
+    if (msgContext->SetArgObject(0, (void*)&msg) < 0) { throw std::runtime_error("setarg0 fail"); };
+    if (msgContext->SetArgObject(1, (void*)&color) < 0) { throw std::runtime_error("setarg1 fail"); };
+    if (msgContext->Execute() < 0) { throw std::runtime_error("execute fail"); };
+    if (msgContext->Unprepare() < 0) { throw std::runtime_error("unprepare fail"); };
 }
 
 void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
@@ -187,7 +187,7 @@ void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
     } else {
         switch (typeId) {
             case asTYPEID_VOID: { // This should never happen.
-                throw new std::runtime_error("VOID PARAMETER!");
+                throw std::runtime_error("VOID PARAMETER!");
             } break;
             case asTYPEID_BOOL: {
                 content = (*(bool*)ref) ? "True" : "False";
@@ -247,7 +247,7 @@ void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
     out << "Debug::" << typeString << ": " << content << std::endl;
 #endif
     if (type == LogType::Error) {
-        throw new std::runtime_error(("ERROR! " + content).cstr());
+        throw std::runtime_error(("ERROR! " + content).cstr());
     }
 }
 

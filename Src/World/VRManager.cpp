@@ -34,16 +34,16 @@ static PGE::Vector3f vrMatrixToPosition(vr::HmdMatrix34_t vrm) {
 
 static void vrThrowOnInputError(vr::EVRInputError ierr, PGE::String msg) {
     if (ierr != vr::VRInputError_None) {
-        throw new std::runtime_error((msg + " " + PGE::String::fromInt(ierr)).cstr());
+        throw std::runtime_error((msg + " " + PGE::String::fromInt(ierr)).cstr());
     }
 }
 
 VRManager::VRManager(Config* config, GraphicsResources* gfxres) {
     if (!vr::VR_IsHmdPresent()) {
-        throw new std::runtime_error("No HMD found.");
+        throw std::runtime_error("No HMD found.");
     }
     if (!vr::VR_IsRuntimeInstalled()) {
-        throw new std::runtime_error("Open VR runtime not installed");
+        throw std::runtime_error("Open VR runtime not installed");
     }
     vr::EVRInitError e;
     vrSystem = vr::VR_Init(&e, vr::VRApplication_Scene);
@@ -121,7 +121,7 @@ void VRManager::update() {
                     vr::TrackedPropertyError e;
                     vr::ETrackedControllerRole role = (vr::ETrackedControllerRole) vrSystem->GetInt32TrackedDeviceProperty(i, vr::Prop_ControllerRoleHint_Int32, &e);
                     if (e != vr::TrackedProp_Success) {
-                        throw new std::runtime_error("Tracked device property error! " + e);
+                        throw std::runtime_error("Tracked device property error! " + e);
                     }
                     if (role == vr::TrackedControllerRole_LeftHand) {
                         handLeft = vrMatrixToPosition(mat);

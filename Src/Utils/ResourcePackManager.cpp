@@ -32,7 +32,7 @@ void ResourcePackManager::loadResPacks() {
 			if (metaPath.exists()) {
 				xmlErr = xmlDoc.LoadFile(metaPath.cstr());
 				if (xmlErr != tinyxml2::XML_SUCCESS) {
-					throw new std::runtime_error("XML moment " + xmlErr);
+					throw std::runtime_error("XML moment " + xmlErr);
 				}
 				xmlRoot = xmlDoc.RootElement();
 				if (xmlRoot != nullptr && xmlRoot->FirstChildElement("Type")->GetText() == PGE::String("ResPack")) {
