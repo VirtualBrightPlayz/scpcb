@@ -24,7 +24,7 @@ void ModelImageGenerator::initialize(int texSize) {
 
     this->texSize = texSize;
 
-    cam = new Camera(gfxRes, texSize, texSize, 0.f, INFINITY, -INFINITY, true);
+    cam = new Camera(gfxRes, texSize, texSize, 0.f, -5000.f, 5000.f, true);
     cam->updateDrawTransform(0.f);
 
     oldViewport = graphics->getViewport();
