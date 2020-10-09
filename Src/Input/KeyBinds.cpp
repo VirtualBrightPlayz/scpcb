@@ -1,5 +1,7 @@
 #include "KeyBinds.h"
 
+#include "../Scripting/NativeDefinitions/ConsoleDefinitions.h"
+
 KeyBinds::KeyBinds(PGE::IO* inIo) {
     downInputs = Input::None;
     hitInputs = Input::None;
@@ -58,6 +60,34 @@ KeyBinds::KeyBinds(PGE::IO* inIo) {
 #ifndef __APPLE__
     io->trackInput(keyY);
 #endif
+
+    // TODO: Add more | change style?
+    registerInputString("key_q", PGE::KeyboardInput::KEYCODE::Q);
+    registerInputString("key_w", PGE::KeyboardInput::KEYCODE::W);
+    registerInputString("key_e", PGE::KeyboardInput::KEYCODE::E);
+    registerInputString("key_r", PGE::KeyboardInput::KEYCODE::R);
+    registerInputString("key_t", PGE::KeyboardInput::KEYCODE::T);
+    registerInputString("key_z", PGE::KeyboardInput::KEYCODE::Z);
+    registerInputString("key_u", PGE::KeyboardInput::KEYCODE::U);
+    registerInputString("key_i", PGE::KeyboardInput::KEYCODE::I);
+    registerInputString("key_o", PGE::KeyboardInput::KEYCODE::O);
+    registerInputString("key_p", PGE::KeyboardInput::KEYCODE::P);
+    registerInputString("key_a", PGE::KeyboardInput::KEYCODE::A);
+    registerInputString("key_s", PGE::KeyboardInput::KEYCODE::S);
+    registerInputString("key_d", PGE::KeyboardInput::KEYCODE::D);
+    registerInputString("key_f", PGE::KeyboardInput::KEYCODE::F);
+    registerInputString("key_g", PGE::KeyboardInput::KEYCODE::G);
+    registerInputString("key_h", PGE::KeyboardInput::KEYCODE::H);
+    registerInputString("key_j", PGE::KeyboardInput::KEYCODE::J);
+    registerInputString("key_k", PGE::KeyboardInput::KEYCODE::K);
+    registerInputString("key_l", PGE::KeyboardInput::KEYCODE::L);
+    registerInputString("key_y", PGE::KeyboardInput::KEYCODE::Y);
+    registerInputString("key_x", PGE::KeyboardInput::KEYCODE::X);
+    registerInputString("key_c", PGE::KeyboardInput::KEYCODE::C);
+    registerInputString("key_v", PGE::KeyboardInput::KEYCODE::V);
+    registerInputString("key_b", PGE::KeyboardInput::KEYCODE::B);
+    registerInputString("key_n", PGE::KeyboardInput::KEYCODE::N);
+    registerInputString("key_m", PGE::KeyboardInput::KEYCODE::M);
 }
 
 KeyBinds::~KeyBinds() {
@@ -96,9 +126,29 @@ KeyBinds::~KeyBinds() {
     // Untrack and delete bindings map.
     UserInputMap::iterator it;
     for (it = bindings.begin(); it != bindings.end(); it++) {
-        io->untrackInput(it->second.input);
-        delete it->second.input;
+        io->untrackInput(it->second);
+        delete it->second;
     }
+
+    for (const auto& it : inputStrings) {
+        delete it.second;
+    }
+}
+
+void KeyBinds::setConsoleDefinitions(ConsoleDefinitions* inConDef) {
+    conDef = inConDef;
+}
+
+void KeyBinds::registerInputString(const PGE::String& string, PGE::KeyboardInput::KEYCODE key) {
+    inputStrings.emplace(string.getHashCode(), new PGE::KeyboardInput(key));
+}
+
+void KeyBinds::registerInputString(const PGE::String& string, PGE::MouseInput::BUTTON key) {
+    inputStrings.emplace(string.getHashCode(), new PGE::MouseInput(key));
+}
+
+void KeyBinds::registerInputString(const PGE::String& string, PGE::ControllerInput::BUTTON key) {
+    inputStrings.emplace(string.getHashCode(), new PGE::ControllerInput(io->getController(0), key));
 }
 
 bool KeyBinds::anyShiftDown() const {
@@ -141,15 +191,23 @@ void KeyBinds::update() {
     hitInputs = Input::None;
 
     UserInputMap::const_iterator it;
-    for (it = bindings.begin(); it != bindings.end(); it++) {
+    // TODO: This could be faster when the map is switched.
+    for (UserInputMap::const_iterator it = bindings.begin(); it != bindings.end(); it++) {
         // Check if any of the assigned inputs are down.
         // If one of them is down/hit then the input is active.
-        if (it->second.input->isDown()) {
+        if (it->second->isDown()) {
             downInputs = downInputs | it->first;
         }
             
-        if (it->second.input->isHit()) {
+        if (it->second->isHit()) {
             hitInputs = hitInputs | it->first;
+        }
+    }
+
+    // TODO: Disable when key capture is enabled.
+    for (ConsoleBindingsMap::const_iterator it = consoleBindings.begin(); it != consoleBindings.end(); it++) {
+        if (it->second->isHit()) {
+            conDef->executeCommand(it->first);
         }
     }
 }
@@ -162,43 +220,30 @@ Input KeyBinds::getHitInputs() const {
     return hitInputs;
 }
 
-void KeyBinds::bindInput(Input input, UserInput key) {
-    io->trackInput(key.input);
-
+void KeyBinds::bindInput(Input input, PGE::UserInput* key) {
+    io->trackInput(key);
     bindings.emplace(input, key);
 }
 
 void KeyBinds::bindInput(Input input, PGE::MouseInput::BUTTON key) {
-    UserInput wrapKey;
-    wrapKey.input = new PGE::MouseInput(key);
-    wrapKey.code = (int)key;
-
-    bindInput(input, wrapKey);
+    bindInput(input, new PGE::MouseInput(key));
 }
 
 void KeyBinds::bindInput(Input input, PGE::KeyboardInput::KEYCODE key) {
-    UserInput wrapKey;
-    wrapKey.input = new PGE::KeyboardInput(key);
-    wrapKey.code = (int)key;
-
-    bindInput(input, wrapKey);
+    bindInput(input, new PGE::KeyboardInput(key));
 }
 
 void KeyBinds::bindInput(Input input, PGE::ControllerInput::BUTTON key) {
-    UserInput wrapKey;
-    wrapKey.input = new PGE::ControllerInput(io->getController(0), key);
-    wrapKey.code = (int)key;
-
-    bindInput(input, wrapKey);
+    bindInput(input, new PGE::ControllerInput(io->getController(0), key));
 }
 
 void KeyBinds::unbindInput(Input input, PGE::UserInput::DEVICE device, int key) {
     // Iterate over all values of the given key
     std::pair<UserInputMap::iterator, UserInputMap::iterator> bindingsRange = bindings.equal_range(input);
     for (UserInputMap::iterator it = bindingsRange.first; it != bindingsRange.second; it++) {
-        if (it->second.input->getDevice() == device && it->second.code == key) {
-            io->untrackInput(it->second.input);
-            delete it->second.input;
+        if (it->second->getDevice() == device && it->second->getKey() == key) {
+            io->untrackInput(it->second);
+            delete it->second;
             bindings.erase(it);
             return;
         }
@@ -215,4 +260,29 @@ void KeyBinds::unbindInput(Input input, PGE::KeyboardInput::KEYCODE key) {
 
 void KeyBinds::unbindInput(Input input, PGE::ControllerInput::BUTTON key) {
     unbindInput(input, PGE::UserInput::DEVICE::CONTROLLER, (int)key);
+}
+
+void KeyBinds::bindCommand(PGE::String command, PGE::UserInput* key) {
+    io->trackInput(key);
+    consoleBindings.emplace(command, key);
+}
+
+void KeyBinds::unbindCommand(PGE::String command, PGE::UserInput* key) {
+    // Iterate over all values of the given key
+    std::pair<ConsoleBindingsMap::iterator, ConsoleBindingsMap::iterator> bindingsRange = consoleBindings.equal_range(command);
+    for (ConsoleBindingsMap::iterator it = bindingsRange.first; it != bindingsRange.second; it++) {
+        if (it->second->getDevice() == key->getDevice() && it->second->getKey() == key->getKey()) {
+            io->untrackInput(it->second);
+            consoleBindings.erase(it);
+            return;
+        }
+    }
+}
+
+PGE::UserInput* KeyBinds::stringToInput(const PGE::String& key) const {
+    std::map<long long, PGE::UserInput*>::const_iterator find = inputStrings.find(key.toLower().getHashCode());
+    if (find == inputStrings.end()) {
+        return nullptr;
+    }
+    return find->second;
 }

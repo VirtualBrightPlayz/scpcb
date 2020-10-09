@@ -9,9 +9,16 @@
 #include "../ScriptGlobal.h"
 
 class ScriptManager;
+class KeyBinds;
 
 class ConsoleDefinitions : public NativeDefinition {
     private:
+        void helpInternal(std::vector<PGE::String> params);
+        void bindInternal(std::vector<PGE::String> params);
+        void unbindInternal(std::vector<PGE::String> params);
+
+        KeyBinds* keyBinds;
+
         enum class LogType {
             Log,
             Warning,
@@ -20,6 +27,7 @@ class ConsoleDefinitions : public NativeDefinition {
 
         struct Command {
             asIScriptFunction* func;
+            void(ConsoleDefinitions::*nativFunc)(std::vector<PGE::String>);
             PGE::String name;
             PGE::String helpText;
         };
@@ -30,9 +38,7 @@ class ConsoleDefinitions : public NativeDefinition {
         asIScriptObject* consoleInstance;
         asIScriptFunction* addConsoleMsgFunc;
 
-        void printHelpList();
-        void printHelpCommand(const PGE::String& command);
-
+        void registerCommandInternal(const PGE::String& name, const PGE::String& helpText, void(ConsoleDefinitions::*nativFunc)(std::vector<PGE::String>));
         void registerCommand(const PGE::String& name, const PGE::String& helpText, void* f, int typeId);
         void registerCommandNoHelp(const PGE::String& name, void* f, int typeId);
         void executeCommand(const PGE::String& in);
@@ -46,7 +52,7 @@ class ConsoleDefinitions : public NativeDefinition {
         void error(void* ref, int typeId);
 
     public:
-        ConsoleDefinitions(ScriptManager* mgr);
+        ConsoleDefinitions(ScriptManager* mgr, KeyBinds* kb);
         ~ConsoleDefinitions();
 
         void setUp(ScriptManager* mgr);

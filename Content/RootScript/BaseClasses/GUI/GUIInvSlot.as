@@ -52,7 +52,7 @@ shared class GUIInvSlot : GUIComponent {
         if (mousePos.x >= x && mousePos.y >= y && mousePos.x <= x2 && mousePos.y <= y2) {
             hovered = true;
             
-            if (item != null && Input::Mouse1::getClickCount() >= 2) {
+            if (item != null && Input::Mouse1::getClickCount() == 2) {
                 if (item.onUse() != equipped) {
                     equipped = !equipped;
                     updateRectangles(equipped);

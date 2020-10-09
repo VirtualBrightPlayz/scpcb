@@ -3,6 +3,7 @@
 #include <Misc/FileUtil.h>
 
 #include "../Save/Config.h"
+#include "../Input/KeyBinds.h"
 
 #include "../Scripting/RefCounter.h"
 #include "../Scripting/ScriptManager.h"
@@ -53,8 +54,10 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     nativeDefs.push_back(new PickableDefinitions(manager, refCounterManager, pm));
     nativeDefs.push_back(new PlayerControllerDefinitions(manager, refCounterManager, camera));
     nativeDefs.push_back(new ReflectionDefinitions(manager));
-    ConsoleDefinitions* conDef = new ConsoleDefinitions(manager);
+    ConsoleDefinitions* conDef = new ConsoleDefinitions(manager, keyBinds);
     nativeDefs.push_back(conDef);
+
+    keyBinds->setConsoleDefinitions(conDef);
 
     perTickEventDefinition = new EventDefinition(manager, "PerTick",
         std::vector<ScriptFunction::Signature::Argument> { ScriptFunction::Signature::Argument(Type::Float, "deltaTime") });

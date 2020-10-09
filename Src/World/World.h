@@ -88,9 +88,6 @@ class World {
         void quit();
 
         Font* getFont() const;
-
-        PGE::Texture* getEpicTexture(int texSize, const PGE::String& model, float scale, const PGE::Vector3f& rotation, PGE::Vector2f position = PGE::Vector2f::zero);
-
 };
 
 #endif // WORLD_H_INCLUDED

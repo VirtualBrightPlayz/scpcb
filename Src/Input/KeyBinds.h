@@ -8,6 +8,8 @@
 
 #include "Input.h"
 
+class ConsoleDefinitions;
+
 class KeyBinds {
     private:
         // Inputs that are down for this tick.
@@ -16,23 +18,28 @@ class KeyBinds {
         // Inputs that are in the hit state for this tick.
         Input hitInputs;
 
-        struct UserInput {
-            PGE::UserInput* input;
-            int code; // Can be mouse button, controller button or key code.
-        };
-
         PGE::IO* io;
+        ConsoleDefinitions* conDef;
 
-        typedef std::multimap<Input, UserInput> UserInputMap;
+        typedef std::multimap<Input, PGE::UserInput*> UserInputMap;
         UserInputMap bindings;
-        //std::multimap<PGE::String, UserInput> consoleBindings; // TODO.
 
-        void bindInput(Input input, UserInput key);
+        typedef std::multimap<PGE::String, PGE::UserInput*> ConsoleBindingsMap;
+        ConsoleBindingsMap consoleBindings;
+
+        void bindInput(Input input, PGE::UserInput* key);
         void unbindInput(Input input, PGE::UserInput::DEVICE device, int key);
+
+        std::map<long long, PGE::UserInput*> inputStrings;
+        void registerInputString(const PGE::String& string, PGE::KeyboardInput::KEYCODE key);
+        void registerInputString(const PGE::String& string, PGE::MouseInput::BUTTON key);
+        void registerInputString(const PGE::String& string, PGE::ControllerInput::BUTTON key);
 
     public:
         KeyBinds(PGE::IO* inIo);
         ~KeyBinds();
+
+        void setConsoleDefinitions(ConsoleDefinitions* inConDef);
 
         PGE::MouseInput* mouse1;
         PGE::MouseInput* mouse2;
@@ -79,10 +86,15 @@ class KeyBinds {
         void unbindInput(Input input, PGE::KeyboardInput::KEYCODE key);
         void unbindInput(Input input, PGE::ControllerInput::BUTTON key);
 
+        void bindCommand(PGE::String command, PGE::UserInput* key);
+        void unbindCommand(PGE::String command, PGE::UserInput* key);
+
         // Iterate through the keybinds and find out which ones fired this tick.
         void update();
         Input getDownInputs() const;
         Input getHitInputs() const;
+
+        PGE::UserInput* stringToInput(const PGE::String& key) const;
 };
 
 #endif // KEYBINDS_H_INCLUDED

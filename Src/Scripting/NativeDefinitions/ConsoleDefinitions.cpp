@@ -8,7 +8,55 @@
 #include "../ScriptModule.h"
 #include "../ScriptObject.h"
 
-ConsoleDefinitions::ConsoleDefinitions(ScriptManager* mgr) {
+#include "../../Input/KeyBinds.h"
+
+void ConsoleDefinitions::helpInternal(std::vector<PGE::String> params) {
+    if (params.size() == 2) {
+        std::map<long long, Command>::iterator find = commands.find(params[1].getHashCode());
+        if (find == commands.end()) {
+            addConsoleMessage("That command doesn't exist", PGE::Color::Yellow);
+        } else {
+            if (find->second.helpText.isEmpty()) {
+                addConsoleMessage("There is no help available for that command.", PGE::Color::Yellow);
+            } else {
+                addConsoleMessage(find->second.helpText, PGE::Color::Blue);
+            }
+        }
+    } else if (params.size() == 1) {
+        for (const auto& comSet : commands) {
+            Command command = comSet.second;
+            addConsoleMessage(command.name, PGE::Color::Cyan);
+        }
+    } else {
+        addConsoleMessage("ARGUMENT SIZE MISMATCH", PGE::Color::Red);
+    }
+}
+
+void ConsoleDefinitions::bindInternal(std::vector<PGE::String> params) {
+    params.erase(params.begin());
+    PGE::UserInput* key = keyBinds->stringToInput(params.back());
+    if (key == nullptr) {
+        addConsoleMessage("That key doesn't exist.", PGE::Color::Red);
+    } else {
+        params.pop_back();
+        keyBinds->bindCommand(PGE::String::join(params, " "), key);
+    }
+}
+
+void ConsoleDefinitions::unbindInternal(std::vector<PGE::String> params) {
+    params.erase(params.begin());
+    PGE::UserInput* key = keyBinds->stringToInput(params.back());
+    if (key == nullptr) {
+        addConsoleMessage("That key doesn't exist.", PGE::Color::Red);
+    } else {
+        params.pop_back();
+        keyBinds->unbindCommand(PGE::String::join(params, " "), key);
+    }
+}
+
+ConsoleDefinitions::ConsoleDefinitions(ScriptManager* mgr, KeyBinds* kb) {
+    keyBinds = kb;
+
     engine = mgr->getAngelScriptEngine();
     scriptContext = engine->CreateContext();
     msgContext = engine->CreateContext();
@@ -23,8 +71,9 @@ ConsoleDefinitions::ConsoleDefinitions(ScriptManager* mgr) {
     engine->RegisterGlobalFunction("void warning(?&in content)", asMETHOD(ConsoleDefinitions, warning), asCALL_THISCALL_ASGLOBAL, this);
     engine->RegisterGlobalFunction("void error(?&in content)", asMETHOD(ConsoleDefinitions, error), asCALL_THISCALL_ASGLOBAL, this);
 
-    Command newCommand = { nullptr, "help", "Provides a description of a specified command. Use it with no parameters to list all commands." };
-    commands.emplace(PGE::String("help").getHashCode(), newCommand);
+    registerCommandInternal("help", "Provides a description of a specified command. Use it with no parameters to list all commands.", &ConsoleDefinitions::helpInternal);
+    registerCommandInternal("bind", "Binds a command to a key.", &ConsoleDefinitions::bindInternal);
+    registerCommandInternal("unbind", "Unbinds the given command from the key.", &ConsoleDefinitions::unbindInternal);
 }
 
 ConsoleDefinitions::~ConsoleDefinitions() {
@@ -43,6 +92,11 @@ void ConsoleDefinitions::setUp(ScriptManager* mgr) {
     }
 }
 
+void ConsoleDefinitions::registerCommandInternal(const PGE::String& name, const PGE::String& helpText, void(ConsoleDefinitions::*nativFunc)(std::vector<PGE::String>)) {
+    Command c = { nullptr, nativFunc, name, helpText };
+    commands.emplace(name.getHashCode(), c);
+}
+
 void ConsoleDefinitions::registerCommand(const PGE::String& name, const PGE::String& helpText, void* f, int typeId) {
     asIScriptFunction* func = (asIScriptFunction*)(((typeId & asTYPEID_OBJHANDLE) != 0) ? *((void**)f) : f);
     for (unsigned int i = 0; i < func->GetParamCount(); i++) {
@@ -55,7 +109,7 @@ void ConsoleDefinitions::registerCommand(const PGE::String& name, const PGE::Str
             }
         }
     }
-    Command newCommand = { func, name, helpText };
+    Command newCommand = { func, nullptr, name, helpText };
     commands.emplace(name.getHashCode(), newCommand);
     std::cout << "Command: " << name << std::endl;
 }
@@ -66,30 +120,11 @@ void ConsoleDefinitions::registerCommandNoHelp(const PGE::String& name, void* f,
 
 void ConsoleDefinitions::executeCommand(const PGE::String& in) {
     std::vector<PGE::String> params = in.split(" ", true);
-    // Hijacking this is probably the best approach.
-    if (params[0] == "help") {
-        if (params.size() == 2) {
-            std::map<long long, Command>::iterator find = commands.find(params[1].getHashCode());
-            if (find == commands.end()) {
-                addConsoleMessage("That command doesn't exist", PGE::Color::Yellow);
-            } else {
-                if (find->second.helpText.isEmpty()) {
-                    addConsoleMessage("There is no help available for that command.", PGE::Color::Yellow);
-                } else {
-                    addConsoleMessage(find->second.helpText, PGE::Color::Blue);
-                }
-            }
-        } else if (params.size() == 1) {
-            for (const auto& comSet : commands) {
-                Command command = comSet.second;
-                addConsoleMessage(command.name, PGE::Color::Cyan);
-            }
+    std::map<long long, Command>::iterator find = commands.find(params[0].getHashCode());
+    if (find != commands.end()) {
+        if (find->second.func == nullptr) {
+            (this->*find->second.nativFunc)(params);
         } else {
-            addConsoleMessage("ARGUMENT SIZE MISMATCH", PGE::Color::Red);
-        }
-    } else {
-        std::map<long long, Command>::iterator find = commands.find(params[0].getHashCode());
-        if (find != commands.end()) {
             asIScriptFunction* func = find->second.func;
             params.erase(params.begin());
             // TODO: Do we need to check all AS funcs or none?
@@ -153,9 +188,9 @@ void ConsoleDefinitions::executeCommand(const PGE::String& in) {
                 addConsoleMessage(errMsg, PGE::Color::Red);
             }
             scriptContext->Unprepare();
-        } else {
-            addConsoleMessage("No command found", PGE::Color::Red);
         }
+    } else {
+        addConsoleMessage("No command found", PGE::Color::Red);
     }
 }
 
