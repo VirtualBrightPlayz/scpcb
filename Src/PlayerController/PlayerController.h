@@ -1,7 +1,8 @@
-#ifndef CBN_PLAYERCONTROLLER_H_INCLUDED
-#define CBN_PLAYERCONTROLLER_H_INCLUDED
+#ifndef PLAYERCONTROLLER_H_INCLUDED
+#define PLAYERCONTROLLER_H_INCLUDED
 
 #include <Math/Vector.h>
+
 #include "../Input/Input.h"
 
 class CollisionMeshCollection;
@@ -20,6 +21,7 @@ class PlayerController {
         void setPosition(const PGE::Vector3f& pos);
 
         float getCamAnimState() const;
+
     private:
         CollisionMeshCollection* collisionMeshCollection;
 
@@ -48,4 +50,4 @@ class PlayerController {
         const float GRAVITY = 0.01f;
 };
 
-#endif
+#endif // PLAYERCONTROLLER_H_INCLUDED

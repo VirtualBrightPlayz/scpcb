@@ -6,7 +6,7 @@
 
 #include <Misc/FilePath.h>
 #include <Math/Matrix.h>
- #include <UserInput/UserInput.h>
+#include <UserInput/UserInput.h>
 
 #include "ConfigValues.h"
 #include "../Input/Input.h"

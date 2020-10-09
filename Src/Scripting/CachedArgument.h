@@ -2,6 +2,7 @@
 #define CACHEDARGUMENT_H_INCLUDED
 
 #include <Misc/String.h>
+
 #include "Type.h"
 
 struct CachedArgument {
@@ -20,4 +21,4 @@ struct CachedArgument {
     CachedArgument(const PGE::String& nm, Type* t);
 };
 
-#endif
+#endif // CACHEDARGUMENT_H_INCLUDED

@@ -13,7 +13,7 @@ class CollisionMeshCollection;
 
 class PlayerControllerDefinitions : public RefCounter {
     private:
-        std::map<PlayerController*,int> refCount;
+        std::map<PlayerController*, int> refCount;
         PlayerController* playerControllerFactory(float radius, float height);
         void addRef(void* ptr) override;
         void release(void* ptr) override;
@@ -22,8 +22,9 @@ class PlayerControllerDefinitions : public RefCounter {
 
         Camera* tempCamera;
         void __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller, Input input);
+
     public:
         PlayerControllerDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr, Camera* cam);
 };
 
-#endif
+#endif // PLAYERCONTROLLERDEFINITIONS_H_INCLUDED

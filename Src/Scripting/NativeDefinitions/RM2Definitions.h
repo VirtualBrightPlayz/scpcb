@@ -2,14 +2,12 @@
 #define RM2DEFINITIONS_H_INCLUDED
 
 #include <Misc/String.h>
-#include <Math/Matrix.h>
 
 #include "../NativeDefinition.h"
 
-#include "../../Models/RM2.h"
-
 class ScriptManager;
 class GraphicsResources;
+class RM2;
 
 class RM2Definitions : public NativeDefinition {
     private:
@@ -21,4 +19,4 @@ class RM2Definitions : public NativeDefinition {
         RM2Definitions(ScriptManager* mgr, GraphicsResources* gfxRes);
 };
 
-#endif
+#endif // RM2DEFINITIONS_H_INCLUDED

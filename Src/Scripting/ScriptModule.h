@@ -1,12 +1,13 @@
 #ifndef SCRIPTMODULE_H_INCLUDED
 #define SCRIPTMODULE_H_INCLUDED
 
+#include <map>
+
 #include <angelscript.h>
+#include <tinyxml2.h>
+
 #include <Misc/FilePath.h>
 #include <Misc/String.h>
-#include <map>
-#include <inttypes.h>
-#include <tinyxml2.h>
 
 class Type;
 class ScriptManager;
@@ -53,4 +54,4 @@ class ScriptModule {
         void loadXML(void* ref, Type* type, tinyxml2::XMLElement* element) const;
 };
 
-#endif
+#endif // SCRIPTMODULE_H_INCLUDED

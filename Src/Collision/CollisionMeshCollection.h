@@ -1,11 +1,12 @@
-#ifndef CBN_COLLISIONMESHCOLLECTION_H_INCLUDED
-#define CBN_COLLISIONMESHCOLLECTION_H_INCLUDED
+#ifndef COLLISIONMESHCOLLECTION_H_INCLUDED
+#define COLLISIONMESHCOLLECTION_H_INCLUDED
 
 #include <map>
 
 #include <Math/Line.h>
 #include <Math/Matrix.h>
 #include <Math/AABBox.h>
+
 #include "Collision.h"
 
 class CollisionMesh;
@@ -37,9 +38,10 @@ class CollisionMeshCollection {
         void removeInstance(int instance);
 
         Collision checkCollision(PGE::Line3f line,float height,float radius) const;
+
     private:
         std::map<int, Instance> instances;
         int lastInstanceId = 0;
 };
 
-#endif
+#endif // COLLISIONMESHCOLLECTION_H_INCLUDED

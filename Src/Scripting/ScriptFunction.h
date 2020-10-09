@@ -3,7 +3,9 @@
 
 #include <map>
 #include <vector>
+
 #include <angelscript.h>
+
 #include <Misc/String.h>
 
 class ScriptModule;
@@ -27,6 +29,7 @@ class ScriptFunction {
 
             PGE::String toString() const;
         };
+
     private:
         Signature signature;
 
@@ -40,6 +43,7 @@ class ScriptFunction {
 
         asIScriptContext* scriptContext;
         bool pushedState;
+
     public:
         ScriptFunction(ScriptModule* module,asIScriptFunction* asScriptFunction,asIScriptFunction* asFuncWithSignature=nullptr);
         ~ScriptFunction();
@@ -70,4 +74,4 @@ class ScriptFunction {
         ScriptObject* getReturnObject() const;
 };
 
-#endif
+#endif // FUNCTION_H_INCLUDED

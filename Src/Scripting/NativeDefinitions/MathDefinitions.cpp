@@ -1,7 +1,13 @@
 #include "MathDefinitions.h"
 
-#include "../ScriptManager.h"
+#include <Math/Vector.h>
+#include <Math/Matrix.h>
+#include <Math/Line.h>
+#include <Math/Plane.h>
+#include <Math/AABBox.h>
+#include <Math/Rectangle.h>
 
+#include "../ScriptManager.h"
 #include "../../Utils/MathUtil.h"
 
 static void vector2fConstructor(void* memory) {

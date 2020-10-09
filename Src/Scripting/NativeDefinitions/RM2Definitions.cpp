@@ -3,6 +3,7 @@
 #include <fstream>
 #include <stdio.h>
 
+#include "../../Models/RM2.h"
 #include "../ScriptManager.h"
 
 RM2Definitions::RM2Definitions(ScriptManager* mgr, GraphicsResources* gfxRes) {

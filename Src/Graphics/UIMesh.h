@@ -1,16 +1,14 @@
 #ifndef UIMESH_H_INCLUDED
 #define UIMESH_H_INCLUDED
 
-#include <Misc/String.h>
-#include <Misc/FilePath.h>
-
 #include <vector>
-#include <Math/Rectangle.h>
 
 #include <Mesh/Mesh.h>
+#include <Misc/String.h>
+#include <Misc/FilePath.h>
+#include <Math/Rectangle.h>
 #include <Material/Material.h>
 
-class UIMesh;
 class GraphicsResources;
 
 class UIMesh {

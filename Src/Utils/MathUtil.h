@@ -1,5 +1,5 @@
-#ifndef MATH_H_INCLUDED
-#define MATH_H_INCLUDED
+#ifndef MATHUTIL_H_INCLUDED
+#define MATHUTIL_H_INCLUDED
 
 class MathUtil {
     public:
@@ -26,4 +26,4 @@ class MathUtil {
         static int ceil(float val);
 };
 
-#endif // MATH_H_INCLUDED
+#endif // MATHUTIL_H_INCLUDED

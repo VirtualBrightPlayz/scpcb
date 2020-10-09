@@ -1,9 +1,9 @@
 #ifndef INPUTDEFINITIONS_H_INCLUDED
 #define INPUTDEFINITIONS_H_INCLUDED
 
-#include "../NativeDefinition.h"
-
 #include <IO/IO.h>
+
+#include "../NativeDefinition.h"
 
 class ScriptManager;
 class KeyBinds;

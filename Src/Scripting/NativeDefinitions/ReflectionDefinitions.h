@@ -4,17 +4,16 @@
 #include "../NativeDefinition.h"
 
 class ScriptManager;
-class CScriptArray;
-class ScriptClass;
-class Reflection;
+
 class ReflectionDefinitions : public NativeDefinition {
     private:
         ScriptManager* scriptManager;
 
         void reflectionConstructor(asITypeInfo* typeInfo, void* memory);
         void reflectionDestructor(void* memory);
+
     public:
         ReflectionDefinitions(ScriptManager* mgr);
 };
 
-#endif
+#endif // REFLECTIONDEFINITIONS_H_INCLUDED

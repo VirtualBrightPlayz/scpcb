@@ -1,5 +1,5 @@
-#ifndef Camera_H_INCLUDED
-#define Camera_H_INCLUDED
+#ifndef CAMERA_H_INCLUDED
+#define CAMERA_H_INCLUDED
 
 #include <Math/Matrix.h>
 #include <Graphics/Graphics.h>
@@ -58,4 +58,4 @@ class Camera {
         float getPitchAngle() const;
 };
 
-#endif // Camera_H_INCLUDED
+#endif // CAMERA_H_INCLUDED

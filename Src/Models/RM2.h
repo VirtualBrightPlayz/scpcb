@@ -3,11 +3,10 @@
 
 #include <vector>
 #include <map>
+
 #include <Math/Matrix.h>
 #include <Mesh/Mesh.h>
-#include <Graphics/Graphics.h>
 #include <Texture/Texture.h>
-#include <Material/Material.h>
 #include <Misc/FilePath.h>
 #include <Color/Color.h>
 
@@ -95,4 +94,4 @@ class RM2 {
         //const std::vector<Waypoint>& getWaypoints() const;
 };
 
-#endif
+#endif // RM2_H_INCLUDED

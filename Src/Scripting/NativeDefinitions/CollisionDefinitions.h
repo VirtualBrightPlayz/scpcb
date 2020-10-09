@@ -1,9 +1,11 @@
 #ifndef COLLISIONDEFINITIONS_H_INCLUDED
 #define COLLISIONDEFINITIONS_H_INCLUDED
 
-#include "../RefCounter.h"
-#include <Misc/String.h>
 #include <map>
+
+#include <Misc/String.h>
+
+#include "../RefCounter.h"
 
 class ScriptManager;
 class CollisionMesh;
@@ -12,8 +14,8 @@ class CScriptArray;
 
 class CollisionDefinitions : public RefCounter {
     private:
-        std::map<CollisionMesh*,int> meshRefCount;
-        std::map<CollisionMeshCollection*,int> collectionRefCount;
+        std::map<CollisionMesh*, int> meshRefCount;
+        std::map<CollisionMeshCollection*, int> collectionRefCount;
         CollisionMesh* meshFactory(CScriptArray* verts, CScriptArray* inds);
         CollisionMeshCollection* collectionFactory();
         void addRef(void* mesh);
@@ -23,4 +25,4 @@ class CollisionDefinitions : public RefCounter {
         CollisionDefinitions(ScriptManager* scriptMgr, RefCounterManager* rcMgr);
 };
 
-#endif
+#endif // COLLISIONDEFINITIONS_H_INCLUDED

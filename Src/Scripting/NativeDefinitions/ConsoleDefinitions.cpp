@@ -4,11 +4,11 @@
 #endif
 
 #include "../../Utils/MathUtil.h"
+#include "../../Input/KeyBinds.h"
 #include "../ScriptManager.h"
 #include "../ScriptModule.h"
 #include "../ScriptObject.h"
-
-#include "../../Input/KeyBinds.h"
+#include "../ScriptGlobal.h"
 
 void ConsoleDefinitions::helpInternal(std::vector<PGE::String> params) {
     if (params.size() == 2) {

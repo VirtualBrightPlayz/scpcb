@@ -2,11 +2,12 @@
 #define CONSOLEDEFINITIONS_H_INCLUDED
 
 #include <map>
+#include <vector>
 
 #include <Color/Color.h>
+#include <Misc/String.h>
 
 #include "../NativeDefinition.h"
-#include "../ScriptGlobal.h"
 
 class ScriptManager;
 class KeyBinds;

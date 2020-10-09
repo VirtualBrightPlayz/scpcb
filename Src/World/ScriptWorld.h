@@ -43,7 +43,6 @@ class ScriptWorld {
         void update();
         void drawGame(float interpolation);
         void drawMenu(float interpolation);
-
 };
 
 #endif // SCRIPTWORLD_H_INCLUDED

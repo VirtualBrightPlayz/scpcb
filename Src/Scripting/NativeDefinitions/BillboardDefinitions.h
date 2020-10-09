@@ -7,7 +7,6 @@
 #include "../NativeDefinition.h"
 
 class ScriptManager;
-
 class BillboardManager;
 class Billboard;
 

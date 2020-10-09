@@ -14,7 +14,6 @@ class PickableDefinitions : public RefCounter {
         void addRef(void* ptr) override;
         void release(void* ptr) override;
 
-
 	public:
 		PickableDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr, PickableManager* pm);
 };

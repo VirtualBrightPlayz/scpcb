@@ -20,13 +20,11 @@ Permission is granted to anyone to use this software for any purpose, including 
 
 **/
 
-#ifndef CBN_COLLISION_H_INCLUDED
-#define CBN_COLLISION_H_INCLUDED
+#ifndef COLLISION_H_INCLUDED
+#define COLLISION_H_INCLUDED
 
 #include <Math/AABBox.h>
 #include <Math/Line.h>
-#include <Math/Matrix.h>
-#include <Math/Rectangle.h>
 #include <Math/Vector.h>
 
 struct Collision {
@@ -53,4 +51,4 @@ struct Collision {
     //void boxCollide(const PGE::Line3f& src_line,float src_radius,const PGE::AABBox& box);
 };
 
-#endif
+#endif // COLLISION_H_INCLUDED

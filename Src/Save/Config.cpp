@@ -1,9 +1,9 @@
 #include "Config.h"
 
-#include <exception>
 #include <Misc/FileUtil.h>
 
 #include "../Utils/INI.h"
+#include "../Input/Input.h"
 #include "../Graphics/GraphicsResources.h"
 
 const PGE::String corpFolder = "Undertow Games";

@@ -1,8 +1,9 @@
 #ifndef LOCALIZATIONMANAGER_H_INCLUDED
 #define LOCALIZATIONMANAGER_H_INCLUDED
 
-#include <Misc/String.h>
 #include <map>
+
+#include <Misc/String.h>
 
 class LocalizationManager {
     private:

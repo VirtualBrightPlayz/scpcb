@@ -6,7 +6,6 @@
 #include <Shader/Shader.h>
 #include <Mesh/Mesh.h>
 #include <Color/Color.h>
-
 #include <Math/Line.h>
 #include <Math/Matrix.h>
 
@@ -19,6 +18,7 @@ class DebugGraphics {
         PGE::Shader::Constant* colorConstant;
         PGE::Shader::Constant* viewMatrixConstant;
         PGE::Shader::Constant* projectionMatrixConstant;
+
     public:
         DebugGraphics(PGE::Graphics* gfx);
         ~DebugGraphics();

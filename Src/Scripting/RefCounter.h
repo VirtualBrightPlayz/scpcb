@@ -29,4 +29,4 @@ class RefCounterManager {
         void release(void* ptr);
 };
 
-#endif
+#endif // REFCOUNTER_H_INCLUDED

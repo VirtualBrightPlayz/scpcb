@@ -1,8 +1,10 @@
 #ifndef STRINGFACTORY_H_INCLUDED
 #define STRINGFACTORY_H_INCLUDED
 
-#include <angelscript.h>
 #include <map>
+
+#include <angelscript.h>
+
 #include <Misc/String.h>
 
 struct StringPoolEntry {
@@ -20,6 +22,7 @@ struct StringPoolEntry {
 class StringFactory : public asIStringFactory {
     private:
         std::map<long long, StringPoolEntry> strPool;
+
     public:
         StringFactory(asIScriptEngine* engine);
         const void* GetStringConstant(const char* data, asUINT length);
@@ -27,4 +30,4 @@ class StringFactory : public asIStringFactory {
         int GetRawStringData(const void* str, char* data, asUINT* length) const;
 };
 
-#endif
+#endif // STRINGFACTORY_H_INCLUDED

@@ -1,16 +1,16 @@
 #ifndef FONT_H_INCLUDED
 #define FONT_H_INCLUDED
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
 #include <vector>
 #include <map>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 #include <Texture/Texture.h>
 #include <Shader/Shader.h>
 #include <Material/Material.h>
 #include <Mesh/Mesh.h>
-
 #include <Misc/FilePath.h>
 #include <Misc/String.h>
 #include <Math/Vector.h>
@@ -41,6 +41,7 @@ class Font {
         };
 
         std::vector<Atlas> atlases;
+
     private:
         Font();
 
@@ -71,4 +72,4 @@ class Font {
         PGE::FilePath filename;
 };
 
-#endif
+#endif // FONT_H_INCLUDED

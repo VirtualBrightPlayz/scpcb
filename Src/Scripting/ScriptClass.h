@@ -1,10 +1,13 @@
 #ifndef CLASS_H_INCLUDED
 #define CLASS_H_INCLUDED
 
-#include "Type.h"
-#include <Misc/String.h>
 #include <vector>
+
 #include <angelscript.h>
+
+#include <Misc/String.h>
+
+#include "Type.h"
 
 class ScriptModule;
 class ScriptFunction;
@@ -28,6 +31,7 @@ class ScriptClass : public Type {
                 Visibility visibility;
                 bool isSerialize;
                 int arrayDims;
+
             public:
                 Property(const PGE::String& n, int off, int tId, bool ref, Visibility vis, bool isSerial);
 
@@ -40,6 +44,7 @@ class ScriptClass : public Type {
                 Visibility getVisibility() const;
                 bool isSerializable() const;
         };
+
     private:
         asITypeInfo* angelScriptTypeInfo;
 
@@ -70,4 +75,4 @@ class ScriptClass : public Type {
         void finalizeInitialization();
 };
 
-#endif
+#endif // CLASS_H_INCLUDED

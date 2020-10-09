@@ -13,4 +13,4 @@ class UIDefinitions : public NativeDefinition {
         UIDefinitions(ScriptManager* mgr, UIMesh* uiMesh, Config* config, World* world);
 };
 
-#endif
+#endif // UIDEFINITIONS_H_INCLUDED

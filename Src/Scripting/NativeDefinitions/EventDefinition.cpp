@@ -3,6 +3,7 @@
 #include "../Type.h"
 #include "../ScriptManager.h"
 #include "../ScriptModule.h"
+#include "../ScriptFunction.h"
 
 EventDefinition::EventDefinition(ScriptManager* mgr, const PGE::String& nm, std::vector<ScriptFunction::Signature::Argument> argList) {
     scriptManager = mgr;

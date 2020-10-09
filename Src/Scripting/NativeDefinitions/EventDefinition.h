@@ -1,12 +1,15 @@
 #ifndef EVENTDEFINITION_H_INCLUDED
 #define EVENTDEFINITION_H_INCLUDED
 
-#include <angelscript.h>
 #include <map>
+
+#include <angelscript.h>
+
 #include <Misc/String.h>
-#include "../ScriptFunction.h"
-#include "../NativeDefinition.h"
+
 #include "../CachedArgument.h"
+#include "../NativeDefinition.h"
+#include "../ScriptFunction.h"
 
 class ScriptManager;
 
@@ -31,10 +34,11 @@ class EventDefinition : public NativeDefinition {
         void setArgument(const PGE::String& argument, uint32_t u32);
         void setArgument(const PGE::String& argument, float f);
         void setArgument(const PGE::String& argument, double d);
+        // TODO
         /*void setArgument(const PGE::String& argument, const PGE::String& s);
         void setArgument(const PGE::String& argument, ScriptObject* srcObj);
         void setArgumentNative(const PGE::String& argument, void* natObj);*/
         void execute();
 };
 
-#endif
+#endif // EVENTDEFINITION_H_INCLUDED

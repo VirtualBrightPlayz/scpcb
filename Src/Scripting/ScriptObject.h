@@ -1,9 +1,10 @@
 #ifndef OBJECT_H_INCLUDED
 #define OBJECT_H_INCLUDED
 
-#include <Misc/String.h>
 #include <angelscript.h>
 #include <tinyxml2.h>
+
+#include <Misc/String.h>
 
 class ScriptClass;
 class ScriptModule;
@@ -14,6 +15,7 @@ class ScriptObject {
         asIScriptObject* angelScriptObject;
 
         int getPropertyIndex(const PGE::String& name) const;
+
     public:
         ScriptObject(ScriptClass* clss, asIScriptObject* asObj);
         ~ScriptObject();
@@ -27,4 +29,4 @@ class ScriptObject {
         void loadXML(tinyxml2::XMLElement* element, const ScriptModule* module) const;
 };
 
-#endif
+#endif // OBJECT_H_INCLUDED

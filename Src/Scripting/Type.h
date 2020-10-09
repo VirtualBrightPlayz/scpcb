@@ -5,6 +5,7 @@
 
 class ArrayType;
 class RefType;
+
 class Type {
     private:
         // By initializing the Types this way the destructor gets called when the program exits.
@@ -76,4 +77,4 @@ class RefType : public Type {
         Type* getBaseType() const;
 };
 
-#endif
+#endif // TYPE_H_INCLUDED

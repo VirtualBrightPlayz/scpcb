@@ -1,9 +1,11 @@
 #ifndef SCRIPTMANAGER_H_INCLUDED
 #define SCRIPTMANAGER_H_INCLUDED
 
-#include <angelscript.h>
-#include <Misc/String.h>
 #include <vector>
+
+#include <angelscript.h>
+
+#include <Misc/String.h>
 
 class Script;
 class ScriptClass;
@@ -52,8 +54,6 @@ class ScriptManager {
 
 
         bool isArrayTypeId(int typeId) const;
-
-        const std::vector<LogEntry>& getLog() const;
 };
 
-#endif
+#endif // SCRIPTMANAGER_H_INCLUDED
