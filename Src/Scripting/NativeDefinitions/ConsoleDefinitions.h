@@ -41,7 +41,6 @@ class ConsoleDefinitions : public NativeDefinition {
         void registerCommandInternal(const PGE::String& name, const PGE::String& helpText, void(ConsoleDefinitions::*nativFunc)(std::vector<PGE::String>));
         void registerCommand(const PGE::String& name, const PGE::String& helpText, void* f, int typeId);
         void registerCommandNoHelp(const PGE::String& name, void* f, int typeId);
-        void executeCommand(const PGE::String& in);
 
         void addConsoleMessage(const PGE::String& msg, const PGE::Color& color);
 
@@ -54,6 +53,8 @@ class ConsoleDefinitions : public NativeDefinition {
     public:
         ConsoleDefinitions(ScriptManager* mgr, KeyBinds* kb);
         ~ConsoleDefinitions();
+
+        void executeCommand(const PGE::String& in);
 
         void setUp(ScriptManager* mgr);
 };
