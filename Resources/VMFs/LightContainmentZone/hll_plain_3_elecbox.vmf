@@ -30152,7 +30152,7 @@ entity
     "classname" "model"
     "angles" "0 0 0"
     "file" "lamp2"
-    "position" "0 -511.9999 620"
+    "position" "0 620 -511.9999"
     "scale" "1 1 1"
     "spawnflags" "0"
     "origin" "0.00000000 -511.99990000 620.00000000"
@@ -30170,7 +30170,7 @@ entity
     "classname" "light"
     "color" "255 255 255"
     "intensity" "1"
-    "position" "0 -288 692.956"
+    "position" "0 692.956 -288"
     "range" "1000"
     "spawnflags" "0"
     "origin" "0.00000000 -288.00000000 692.95600000"
@@ -30188,10 +30188,10 @@ entity
     "classname" "model"
     "angles" "0 0 0"
     "file" "lamp2"
-    "position" "0 0.000061 620"
+    "position" "0 620 0.00006"
     "scale" "1 1 1"
     "spawnflags" "0"
-    "origin" "0.00000000 0.00006100 620.00000000"
+    "origin" "0.00000000 0.00006000 620.00000000"
     editor
     {
         "color" "255 0 255"
@@ -30204,7 +30204,7 @@ entity
 {
     "id" "313"
     "classname" "waypoint"
-    "position" "0 -768 32"
+    "position" "0 32 -768"
     "spawnflags" "0"
     "origin" "0.00000000 -768.00000000 32.00000000"
     editor
@@ -30221,10 +30221,10 @@ entity
     "classname" "light"
     "color" "255 255 255"
     "intensity" "1"
-    "position" "-288 -0.0000126 692.956"
+    "position" "-288 692.956 -0.00001"
     "range" "1000"
     "spawnflags" "0"
-    "origin" "-288.00000000 -0.00001260 692.95600000"
+    "origin" "-288.00000000 -0.00001000 692.95600000"
     editor
     {
         "color" "255 0 255"
@@ -30239,10 +30239,10 @@ entity
     "classname" "model"
     "angles" "0 0 0"
     "file" "lamp2"
-    "position" "-512 -0.0000224 620"
+    "position" "-512 620 -0.00002"
     "scale" "1 1 1"
     "spawnflags" "0"
-    "origin" "-512.00000000 -0.00002240 620.00000000"
+    "origin" "-512.00000000 -0.00002000 620.00000000"
     editor
     {
         "color" "255 0 255"
@@ -30255,9 +30255,9 @@ entity
 {
     "id" "546"
     "classname" "waypoint"
-    "position" "-768.0000009 -0.0000336 32"
+    "position" "-768 32 -0.00003"
     "spawnflags" "0"
-    "origin" "-768.00000090 -0.00003360 32.00000000"
+    "origin" "-768.00000000 -0.00003000 32.00000000"
     editor
     {
         "color" "255 0 255"
@@ -30270,9 +30270,9 @@ entity
 {
     "id" "547"
     "classname" "waypoint"
-    "position" "0.0000024 0 32"
+    "position" "0 32 0"
     "spawnflags" "0"
-    "origin" "0.00000240 0.00000000 32.00000000"
+    "origin" "0.00000000 0.00000000 32.00000000"
     editor
     {
         "color" "255 0 255"
@@ -30287,7 +30287,7 @@ entity
     "classname" "light"
     "color" "255 255 255"
     "intensity" "1"
-    "position" "288 0 692.956"
+    "position" "288 692.956 0"
     "range" "1000"
     "spawnflags" "0"
     "origin" "288.00000000 0.00000000 692.95600000"
@@ -30303,9 +30303,9 @@ entity
 {
     "id" "696"
     "classname" "waypoint"
-    "position" "767.9999991 0 32"
+    "position" "768 32 0"
     "spawnflags" "0"
-    "origin" "767.99999910 0.00000000 32.00000000"
+    "origin" "768.00000000 0.00000000 32.00000000"
     editor
     {
         "color" "255 0 255"
@@ -30320,7 +30320,7 @@ entity
     "classname" "light"
     "color" "255 255 255"
     "intensity" "1"
-    "position" "0 288 692.956"
+    "position" "0 692.956 288"
     "range" "1000"
     "spawnflags" "0"
     "origin" "0.00000000 288.00000000 692.95600000"
@@ -30338,7 +30338,7 @@ entity
     "classname" "model"
     "angles" "0 0 0"
     "file" "lamp2"
-    "position" "512 0 620"
+    "position" "512 620 0"
     "scale" "1 1 1"
     "spawnflags" "0"
     "origin" "512.00000000 0.00000000 620.00000000"
@@ -30356,7 +30356,7 @@ entity
     "classname" "model"
     "angles" "0 180 0"
     "file" "elecbox"
-    "position" "52 860 104"
+    "position" "52 104 860"
     "scale" "13 13 13"
     "spawnflags" "0"
     "origin" "52.00000000 860.00000000 104.00000000"
@@ -30374,13 +30374,184 @@ entity
     "classname" "light"
     "color" "255 255 255"
     "intensity" "1"
-    "position" "0 671.9999976 692.956"
+    "position" "0 692.956 672"
     "range" "1000"
     "spawnflags" "0"
-    "origin" "0.00000000 671.99999760 692.95600000"
+    "origin" "0.00000000 672.00000000 692.95600000"
     editor
     {
         "color" "255 0 255"
+        "visgroupshown" "1"
+        "visgroupautoshown" "1"
+        "parentid" "1"
+    }
+}
+entity
+{
+    "id" "875"
+    "classname" "model"
+    "angles" "359.99998 -90 360"
+    "file" "pipelong"
+    "position" "-52.9548 105.39282 896.8649"
+    "scale" "0.6 0.6 0.6"
+    "spawnflags" "0"
+    "origin" "-52.95480000 896.86490000 105.39282000"
+    editor
+    {
+        "color" "0 241 209"
+        "visgroupid" "2"
+        "visgroupshown" "1"
+        "visgroupautoshown" "1"
+        "parentid" "1"
+    }
+}
+entity
+{
+    "id" "876"
+    "classname" "model"
+    "angles" "360 90 180"
+    "file" "pipet"
+    "position" "-52.9858 106.04852 896.3073"
+    "scale" "0.6 0.6 0.6"
+    "spawnflags" "0"
+    "origin" "-52.98580000 896.30730000 106.04852000"
+    editor
+    {
+        "color" "0 227 139"
+        "visgroupid" "2"
+        "visgroupshown" "1"
+        "visgroupautoshown" "1"
+        "parentid" "1"
+    }
+}
+entity
+{
+    "id" "877"
+    "classname" "model"
+    "angles" "360 -90 180"
+    "file" "pipet"
+    "position" "-53.73101 424.04855 896.70806"
+    "scale" "0.6 0.6 0.6"
+    "spawnflags" "0"
+    "origin" "-53.73101000 896.70806000 424.04855000"
+    editor
+    {
+        "color" "0 153 202"
+        "visgroupid" "2"
+        "visgroupshown" "1"
+        "visgroupautoshown" "1"
+        "parentid" "1"
+    }
+}
+entity
+{
+    "id" "878"
+    "classname" "model"
+    "angles" "359.99998 -90 360"
+    "file" "pipelong"
+    "position" "-52.9548 423.39269 896.865"
+    "scale" "0.6 0.6 0.6"
+    "spawnflags" "0"
+    "origin" "-52.95480000 896.86500000 423.39269000"
+    editor
+    {
+        "color" "0 196 227"
+        "visgroupid" "2"
+        "visgroupshown" "1"
+        "visgroupautoshown" "1"
+        "parentid" "1"
+    }
+}
+entity
+{
+    "id" "879"
+    "classname" "model"
+    "angles" "450 0 270"
+    "file" "pipecurve"
+    "position" "-105.4236 688.70506 897.2429"
+    "scale" "0.6 0.6 0.6"
+    "spawnflags" "0"
+    "origin" "-105.42360000 897.24290000 688.70506000"
+    editor
+    {
+        "color" "0 226 235"
+        "visgroupid" "2"
+        "visgroupshown" "1"
+        "visgroupautoshown" "1"
+        "parentid" "1"
+    }
+}
+entity
+{
+    "id" "880"
+    "classname" "model"
+    "angles" "270 -180 270"
+    "file" "pipeshort"
+    "position" "-105 53 896.86493"
+    "scale" "0.6 0.6 0.6"
+    "spawnflags" "0"
+    "origin" "-105.00000000 896.86493000 53.00000000"
+    editor
+    {
+        "color" "0 241 209"
+        "visgroupid" "2"
+        "visgroupshown" "1"
+        "visgroupautoshown" "1"
+        "parentid" "1"
+    }
+}
+entity
+{
+    "id" "881"
+    "classname" "model"
+    "angles" "450 0 270"
+    "file" "pipeshort"
+    "position" "-0.60731 370.95478 896.86494"
+    "scale" "0.6 0.6 0.6"
+    "spawnflags" "0"
+    "origin" "-0.60731000 896.86494000 370.95478000"
+    editor
+    {
+        "color" "0 196 227"
+        "visgroupid" "2"
+        "visgroupshown" "1"
+        "visgroupautoshown" "1"
+        "parentid" "1"
+    }
+}
+entity
+{
+    "id" "882"
+    "classname" "model"
+    "angles" "450 0 270"
+    "file" "pipeshort"
+    "position" "105 371 896.86494"
+    "scale" "0.6 0.6 0.6"
+    "spawnflags" "0"
+    "origin" "105.00000000 896.86494000 371.00000000"
+    editor
+    {
+        "color" "0 196 227"
+        "visgroupid" "2"
+        "visgroupshown" "1"
+        "visgroupautoshown" "1"
+        "parentid" "1"
+    }
+}
+entity
+{
+    "id" "883"
+    "classname" "model"
+    "angles" "450 0 270"
+    "file" "pipeshort"
+    "position" "-211.00001 688.99998 896.86494"
+    "scale" "0.6 0.6 0.6"
+    "spawnflags" "0"
+    "origin" "-211.00001000 896.86494000 688.99998000"
+    editor
+    {
+        "color" "0 196 227"
+        "visgroupid" "2"
         "visgroupshown" "1"
         "visgroupautoshown" "1"
         "parentid" "1"
@@ -30391,8 +30562,8 @@ cameras
     "activecamera" "0"
     camera
     {
-        "position" "[16.30323000 605.65150000 318.07690000]"
-        "look" "[-41.19786000 667.05740000 271.82920000]"
+        "position" "[320.28850000 -115.09010000 305.27920000]"
+        "look" "[253.83760000 -46.89020000 293.07420000]"
     }
 }
 cordon
