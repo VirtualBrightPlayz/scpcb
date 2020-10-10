@@ -6,6 +6,7 @@
 #include <Mesh/Mesh.h>
 #include <Misc/String.h>
 #include <Misc/FilePath.h>
+#include <Shader/Shader.h>
 #include <Math/Rectangle.h>
 #include <Material/Material.h>
 

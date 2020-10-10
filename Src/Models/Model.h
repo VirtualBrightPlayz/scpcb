@@ -6,6 +6,7 @@
 #include <Misc/FilePath.h>
 #include <Math/Matrix.h>
 #include <Mesh/Mesh.h>
+#include <Shader/Shader.h>
 
 class GraphicsResources;
 

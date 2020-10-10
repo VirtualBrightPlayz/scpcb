@@ -6,6 +6,7 @@
 
 #include <Math/Matrix.h>
 #include <Mesh/Mesh.h>
+#include <Shader/Shader.h>
 #include <Texture/Texture.h>
 #include <Misc/FilePath.h>
 #include <Color/Color.h>
