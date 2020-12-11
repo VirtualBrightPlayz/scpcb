@@ -49,8 +49,6 @@ bool ModelImageGenerator::getInitialized() const {
     return initialized;
 }
 
-#include <iostream>
-
 PGE::Texture* ModelImageGenerator::generate(const PGE::String& model, float scale, const PGE::Vector3f& rotation, PGE::Vector2f position) {
     if (!initialized) {
         throw std::runtime_error("Model image generator has not been initialized!");
@@ -75,8 +73,8 @@ PGE::Texture* ModelImageGenerator::generate(const PGE::String& model, float scal
         gfxRes->dropModelInstance(mi);
 
         return tex;
-    } catch (std::exception e) {
-        std::cout << e.what() << std::endl;
+    } catch (std::exception) {
+        delete tex;
         return nullptr;
     }
 }
