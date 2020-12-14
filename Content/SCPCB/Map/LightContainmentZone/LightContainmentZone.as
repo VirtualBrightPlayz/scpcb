@@ -28,54 +28,66 @@ class LightContainmentZone : Zone {
             }
         }
 
-        determineRoomTypes(@layout);
+        printRooms(layout);
 
-        for (int y = 0; y < mapDim; y++) {
-            string t = "";
-            for (int x = 0; x < mapDim; x++) {
-                t += toString(layout[x][y]);
-                t += " ";
-            }
-            Debug::log(t);
-        }
+        layout = determineRoomTypes(layout);
 
+        printRooms(layout);
 
         
         Debug::log("AAAAAAAA");
     }
 
-    void determineRoomTypes(array<array<int>>@ layout) {
+    void printRooms(array<array<int>> layout) {
+        Debug::log("Rooms:");
+        for (int y = 0; y < mapDim; y++) {
+            string t = "";
+            for (int x = 0; x < mapDim; x++) {
+                if (layout[x][y] == 0) {
+                    t += "  ";
+                } else {
+                    t += toString(layout[x][y]) + " ";
+                }
+            }
+            Debug::log(t);
+        }
+    }
+
+    array<array<int>> determineRoomTypes(array<array<int>> layout) {
         for (int x = 0; x < mapDim; x++) {
             for (int y = 0; y < mapDim; y++) {
-                int horNeighbors = 0;
-                if (x > 0) {
-                    horNeighbors += layout[x - 1][y];
-                }
-                if (x < mapDim - 1) {
-                    horNeighbors += layout[x + 1][y];
-                }
-                int verNeighbors = 0;
-                if (y > 0) {
-                    verNeighbors += layout[x][y - 1];
-                }
-                if (y < mapDim - 1) {
-                    verNeighbors += layout[x][y + 1];
-                }
-                if (horNeighbors + verNeighbors == 4) {
-                    layout[x][y] = Room4;
-                } else if (horNeighbors + verNeighbors == 3) {
-                    layout[x][y] = Room3;
-                } else if (horNeighbors == 2 || verNeighbors == 2) {
-                    layout[x][y] = Room2;
-                } else if (horNeighbors == 1 && verNeighbors == 1) {
-                    layout[x][y] = Room2C;
-                } else if (horNeighbors + verNeighbors == 1) {
-                    layout[x][y] = Room1;
-                } else {
-                    layout[x][y] = 0;
+                if (layout[x][y] != 0) {
+                    int horNeighbors = 0;
+                    if (x > 0 && layout[x - 1][y] != 0) {
+                        horNeighbors++;
+                    }
+                    if (x < mapDim - 1 && layout[x + 1][y] != 0) {
+                        horNeighbors++;
+                    }
+                    int verNeighbors = 0;
+                    if (y > 0 && layout[x][y - 1] != 0) {
+                        verNeighbors++;
+                    }
+                    if (y < mapDim - 1 && layout[x][y + 1] != 0) {
+                        verNeighbors++;
+                    }
+                    if (horNeighbors + verNeighbors == 4) {
+                        layout[x][y] = Room4;
+                    } else if (horNeighbors + verNeighbors == 3) {
+                        layout[x][y] = Room3;
+                    } else if (horNeighbors == 2 ^ verNeighbors == 2) {
+                        layout[x][y] = Room2;
+                    } else if (horNeighbors == 1 && verNeighbors == 1) {
+                        layout[x][y] = Room2C;
+                    } else if (horNeighbors + verNeighbors == 1) {
+                        layout[x][y] = Room1;
+                    } else {
+                        layout[x][y] = 0;
+                    }
                 }
             }
         }
+        return layout;
     }
 
     void update(float deltaTime) {
