@@ -1,6 +1,6 @@
 external class Room;
 
-serialize EntranceZone@ entranceZone;
+serialize LightContainmentZone@ lcz;
 
 external class Item;
 external class ItemTemplate;
@@ -112,15 +112,15 @@ void main() {
         }
     );
     
-    @entranceZone = EntranceZone();
-    @test_shared_global = @entranceZone;
+    @lcz = LightContainmentZone();
+    @test_shared_global = @lcz;
     @testCollCollection = Collision::Collection();
     @testController = PlayerController(5.0, 15.0);
     testController.setPosition(Vector3f(0,16,0));
     testController.setCollisionCollection(testCollCollection);
-    entranceZone.registerRoom("hll_plain_4_a", Room4);
-    entranceZone.registerRoom("hll_plain_2_a", Room2);
-    entranceZone.generate();
+    //lcz.registerRoom("hll_plain_4_a", Room4);
+    //lcz.registerRoom("hll_plain_2_a", Room2);
+    lcz.generate();
     PerTick::register(update);
     PerFrameGame::register(renderGame);
     PerFrameMenu::register(renderMenu);
@@ -135,7 +135,7 @@ float time = 0.0;
 void update(float deltaTime) {
     if (!World::paused) {
         __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown());
-        entranceZone.update(deltaTime);
+        lcz.update(deltaTime);
         time += deltaTime;
         if (time > 1.0) { // So you don't get a fucking seizure.
             lol.visible = !lol.visible;
