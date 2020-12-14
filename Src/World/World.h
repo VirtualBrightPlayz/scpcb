@@ -22,7 +22,6 @@ class BillboardManager;
 class PickableManager;
 class ScriptWorld;
 class UIMesh;
-class VRManager;
 
 class World {
     private:
@@ -54,7 +53,6 @@ class World {
         LocalizationManager* locMng;
         PickableManager* pickMng;
         BillboardManager* billMng;
-        VRManager* vrm;
 
         ScriptWorld* scripting;
 
