@@ -74,6 +74,7 @@ int Type::getSize() const {
 
 ArrayType::ArrayType(Type* type) {
     elementType = type;
+    refType = new RefType(this);
 }
 
 PGE::String ArrayType::getName() const {
