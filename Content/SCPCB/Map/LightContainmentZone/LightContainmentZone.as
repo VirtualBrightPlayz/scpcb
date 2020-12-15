@@ -28,9 +28,43 @@ class LightContainmentZone : Zone {
             }
         }
 
+        determineRoomTypes(@layout);
+
         printRooms(layout);
 
-        layout = determineRoomTypes(layout);
+        //shift some horizontal corridors
+        int shift = 0;
+        int nonShiftStreak = Random::getInt(6);
+        for (int y = 1; y < mapDim - 1; y++) {
+            for (int x = 0; x < mapDim - 1; x++) {
+                if (y > 6 || x > 6) {
+                    if ((y % rectHeight == 1) && layout[x][y] == Room2) {
+                        shift = Random::getInt(2);
+                        if (nonShiftStreak == 0) {
+                            shift = 0;
+                        }
+                        if (nonShiftStreak > 5) {
+                            shift = 1;
+                        }
+                        if ((x/rectWidth) % 2 == 1) {
+                            shift = -shift;
+                        }
+                        if (shift!=0) {
+                            for (int i = 0; i < rectWidth-1; i++) {
+                                layout[x + i][y] = 0;
+                                layout[x + i][y + shift] = Room2;
+                            }
+                            nonShiftStreak = 0;
+                        } else {
+                            nonShiftStreak++;
+                        }
+                        x = x + rectWidth - 1;
+                    }
+                }
+            }
+        }
+
+        determineRoomTypes(@layout);
 
         printRooms(layout);
 
@@ -53,7 +87,7 @@ class LightContainmentZone : Zone {
         }
     }
 
-    array<array<int>> determineRoomTypes(array<array<int>> layout) {
+    void determineRoomTypes(array<array<int>>@ layout) {
         for (int x = 0; x < mapDim; x++) {
             for (int y = 0; y < mapDim; y++) {
                 if (layout[x][y] != 0) {
@@ -75,9 +109,9 @@ class LightContainmentZone : Zone {
                         layout[x][y] = Room4;
                     } else if (horNeighbors + verNeighbors == 3) {
                         layout[x][y] = Room3;
-                    } else if (horNeighbors == 2 ^ verNeighbors == 2) {
+                    } else if ((horNeighbors == 2) || (verNeighbors == 2)) { // TODO: Should be xor
                         layout[x][y] = Room2;
-                    } else if (horNeighbors == 1 && verNeighbors == 1) {
+                    } else if ((horNeighbors == 1) && (verNeighbors == 1)) {
                         layout[x][y] = Room2C;
                     } else if (horNeighbors + verNeighbors == 1) {
                         layout[x][y] = Room1;
@@ -87,7 +121,6 @@ class LightContainmentZone : Zone {
                 }
             }
         }
-        return layout;
     }
 
     void update(float deltaTime) {

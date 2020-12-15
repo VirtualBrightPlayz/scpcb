@@ -19,6 +19,7 @@
 #include "../Scripting/NativeDefinitions/InputDefinitions.h"
 #include "../Scripting/NativeDefinitions/ColorDefinitions.h"
 #include "../Scripting/NativeDefinitions/MathDefinitions.h"
+#include "../Scripting/NativeDefinitions/RandomDefinitions.h"
 #include "../Scripting/NativeDefinitions/UIDefinitions.h"
 #include "../Scripting/NativeDefinitions/TextureDefinitions.h"
 #include "../Scripting/NativeDefinitions/ModelImageGeneratorDefinitions.h"
@@ -42,6 +43,7 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     nativeDefs.push_back(new MementoDefinitions(manager));
     nativeDefs.push_back(new ColorDefinitions(manager));
     nativeDefs.push_back(new MathDefinitions(manager));
+    nativeDefs.push_back(new RandomDefinitions(manager));
     nativeDefs.push_back(new InputDefinitions(manager, keyBinds, mouseData, io));
     nativeDefs.push_back(new TextureDefinitions(manager, gfxRes));
     nativeDefs.push_back(new ModelImageGeneratorDefinitions(manager, mig));
