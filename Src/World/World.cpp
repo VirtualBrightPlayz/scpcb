@@ -30,27 +30,6 @@
 #include <chrono>
 
 World::World() {
-    Random random = Random();
-    std::chrono::time_point lol = std::chrono::steady_clock::now();
-    for (int i = 0; i < 100000; i++) {
-        random.getRandom();
-    }
-    std::cout << (std::chrono::steady_clock::now() - lol).count() << std::endl;
-
-    Random2 random2 = Random2();
-    std::chrono::time_point lol2 = std::chrono::steady_clock::now();
-    for (int i = 0; i < 100000; i++) {
-        random2.getRandom();
-    }
-    std::cout << (std::chrono::steady_clock::now() - lol2).count() << std::endl;
-
-    Random3 random3 = Random3();
-    std::chrono::time_point lol3 = std::chrono::steady_clock::now();
-    for (int i = 0; i < 100000; i++) {
-        random3.getRandom();
-    }
-    std::cout << (std::chrono::steady_clock::now() - lol3).count() << std::endl;
-
     config = new Config("options.ini");
 
     camera = new Camera(gfxRes, config->getWidth(), config->getHeight());

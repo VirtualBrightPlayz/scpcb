@@ -43,7 +43,7 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     nativeDefs.push_back(new MementoDefinitions(manager));
     nativeDefs.push_back(new ColorDefinitions(manager));
     nativeDefs.push_back(new MathDefinitions(manager));
-    nativeDefs.push_back(new RandomDefinitions(manager));
+    nativeDefs.push_back(new RandomDefinitions(manager, refCounterManager));
     nativeDefs.push_back(new InputDefinitions(manager, keyBinds, mouseData, io));
     nativeDefs.push_back(new TextureDefinitions(manager, gfxRes));
     nativeDefs.push_back(new ModelImageGeneratorDefinitions(manager, mig));

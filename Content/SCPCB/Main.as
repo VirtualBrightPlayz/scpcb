@@ -118,8 +118,8 @@ void main() {
     @testController = PlayerController(5.0, 15.0);
     testController.setPosition(Vector3f(0,16,0));
     testController.setCollisionCollection(testCollCollection);
-    //lcz.registerRoom("hll_plain_4_a", Room4);
-    //lcz.registerRoom("hll_plain_2_a", Room2);
+    lcz.registerRoom("hll_plain_4_empty", Room4);
+    lcz.registerRoom("hll_plain_3_empty", Room3);
     lcz.generate();
     PerTick::register(update);
     PerFrameGame::register(renderGame);

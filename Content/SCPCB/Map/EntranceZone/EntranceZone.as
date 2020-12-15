@@ -5,6 +5,8 @@ class EntranceZone : Zone {
     array<array<array<Collision::Instance>>> collisionInstances;
 
     void generate() {
+        zoneName = "EntranceZone";
+
         rooms = array<array<Room@>>(10);
         collisionInstances = array<array<array<Collision::Instance>>>(10);
         for (int x=0;x<10;x++) {

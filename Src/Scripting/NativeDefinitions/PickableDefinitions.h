@@ -8,14 +8,14 @@ class Pickable;
 class PickableManager;
 
 class PickableDefinitions : public RefCounter {
-	private:
-		std::map<Pickable*,int> refCount;
-		Pickable* pickableFactory();
+    public:
+        PickableDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr, PickableManager* pm);
+
+    private:
+        std::map<Pickable*, int> refCount;
+        Pickable* pickableFactory();
         void addRef(void* ptr) override;
         void release(void* ptr) override;
-
-	public:
-		PickableDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr, PickableManager* pm);
 };
 
 #endif // PICKABLEDEFINITIONS_H_INCLUDED

@@ -1,4 +1,5 @@
 shared abstract class Zone {
+    protected string zoneName;
     protected array<MapGenEntry> mapGenEntries;
     protected array<array<Room@>> rooms;
 
@@ -28,8 +29,7 @@ shared abstract class Zone {
         for (int i=0;i<mapGenEntries.length();i++) {
             if (mapGenEntries[i].roomName == name) {
                 if (mapGenEntries[i].mesh == null) {
-                    //TODO: remove hardcoding here
-                    @mapGenEntries[i].mesh = RM2::load("SCPCB/Map/EntranceZone/" + mapGenEntries[i].roomName + "/" + mapGenEntries[i].roomName + ".rm2");
+                    @mapGenEntries[i].mesh = RM2::load("SCPCB/Map/" + zoneName + "/" + mapGenEntries[i].roomName + "/" + mapGenEntries[i].roomName + ".rm2");
                 }
                 return mapGenEntries[i].mesh;
             }
