@@ -88,39 +88,68 @@ class LightContainmentZone : Zone {
 
         for (int x = 0; x < mapDim; x++) {
             for (int y = 0; y < mapDim; y++) {
-                int angle = 0;
-                if (layout[x][y] == Room4) {
-                    @rooms[x][y] = createRoom("hll_plain_4_empty");
-                    angle = random.nextInt(4) * 90;
-                } else if (layout[x][y] == Room3) {
-                    @rooms[x][y] = createRoom("hll_plain_3_empty");
-                    if (x > 0 && layout[x-1][y] == 0) {
-                        angle = 0;
-                    } else if (y > 0 && layout[x][y-1] == 0) {
-                        angle = 90;
-                    } else if (x < mapDim-1 && layout[x+1][y] == 0) {
-                        angle = 180;
-                    } else {
-                        angle = 270;
-                    }
-                } else {
-                    continue;
+                int angle;
+                switch (layout[x][y]) {
+                    case Room4:
+                        @rooms[x][y] = createRandomRoom(Room4);
+                        angle = random.nextInt(4) * 90;
+                        break;
+                    case Room3:
+                        @rooms[x][y] = createRandomRoom(Room3);
+                        if (x > 0 && layout[x-1][y] == 0) {
+                            angle = 90;
+                        } else if (y > 0 && layout[x][y-1] == 0) {
+                            angle = 0;
+                        } else if (x < mapDim-1 && layout[x+1][y] == 0) {
+                            angle = 270;
+                        } else {
+                            angle = 180;
+                        }
+                        break;
+                    case Room2C:
+                        @rooms[x][y] = createRandomRoom(Room2C);
+                        if (x > 0 && layout[x-1][y] == 0) {
+                            if (y > 0 && layout[x][y-1] == 0) {
+                                angle = 90;
+                                
+                            } else {
+                                angle = 180;
+                            }
+                        } else {
+                            if (y > 0 && layout[x][y-1] == 0) {
+                                angle = 0;
+                            } else {
+                                angle = 270;
+                            }
+                        }
+                        break;
+                    case Room2:
+                        @rooms[x][y] = createRandomRoom(Room2);
+                        if (x > 0 && layout[x-1][y] != 0) {
+                            angle = 90;
+                        } else if (y > 0 && layout[x][y-1] != 0) {
+                            angle = 0;
+                        }
+                        if (random.nextBool()) {
+                            angle += 180;
+                        }
+                        break;
+                    default:
+                        continue;
                 }
 
-                Debug::log("AWESOME ROOM");
-
-                rooms[x][y].position = Vector3f(x*204.8,0,y*204.8);
+                rooms[x][y].position = Vector3f(1000 - x*204.8,0, 1000 - y*204.8);
                 rooms[x][y].rotation = angle;
                 
                 RM2@ mesh = rooms[x][y].mesh;
                 collisionInstances[x][y] = array<Collision::Instance>(mesh.collisionMeshCount());
-                for (int i=0; i < mesh.collisionMeshCount(); i++) {
-                    collisionInstances[x][y][i] = testCollCollection.addInstance(mesh.getCollisionMesh(i), rooms[x][y].worldMatrix);
+                Matrix4x4f worldMatrix = rooms[x][y].worldMatrix;
+                for (int i = 0; i < mesh.collisionMeshCount(); i++) {
+                    collisionInstances[x][y][i] = testCollCollection.addInstance(mesh.getCollisionMesh(i), worldMatrix);
+                    testCollCollection.updateInstance(collisionInstances[x][y][i], worldMatrix);
                 }
             }
         }
-        
-        Debug::log("AAAAAAAA");
     }
 
     void printRooms(array<array<int>> layout) {
@@ -176,13 +205,5 @@ class LightContainmentZone : Zone {
 
     void update(float deltaTime) {
         Zone::update(deltaTime);
-        for (int x=0;x<mapDim;x++) {
-            for (int y=0;y<mapDim;y++) {
-                for (int i=0;i<collisionInstances[x][y].length();i++) {
-                    Matrix4x4f worldMatrix = rooms[x][y].worldMatrix;
-                    testCollCollection.updateInstance(collisionInstances[x][y][i], worldMatrix);
-                }
-            }
-        }
     }
 }

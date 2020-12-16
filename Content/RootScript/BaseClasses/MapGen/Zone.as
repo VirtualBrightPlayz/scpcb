@@ -1,6 +1,6 @@
 shared abstract class Zone {
     protected string zoneName;
-    protected array<MapGenEntry> mapGenEntries;
+    protected array<array<MapGenEntry>> mapGenEntries = array<array<MapGenEntry>>(Room4 + 1);
     protected array<array<Room@>> rooms;
 
     void registerRoom(const string name, const RoomType type) {
@@ -8,7 +8,11 @@ shared abstract class Zone {
         MapGenEntry entry;
         entry.roomName = name;
         entry.roomType = type;
-        mapGenEntries.insertLast(entry);
+        mapGenEntries[type].insertLast(entry);
+    }
+
+    Room@ createRandomRoom(RoomType type) {
+        return createRoom(mapGenEntries[type][Random::getInt(mapGenEntries[type].length())].roomName);
     }
 
     Room@ createRoom(string name) {
@@ -26,14 +30,18 @@ shared abstract class Zone {
     }
 
     RM2@ getMesh(const string name) {
-        for (int i=0;i<mapGenEntries.length();i++) {
-            if (mapGenEntries[i].roomName == name) {
-                if (mapGenEntries[i].mesh == null) {
-                    @mapGenEntries[i].mesh = RM2::load("SCPCB/Map/" + zoneName + "/" + mapGenEntries[i].roomName + "/" + mapGenEntries[i].roomName + ".rm2");
+        for (int i = 0; i < mapGenEntries.length(); i++) {
+            for (int j = 0; j < mapGenEntries[i].length(); j++) {
+                if (mapGenEntries[i][j].roomName == name) {
+                    if (mapGenEntries[i][j].mesh == null) {
+                        Debug::log("SCPCB/Map/" + zoneName + "/" + name + "/" + name + ".rm2");
+                        @mapGenEntries[i][j].mesh = RM2::load("SCPCB/Map/" + zoneName + "/" + name + "/" + name + ".rm2");
+                    }
+                    return mapGenEntries[i][j].mesh;
                 }
-                return mapGenEntries[i].mesh;
             }
         }
+        Debug::log("Null for " + name);
         return null;
     }
 
@@ -51,6 +59,7 @@ shared abstract class Zone {
     void render(float interpolation) {
         testCounter++;
         if (testCounter > 60000) {
+            Debug::log("IT'S GONE");
             @test_shared_global = null;
         }
         for (int x=0;x<rooms.length();x++) {

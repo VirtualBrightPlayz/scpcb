@@ -38,6 +38,7 @@ class EntranceZone : Zone {
                     Matrix4x4f worldMatrix = rooms[x][y].worldMatrix;
                     for (int i=0;i<mesh.collisionMeshCount();i++) {
                         collisionInstances[x][y][i] = testCollCollection.addInstance(mesh.getCollisionMesh(i), worldMatrix);
+                        testCollCollection.updateInstance(collisionInstances[x][y][i], worldMatrix);
                     }
                 }
             }
@@ -46,13 +47,5 @@ class EntranceZone : Zone {
 
     void update(float deltaTime) {
         Zone::update(deltaTime);
-        for (int x=0;x<10;x++) {
-            for (int y=0;y<10;y++) {
-                for (int i=0;i<collisionInstances[x][y].length();i++) {
-                    Matrix4x4f worldMatrix = rooms[x][y].worldMatrix;
-                    testCollCollection.updateInstance(collisionInstances[x][y][i], worldMatrix);
-                }
-            }
-        }
     }
 }
