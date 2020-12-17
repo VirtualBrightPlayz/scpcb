@@ -134,6 +134,18 @@ class LightContainmentZone : Zone {
                             angle += 180;
                         }
                         break;
+                    case Room1:
+                        @rooms[x][y] = createRandomRoom(Room1);
+                        if (x > 0 && layout[x-1][y] != 0) {
+                            angle = 270;
+                        } else if (y > 0 && layout[x][y-1] != 0) {
+                            angle = 180;
+                        } else if (x < mapDim-1 && layout[x+1][y] != 0) {
+                            angle = 90;
+                        } else {
+                            angle = 0;
+                        }
+                        break;
                     default:
                         continue;
                 }

@@ -121,13 +121,30 @@ void main() {
     lcz.registerRoom("hll_plain_4_empty_a", Room4);
     lcz.registerRoom("hll_plain_4_empty_b", Room4);
     //lcz.registerRoom("hll_plain_4_walkway", Room4);
+
     lcz.registerRoom("hll_plain_3_empty_a", Room3);
     lcz.registerRoom("hll_plain_3_empty_b", Room3);
     //lcz.registerRoom("hll_plain_3_elecbox", Room3);
     lcz.registerRoom("hll_plain_3_pipes", Room3);
     //lcz.registerRoom("hll_plain_3_walkway", Room3);
+
+    lcz.registerRoom("hll_plain_2c_empty_a", Room2C);
+    lcz.registerRoom("hll_plain_2c_empty_b", Room2C);
+    //lcz.registerRoom("hll_plain_2c_elecbox", Room2);
+    //lcz.registerRoom("hll_plain_2c_fan", Room2);
+    //lcz.registerRoom("hll_plain_2c_walkway", Room2);
+
     lcz.registerRoom("hll_plain_2_empty", Room2);
-    lcz.registerRoom("hll_plain_2c_empty", Room2C);
+    //lcz.registerRoom("hll_plain_2_cornerdoor", Room2);
+    //lcz.registerRoom("hll_plain_2_elecbox", Room2);
+    //lcz.registerRoom("hll_plain_2_fan", Room2);
+    lcz.registerRoom("hll_plain_2_pipes", Room2);
+    //lcz.registerRoom("hll_plain_2_ventdoors", Room2);
+    //lcz.registerRoom("hll_plain_2_ventgate", Room2);
+    //lcz.registerRoom("hll_plain_2_walkway", Room2);
+
+    lcz.registerRoom("hll_plain_1_empty_a", Room1);
+    lcz.registerRoom("hll_plain_1_empty_b", Room1);
     lcz.generate();
     PerTick::register(update);
     PerFrameGame::register(renderGame);
