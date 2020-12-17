@@ -138,11 +138,11 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
         if (isOpaque) {
             textureEntry.shader = opaqueShader;
 
-            PGE::Texture* tex = gfxRes->getTexture(texturePath + textureName + "_n");
-            if (tex != nullptr) {
+            try {
+                PGE::Texture* tex = gfxRes->getTexture(texturePath + textureName + "_n");
                 textureEntry.normalMap = tex;
                 textureEntry.shader = opaqueNormalMapShader;
-            }
+            } catch (std::runtime_error) {}
         }
 
         textures.push_back(textureEntry);

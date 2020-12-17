@@ -23,8 +23,14 @@ RM2Definitions::RM2Definitions(ScriptManager* mgr, GraphicsResources* gfxRes) {
     engine->RegisterGlobalFunction("void delete(RM2@ rm2)", asMETHOD(RM2Definitions, deleteRM2), asCALL_THISCALL_ASGLOBAL, this);
 }
 
+#include <iostream>
+
 RM2* RM2Definitions::loadRM2(PGE::String filename) {
-    return new RM2(graphicsResources, filename);
+    try {
+        return new RM2(graphicsResources, filename);
+    } catch (std::exception e) {
+        std::cout << e.what() << std::endl;
+    }
 }
 
 void RM2Definitions::deleteRM2(RM2* rm2) {
