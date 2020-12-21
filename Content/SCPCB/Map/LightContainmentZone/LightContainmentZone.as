@@ -31,29 +31,29 @@ class LightContainmentZone : Zone {
                     case Room3:
                         @rooms[x][y] = createRandomRoom(Room3);
                         if (x > 0 && layout[x-1][y] == 0) {
-                            angle = 90;
-                        } else if (y > 0 && layout[x][y-1] == 0) {
-                            angle = 0;
-                        } else if (x < mapDim-1 && layout[x+1][y] == 0) {
                             angle = 270;
-                        } else {
+                        } else if (y > 0 && layout[x][y-1] == 0) {
                             angle = 180;
+                        } else if (x < mapDim-1 && layout[x+1][y] == 0) {
+                            angle = 90;
+                        } else {
+                            angle = 0;
                         }
                         break;
                     case Room2C:
                         @rooms[x][y] = createRandomRoom(Room2C);
                         if (x > 0 && layout[x-1][y] == 0) {
                             if (y > 0 && layout[x][y-1] == 0) {
-                                angle = 90;
+                                angle = 270;
                                 
                             } else {
-                                angle = 180;
+                                angle = 0;
                             }
                         } else {
                             if (y > 0 && layout[x][y-1] == 0) {
-                                angle = 0;
+                                angle = 180;
                             } else {
-                                angle = 270;
+                                angle = 90;
                             }
                         }
                         break;
@@ -71,20 +71,20 @@ class LightContainmentZone : Zone {
                     case Room1:
                         @rooms[x][y] = createRandomRoom(Room1);
                         if (x > 0 && layout[x-1][y] != 0) {
-                            angle = 270;
-                        } else if (y > 0 && layout[x][y-1] != 0) {
-                            angle = 180;
-                        } else if (x < mapDim-1 && layout[x+1][y] != 0) {
                             angle = 90;
-                        } else {
+                        } else if (y > 0 && layout[x][y-1] != 0) {
                             angle = 0;
+                        } else if (x < mapDim-1 && layout[x+1][y] != 0) {
+                            angle = 270;
+                        } else {
+                            angle = 180;
                         }
                         break;
                     default:
                         continue;
                 }
 
-                rooms[x][y].position = Vector3f(1000 - x*204.8,0, 1000 - y*204.8);
+                rooms[x][y].position = Vector3f(-204.8 * mapDim / 2.0 + x*204.8 + 102.8,0, -204.8 * mapDim / 2.0 + y*204.8 + 102.4);
                 rooms[x][y].rotation = angle;
                 
                 RM2@ mesh = rooms[x][y].mesh;
@@ -101,7 +101,12 @@ class LightContainmentZone : Zone {
     private void gen2(array<array<int>>@ layout, Random@ random) {
         array<int> xAnchors;
         array<int> yAnchors;
-        for (int i = 0; i < 10; i++) {
+        // Gen very middle room so you don't fall
+        layout[9][9] = 1;
+        xAnchors.insertLast(9);
+        yAnchors.insertLast(9);
+        //
+        for (int i = 0; i < 11; i++) {
             int x = -1;
             int y = -1;
             do {
@@ -115,7 +120,7 @@ class LightContainmentZone : Zone {
                 for (int y2 = -2; y2 < 3; y2++) {
                     int x3 = x + x2;
                     int y3 = y + y2;
-                    if (x3 >= 0 && x3 < mapDim && y3 >= 0 && y3 < mapDim) {
+                    if (x3 >= 0 && x3 < mapDim && y3 >= 0 && y3 < mapDim && layout[x3][y3] == 0) {
                         layout[x3][y3] = 9;
                     }
                 }

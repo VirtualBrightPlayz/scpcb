@@ -64,7 +64,7 @@ shared class MenuManager {
                 activateMenu(InventoryMenu::instance);
             } else if (Input::getHit() & Input::ToggleConsole != 0) {
                 activateMenu(ConsoleMenu::instance);
-            } else if (Input::getHit() & Input::Blink != 0) {
+            } else if (Input::getHit() & Input::Crouch != 0) {
                 activateMenu(DebugInvIconMenu::instance);
             }
         } else {
