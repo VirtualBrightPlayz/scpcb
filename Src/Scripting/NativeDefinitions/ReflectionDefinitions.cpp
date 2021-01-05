@@ -96,7 +96,8 @@ class Reflection {
 
             CScriptArray* newArray = CScriptArray::Create(arrayTypeInfo, (asUINT)derivedClasses.size());
             for (int i=0;i<derivedClasses.size();i++) {
-                newArray->SetValue(i, &(derivedClasses[i]->getName()));
+                PGE::String nm = derivedClasses[i]->getName();
+                newArray->SetValue(i, &nm);
             }
 
             return newArray;
