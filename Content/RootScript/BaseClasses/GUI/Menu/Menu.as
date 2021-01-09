@@ -18,6 +18,14 @@ shared abstract class Menu {
 
     // Returns whether this menu should detach.
     bool update() { return false; }
+
+    void render() final {
+        for (int i = 0; i < components.length(); i++) {
+            if (components[i].active) {
+                components[i].render();
+            }
+        }
+    }
 }
 
 shared class MenuManager {
@@ -82,11 +90,7 @@ shared class MenuManager {
 
     void render() {
         if (currMenu != null) {
-            for (int i = 0; i < currMenu.components.length(); i++) {
-                if (currMenu.components[i].active) {
-                    currMenu.components[i].render();
-                }
-            }
+            currMenu.render();
         }
     }
 }

@@ -44,6 +44,8 @@ external enum Alignment;
 
 external class ConsoleMenu;
 external ConsoleMenu@ ConsoleMenu::instance;
+external class HUDMenu;
+//external HUDMenu@ HUDMenu::instance; // TODO why doesn't this work?
 external void Console::addMessage(const string&in msg, const Color&in color = Color::White);
 
 void main() {
@@ -215,6 +217,9 @@ void renderGame(float interpolation) {
     fps++;
 }
 
+HUDMenu@ aaaa = HUDMenu();
+
 void renderMenu(float interpolation) {
     menuManager.render();
+    aaaa.render();
 }
