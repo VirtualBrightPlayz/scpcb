@@ -163,13 +163,6 @@ void update(float deltaTime) {
         __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown());
         lcz.update(deltaTime);
         time += deltaTime;
-        blinkTimer -= deltaTime;
-        if (blinkTimer < -1.f) {
-            blinkTimer = 10.f;
-        }
-        if (Input::getDown() & Input::Blink != 0) {
-            blinkTimer = -0.5f;
-        }
         if (time > 1.0) { // So you don't get a fucking seizure.
             lol.visible = !lol.visible;
             time = 0.0;
@@ -190,12 +183,35 @@ void renderGame(float interpolation) {
     Item::renderAll();
     fpsCounter.render();
     UI::setTextureless();
+
+    // Blinking
+    blinkTimer -= interpolation * 0.2f;
+    if (Input::getHit() & Input::Blink != 0) {
+        blinkTimer = 0.f;
+    }
+    if (Input::getDown() & Input::Blink != 0) {
+        blinkTimer = Math::maxFloat(-10.f, blinkTimer);
+    }
     if (blinkTimer <= 0.f) {
-        float alpha = 1.f + 0.5f - 3.f * Math::absFloat(blinkTimer + 0.5f);
+        float alpha = 0.f;
+        // Closing eyes.
+        if (blinkTimer > -5.f) {
+            alpha = Math::sin(Math::absFloat(blinkTimer / 20.f * 2.f * Math::PI));
+        // Fully closed.
+        } else if (blinkTimer > -15.f) {
+            alpha = 1.f;
+        // Opening eyes.
+        } else if (blinkTimer > -20.f) {
+            alpha = Math::absFloat(Math::sin(blinkTimer / 20.f * 2.f * Math::PI));
+        } else {
+            blinkTimer = 500.f;
+        }
         Debug::log(alpha);
         UI::setColor(Color(0.f, 0.f, 0.f, alpha));
         UI::addRect(Rectanglef(-50.f, -50.f, 50.f, 50.f));
     }
+    //
+
     fps++;
 }
 
