@@ -24,7 +24,7 @@ void CollisionMeshCollection::Instance::recalculateBBox() {
     }
 }
 
-Collision CollisionMeshCollection::Instance::checkCollision(Line3f line, float height, float radius) const {
+Collision CollisionMeshCollection::Instance::checkCollision(const Line3f& line, float height, float radius) const {
     return mesh->checkCollision(matrix, line, height, radius);
 }
 
@@ -65,7 +65,7 @@ void CollisionMeshCollection::removeInstance(int instance) {
     }
 }
 
-Collision CollisionMeshCollection::checkCollision(Line3f line, float height, float radius) const {
+Collision CollisionMeshCollection::checkCollision(const Line3f& line, float height, float radius) const {
     Collision retVal; retVal.hit = false;
 
     AABBox lineBox(line.pointA,line.pointB);
@@ -84,4 +84,3 @@ Collision CollisionMeshCollection::checkCollision(Line3f line, float height, flo
     }
     return retVal;
 }
-

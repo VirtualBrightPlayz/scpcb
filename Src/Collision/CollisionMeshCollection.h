@@ -16,7 +16,7 @@ class CollisionMeshCollection {
         class Instance {
             public:
                 Instance(CollisionMeshCollection* coll,CollisionMesh* msh, PGE::Matrix4x4f mtrx, int id);
-                Collision checkCollision(PGE::Line3f line,float height,float radius) const;
+                Collision checkCollision(const PGE::Line3f& line,float height,float radius) const;
                 CollisionMeshCollection* getCollection() const;
                 CollisionMesh* getMesh() const;
                 PGE::AABBox getBBox() const;
@@ -37,7 +37,7 @@ class CollisionMeshCollection {
         void updateInstance(int instance, const PGE::Matrix4x4f& matrix);
         void removeInstance(int instance);
 
-        Collision checkCollision(PGE::Line3f line,float height,float radius) const;
+        Collision checkCollision(const PGE::Line3f& line,float height,float radius) const;
 
     private:
         std::map<int, Instance> instances;

@@ -130,6 +130,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Src\Collision\Collider.h" />
     <ClInclude Include="..\Src\Collision\Collision.h" />
     <ClInclude Include="..\Src\Collision\CollisionMesh.h" />
     <ClInclude Include="..\Src\Collision\CollisionMeshCollection.h" />
@@ -197,6 +198,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <Image Include="..\Resources\logo.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Src\Collision\Collider.cpp" />
     <ClCompile Include="..\Src\Collision\Collision.cpp" />
     <ClCompile Include="..\Src\Collision\CollisionMesh.cpp" />
     <ClCompile Include="..\Src\Collision\CollisionMeshCollection.cpp" />

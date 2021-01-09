@@ -87,7 +87,7 @@ void main() {
         "Teleports the player to the coordinates sent as input.",
         function(float x,float y,float z) {
             Debug::log("Called teleport!");
-            testController.setPosition(Vector3f(x,y,z));
+            testController.position = Vector3f(x,y,z);
         }
     );
 	Console::register(
@@ -116,7 +116,7 @@ void main() {
     @test_shared_global = @lcz;
     @testCollCollection = Collision::Collection();
     @testController = PlayerController(5.0, 15.0);
-    testController.setPosition(Vector3f(0,16,0));
+    testController.position = Vector3f(0,16,0);
     testController.setCollisionCollection(testCollCollection);
     lcz.registerRoom("hll_plain_4_empty_a", Room4);
     lcz.registerRoom("hll_plain_4_empty_b", Room4);

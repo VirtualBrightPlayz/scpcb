@@ -4,6 +4,7 @@
 
 #include "../../PlayerController/PlayerController.h"
 #include "../../Graphics/Camera.h"
+#include "../../World/Pickable.h"
 
 PlayerController* PlayerControllerDefinitions::playerControllerFactory(float radius, float height) {
     PlayerController* newController = new PlayerController(radius, height);
@@ -26,8 +27,8 @@ void PlayerControllerDefinitions::release(void* ptr) {
     if (refCount[controller] <= 0) {
         refCount.erase(controller);
         refCounterManager->unlinkPtr(controller);
-        if (controller->getCollisionMeshCollection() != nullptr) {
-            refCounterManager->release(controller->getCollisionMeshCollection());
+        if (PickableManager::cmc != nullptr) {
+            refCounterManager->release(PickableManager::cmc);
         }
         delete controller;
     }
@@ -36,15 +37,15 @@ void PlayerControllerDefinitions::release(void* ptr) {
 
 void PlayerControllerDefinitions::setCollisionCollection(PlayerController* controller, CollisionMeshCollection* collection) {
     PlayerControllerDefinitions* e = this;
-    if (controller->getCollisionMeshCollection() != nullptr) {
-        refCounterManager->release(controller->getCollisionMeshCollection());
+    if (PickableManager::cmc != nullptr) {
+        refCounterManager->release(PickableManager::cmc);
     }
     controller->setCollisionMeshCollection(collection);
 }
 
 void PlayerControllerDefinitions::__UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller, Input input) {
     controller->update(tempCamera->getYawAngle(), tempCamera->getPitchAngle(), input);
-    tempCamera->position = controller->getPosition();// .add(PGE::Vector3f(0.f, 15.f, 0.f));
+    tempCamera->position = controller->position;// .add(PGE::Vector3f(0.f, 15.f, 0.f));
 
     release(controller);
 }
@@ -66,5 +67,5 @@ PlayerControllerDefinitions::PlayerControllerDefinitions(ScriptManager* mgr, Ref
 
     engine->RegisterGlobalFunction("void __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController@ controller, int input)", asMETHOD(PlayerControllerDefinitions, __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE), asCALL_THISCALL_ASGLOBAL, this);
 
-    engine->RegisterObjectMethod("PlayerController", "void setPosition(const Vector3f&in pos)", asMETHOD(PlayerController, setPosition), asCALL_THISCALL);
+    engine->RegisterObjectProperty("PlayerController", "Vector3f position", asOFFSET(PlayerController, position));
 }

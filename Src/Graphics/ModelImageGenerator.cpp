@@ -73,7 +73,7 @@ PGE::Texture* ModelImageGenerator::generate(const PGE::String& model, float scal
         gfxRes->dropModelInstance(mi);
 
         return tex;
-    } catch (std::exception) {
+    } catch (std::runtime_error) {
         delete tex;
         return nullptr;
     }
