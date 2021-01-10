@@ -17,7 +17,7 @@ class PlayerController {
         bool noclip;
     
         void setCollisionMeshCollection(CollisionMeshCollection* collection);
-        void update(float angle, float angleY, Input input);
+        void update(float angle, float angleY, Input input, float timeStep);
 
         float getCamAnimState() const;
 
@@ -29,16 +29,14 @@ class PlayerController {
         float stamina;
 
         float getClampedStamina() const;
-    
-        void updateMovement(float angle, float angleY, Input input);
 
-        void stand();
-        void walk(PGE::Vector2f dir);
+        void stand(float timeStep);
+        void walk(PGE::Vector2f dir, float timeStep);
 
-        const float WALK_SPEED_MAX = 0.3f;
-        const float SPRINT_SPEED_MAX = 0.7f;
+        const float WALK_SPEED_MAX = 18.0f;
+        const float SPRINT_SPEED_MAX = 42.0f;
         const float WALK_SPEED_SMOOTHING_FACTOR = 0.9f;
-        const float STAMINA_RECOVERY_RATE = 0.2f / 60.f;
+        const float STAMINA_RECOVERY_RATE = 0.2f;
 };
 
 #endif // PLAYERCONTROLLER_H_INCLUDED

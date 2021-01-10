@@ -8,7 +8,7 @@ class Collider {
 
         void setCollisionMeshCollection(CollisionMeshCollection* cmc);
 
-        PGE::Vector3f applyGravity(PGE::Vector3f position, float horizontalSpeed);
+        PGE::Vector3f applyGravity(PGE::Vector3f position, float horizontalSpeed, float timeStep);
         void resetGravity();
         PGE::Vector3f tryMove(PGE::Vector3f origin, const PGE::Vector3f& goal) const;
 
@@ -18,5 +18,5 @@ class Collider {
         float height;
         float radius;
 
-        const float GRAVITY = 0.01f;
+        const float GRAVITY = 0.6f;
 };

@@ -40,7 +40,7 @@ class ScriptWorld {
         ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, LocalizationManager* lm, PickableManager* pm, UIMesh* um,  Config* config, float timestep, BillboardManager* bm, ModelImageGenerator* mig);
         ~ScriptWorld();
 
-        void update();
+        void update(float timeStep);
         void drawGame(float interpolation);
         void drawMenu(float interpolation);
 };

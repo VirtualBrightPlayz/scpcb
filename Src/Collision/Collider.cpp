@@ -14,9 +14,10 @@ void Collider::setCollisionMeshCollection(CollisionMeshCollection* cmc) {
     this->cmc = cmc;
 }
 
-PGE::Vector3f Collider::applyGravity(PGE::Vector3f position, float horizontalSpeed) {
+// TODO: Scale this fully.
+PGE::Vector3f Collider::applyGravity(PGE::Vector3f position, float horizontalSpeed, float timeStep) {
     int iterations = 0;
-    fallSpeed += GRAVITY;
+    fallSpeed += GRAVITY * timeStep;
     PGE::Line3f line = PGE::Line3f(position, position.add(PGE::Vector3f(0.f, -fallSpeed - (horizontalSpeed * 2.f), 0.f)));
     while (true) {
         Collision coll = cmc->checkCollision(line, height, radius);

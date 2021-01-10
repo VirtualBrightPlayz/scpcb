@@ -165,7 +165,7 @@ FloatInterpolator@ blinkInterpolator = FloatInterpolator();
 
 void update(float deltaTime) {
     if (!World::paused) {
-        __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown());
+        __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown(), deltaTime);
         lcz.update(deltaTime);
         time += deltaTime;
         if (time > 1.f) { // So you don't get a fucking seizure.
@@ -190,6 +190,8 @@ void update(float deltaTime) {
             blinkInterpolator.update(blinkTimer);
         }
         aaaa.blinkMeter.value = Math::ceil(blinkTimer / 500.f * aaaa.blinkMeter.maxValue);
+    } else if (deltaTime == 0.f) {
+        __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown(), 0.f);
     }
     Item::updateAll();
     menuManager.update();

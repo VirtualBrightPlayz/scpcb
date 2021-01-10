@@ -155,7 +155,8 @@ ScriptWorld::~ScriptWorld() {
     delete manager;
 }
 
-void ScriptWorld::update() {
+void ScriptWorld::update(float timeStep) {
+    perTickEventDefinition->setArgument("deltaTime", timeStep);
     perTickEventDefinition->execute();
 }
 

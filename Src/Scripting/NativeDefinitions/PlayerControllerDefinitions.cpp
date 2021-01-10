@@ -43,9 +43,13 @@ void PlayerControllerDefinitions::setCollisionCollection(PlayerController* contr
     controller->setCollisionMeshCollection(collection);
 }
 
-void PlayerControllerDefinitions::__UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller, Input input) {
-    controller->update(tempCamera->getYawAngle(), tempCamera->getPitchAngle(), input);
+void PlayerControllerDefinitions::__UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller, Input input, float timeStep) {
+    controller->update(tempCamera->getYawAngle(), tempCamera->getPitchAngle(), input, timeStep);
     tempCamera->position = controller->position;// .add(PGE::Vector3f(0.f, 15.f, 0.f));
+    // Fixes interpolation bug, hella ugly but we'll get rid of this altogether soon anyways.
+    if (timeStep == 0.f) {
+        tempCamera->update();
+    }
 
     release(controller);
 }
@@ -65,7 +69,7 @@ PlayerControllerDefinitions::PlayerControllerDefinitions(ScriptManager* mgr, Ref
     engine->RegisterObjectMethod("PlayerController", "void setCollisionCollection(Collision::Collection@ coll)", asMETHOD(PlayerControllerDefinitions,setCollisionCollection), asCALL_THISCALL_OBJFIRST, this);
     engine->RegisterObjectMethod("PlayerController", "void update(float yaw, float pitch, Input inputs)", asMETHOD(PlayerController,update), asCALL_THISCALL);
 
-    engine->RegisterGlobalFunction("void __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController@ controller, int input)", asMETHOD(PlayerControllerDefinitions, __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE), asCALL_THISCALL_ASGLOBAL, this);
+    engine->RegisterGlobalFunction("void __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController@ controller, int input, float timeStep)", asMETHOD(PlayerControllerDefinitions, __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE), asCALL_THISCALL_ASGLOBAL, this);
 
     engine->RegisterObjectProperty("PlayerController", "Vector3f position", asOFFSET(PlayerController, position));
 }

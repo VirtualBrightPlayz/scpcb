@@ -137,19 +137,20 @@ void World::runTick(float timeStep) {
         updatePlaying(timeStep);
     }
 
-    scripting->update();
+    scripting->update(timeStep);
 
     // If the game was (un-/)paused this tick then reset the mouse position.
     if (paused != oldPaused) {
+        oldPaused = paused;
         if (paused) {
             // Null all interpolator differences.
+            runTick(0.f);
             updatePlaying(0.f);
             io->setMouseVisibility(true);
         } else {
             io->setMouseVisibility(false);
             io->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
         }
-        oldPaused = paused;
     }
 }
 

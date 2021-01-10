@@ -21,7 +21,7 @@ class PlayerControllerDefinitions : public RefCounter {
         void setCollisionCollection(PlayerController* controller, CollisionMeshCollection* collection);
 
         Camera* tempCamera;
-        void __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller, Input input);
+        void __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(PlayerController* controller, Input input, float timeStep);
 
     public:
         PlayerControllerDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr, Camera* cam);
