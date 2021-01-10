@@ -157,24 +157,42 @@ void exit() {
     Debug::log("YEAH");
 }
 
-float time = 0.0;
+float time = 0.f;
 float blinkTimer = 10.f;
+
+external class FloatInterpolator;
+FloatInterpolator@ blinkInterpolator = FloatInterpolator();
 
 void update(float deltaTime) {
     if (!World::paused) {
         __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown());
         lcz.update(deltaTime);
         time += deltaTime;
-        if (time > 1.0) { // So you don't get a fucking seizure.
+        if (time > 1.f) { // So you don't get a fucking seizure.
             lol.visible = !lol.visible;
-            time = 0.0;
+            time = 0.f;
             fpsCounter.text = "FPS: " + toString(fps);
             fps = 0;
         }
+        // Blinking
+        blinkTimer -= deltaTime * 50.f;
+        if (Input::getHit() & Input::Blink != 0) {
+            blinkTimer = 0.f;
+        }
+        if (Input::getDown() & Input::Blink != 0) {
+            blinkTimer = Math::maxFloat(-10.f, blinkTimer);
+        }
+        blinkInterpolator.update(blinkTimer);
+        if (blinkTimer <= -20.f) {
+            blinkTimer = 500.f;
+        }
+        aaaa.blinkMeter.value = Math::ceil(blinkTimer / 500.f * aaaa.blinkMeter.maxValue);
     }
     Item::updateAll();
     menuManager.update();
 }
+
+HUDMenu@ aaaa = HUDMenu();
 
 void renderGame(float interpolation) {
     if (test_shared_global == null) { return; }
@@ -184,40 +202,27 @@ void renderGame(float interpolation) {
     Billboard::renderAll();
     Item::renderAll();
     fpsCounter.render();
-    UI::setTextureless();
 
-    // Blinking
-    blinkTimer -= interpolation * 0.2f;
-    if (Input::getHit() & Input::Blink != 0) {
-        blinkTimer = 0.f;
-    }
-    if (Input::getDown() & Input::Blink != 0) {
-        blinkTimer = Math::maxFloat(-10.f, blinkTimer);
-    }
-    if (blinkTimer <= 0.f) {
+    float interpolatedBlink = Math::maxFloat(-20.f, blinkInterpolator.lerp(interpolation));
+    if (interpolatedBlink < 0.f) {
         float alpha = 0.f;
         // Closing eyes.
-        if (blinkTimer > -5.f) {
-            alpha = Math::sin(Math::absFloat(blinkTimer / 20.f * 2.f * Math::PI));
+        if (interpolatedBlink > -5.f) {
+            alpha = Math::sin(Math::absFloat(interpolatedBlink / 20.f * 2.f * Math::PI));
         // Fully closed.
-        } else if (blinkTimer > -15.f) {
+        } else if (interpolatedBlink > -15.f) {
             alpha = 1.f;
         // Opening eyes.
-        } else if (blinkTimer > -20.f) {
-            alpha = Math::absFloat(Math::sin(blinkTimer / 20.f * 2.f * Math::PI));
         } else {
-            blinkTimer = 500.f;
+            alpha = Math::absFloat(Math::sin(interpolatedBlink / 20.f * 2.f * Math::PI));
         }
-        Debug::log(alpha);
+        UI::setTextureless();
         UI::setColor(Color(0.f, 0.f, 0.f, alpha));
         UI::addRect(Rectanglef(-50.f, -50.f, 50.f, 50.f));
     }
-    //
 
     fps++;
 }
-
-HUDMenu@ aaaa = HUDMenu();
 
 void renderMenu(float interpolation) {
     menuManager.render();

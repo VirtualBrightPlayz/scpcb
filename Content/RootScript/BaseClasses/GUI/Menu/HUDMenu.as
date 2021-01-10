@@ -3,11 +3,16 @@ namespace HUDMenu {
 }
 
 shared class HUDMenu : Menu {
-    private GUILoadBar@ blinkMeter;
+    private GUILoadBar@ _blinkMeter;
+    GUILoadBar@ blinkMeter {
+        get {
+            return _blinkMeter;
+        }
+    }
 
     HUDMenu() {
         super("hud");
 
-        @blinkMeter = GUILoadBar(this, 0, 0, 10, 10);
+        @_blinkMeter = GUILoadBar(this, 0, 0, 10);
     }
 }
