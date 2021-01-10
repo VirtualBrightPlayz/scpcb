@@ -111,7 +111,9 @@ void ConsoleDefinitions::registerCommand(const PGE::String& name, const PGE::Str
     }
     Command newCommand = { func, nullptr, name, helpText };
     commands.emplace(name.getHashCode(), newCommand);
+#ifdef DEBUG
     std::cout << "Command: " << name << std::endl;
+#endif
 }
 
 void ConsoleDefinitions::registerCommandNoHelp(const PGE::String& name, void* f, int typeId) {
