@@ -182,9 +182,12 @@ void update(float deltaTime) {
         if (Input::getDown() & Input::Blink != 0) {
             blinkTimer = Math::maxFloat(-10.f, blinkTimer);
         }
-        blinkInterpolator.update(blinkTimer);
+        
         if (blinkTimer <= -20.f) {
+            blinkInterpolator.update(-20.f);
             blinkTimer = 500.f;
+        } else {
+            blinkInterpolator.update(blinkTimer);
         }
         aaaa.blinkMeter.value = Math::ceil(blinkTimer / 500.f * aaaa.blinkMeter.maxValue);
     }
@@ -203,7 +206,7 @@ void renderGame(float interpolation) {
     Item::renderAll();
     fpsCounter.render();
 
-    float interpolatedBlink = Math::maxFloat(-20.f, blinkInterpolator.lerp(interpolation));
+    float interpolatedBlink = blinkInterpolator.lerp(interpolation);
     if (interpolatedBlink < 0.f) {
         float alpha = 0.f;
         // Closing eyes.
