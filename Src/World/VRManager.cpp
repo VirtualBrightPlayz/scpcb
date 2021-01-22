@@ -28,26 +28,17 @@ static PGE::Matrix4x4f projectionMatrixOpenVrToPge(vr::HmdMatrix44_t vrm) {
     );
 }
 
-static PGE::Matrix4x4f matrixOpenVrToPge(vr::HmdMatrix44_t vrm) {
-    return PGE::Matrix4x4f(
-        vrm.m[0][0], vrm.m[1][0], vrm.m[2][0], vrm.m[3][0],
-        vrm.m[0][1], vrm.m[1][1], vrm.m[2][1], vrm.m[3][1],
-        vrm.m[0][2], vrm.m[1][2], vrm.m[2][2], vrm.m[3][2],
-        vrm.m[0][3], vrm.m[1][3], vrm.m[2][3], vrm.m[3][3]
-    );
-}
-
-static PGE::Matrix4x4f matrixOpenVrToPge(vr::HmdMatrix34_t vrm) {
+static PGE::Matrix4x4f eyeMatrixOpenVrToPge(vr::HmdMatrix34_t vrm) {
     return PGE::Matrix4x4f(
         vrm.m[0][0], vrm.m[1][0], vrm.m[2][0], 0.f,
         vrm.m[0][1], vrm.m[1][1], vrm.m[2][1], 0.f,
         vrm.m[0][2], vrm.m[1][2], vrm.m[2][2], 0.f,
-        vrm.m[0][3], vrm.m[1][3], vrm.m[2][3], 1.f
+        vrm.m[0][3] * 10.f, vrm.m[1][3] * 10.f, vrm.m[2][3] * 10.f, 1.f
     );
 }
 
 static PGE::Vector3f vrMatrixToPosition(vr::HmdMatrix34_t vrm) {
-    return PGE::Vector3f(vrm.m[0][3], vrm.m[1][3], -vrm.m[2][3]).multiply(20.f);
+    return PGE::Vector3f(vrm.m[0][3], vrm.m[1][3], -vrm.m[2][3]).multiply(10.f);
 }
 
 static void vrThrowOnInputError(vr::EVRInputError ierr, PGE::String msg) {
@@ -76,9 +67,9 @@ VRManager::VRManager(Config* config, GraphicsResources* gfxres) {
     camera = new VRCamera(gfxres, width, height);
 
     leftProjectionMatrix = projectionMatrixOpenVrToPge(vrSystem->GetProjectionMatrix(vr::Eye_Left, 0.01f, 30.f));
-    leftProjectionMatrix = matrixOpenVrToPge(vrSystem->GetEyeToHeadTransform(vr::Eye_Left)).product(leftProjectionMatrix);
+    leftProjectionMatrix = eyeMatrixOpenVrToPge(vrSystem->GetEyeToHeadTransform(vr::Eye_Left)).product(leftProjectionMatrix);
     rightProjectionMatrix = projectionMatrixOpenVrToPge(vrSystem->GetProjectionMatrix(vr::Eye_Right, 0.01f, 30.f));
-    rightProjectionMatrix = matrixOpenVrToPge(vrSystem->GetEyeToHeadTransform(vr::Eye_Right)).product(rightProjectionMatrix);
+    rightProjectionMatrix = eyeMatrixOpenVrToPge(vrSystem->GetEyeToHeadTransform(vr::Eye_Right)).product(rightProjectionMatrix);
 
     texture = nullptr;
     

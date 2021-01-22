@@ -234,8 +234,8 @@ void World::draw(float interpolation, RenderType r) {
     }
     
     if (vrm != nullptr) {
-        gfxRes->getDebugGraphics()->draw3DLine(PGE::Line3f(camera->position, camera->position.add(vrm->getHandPosition(true))), PGE::Color::Green, 1.f);
-        gfxRes->getDebugGraphics()->draw3DLine(PGE::Line3f(camera->position, camera->position.add(vrm->getHandPosition(false))), PGE::Color::Red, 1.f);
+        gfxRes->getDebugGraphics()->draw3DLine(PGE::Line3f(camera->position, camera->position.add(vrm->getHandPosition(true))), PGE::Color::Green, 0.05f);
+        gfxRes->getDebugGraphics()->draw3DLine(PGE::Line3f(camera->position, camera->position.add(vrm->getHandPosition(false))), PGE::Color::Red, 0.05f);
     }
 
     if (r != RenderType::NoUI) {
