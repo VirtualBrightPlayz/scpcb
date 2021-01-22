@@ -8,6 +8,7 @@
 
 #include "Timing.h"
 #include "Pickable.h"
+#include "VRManager.h"
 #include "ScriptWorld.h"
 #include "../Graphics/Camera.h"
 #include "../Graphics/GraphicsResources.h"
@@ -32,7 +33,13 @@
 World::World() {
     config = new Config("options.ini");
 
-    camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
+    if (config->vr->value) {
+        vrm = new VRManager(config, gfxRes);
+        camera = vrm->getCamera();
+    } else {
+        vrm = nullptr;
+        camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
+    }
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
     graphics->setViewport(PGE::Rectanglei(0, 0, config->getWidth(), config->getHeight()));
@@ -70,6 +77,10 @@ World::World() {
     applyConfig(config);
 
     shutdownRequested = false;
+    
+    if (vrm != nullptr) {
+        vrm->createTexture(graphics, config);
+    }
 }
 
 World::~World() {
@@ -80,6 +91,8 @@ World::~World() {
     delete uiMesh;
     delete keyBinds;
     delete mouseData;
+
+    delete vrm;
 
     delete camera;
     delete timing;
@@ -113,9 +126,52 @@ bool World::run() {
     // Rendering next, don't use accumulator.
     graphics->update();
 
-    graphics->resetRenderTarget();
-    graphics->clear(PGE::Color(1.f, 0.f, 1.f));
-    draw((float)timing->getInterpolationFactor(), RenderType::All);
+    if (vrm == nullptr) {
+        graphics->resetRenderTarget();
+        graphics->clear(PGE::Color(1.f, 0.f, 1.f));
+        draw((float)timing->getInterpolationFactor(), RenderType::All);
+    } else {
+        vrm->update();
+        graphics->setRenderTarget(vrm->getTexture());
+
+        vrm->setEye(true);
+        graphics->clear(PGE::Color(0.f, 0.f, 0.f));
+        draw(1.f, RenderType::NoUI);
+        vr::Texture_t leftEyeTexture = {
+            vrm->getTexture()->getNative(),
+#ifdef __APPLE__
+            vr::TextureType_OpenGL,
+#else
+            vr::TextureType_DirectX,
+#endif
+            vr::ColorSpace_Gamma
+        };
+        vr::VRCompositor()->Submit(vr::Eye_Left, &leftEyeTexture, NULL);
+
+        vrm->setEye(false);
+        graphics->clear(PGE::Color(0.f, 0.f, 0.f));
+        draw(1.f, RenderType::NoUI);
+        vr::Texture_t rightEyeTexture = {
+        vrm->getTexture()->getNative(),
+#ifdef __APPLE__
+            vr::TextureType_OpenGL,
+#else
+            vr::TextureType_DirectX,
+#endif
+         vr::ColorSpace_Gamma
+        };
+        vr::VRCompositor()->Submit(vr::Eye_Right, &rightEyeTexture, NULL);
+
+        graphics->resetRenderTarget();
+        graphics->setDepthTest(false);
+        uiMesh->setTextured(vrm->getTexture(), false);
+        uiMesh->addRect(PGE::Rectanglef(-50.f * config->getAspectRatio(),
+            -50.f,
+            50.f * config->getAspectRatio(),
+            50.f));
+        uiMesh->endRender();
+        draw(1.f, RenderType::UIOnly);
+    }
 
     // Get elapsed seconds since last run.
     double secondsPassed = timing->getElapsedSeconds();
@@ -132,6 +188,10 @@ void World::runTick(float timeStep) {
 
     Input downInputs = keyBinds->getDownInputs();
     Input hitInputs = keyBinds->getHitInputs();
+
+    if (vrm != nullptr) {
+        vrm->tick(timeStep);
+    }
 
     if (!paused) {
         updatePlaying(timeStep);
@@ -158,6 +218,24 @@ void World::draw(float interpolation, RenderType r) {
     if (r != RenderType::UIOnly) {
         drawPlaying(interpolation);
         scripting->drawGame(interpolation);
+
+        if (vrm != nullptr && vrm->getFade() > 0.f) {
+            graphics->setDepthTest(false);
+
+            uiMesh->setTextureless();
+            uiMesh->setColor(PGE::Color(0.f, 0.f, 0.f, vrm->getFade()));
+            uiMesh->addRect(PGE::Rectanglef(-50.f * config->getAspectRatio(),
+                -50.f,
+                50.f * config->getAspectRatio(),
+                50.f));
+            uiMesh->endRender();
+            graphics->setDepthTest(true);
+        }
+    }
+    
+    if (vrm != nullptr) {
+        gfxRes->getDebugGraphics()->draw3DLine(PGE::Line3f(camera->position, camera->position.add(vrm->getHandPosition(true))), PGE::Color::Green, 1.f);
+        gfxRes->getDebugGraphics()->draw3DLine(PGE::Line3f(camera->position, camera->position.add(vrm->getHandPosition(false))), PGE::Color::Red, 1.f);
     }
 
     if (r != RenderType::NoUI) {
