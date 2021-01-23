@@ -28,17 +28,19 @@ static PGE::Matrix4x4f projectionMatrixOpenVrToPge(vr::HmdMatrix44_t vrm) {
     );
 }
 
+static const float TODO_REFACTOR_VRPOS_SCALE = 10.f;
+
 static PGE::Matrix4x4f eyeMatrixOpenVrToPge(vr::HmdMatrix34_t vrm) {
     return PGE::Matrix4x4f(
         vrm.m[0][0], vrm.m[1][0], vrm.m[2][0], 0.f,
         vrm.m[0][1], vrm.m[1][1], vrm.m[2][1], 0.f,
         vrm.m[0][2], vrm.m[1][2], vrm.m[2][2], 0.f,
-        vrm.m[0][3] * 10.f, vrm.m[1][3] * 10.f, vrm.m[2][3] * 10.f, 1.f
+        vrm.m[0][3] * TODO_REFACTOR_VRPOS_SCALE, vrm.m[1][3] * TODO_REFACTOR_VRPOS_SCALE, vrm.m[2][3] * TODO_REFACTOR_VRPOS_SCALE, 1.f
     );
 }
 
 static PGE::Vector3f vrMatrixToPosition(vr::HmdMatrix34_t vrm) {
-    return PGE::Vector3f(vrm.m[0][3], vrm.m[1][3], -vrm.m[2][3]).multiply(10.f);
+    return PGE::Vector3f(vrm.m[0][3], vrm.m[1][3], -vrm.m[2][3]).multiply(TODO_REFACTOR_VRPOS_SCALE);
 }
 
 static void vrThrowOnInputError(vr::EVRInputError ierr, PGE::String msg) {
@@ -121,11 +123,13 @@ void VRManager::update() {
                 if (vrSystem->GetTrackedDeviceClass(i) == vr::TrackedDeviceClass_HMD) {
                     vr::HmdMatrix34_t mat = tdp[i].mDeviceToAbsoluteTracking;
                     PGE::Matrix4x4f camRot = camera->getRotationMatrix();
-                    // Magic
+                    // Math!
+                    PGE::Vector3f lookAt = PGE::Vector3f(-mat.m[0][2], -mat.m[1][2], mat.m[2][2]);
+                    PGE::Vector3f upVector = PGE::Vector3f(mat.m[0][1], mat.m[1][1], -mat.m[2][1]);
                     camera->setViewMatrix(PGE::Matrix4x4f::constructViewMat(
-                        camera->position.add(camRot.transform(vrMatrixToPosition(mat))),
-                        camRot.transform(PGE::Vector3f(-mat.m[0][2], -mat.m[1][2], mat.m[2][2])),
-                        camRot.transform(PGE::Vector3f(mat.m[0][1], mat.m[1][1], -mat.m[2][1]))
+                        camera->position.add(lookAt).add(camRot.transform(vrMatrixToPosition(mat))),
+                        camRot.transform(lookAt),
+                        camRot.transform(upVector)
                     ));
                 } else if (vrSystem->GetTrackedDeviceClass(i) == vr::TrackedDeviceClass_Controller) {
                     vr::HmdMatrix34_t mat = tdp[i].mDeviceToAbsoluteTracking;
