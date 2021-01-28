@@ -175,21 +175,21 @@ void update(float deltaTime) {
             fps = 0;
         }
         // Blinking
-        blinkTimer -= deltaTime * 50.f;
+        blinkTimer -= deltaTime;
         if (Input::getHit() & Input::Blink != 0) {
             blinkTimer = 0.f;
         }
         if (Input::getDown() & Input::Blink != 0) {
-            blinkTimer = Math::maxFloat(-10.f, blinkTimer);
+            blinkTimer = Math::maxFloat(-0.2f, blinkTimer);
         }
         
-        if (blinkTimer <= -20.f) {
-            blinkInterpolator.update(-20.f);
-            blinkTimer = 500.f;
+        if (blinkTimer <= -0.4f) {
+            blinkInterpolator.update(-0.4f);
+            blinkTimer = 10.f;
         } else {
             blinkInterpolator.update(blinkTimer);
         }
-        aaaa.blinkMeter.value = Math::ceil(blinkTimer / 500.f * aaaa.blinkMeter.maxValue);
+        aaaa.blinkMeter.value = Math::ceil(blinkTimer / 10.f * aaaa.blinkMeter.maxValue);
     } else if (deltaTime == 0.f) {
         __UPDATE_PLAYERCONTROLLER_TEST_TODO_REMOVE(testController, Input::getDown(), 0.f);
     }
@@ -212,10 +212,10 @@ void renderGame(float interpolation) {
     if (interpolatedBlink < 0.f) {
         float alpha = 0.f;
         // Closing eyes.
-        if (interpolatedBlink > -5.f) {
-            alpha = Math::sin(Math::absFloat(interpolatedBlink / 20.f * 2.f * Math::PI));
+        if (interpolatedBlink > -0.1f) {
+            alpha = Math::sin(Math::absFloat(interpolatedBlink / 0.4f * 2.f * Math::PI));
         // Fully closed.
-        } else if (interpolatedBlink > -15.f) {
+        } else if (interpolatedBlink > -0.3f) {
             alpha = 1.f;
         // Opening eyes.
         } else {
