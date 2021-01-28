@@ -1,5 +1,9 @@
 #include "MathUtil.h"
 
+#ifdef DEBUG
+#include <Exception/Exception.h>
+#endif
+
 float MathUtil::degToRad(float degree) {
     return degree * PI / 180.0f;
 }
@@ -33,26 +37,36 @@ float MathUtil::minFloat(float val, float other) {
 }
 
 int MathUtil::clampInt(int val, int min, int max) {
+#ifdef DEBUG
+    if (min > max) {
+        throw PGE::Exception("clampInt", "Incorrect order!");
+    }
+#endif
     if (val < min) { return min; }
     if (val > max) { return max; }
     return val;
 }
 
 float MathUtil::clampFloat(float val, float min, float max) {
+#ifdef DEBUG
+    if (min > max) {
+        throw PGE::Exception("clampFloat", "Incorrect order!");
+    }
+#endif
     if (val < min) { return min; }
     if (val > max) { return max; }
     return val;
 }
 
 float MathUtil::absFloat(float val) {
-    if (val < 0) {
+    if (val < 0.f) {
         return -val;
     }
     return val;
 }
 
 double MathUtil::absDouble(double val) {
-    if (val < 0) {
+    if (val < 0.0) {
         return -val;
     }
     return val;
