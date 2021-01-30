@@ -144,6 +144,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Input\Input.h" />
     <ClInclude Include="..\Src\Input\KeyBinds.h" />
     <ClInclude Include="..\Src\Input\MouseData.h" />
+    <ClInclude Include="..\Src\Models\CBR.h" />
     <ClInclude Include="..\Src\Models\Model.h" />
     <ClInclude Include="..\Src\Models\RM2.h" />
     <ClInclude Include="..\Src\PlayerController\PlayerController.h" />
@@ -213,6 +214,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Input\KeyBinds.cpp" />
     <ClCompile Include="..\Src\Input\MouseData.cpp" />
     <ClCompile Include="..\Src\Main.cpp" />
+    <ClCompile Include="..\Src\Models\CBR.cpp" />
     <ClCompile Include="..\Src\Models\Model.cpp" />
     <ClCompile Include="..\Src\Models\RM2.cpp" />
     <ClCompile Include="..\Src\PlayerController\PlayerController.cpp" />

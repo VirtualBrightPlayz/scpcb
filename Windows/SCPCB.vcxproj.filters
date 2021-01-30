@@ -185,6 +185,9 @@
     <ClCompile Include="..\Src\Collision\Collider.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Models\CBR.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -364,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="..\Src\Collision\Collider.h">
       <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Models\CBR.h">
+      <Filter>Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

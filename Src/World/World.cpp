@@ -12,6 +12,7 @@
 #include "../Graphics/Camera.h"
 #include "../Graphics/GraphicsResources.h"
 #include "../Graphics/DebugGraphics.h"
+#include "../Models/CBR.h"
 #include "../Save/Config.h"
 #include "../Input/KeyBinds.h"
 #include "../Input/Input.h"
@@ -29,48 +30,12 @@
 #include <Math/Random.h>
 #include <chrono>
 
+static CBR* lol;
+
 World::World() {
     config = new Config("options.ini");
 
     camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
-
-    // TODO: Benchmark
-    PGE::Matrix4x4f a = PGE::Matrix4x4f(0, 1, 3, 6, 1, 6, 234, 23, 6, 23, 0, 34, 2, 0, 0, 0);
-    PGE::Matrix4x4f b = PGE::Matrix4x4f(2, 1, 5, 6, 1, 6, 234, 234, 6, 23, 1, 4, 2, 0, 0, 1);
-    PGE::Matrix4x4f c = PGE::Matrix4x4f(0, 0, 0, 1, 122, 3, 4, 1, 0, 0, 0, 0, 2, 0, 0, 1);
-
-    PGE::Matrix4x4f d;
-
-    long long times = 0;
-    long long times2 = 0;
-    long long times3 = 0;
-    auto time = std::chrono::high_resolution_clock::now();
-    for (int j = 0; j < 100; j++) {
-        time = std::chrono::high_resolution_clock::now();
-        for (int i = 0; i < 100; i++) {
-            a * b;
-            a * c;
-            b * c;
-        }
-        times += (std::chrono::high_resolution_clock::now() - time).count();
-        time = std::chrono::high_resolution_clock::now();
-        for (int i = 0; i < 100; i++) {
-            a.product(b);
-            a.product(c);
-            b.product(c);
-        }
-        times2 += (std::chrono::high_resolution_clock::now() - time).count();
-        time = std::chrono::high_resolution_clock::now();
-        for (int i = 0; i < 100; i++) {
-            a *= b;
-            a *= c;
-            b *= c;
-        }
-        times3 += (std::chrono::high_resolution_clock::now() - time).count();
-    }
-    std::cout << times / 100 << std::endl;
-    std::cout << times2 / 100 << std::endl;
-    std::cout << times3 / 100 << std::endl;
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
     graphics->setViewport(PGE::Rectanglei(0, 0, config->getWidth(), config->getHeight()));
@@ -106,6 +71,8 @@ World::World() {
     miGen->deinitialize();
 
     applyConfig(config);
+
+    lol = new CBR(gfxRes, "asd.cbr");
 
     shutdownRequested = false;
 }
@@ -196,6 +163,7 @@ void World::draw(float interpolation, RenderType r) {
     if (r != RenderType::UIOnly) {
         drawPlaying(interpolation);
         scripting->drawGame(interpolation);
+        lol->render(PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(0, 0, 0), PGE::Vector3f(0.1, 0.1, 0.1), PGE::Vector3f(0, 0, 0)));
     }
 
     if (r != RenderType::NoUI) {
