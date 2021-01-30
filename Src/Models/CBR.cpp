@@ -42,7 +42,9 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
     int32_t texSize = reader.readInt();
     PGE::String* textureNames = new PGE::String[texSize];
     PGE::Material** materials = new PGE::Material*[texSize];
-    std::set<int> toolTextures; // TODO: Better solution.
+    std::set<int> toolTextures;
+    // TODO: only skip tooltextures that are not recognized for an ingame purpose
+    // i.e. tooltextures/invisible_collision should be handled as a special case
     for (int i = 0; i < texSize; i++) {
         textureNames[i] = reader.readNullTerminatedString();
         if (textureNames[i].findFirst("tooltextures") == -1) {
@@ -72,16 +74,18 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
             for (int k = 1; k < vertexCount - 1; k++) {
                 primitives[textureID].push_back(PGE::Primitive(
                     vertexOffset,
-                    vertexOffset + k,
-                    vertexOffset + k + 1
+                    vertexOffset + k + 1,
+                    vertexOffset + k
                 ));
             }
             for (int k = 0; k < vertexCount; k++) {
                 PGE::Vertex tempVertex;
                 tempVertex.setVector4f("position", PGE::Vector4f(reader.readVector3f(), 1.f));
                 tempVertex.setVector3f("normal", PGE::Vector3f::one);
-                tempVertex.setVector2f("lmUv", PGE::Vector2f(reader.readFloat(), reader.readFloat()));
-                tempVertex.setVector2f("diffUv", PGE::Vector2f(reader.readFloat(), reader.readFloat()));
+                float lmU = reader.readFloat(); float lmV = reader.readFloat();
+                tempVertex.setVector2f("lmUv", PGE::Vector2f(lmU, lmV));
+                float diffU = reader.readFloat(); float diffV = reader.readFloat();
+                tempVertex.setVector2f("diffUv", PGE::Vector2f(diffU, diffV));
                 tempVertex.setColor("color", PGE::Color::White);
                 vertices[textureID].push_back(tempVertex);
             }
