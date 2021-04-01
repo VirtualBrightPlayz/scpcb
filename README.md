@@ -6,7 +6,7 @@ The game is based on the works of the [SCP Foundation community][scp-wiki].
 
 # Requirements:
 * [OpenAL SDK][openal].
-
+T
 Windows:
 * [Visual Studio 2019][vs2019].
 
