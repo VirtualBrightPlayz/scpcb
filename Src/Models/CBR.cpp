@@ -7,6 +7,11 @@
 
 #include "../Graphics/GraphicsResources.h"
 
+static const PGE::FilePath shaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/");
+static const PGE::FilePath shaderNormalPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaqueNormalMap/");
+
+static const PGE::String texturePath = "SCPCB/GFX/Map/Textures/";
+
 enum Lightmapped {
     No = 0,
     Fully = 1,
@@ -14,8 +19,13 @@ enum Lightmapped {
 };
 
 CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
+    this->gr = gr;
+
     shader = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/"), true);
     shaderModelMatrixConstant = shader->getVertexShaderConstant("modelMatrix");
+
+    shaderNormal = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaqueNormalMap/"), true);
+    shaderNormalModelMatrixConstant = shaderNormal->getVertexShaderConstant("modelMatrix");
 
     PGE::BinaryReader reader = PGE::BinaryReader(PGE::FilePath::fromStr(filename));
 
@@ -25,9 +35,8 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
     uint32_t revision = reader.readUInt();
 
     // Lightmaps
-    bool lightmapped = reader.readByte() > No;
-    PGE::Texture** lightmaps = new PGE::Texture*[4];
-    if (lightmapped) {
+    if (reader.readByte() > No) {
+        lightmaps = new PGE::Texture*[4];
         for (int i = 0; i < 4; i++) {
             int size = reader.readInt();
             uint8_t* bytes = reader.readBytes(size);
@@ -41,7 +50,8 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
     // Texture dictionary
     int32_t texSize = reader.readInt();
     PGE::String* textureNames = new PGE::String[texSize];
-    PGE::Material** materials = new PGE::Material*[texSize];
+    allTextures = std::vector<PGE::Texture*>();
+    materials = std::vector<PGE::Material*>(texSize);
     std::set<int> toolTextures;
     // TODO: only skip tooltextures that are not recognized for an ingame purpose
     // i.e. tooltextures/invisible_collision should be handled as a special case
@@ -52,14 +62,24 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
             for (int j = 0; j < 3; j++) {
                 textures.push_back(lightmaps[j]);
             }
-            textures.push_back(gr->getTexture("SCPCB/GFX/Map/Textures/" + textureNames[i]));
-            materials[i] = new PGE::Material(shader, textures);
+            PGE::Texture* tex = gr->getTexture(texturePath + textureNames[i]);
+            textures.push_back(tex);
+            allTextures.push_back(tex);
+            bool normalMapped = false;
+            try {
+                PGE::Texture* texNormal = gr->getTexture(texturePath + textureNames[i] + "_n");
+                normalMapped = true;
+                textures.push_back(texNormal);
+                allTextures.push_back(texNormal);
+            } catch (std::runtime_error) {}
+            materials[i] = new PGE::Material(normalMapped ? shaderNormal : shader, textures);
         } else {
             toolTextures.insert(i);
         }
     }
 
     // Solids
+    // 2D arrays
     std::vector<PGE::Vertex>* vertices = new std::vector<PGE::Vertex>[texSize];
     std::vector<PGE::Primitive>* primitives = new std::vector<PGE::Primitive>[texSize];
     int solidCount = reader.readInt();
@@ -82,10 +102,8 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
                 PGE::Vertex tempVertex;
                 tempVertex.setVector4f("position", PGE::Vector4f(reader.readVector3f(), 1.f));
                 tempVertex.setVector3f("normal", PGE::Vector3f::one);
-                float lmU = reader.readFloat(); float lmV = reader.readFloat();
-                tempVertex.setVector2f("lmUv", PGE::Vector2f(lmU, lmV));
-                float diffU = reader.readFloat(); float diffV = reader.readFloat();
-                tempVertex.setVector2f("diffUv", PGE::Vector2f(diffU, diffV));
+                tempVertex.setVector2f("lmUv", reader.readVector2f());
+                tempVertex.setVector2f("diffUv", reader.readVector2f());
                 tempVertex.setColor("color", PGE::Color::White);
                 vertices[textureID].push_back(tempVertex);
             }
@@ -104,15 +122,26 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
     delete[] vertices;
     delete[] primitives;
     delete[] textureNames;
-    delete[] lightmaps;
 }
 
 CBR::~CBR() {
-
+    gr->dropShader(shader);
+    gr->dropShader(shaderNormal);
+    for (int i = 0; i < 4; i++) {
+        delete lightmaps[i];
+    }
+    delete[] lightmaps;
+    for (PGE::Texture* texture : allTextures) {
+        gr->dropTexture(texture);
+    }
+    for (PGE::Material* material : materials) {
+        delete material;
+    }
 }
 
 void CBR::render(const PGE::Matrix4x4f& modelMatrix) {
     shaderModelMatrixConstant->setValue(modelMatrix);
+    shaderNormalModelMatrixConstant->setValue(modelMatrix);
     for (PGE::Mesh* m : meshes) {
         m->render();
     }

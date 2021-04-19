@@ -10,10 +10,20 @@ class GraphicsResources;
 
 class CBR {
     private:
+        const PGE::FilePath shaderPath;
+        const PGE::FilePath shaderNormalPath;
+
+        GraphicsResources* gr;
+
+        PGE::Texture** lightmaps;
+        std::vector<PGE::Texture*> allTextures;
+        std::vector<PGE::Material*> materials;
         std::vector<PGE::Mesh*> meshes;
 
         PGE::Shader* shader;
         PGE::Shader::Constant* shaderModelMatrixConstant;
+        PGE::Shader* shaderNormal;
+        PGE::Shader::Constant* shaderNormalModelMatrixConstant;
 
     public:
         CBR(GraphicsResources* gr, const PGE::String& filename);
