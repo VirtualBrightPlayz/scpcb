@@ -5,7 +5,7 @@
 
 #include "INI.h"
 
-INIFile::INIFile(const PGE::String& filename) {
+INIFile::INIFile(const PGE::FilePath& filename) {
     name = filename;
 
     unsavedChanges = false;

@@ -39,7 +39,7 @@ World::World() {
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
     graphics->setViewport(PGE::Rectanglei(0, 0, config->getWidth(), config->getHeight()));
-    io = PGE::IO::create(graphics->getWindow());
+    io = PGE::IO::create(graphics);
 
     timing = new Timing(60);
 
@@ -72,7 +72,7 @@ World::World() {
 
     applyConfig(config);
 
-    lol = new CBR(gfxRes, "asd.cbr");
+    //lol = new CBR(gfxRes, "asd.cbr");
 
     shutdownRequested = false;
 }
@@ -97,6 +97,7 @@ World::~World() {
 }
 
 void World::applyConfig(const Config* config) {
+    graphics->setVsync(config->vsync);
     const Config::KeyBindsMap& keyboardMappings = config->getKeyboardBindings();
     for (const auto& it : keyboardMappings) {
         keyBinds->bindInput(it.first, it.second);
@@ -126,7 +127,7 @@ bool World::run() {
     double secondsPassed = timing->getElapsedSeconds();
     timing->addSecondsToAccumulator(secondsPassed);
 
-    return graphics->getWindow()->isOpen();
+    return graphics->isWindowOpen();
 }
 
 void World::runTick(float timeStep) {
@@ -163,7 +164,7 @@ void World::draw(float interpolation, RenderType r) {
     if (r != RenderType::UIOnly) {
         drawPlaying(interpolation);
         scripting->drawGame(interpolation);
-        lol->render(PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(0, 0, 0), PGE::Vector3f(0.1, 0.1, 0.1), PGE::Vector3f(0, 0, 0)));
+        //lol->render(PGE::Matrix4x4f::constructWorldMat(PGE::Vector3f(0, 0, 0), PGE::Vector3f(0.1, 0.1, 0.1), PGE::Vector3f(0, 0, 0)));
     }
 
     if (r != RenderType::NoUI) {
@@ -172,7 +173,7 @@ void World::draw(float interpolation, RenderType r) {
         graphics->setDepthTest(true);
     }
 
-    graphics->swap(config->vsync->value);
+    graphics->swap();
 }
 
 void World::updatePlaying(float timeStep) {

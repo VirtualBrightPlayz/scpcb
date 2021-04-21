@@ -9,9 +9,9 @@
 const PGE::String corpFolder = "Undertow Games";
 const PGE::String gameFolder = "SCP - Containment Breach";
 
-PGE::String getConfigDir() {
+PGE::FilePath getConfigDir() {
     // return ""; // Uncomment this if you want options.ini in the root game folder.
-    return PGE::FileUtil::getDataFolder() + corpFolder + '/' + gameFolder + '/';
+    return PGE::FileUtil::getDataPath() + corpFolder + '/' + gameFolder + '/';
 }
 
 Config::Config(const PGE::String& file) :
@@ -52,11 +52,11 @@ Config::Config(const PGE::String& file) :
     kbBinds.emplace(Input::Inventory, PGE::KeyboardInput::KEYCODE::TAB);
     kbBinds.emplace(Input::ToggleConsole, PGE::KeyboardInput::KEYCODE::F3);
 
-    if (PGE::FileUtil::exists(PGE::FilePath::fromStr(filename))) {
+    if (PGE::FileUtil::exists(filename)) {
         loadFile();
     } else {
-        PGE::FileUtil::createDirectoryIfNotExists(PGE::FilePath::fromStr(PGE::FileUtil::getDataFolder() + corpFolder));
-        PGE::FileUtil::createDirectoryIfNotExists(PGE::FilePath::fromStr(getConfigDir()));
+        PGE::FileUtil::createDirectoryIfNotExists(PGE::FileUtil::getDataPath() + corpFolder);
+        PGE::FileUtil::createDirectoryIfNotExists(getConfigDir());
 
         saveFile();
     }
