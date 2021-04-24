@@ -52,7 +52,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>../Engine/Include;../Libraries/freetype-2.10.1/include;../Libraries/angelscript-2.34.0/angelscript/include;../Libraries/angelscript-2.34.0/add_on;../Libraries/tinyxml2-7.1.0;../Libraries/openvr-1.12.5/headers;../Libraries/assimp-4.1.0/include;$(IncludePath)</IncludePath>
+    <IncludePath>../Engine/Include;../Libraries/freetype-2.10.1/include;../Libraries/angelscript-2.34.0/angelscript/include;../Libraries/angelscript-2.34.0/add_on;../Libraries/tinyxml2-7.1.0;../Libraries/openvr-1.12.5/headers;../Libraries/assimp-4.1.0/include;../Libraries/stb_image;$(IncludePath)</IncludePath>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
@@ -68,7 +68,7 @@
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>VR_API_PUBLIC;OPENVR_BUILD_STATIC;WINDOWS;_MBCS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>VR_API_PUBLIC;OPENVR_BUILD_STATIC;WINDOWS;_MBCS;STB_IMAGE_IMPLEMENTATION;STBI_WINDOWS_UTF8;STBI_FAILURE_USERMSG;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
@@ -111,7 +111,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <PreprocessorDefinitions>VR_API_PUBLIC;OPENVR_BUILD_STATIC;WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>VR_API_PUBLIC;OPENVR_BUILD_STATIC;WINDOWS;_MBCS;STB_IMAGE_IMPLEMENTATION;STBI_WINDOWS_UTF8;STBI_FAILURE_USERMSG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -185,6 +185,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Utils\MathUtil.h" />
     <ClInclude Include="..\Src\Utils\ResourcePackManager.h" />
     <ClInclude Include="..\Src\Utils\LocalizationManager.h" />
+    <ClInclude Include="..\Src\Utils\TextureUtil.h" />
     <ClInclude Include="..\Src\World\DataInterpolator.h" />
     <ClInclude Include="..\Src\World\Pickable.h" />
     <ClInclude Include="..\Src\World\ScriptWorld.h" />
@@ -257,6 +258,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Utils\MathUtil.cpp" />
     <ClCompile Include="..\Src\Utils\ResourcePackManager.cpp" />
     <ClCompile Include="..\Src\Utils\LocalizationManager.cpp" />
+    <ClCompile Include="..\Src\Utils\TextureUtil.cpp" />
     <ClCompile Include="..\Src\World\DataInterpolator.cpp" />
     <ClCompile Include="..\Src\World\Pickable.cpp" />
     <ClCompile Include="..\Src\World\ScriptWorld.cpp" />

@@ -6,6 +6,7 @@
 #include <Misc/BinaryReader.h>
 
 #include "../Graphics/GraphicsResources.h"
+#include "../Utils/TextureUtil.h"
 
 static const PGE::FilePath shaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/");
 static const PGE::FilePath shaderNormalPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaqueNormalMap/");
@@ -40,7 +41,7 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
         for (int i = 0; i < 4; i++) {
             int size = reader.readInt();
             uint8_t* bytes = reader.readBytes(size);
-            lightmaps[i] = PGE::Texture::load(gr->getGraphics(), bytes, size);
+            lightmaps[i] = TextureHelper::load(gr->getGraphics(), bytes, size);
             delete[] bytes;
         }
     } else {

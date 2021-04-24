@@ -2,6 +2,7 @@
 
 #include "../Graphics/GraphicsResources.h"
 #include "../Utils/ResourcePackManager.h"
+#include "../Utils/TextureUtil.h"
 
 UIMesh::UIMesh(GraphicsResources* gr) {
     gfxRes = gr;
@@ -151,7 +152,7 @@ void UIMesh::loadTexture(const PGE::String& textureName) {
     }
 
     if (texture == nullptr) {
-        texture = PGE::Texture::load(gfxRes->getGraphics(), gfxRes->rpm->getHighestModPath(textureName));
+        texture = TextureHelper::load(gfxRes->getGraphics(), gfxRes->rpm->getHighestModPath(textureName));
         Texture cacheEntry;
         cacheEntry.name = textureName; cacheEntry.pgeTexture = texture;
         textures.push_back(cacheEntry);

@@ -4,6 +4,7 @@
 
 #include "../Models/Model.h"
 #include "../Utils/ResourcePackManager.h"
+#include "../Utils/TextureUtil.h"
 #include "../Save/Config.h"
 #include "Camera.h"
 #include "DebugGraphics.h"
@@ -74,12 +75,12 @@ PGE::Texture* GraphicsResources::getTexture(const PGE::String& filename) {
 
     PGE::FilePath path = rpm->getHighestModPath(filename);
     if (!path.exists()) {
-        throw std::runtime_error(PGE::String(("Couldn't find texture \"") + filename + '"').cstr());
+        return nullptr;
     }
 
     TextureEntry* newTexture = new TextureEntry();
     newTexture->refCount = 1;
-    newTexture->texture = PGE::Texture::load(graphics, path);
+    newTexture->texture = TextureHelper::load(graphics, path);
     newTexture->name = filename;
     pathToTextures.emplace(filename.getHashCode(), newTexture);
     textureToTextures.emplace(newTexture->texture, newTexture);

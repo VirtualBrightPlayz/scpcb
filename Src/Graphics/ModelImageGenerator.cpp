@@ -54,7 +54,7 @@ PGE::Texture* ModelImageGenerator::generate(const PGE::String& model, float scal
         throw std::runtime_error("Model image generator has not been initialized!");
     }
 
-    PGE::Texture* tex = PGE::Texture::create(graphics, texSize, texSize, true, nullptr, PGE::Texture::FORMAT::RGBA32);
+    PGE::Texture* tex = PGE::Texture::createRenderTarget(graphics, texSize, texSize, PGE::Texture::FORMAT::RGBA32);
 
     graphics->setRenderTarget(tex);
     graphics->clear(PGE::Color::Black);
