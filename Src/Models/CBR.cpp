@@ -67,7 +67,8 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
             textures.push_back(tex);
             allTextures.push_back(tex);
             bool normalMapped = false;
-            if (PGE::Texture* texNormal = gr->getTexture(texturePath + textureNames[i] + "_n")) {
+            PGE::Texture* texNormal = gr->getTexture(texturePath + textureNames[i] + "_n");
+            if (texNormal != nullptr) {
                 normalMapped = true;
                 textures.push_back(texNormal);
                 allTextures.push_back(texNormal);
