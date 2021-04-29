@@ -3,7 +3,7 @@
 
 #include <regex>
 
-#include <Misc/String.h>
+#include <String/String.h>
 
 #include "../RefCounter.h"
 #include "../NativeDefinition.h"

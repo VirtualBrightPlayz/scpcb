@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <Misc/String.h>
+#include <String/String.h>
 #include <Misc/FileUtil.h>
 
 #include "INI.h"

@@ -1,7 +1,7 @@
 #ifndef TYPE_H_INCLUDED
 #define TYPE_H_INCLUDED
 
-#include <Misc/String.h>
+#include <String/String.h>
 
 class ArrayType;
 class RefType;

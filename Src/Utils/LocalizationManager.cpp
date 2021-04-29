@@ -43,7 +43,7 @@ LocalizationManager::Language::Language(const PGE::String& langCode) {
 
 PGE::String LocalizationManager::Language::getText(const PGE::String& code) const {
     // TODO: Throw an error if an invalid key is requested.
-    std::map<PGE::String, PGE::String>::const_iterator it = map.find(code);
+    auto it = map.find(code);
     PGE::String retVal;
     if (it != map.end()) {
         return it->second;

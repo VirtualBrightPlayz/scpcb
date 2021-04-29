@@ -2,7 +2,7 @@
 #define CBR_H_INCLUDED
 
 #include <Mesh/Mesh.h>
-#include <Misc/String.h>
+#include <String/String.h>
 #include <Math/Matrix.h>
 #include <Shader/Shader.h>
 

@@ -5,7 +5,7 @@
 
 #include <angelscript.h>
 
-#include <Misc/String.h>
+#include <String/String.h>
 
 #include "Type.h"
 

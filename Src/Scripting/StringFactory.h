@@ -5,7 +5,7 @@
 
 #include <angelscript.h>
 
-#include <Misc/String.h>
+#include <String/String.h>
 
 struct StringPoolEntry {
     PGE::String str;

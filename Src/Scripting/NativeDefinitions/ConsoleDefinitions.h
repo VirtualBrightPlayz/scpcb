@@ -5,7 +5,7 @@
 #include <vector>
 
 #include <Color/Color.h>
-#include <Misc/String.h>
+#include <String/String.h>
 
 #include "../NativeDefinition.h"
 

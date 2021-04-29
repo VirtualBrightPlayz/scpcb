@@ -41,7 +41,7 @@ distribution.
 #   include <cstring>
 #endif
 #include <stdint.h>
-#include <Misc/String.h>
+#include <String/String.h>
 
 /*
    TODO: intern strings instead of allocation.

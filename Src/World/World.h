@@ -6,7 +6,7 @@
 #include FT_FREETYPE_H
 #include <Graphics/Graphics.h>
 #include <IO/IO.h>
-#include <Misc/String.h>
+#include <String/String.h>
 
 class Camera;
 class Config;

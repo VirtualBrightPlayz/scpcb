@@ -1,10 +1,11 @@
 #ifndef KEYBINDS_H_INCLUDED
 #define KEYBINDS_H_INCLUDED
 
-#include <map>
+#include <unordered_map>
 
 #include <IO/IO.h>
 #include <UserInput/UserInput.h>
+#include <String/StringKeySafe.h>
 
 #include "Input.h"
 
@@ -21,16 +22,16 @@ class KeyBinds {
         PGE::IO* io;
         ConsoleDefinitions* conDef;
 
-        typedef std::multimap<Input, PGE::UserInput*> UserInputMap;
+        typedef std::unordered_multimap<Input, PGE::UserInput*> UserInputMap;
         UserInputMap bindings;
 
-        typedef std::multimap<PGE::String, PGE::UserInput*> ConsoleBindingsMap;
+        typedef std::unordered_multimap<StringKeySafe, PGE::UserInput*> ConsoleBindingsMap;
         ConsoleBindingsMap consoleBindings;
 
         void bindInput(Input input, PGE::UserInput* key);
         void unbindInput(Input input, PGE::UserInput::DEVICE device, int key);
 
-        std::map<long long, PGE::UserInput*> inputStrings;
+        std::unordered_map<long long, PGE::UserInput*> inputStrings;
         void registerInputString(const PGE::String& string, PGE::KeyboardInput::KEYCODE key);
         void registerInputString(const PGE::String& string, PGE::MouseInput::BUTTON key);
         void registerInputString(const PGE::String& string, PGE::ControllerInput::BUTTON key);
