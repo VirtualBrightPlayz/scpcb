@@ -5,7 +5,7 @@
 
 #include <IO/IO.h>
 #include <UserInput/UserInput.h>
-#include <String/StringKeySafe.h>
+#include <String/StringKeyFastRedundant.h>
 
 #include "Input.h"
 
@@ -25,7 +25,7 @@ class KeyBinds {
         typedef std::unordered_multimap<Input, PGE::UserInput*> UserInputMap;
         UserInputMap bindings;
 
-        typedef std::unordered_multimap<StringKeySafe, PGE::UserInput*> ConsoleBindingsMap;
+        typedef std::unordered_multimap<PGE::StringKeyFastRedundant, PGE::UserInput*> ConsoleBindingsMap;
         ConsoleBindingsMap consoleBindings;
 
         void bindInput(Input input, PGE::UserInput* key);
