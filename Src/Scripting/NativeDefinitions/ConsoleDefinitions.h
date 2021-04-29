@@ -32,7 +32,7 @@ class ConsoleDefinitions : public NativeDefinition {
             PGE::String name;
             PGE::String helpText;
         };
-        std::map<long long, Command> commands;
+        std::map<uint64_t, Command> commands;
 
         asIScriptContext* scriptContext;
         asIScriptContext* msgContext;

@@ -10,7 +10,7 @@ class LocalizationManager {
         class Language {
             private:
                 PGE::String name;
-                std::unordered_map<StringKeyFast, PGE::String> map;
+                std::unordered_map<PGE::StringKeyFast, PGE::String> map;
 
             public:
                 PGE::String code;

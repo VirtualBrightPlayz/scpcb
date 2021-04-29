@@ -10,7 +10,7 @@ const void* StringFactory::GetStringConstant(const char* data, asUINT length) {
     PGE::String tempStr = tempBuf;
     delete[] tempBuf;
 
-    std::map<long long, StringPoolEntry>::iterator poolEntry = strPool.find(tempStr.getHashCode());
+    std::map<uint64_t, StringPoolEntry>::iterator poolEntry = strPool.find(tempStr.getHashCode());
     if (poolEntry != strPool.end()) {
         poolEntry->second.refCount++;
     } else {
@@ -31,7 +31,7 @@ int StringFactory::ReleaseStringConstant(const void* str) {
     asAcquireExclusiveLock();
 
     PGE::String* deref = ((PGE::String*)str);
-    std::map<long long, StringPoolEntry>::iterator poolEntry = strPool.find(deref->getHashCode());
+    std::map<uint64_t, StringPoolEntry>::iterator poolEntry = strPool.find(deref->getHashCode());
     if (poolEntry != strPool.end()) {
         poolEntry->second.refCount--;
         if (poolEntry->second.refCount <= 0) {
@@ -97,7 +97,7 @@ static int stringLength(const PGE::String& str) {
     return str.length();
 }
 
-static long long stringGetHashCode(const PGE::String& str) {
+static uint64_t stringGetHashCode(const PGE::String& str) {
     return str.getHashCode();
 }
 

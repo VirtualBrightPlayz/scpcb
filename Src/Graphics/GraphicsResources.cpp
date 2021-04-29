@@ -36,7 +36,7 @@ GraphicsResources::~GraphicsResources() {
 }
 
 PGE::Shader* GraphicsResources::getShader(const PGE::FilePath& filename, bool needsViewProjection) {
-    std::map<long long, ShaderEntry*>::iterator find = pathToShaders.find(filename.getHashCode());
+    std::map<uint64_t, ShaderEntry*>::iterator find = pathToShaders.find(filename.getHashCode());
     if (find != pathToShaders.end()) {
         find->second->refCount++;
         return find->second->shader;
@@ -67,7 +67,7 @@ void GraphicsResources::dropShader(PGE::Shader* shader) {
 }
 
 PGE::Texture* GraphicsResources::getTexture(const PGE::String& filename) {
-    std::map<long long, TextureEntry*>::iterator find = pathToTextures.find(filename.getHashCode());
+    std::map<uint64_t, TextureEntry*>::iterator find = pathToTextures.find(filename.getHashCode());
     if (find != pathToTextures.end()) {
         find->second->refCount++;
         return find->second->texture;
@@ -104,7 +104,7 @@ void GraphicsResources::dropTexture(PGE::Texture* texture) {
 }
 
 ModelInstance* GraphicsResources::getModelInstance(const PGE::String& filename) {
-    std::map<long long, ModelEntry*>::iterator find = pathToModels.find(filename.getHashCode());
+    std::map<uint64_t, ModelEntry*>::iterator find = pathToModels.find(filename.getHashCode());
     if (find != pathToModels.end()) {
         find->second->refCount++;
         return new ModelInstance(find->second->model);

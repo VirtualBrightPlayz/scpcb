@@ -12,8 +12,8 @@ BillboardManager::BillboardManager(PGE::Graphics* gfx, GraphicsResources* gr, Ca
 }
 
 BillboardManager::~BillboardManager() {
-    std::map<long long, BillboardMesh> meshesCopy = meshes;
-    for (std::map<long long, BillboardMesh>::iterator it=meshesCopy.begin();it!=meshesCopy.end();it++) {
+    std::map<uint64_t, BillboardMesh> meshesCopy = meshes;
+    for (std::map<uint64_t, BillboardMesh>::iterator it=meshesCopy.begin();it!=meshesCopy.end();it++) {
         BillboardMesh& mesh = it->second;
         for (int i = (int)mesh.billboards.size()-1; i >= 0; i--) {
             delete mesh.billboards[i];
@@ -25,7 +25,7 @@ BillboardManager::~BillboardManager() {
 void BillboardManager::addBillboard(Billboard* billboard) {
     billboard->markAsDirty();
     PGE::String texName = billboard->getTexture();
-    std::map<long long, BillboardMesh>::iterator it = meshes.find(texName.getHashCode());
+    std::map<uint64_t, BillboardMesh>::iterator it = meshes.find(texName.getHashCode());
     if (it == meshes.end()) {
         BillboardMesh newMesh;
         newMesh.texture = gfxRes->getTexture(texName);
@@ -41,7 +41,7 @@ void BillboardManager::addBillboard(Billboard* billboard) {
 
 void BillboardManager::removeBillboard(Billboard* billboard) {
     PGE::String texName = billboard->getTexture();
-    std::map<long long, BillboardMesh>::iterator it = meshes.find(texName.getHashCode());
+    std::map<uint64_t, BillboardMesh>::iterator it = meshes.find(texName.getHashCode());
     if (it != meshes.end()) {
         std::vector<Billboard*>& billboards = it->second.billboards;
         for (int i=0;i<billboards.size();i++) {
@@ -61,7 +61,7 @@ void BillboardManager::removeBillboard(Billboard* billboard) {
 }
 
 void BillboardManager::render() {
-    for (std::map<long long, BillboardMesh>::iterator it=meshes.begin();it!=meshes.end();it++) {
+    for (std::map<uint64_t, BillboardMesh>::iterator it=meshes.begin();it!=meshes.end();it++) {
         BillboardMesh& mesh = it->second;
         const PGE::Vector3f camPos = camera->position;
         // Insertion sort.

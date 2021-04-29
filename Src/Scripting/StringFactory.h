@@ -21,7 +21,7 @@ struct StringPoolEntry {
 
 class StringFactory : public asIStringFactory {
     private:
-        std::map<long long, StringPoolEntry> strPool;
+        std::map<uint64_t, StringPoolEntry> strPool;
 
     public:
         StringFactory(asIScriptEngine* engine);

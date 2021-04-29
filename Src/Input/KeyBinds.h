@@ -31,7 +31,7 @@ class KeyBinds {
         void bindInput(Input input, PGE::UserInput* key);
         void unbindInput(Input input, PGE::UserInput::DEVICE device, int key);
 
-        std::unordered_map<long long, PGE::UserInput*> inputStrings;
+        std::unordered_map<uint64_t, PGE::UserInput*> inputStrings;
         void registerInputString(const PGE::String& string, PGE::KeyboardInput::KEYCODE key);
         void registerInputString(const PGE::String& string, PGE::MouseInput::BUTTON key);
         void registerInputString(const PGE::String& string, PGE::ControllerInput::BUTTON key);
