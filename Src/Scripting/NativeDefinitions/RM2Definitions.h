@@ -1,7 +1,7 @@
 #ifndef RM2DEFINITIONS_H_INCLUDED
 #define RM2DEFINITIONS_H_INCLUDED
 
-#include <Misc/String.h>
+#include <String/String.h>
 
 #include "../NativeDefinition.h"
 

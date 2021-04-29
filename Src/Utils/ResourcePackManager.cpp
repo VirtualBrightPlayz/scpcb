@@ -18,7 +18,6 @@ void ResourcePackManager::loadResPacks() {
 
 	std::vector<PGE::String> activeNames = this->activeResPackNames->value;
 
-	std::vector<PGE::FilePath> modFolders;
 	PGE::FilePath metaPath;
 	tinyxml2::XMLDocument xmlDoc;
 	tinyxml2::XMLError xmlErr;
@@ -26,7 +25,7 @@ void ResourcePackManager::loadResPacks() {
 	PGE::String modName;
 
 	for (int i = 0; i < resPackLocs->value.size(); i++) {
-		modFolders = PGE::FileUtil::enumerateFolders(PGE::FilePath::fromStr(resPackLocs->value[i]));
+		std::vector<PGE::FilePath> modFolders; PGE::FileUtil::enumerateFolders(PGE::FilePath::fromStr(resPackLocs->value[i]), modFolders);
 		for (int j = 0; j < modFolders.size(); j++) {
 			metaPath = modFolders[j] + "meta.xml";
 			if (metaPath.exists()) {

@@ -1,4 +1,4 @@
 [submodule "Engine"]
 	path = Engine
-	url = https://github.com/juanjp600/pge
-	branch = master
+	url = git@github.com:juanjp600/pge.git
+	branch = main

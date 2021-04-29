@@ -4,7 +4,7 @@
 #include <angelscript.h>
 #include <tinyxml2.h>
 
-#include <Misc/String.h>
+#include <String/String.h>
 
 class ScriptClass;
 class ScriptModule;

@@ -12,7 +12,7 @@
 
 void ConsoleDefinitions::helpInternal(std::vector<PGE::String> params) {
     if (params.size() == 2) {
-        std::map<long long, Command>::iterator find = commands.find(params[1].getHashCode());
+        std::map<uint64_t, Command>::iterator find = commands.find(params[1].getHashCode());
         if (find == commands.end()) {
             addConsoleMessage("That command doesn't exist", PGE::Color::Yellow);
         } else {
@@ -122,7 +122,7 @@ void ConsoleDefinitions::registerCommandNoHelp(const PGE::String& name, void* f,
 
 void ConsoleDefinitions::executeCommand(const PGE::String& in) {
     std::vector<PGE::String> params = in.split(" ", true);
-    std::map<long long, Command>::iterator find = commands.find(params[0].getHashCode());
+    std::map<uint64_t, Command>::iterator find = commands.find(params[0].getHashCode());
     if (find != commands.end()) {
         if (find->second.func == nullptr) {
             (this->*find->second.nativFunc)(params);

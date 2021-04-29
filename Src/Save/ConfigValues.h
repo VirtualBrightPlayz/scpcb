@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include <Misc/String.h>
+#include <String/String.h>
 
 class INIFile;
 

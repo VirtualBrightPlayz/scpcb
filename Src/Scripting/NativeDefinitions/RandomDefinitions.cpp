@@ -46,7 +46,6 @@ RandomDefinitions::RandomDefinitions(ScriptManager* mgr, RefCounterManager* rcMg
 	engine->RegisterGlobalFunction("int get()", asMETHOD(PGE::Random, next), asCALL_THISCALL_ASGLOBAL, genericRandom);
 	engine->RegisterGlobalFunction("bool getBool()", asMETHOD(PGE::Random, nextBool), asCALL_THISCALL_ASGLOBAL, genericRandom);
 	engine->RegisterGlobalFunction("float getFloat()", asMETHOD(PGE::Random, nextFloat), asCALL_THISCALL_ASGLOBAL, genericRandom);
-	engine->RegisterGlobalFunction("float getDouble()", asMETHOD(PGE::Random, nextDouble), asCALL_THISCALL_ASGLOBAL, genericRandom);
 	engine->RegisterGlobalFunction("int getInt(int max)", asMETHODPR(PGE::Random, nextInt, (uint32_t), uint32_t), asCALL_THISCALL_ASGLOBAL, genericRandom);
 	engine->RegisterGlobalFunction("int getInt(int min, int max)", asMETHODPR(PGE::Random, nextInt, (uint32_t, uint32_t), uint32_t), asCALL_THISCALL_ASGLOBAL, genericRandom);
 
@@ -59,7 +58,6 @@ RandomDefinitions::RandomDefinitions(ScriptManager* mgr, RefCounterManager* rcMg
 	engine->RegisterObjectMethod("Random", "int next()", asMETHOD(PGE::Random, next), asCALL_THISCALL);
 	engine->RegisterObjectMethod("Random", "bool nextBool()", asMETHOD(PGE::Random, nextBool), asCALL_THISCALL);
 	engine->RegisterObjectMethod("Random", "float nextFloat()", asMETHOD(PGE::Random, nextFloat), asCALL_THISCALL);
-	engine->RegisterObjectMethod("Random", "double nextDouble()", asMETHOD(PGE::Random, nextDouble), asCALL_THISCALL);
 	engine->RegisterObjectMethod("Random", "int nextInt(int max)", asMETHODPR(PGE::Random, nextInt, (uint32_t), uint32_t), asCALL_THISCALL);
 	engine->RegisterObjectMethod("Random", "int nextInt(int min, int max)", asMETHODPR(PGE::Random, nextInt, (uint32_t, uint32_t), uint32_t), asCALL_THISCALL);
 }

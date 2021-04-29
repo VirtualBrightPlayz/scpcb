@@ -124,7 +124,7 @@ void Font::renderAtlas(long chr) {
 
     if (buffer!=nullptr) {
         Atlas newAtlas;
-        newAtlas.texture = PGE::Texture::create(graphicsRes->getGraphics(),atlasDims,atlasDims,false,buffer,PGE::Texture::FORMAT::RGBA32);
+        newAtlas.texture = PGE::Texture::load(graphicsRes->getGraphics(),atlasDims,atlasDims,buffer,PGE::Texture::FORMAT::RGBA32);
         newAtlas.material = new PGE::Material(shader,newAtlas.texture);
         newAtlas.mesh = PGE::Mesh::create(graphicsRes->getGraphics(),PGE::Primitive::TYPE::TRIANGLE);
         newAtlas.mesh->setMaterial(newAtlas.material);

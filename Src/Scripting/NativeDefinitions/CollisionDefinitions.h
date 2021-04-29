@@ -3,7 +3,7 @@
 
 #include <map>
 
-#include <Misc/String.h>
+#include <String/String.h>
 
 #include "../RefCounter.h"
 

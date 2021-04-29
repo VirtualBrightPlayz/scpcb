@@ -13,6 +13,7 @@
 #include "../Graphics/Camera.h"
 #include "../Graphics/GraphicsResources.h"
 #include "../Graphics/DebugGraphics.h"
+#include "../Models/CBR.h"
 #include "../Save/Config.h"
 #include "../Input/KeyBinds.h"
 #include "../Input/Input.h"
@@ -30,6 +31,8 @@
 #include <Math/Random.h>
 #include <chrono>
 
+static CBR* lol;
+
 World::World() {
     config = new Config("options.ini");
 
@@ -43,7 +46,7 @@ World::World() {
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
     graphics->setViewport(PGE::Rectanglei(0, 0, config->getWidth(), config->getHeight()));
-    io = PGE::IO::create(graphics->getWindow());
+    io = PGE::IO::create(graphics);
 
     timing = new Timing(60);
 
@@ -76,6 +79,8 @@ World::World() {
 
     applyConfig(config);
 
+    //lol = new CBR(gfxRes, "asd.cbr");
+
     shutdownRequested = false;
     
     if (vrm != nullptr) {
@@ -105,6 +110,7 @@ World::~World() {
 }
 
 void World::applyConfig(const Config* config) {
+    graphics->setVsync(config->vsync);
     const Config::KeyBindsMap& keyboardMappings = config->getKeyboardBindings();
     for (const auto& it : keyboardMappings) {
         keyBinds->bindInput(it.first, it.second);
@@ -177,7 +183,7 @@ bool World::run() {
     double secondsPassed = timing->getElapsedSeconds();
     timing->addSecondsToAccumulator(secondsPassed);
 
-    return graphics->getWindow()->isOpen();
+    return graphics->isWindowOpen();
 }
 
 void World::runTick(float timeStep) {
@@ -244,7 +250,7 @@ void World::draw(float interpolation, RenderType r) {
         graphics->setDepthTest(true);
     }
 
-    graphics->swap(config->vsync->value);
+    graphics->swap();
 }
 
 void World::updatePlaying(float timeStep) {

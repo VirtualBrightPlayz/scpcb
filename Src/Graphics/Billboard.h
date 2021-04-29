@@ -27,7 +27,7 @@ class BillboardManager {
 
         std::vector<PGE::Primitive> primitives;
 
-        std::map<long long, BillboardMesh> meshes;
+        std::map<uint64_t, BillboardMesh> meshes;
         PGE::Shader* shader;
 
     public:

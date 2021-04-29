@@ -1,11 +1,11 @@
 #include <iostream>
 #include <fstream>
-#include <Misc/String.h>
+#include <String/String.h>
 #include <Misc/FileUtil.h>
 
 #include "INI.h"
 
-INIFile::INIFile(const PGE::String& filename) {
+INIFile::INIFile(const PGE::FilePath& filename) {
     name = filename;
 
     unsavedChanges = false;

@@ -12,7 +12,7 @@
 #include <Material/Material.h>
 #include <Mesh/Mesh.h>
 #include <Misc/FilePath.h>
-#include <Misc/String.h>
+#include <String/String.h>
 #include <Math/Vector.h>
 #include <Math/Rectangle.h>
 

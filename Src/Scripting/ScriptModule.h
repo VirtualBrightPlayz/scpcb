@@ -7,7 +7,7 @@
 #include <tinyxml2.h>
 
 #include <Misc/FilePath.h>
-#include <Misc/String.h>
+#include <String/String.h>
 
 class Type;
 class ScriptManager;

@@ -1,16 +1,16 @@
 #ifndef LOCALIZATIONMANAGER_H_INCLUDED
 #define LOCALIZATIONMANAGER_H_INCLUDED
 
-#include <map>
+#include <unordered_map>
 
-#include <Misc/String.h>
+#include <String/StringKeyFast.h>
 
 class LocalizationManager {
     private:
         class Language {
             private:
                 PGE::String name;
-                std::map<PGE::String, PGE::String> map;
+                std::unordered_map<PGE::StringKeyFast, PGE::String> map;
 
             public:
                 PGE::String code;

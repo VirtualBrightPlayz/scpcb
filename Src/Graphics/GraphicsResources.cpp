@@ -4,6 +4,7 @@
 
 #include "../Models/Model.h"
 #include "../Utils/ResourcePackManager.h"
+#include "../Utils/TextureUtil.h"
 #include "../Save/Config.h"
 #include "Camera.h"
 #include "DebugGraphics.h"
@@ -35,7 +36,7 @@ GraphicsResources::~GraphicsResources() {
 }
 
 PGE::Shader* GraphicsResources::getShader(const PGE::FilePath& filename, bool needsViewProjection) {
-    std::map<long long, ShaderEntry*>::iterator find = pathToShaders.find(filename.getHashCode());
+    std::map<uint64_t, ShaderEntry*>::iterator find = pathToShaders.find(filename.getHashCode());
     if (find != pathToShaders.end()) {
         find->second->refCount++;
         return find->second->shader;
@@ -66,7 +67,7 @@ void GraphicsResources::dropShader(PGE::Shader* shader) {
 }
 
 PGE::Texture* GraphicsResources::getTexture(const PGE::String& filename) {
-    std::map<long long, TextureEntry*>::iterator find = pathToTextures.find(filename.getHashCode());
+    std::map<uint64_t, TextureEntry*>::iterator find = pathToTextures.find(filename.getHashCode());
     if (find != pathToTextures.end()) {
         find->second->refCount++;
         return find->second->texture;
@@ -74,12 +75,12 @@ PGE::Texture* GraphicsResources::getTexture(const PGE::String& filename) {
 
     PGE::FilePath path = rpm->getHighestModPath(filename);
     if (!path.exists()) {
-        throw std::runtime_error(PGE::String(("Couldn't find texture \"") + filename + '"').cstr());
+        return nullptr;
     }
 
     TextureEntry* newTexture = new TextureEntry();
     newTexture->refCount = 1;
-    newTexture->texture = PGE::Texture::load(graphics, path);
+    newTexture->texture = TextureHelper::load(graphics, path);
     newTexture->name = filename;
     pathToTextures.emplace(filename.getHashCode(), newTexture);
     textureToTextures.emplace(newTexture->texture, newTexture);
@@ -103,7 +104,7 @@ void GraphicsResources::dropTexture(PGE::Texture* texture) {
 }
 
 ModelInstance* GraphicsResources::getModelInstance(const PGE::String& filename) {
-    std::map<long long, ModelEntry*>::iterator find = pathToModels.find(filename.getHashCode());
+    std::map<uint64_t, ModelEntry*>::iterator find = pathToModels.find(filename.getHashCode());
     if (find != pathToModels.end()) {
         find->second->refCount++;
         return new ModelInstance(find->second->model);

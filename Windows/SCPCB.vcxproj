@@ -52,7 +52,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>../Engine/Include;../Libraries/freetype-2.10.1/include;../Libraries/angelscript-2.34.0/angelscript/include;../Libraries/angelscript-2.34.0/add_on;../Libraries/tinyxml2-7.1.0;../Libraries/openvr-1.12.5/headers;../Libraries/assimp-4.1.0/include;$(IncludePath)</IncludePath>
+    <IncludePath>../Engine/Include;../Libraries/freetype-2.10.1/include;../Libraries/angelscript-2.34.0/angelscript/include;../Libraries/angelscript-2.34.0/add_on;../Libraries/tinyxml2-7.1.0;../Libraries/openvr-1.12.5/headers;../Libraries/assimp-4.1.0/include;../Libraries/stb_image;$(IncludePath)</IncludePath>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
@@ -68,12 +68,13 @@
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>VR_API_PUBLIC;OPENVR_BUILD_STATIC;WINDOWS;_MBCS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>VR_API_PUBLIC;OPENVR_BUILD_STATIC;WINDOWS;_MBCS;STB_IMAGE_IMPLEMENTATION;STBI_WINDOWS_UTF8;STBI_FAILURE_USERMSG;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;$(Platform)/$(Configuration)/Engine.lib;$(Platform)/$(Configuration)/SDL2.lib;../Libraries/freetype-2.10.1/objs/$(Platform)/$(Configuration)/freetype.lib;../Libraries/openvr-1.12.5/bin/win64/$(Configuration)/openvr_api64.lib;../Libraries/assimp-4.1.0/VS2017/assimp/$(Platform)/$(Configuration)/assimp.lib;$(VK_SDK_PATH)/Lib/vulkan-1.lib;../Libraries/angelscript-2.34.0/angelscript/lib/angelscript64d.lib;../Libraries/tinyxml2-7.1.0/tinyxml2/x64/Debug-Lib/tinyxml2.lib;../Engine/Libraries/FreeImage3180/x64/Debug/FreeImaged.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);d3d11.lib;dxgi.lib;opengl32.lib;$(Platform)/$(Configuration)/Engine.lib;$(Platform)/$(Configuration)/glad.lib;$(Platform)/$(Configuration)/SDL2.lib;../Libraries/freetype-2.10.1/objs/$(Platform)/$(Configuration)/freetype.lib;../Libraries/openvr-1.12.5/bin/win64/$(Configuration)/openvr_api64.lib;../Libraries/assimp-4.1.0/VS2017/assimp/$(Platform)/$(Configuration)/assimp.lib;../Libraries/tinyxml2-7.1.0/tinyxml2/x64/Debug-Lib/tinyxml2.lib;../Libraries/angelscript-2.34.0/angelscript/lib/angelscript64d.lib;../Engine/Libraries/FreeImage3180/Dist/x64/FreeImaged.lib</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <CustomBuildStep>
@@ -111,12 +112,13 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <PreprocessorDefinitions>VR_API_PUBLIC;OPENVR_BUILD_STATIC;WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>VR_API_PUBLIC;OPENVR_BUILD_STATIC;WINDOWS;_MBCS;STB_IMAGE_IMPLEMENTATION;STBI_WINDOWS_UTF8;STBI_FAILURE_USERMSG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;$(Platform)/$(Configuration)/Engine.lib;$(Platform)/$(Configuration)/SDL2.lib;../Libraries/freetype-2.10.1/objs/$(Platform)/$(Configuration)/freetype.lib;../Libraries/openvr-1.12.5/bin/win64/$(Configuration)/openvr_api64.lib;../Libraries/assimp-4.1.0/VS2017/assimp/$(Platform)/$(Configuration)/assimp.lib;$(VK_SDK_PATH)/Lib/vulkan-1.lib;../Libraries/openvr-1.12.5/bin/win64/$(Configuration)/openvr_api64.lib;../Libraries/angelscript-2.34.0/angelscript/lib/angelscript64.lib;../Libraries/tinyxml2-7.1.0/tinyxml2/x64/Release-Lib/tinyxml2.lib;../Engine/Libraries/FreeImage3180/x64/Release/FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);d3d11.lib;dxgi.lib;opengl32.lib;$(Platform)/$(Configuration)/Engine.lib;$(Platform)/$(Configuration)/glad.lib;$(Platform)/$(Configuration)/SDL2.lib;../Libraries/freetype-2.10.1/objs/$(Platform)/$(Configuration)/freetype.lib;../Libraries/openvr-1.12.5/bin/win64/$(Configuration)/openvr_api64.lib;../Libraries/assimp-4.1.0/VS2017/assimp/$(Platform)/$(Configuration)/assimp.lib;../Libraries/tinyxml2-7.1.0/tinyxml2/x64/Debug-Lib/tinyxml2.lib;../Libraries/angelscript-2.34.0/angelscript/lib/angelscript64.lib;../Engine/Libraries/FreeImage3180/Dist/x64/FreeImage.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -144,6 +146,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Input\Input.h" />
     <ClInclude Include="..\Src\Input\KeyBinds.h" />
     <ClInclude Include="..\Src\Input\MouseData.h" />
+    <ClInclude Include="..\Src\Models\CBR.h" />
     <ClInclude Include="..\Src\Models\Model.h" />
     <ClInclude Include="..\Src\Models\RM2.h" />
     <ClInclude Include="..\Src\PlayerController\PlayerController.h" />
@@ -184,6 +187,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\Utils\MathUtil.h" />
     <ClInclude Include="..\Src\Utils\ResourcePackManager.h" />
     <ClInclude Include="..\Src\Utils\LocalizationManager.h" />
+    <ClInclude Include="..\Src\Utils\TextureUtil.h" />
     <ClInclude Include="..\Src\World\DataInterpolator.h" />
     <ClInclude Include="..\Src\World\Pickable.h" />
     <ClInclude Include="..\Src\World\ScriptWorld.h" />
@@ -214,6 +218,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Input\KeyBinds.cpp" />
     <ClCompile Include="..\Src\Input\MouseData.cpp" />
     <ClCompile Include="..\Src\Main.cpp" />
+    <ClCompile Include="..\Src\Models\CBR.cpp" />
     <ClCompile Include="..\Src\Models\Model.cpp" />
     <ClCompile Include="..\Src\Models\RM2.cpp" />
     <ClCompile Include="..\Src\PlayerController\PlayerController.cpp" />
@@ -256,6 +261,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\Utils\MathUtil.cpp" />
     <ClCompile Include="..\Src\Utils\ResourcePackManager.cpp" />
     <ClCompile Include="..\Src\Utils\LocalizationManager.cpp" />
+    <ClCompile Include="..\Src\Utils\TextureUtil.cpp" />
     <ClCompile Include="..\Src\World\DataInterpolator.cpp" />
     <ClCompile Include="..\Src\World\Pickable.cpp" />
     <ClCompile Include="..\Src\World\ScriptWorld.cpp" />

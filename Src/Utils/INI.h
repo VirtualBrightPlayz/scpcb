@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-#include <Misc/String.h>
+#include <Misc/FilePath.h>
 
 class INIFile {
     public:
@@ -23,9 +23,9 @@ class INIFile {
         void setValue(const PGE::String& section, const PGE::String& key, const PGE::String& value);
 
     public:
-        PGE::String name;
+        PGE::FilePath name;
         
-        INIFile(const PGE::String& filename);
+        INIFile(const PGE::FilePath& filename);
         ~INIFile();
 
         void save();

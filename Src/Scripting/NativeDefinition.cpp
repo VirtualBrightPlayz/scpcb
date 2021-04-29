@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include <Misc/String.h>
+#include <String/String.h>
 #include "../Graphics/Billboard.h"
 
 static void throwOnError(int err) {
