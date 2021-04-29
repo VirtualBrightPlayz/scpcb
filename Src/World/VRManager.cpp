@@ -157,7 +157,7 @@ void VRManager::createTexture(PGE::Graphics* graphics, Config* config) {
     if (texture != nullptr) {
         throw std::runtime_error("TEXTURE HAS ALREADY BEEN CREATED!");
     } else {
-        texture = PGE::Texture::create(graphics, config->getWidth(), config->getHeight(), true, nullptr, PGE::Texture::FORMAT::RGBA32);
+        texture = PGE::Texture::createRenderTarget(graphics, config->getWidth(), config->getHeight(), PGE::Texture::FORMAT::RGBA32);
     }
 }
 
