@@ -1,6 +1,0 @@
-C:/Users/Admin/Desktop/cbn/Libraries/openvr-1.12.5/CMakeFiles/INSTALL.dir
-C:/Users/Admin/Desktop/cbn/Libraries/openvr-1.12.5/CMakeFiles/ALL_BUILD.dir
-C:/Users/Admin/Desktop/cbn/Libraries/openvr-1.12.5/CMakeFiles/ZERO_CHECK.dir
-C:/Users/Admin/Desktop/cbn/Libraries/openvr-1.12.5/src/CMakeFiles/INSTALL.dir
-C:/Users/Admin/Desktop/cbn/Libraries/openvr-1.12.5/src/CMakeFiles/openvr_api64.dir
-C:/Users/Admin/Desktop/cbn/Libraries/openvr-1.12.5/src/CMakeFiles/ALL_BUILD.dir

@@ -2,3 +2,7 @@
 	path = Engine
 	url = git@github.com:juanjp600/pge.git
 	branch = main
+[submodule "Libraries/openvr"]
+	path = Libraries/openvr
+	url = git@github.com:Saalvage/openvr.git
+	branch = master-1.16.8
