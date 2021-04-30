@@ -45,7 +45,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>../Engine/Include;../Libraries/freetype-2.10.1/include;../Libraries/angelscript-2.34.0/angelscript/include;../Libraries/angelscript-2.34.0/add_on;../Libraries/tinyxml2-7.1.0;../Libraries/openvr-1.12.5/headers;../Libraries/assimp-4.1.0/include;$(IncludePath)</IncludePath>
+    <IncludePath>../Engine/Include;../Libraries/freetype-2.10.1/include;../Libraries/angelscript-2.34.0/angelscript/include;../Libraries/angelscript-2.34.0/add_on;../Libraries/tinyxml2-7.1.0;../Libraries/openvr/headers;../Libraries/assimp-4.1.0/include;$(IncludePath)</IncludePath>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
