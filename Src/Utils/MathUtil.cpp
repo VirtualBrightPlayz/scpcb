@@ -35,7 +35,7 @@ float MathUtil::minFloat(float val, float other) {
 }
 
 int MathUtil::clampInt(int val, int min, int max) {
-    __ASSERT(min > max, "Incorrect order!");
+    PGE_ASSERT(min > max, "Incorrect order!");
 
     if (val < min) { return min; }
     if (val > max) { return max; }
@@ -43,7 +43,7 @@ int MathUtil::clampInt(int val, int min, int max) {
 }
 
 float MathUtil::clampFloat(float val, float min, float max) {
-    __ASSERT(min > max, "Incorrect order!");
+    PGE_ASSERT(min > max, "Incorrect order!");
 
     if (val < min) { return min; }
     if (val > max) { return max; }
