@@ -191,6 +191,15 @@
     <ClCompile Include="..\Src\Utils\TextureUtil.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Src\Serialize\IntProperty.cpp">
+      <Filter>Serialize</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Serialize\ScriptSerializer.cpp">
+      <Filter>Serialize</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Src\Serialize\XMLProperty.cpp">
+      <Filter>Serialize</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -377,6 +386,15 @@
     <ClInclude Include="..\Src\Utils\TextureUtil.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Src\Serialize\IntProperty.h">
+      <Filter>Serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Serialize\ScriptSerializer.h">
+      <Filter>Serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Src\Serialize\XMLProperty.h">
+      <Filter>Serialize</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SCPCB.rc" />
@@ -420,6 +438,9 @@
     </Filter>
     <Filter Include="Scripting\AngelScriptAddons\scriptarray">
       <UniqueIdentifier>{01577c9d-cd86-494f-8564-b9c025344777}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialize">
+      <UniqueIdentifier>{6627f51a-c0fb-4ca8-899e-021571bdf075}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
