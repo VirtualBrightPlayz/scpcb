@@ -5,7 +5,7 @@
 #include "../../World/World.h"
 
 WorldDefinitions::WorldDefinitions(ScriptManager* mgr, World* w) :
-#ifdef WINDOWS
+#ifdef _WIN32
     platform(0)
 #elif defined __APPLE__
     platform(1)

@@ -68,7 +68,7 @@
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>VR_API_PUBLIC;OPENVR_BUILD_STATIC;WINDOWS;_MBCS;STB_IMAGE_IMPLEMENTATION;STBI_WINDOWS_UTF8;STBI_FAILURE_USERMSG;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>VR_API_PUBLIC;OPENVR_BUILD_STATIC;_MBCS;STB_IMAGE_IMPLEMENTATION;STBI_WINDOWS_UTF8;STBI_FAILURE_USERMSG;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -112,7 +112,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
       <ProgramDataBaseFileName>.\obj\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <PreprocessorDefinitions>WINDOWS;_MBCS;STB_IMAGE_IMPLEMENTATION;STBI_WINDOWS_UTF8;STBI_FAILURE_USERMSG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>VR_API_PUBLIC;OPENVR_BUILD_STATIC;_MBCS;STB_IMAGE_IMPLEMENTATION;STBI_WINDOWS_UTF8;STBI_FAILURE_USERMSG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
