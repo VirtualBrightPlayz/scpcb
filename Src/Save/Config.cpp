@@ -1,7 +1,5 @@
 #include "Config.h"
 
-#include <Misc/FileUtil.h>
-
 #include "../Utils/INI.h"
 #include "../Input/Input.h"
 #include "../Graphics/GraphicsResources.h"
@@ -11,7 +9,7 @@ const PGE::String gameFolder = "SCP - Containment Breach";
 
 PGE::FilePath getConfigDir() {
     // return ""; // Uncomment this if you want options.ini in the root game folder.
-    return PGE::FileUtil::getDataPath() + corpFolder + '/' + gameFolder + '/';
+    return PGE::FilePath::getDataPath() + corpFolder + '/' + gameFolder + '/';
 }
 
 Config::Config(const PGE::String& file) :
@@ -52,11 +50,11 @@ Config::Config(const PGE::String& file) :
     kbBinds.emplace(Input::Inventory, PGE::KeyboardInput::KEYCODE::TAB);
     kbBinds.emplace(Input::ToggleConsole, PGE::KeyboardInput::KEYCODE::F3);
 
-    if (PGE::FileUtil::exists(filename)) {
+    if (filename.exists()) {
         loadFile();
     } else {
-        PGE::FileUtil::createDirectoryIfNotExists(PGE::FileUtil::getDataPath() + corpFolder);
-        PGE::FileUtil::createDirectoryIfNotExists(getConfigDir());
+        (PGE::FilePath::getDataPath() + corpFolder).createDirectory();
+        getConfigDir().createDirectory();
 
         saveFile();
     }

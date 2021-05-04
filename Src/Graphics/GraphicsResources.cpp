@@ -36,7 +36,7 @@ GraphicsResources::~GraphicsResources() {
 }
 
 PGE::Shader* GraphicsResources::getShader(const PGE::FilePath& filename, bool needsViewProjection) {
-    std::map<uint64_t, ShaderEntry*>::iterator find = pathToShaders.find(filename.getHashCode());
+    std::map<uint64_t, ShaderEntry*>::iterator find = pathToShaders.find(filename.str().getHashCode());
     if (find != pathToShaders.end()) {
         find->second->refCount++;
         return find->second->shader;
@@ -47,7 +47,7 @@ PGE::Shader* GraphicsResources::getShader(const PGE::FilePath& filename, bool ne
     newShader->shader = PGE::Shader::load(graphics, filename);
     newShader->filename = filename;
     newShader->needsViewProjection = needsViewProjection;
-    pathToShaders.emplace(filename.getHashCode(), newShader);
+    pathToShaders.emplace(filename.str().getHashCode(), newShader);
     shaderToShaders.emplace(newShader->shader, newShader);
     return newShader->shader;
 }
@@ -59,7 +59,7 @@ void GraphicsResources::dropShader(PGE::Shader* shader) {
         shaderEntry->refCount--;
         if (shaderEntry->refCount <= 0) {
             delete shaderEntry->shader;
-            pathToShaders.erase(shaderEntry->filename.getHashCode());
+            pathToShaders.erase(shaderEntry->filename.str().getHashCode());
             shaderToShaders.erase(find);
             delete shaderEntry;
         }

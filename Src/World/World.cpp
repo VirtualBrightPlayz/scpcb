@@ -3,7 +3,6 @@
 #include <iostream>
 #include <cmath>
 #include <Color/Color.h>
-#include <Misc/FileUtil.h>
 #include <filesystem>
 
 #include "Timing.h"

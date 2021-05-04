@@ -1,7 +1,6 @@
 #include "ResourcePackManager.h"
 
 #include <tinyxml2.h>
-#include <Misc/FileUtil.h>
 
 #include "../Save/ConfigValues.h"
 
@@ -25,7 +24,7 @@ void ResourcePackManager::loadResPacks() {
 	PGE::String modName;
 
 	for (int i = 0; i < resPackLocs->value.size(); i++) {
-		std::vector<PGE::FilePath> modFolders; PGE::FileUtil::enumerateFolders(PGE::FilePath::fromStr(resPackLocs->value[i]), modFolders);
+		std::vector<PGE::FilePath> modFolders; PGE::FilePath::fromStr(resPackLocs->value[i]).enumerateFolders(modFolders);
 		for (int j = 0; j < modFolders.size(); j++) {
 			metaPath = modFolders[j] + "meta.xml";
 			if (metaPath.exists()) {
