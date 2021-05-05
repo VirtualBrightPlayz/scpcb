@@ -128,9 +128,7 @@ void Config::saveFile() const {
 }
 
 void Config::setResolution(int width, int height) {
-    if (width <= 0 || height <= 0) {
-        throw std::runtime_error((PGE::String("Invalid display resolution. (width: ") + PGE::String::fromInt(width) + ", height: " + PGE::String::fromInt(height) + ")").cstr());
-    }
+    PGE_ASSERT(width > 0 && height > 0, "Invalid display resolution. (width: " + PGE::String::fromInt(width) + ", height: " + PGE::String::fromInt(height) + ")");
 
     this->width->value = width;
     this->height->value = height;

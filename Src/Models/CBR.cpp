@@ -30,22 +30,17 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
 
     PGE::BinaryReader reader = PGE::BinaryReader(PGE::FilePath::fromStr(filename));
 
-    if (reader.readFixedLengthString(3) != "CBR") {
-        throw std::runtime_error("CBR file is corrupted/invalid!");
-    }
+    PGE_ASSERT(reader.readFixedLengthString(3) == "CBR", "CBR file is corrupted/invalid!");
     uint32_t revision = reader.readUInt();
 
     // Lightmaps
-    if (reader.readByte() > No) {
-        lightmaps = new PGE::Texture*[4];
-        for (int i = 0; i < 4; i++) {
-            int size = reader.readInt();
-            uint8_t* bytes = reader.readBytes(size);
-            lightmaps[i] = TextureHelper::load(gr->getGraphics(), bytes, size);
-            delete[] bytes;
-        }
-    } else {
-        throw std::runtime_error("CBR file without lightmaps!");
+    PGE_ASSERT(reader.readByte() > No, "CBN file without lightmaps");
+    lightmaps = new PGE::Texture*[4];
+    for (int i = 0; i < 4; i++) {
+        int size = reader.readInt();
+        uint8_t* bytes = reader.readBytes(size);
+        lightmaps[i] = TextureHelper::load(gr->getGraphics(), bytes, size);
+        delete[] bytes;
     }
 
     // Texture dictionary

@@ -39,22 +39,17 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
     );
 
     PGE::String err = importer->GetErrorString();
-    if (!err.isEmpty()) {
-        throw std::runtime_error(err.cstr());
-    }
+    PGE_ASSERT(err.isEmpty(), "Failed to load model (err: " + err + ")");
 
     materialCount = scene->mNumMaterials;
     materials = new PGE::Material*[materialCount];
     for (unsigned int i = 0; i < materialCount; i++) {
         aiString texturePath;
-        if (scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath) == aiReturn_SUCCESS) {
-            PGE::String textureName = PGE::String(texturePath.C_Str()).replace("\\", "/");
-            int lastSlash = textureName.findLast("/");
-            textureName = textureName.substr(lastSlash + 1, textureName.length() - lastSlash - 5);
-            materials[i] = new PGE::Material(shader, gr->getTexture(path + textureName));
-        } else {
-            throw std::runtime_error(("Texture for model " + filename + " failed to load.").cstr());
-        }
+        PGE_ASSERT(scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath) == aiReturn_SUCCESS, "Texture for model " + filename + " failed to load.");
+        PGE::String textureName = PGE::String(texturePath.C_Str()).replace("\\", "/");
+        int lastSlash = textureName.findLast("/");
+        textureName = textureName.substr(lastSlash + 1, textureName.length() - lastSlash - 5);
+        materials[i] = new PGE::Material(shader, gr->getTexture(path + textureName));
     }
 
     meshCount = scene->mNumMeshes;

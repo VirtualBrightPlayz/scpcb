@@ -3,6 +3,8 @@
     #include <iostream>
 #endif
 
+#include <Exception/Exception.h>
+
 #include "../../Utils/MathUtil.h"
 #include "../../Input/KeyBinds.h"
 #include "../ScriptManager.h"
@@ -101,13 +103,8 @@ void ConsoleDefinitions::registerCommand(const PGE::String& name, const PGE::Str
     asIScriptFunction* func = (asIScriptFunction*)(((typeId & asTYPEID_OBJHANDLE) != 0) ? *((void**)f) : f);
     for (unsigned int i = 0; i < func->GetParamCount(); i++) {
         int paramTypeId;
-        if (func->GetParam(i, &paramTypeId) < 0) {
-            throw std::runtime_error("ptooey?");
-        } else {
-            if (paramTypeId != asTYPEID_BOOL && paramTypeId != asTYPEID_INT32 && paramTypeId != asTYPEID_FLOAT && paramTypeId != engine->GetStringFactoryReturnTypeId()) {
-                throw std::runtime_error("STINKY INVALID TYPE");
-            }
-        }
+        PGE_ASSERT(func->GetParam(i, &paramTypeId) == 0, "ptooey?");
+        PGE_ASSERT(paramTypeId == asTYPEID_BOOL || paramTypeId == asTYPEID_INT32 || paramTypeId == asTYPEID_FLOAT || paramTypeId == engine->GetStringFactoryReturnTypeId(), "STINKY INVALID TYPE");
     }
     Command newCommand = { func, nullptr, name, helpText };
     commands.emplace(name.getHashCode(), newCommand);
@@ -130,7 +127,7 @@ void ConsoleDefinitions::executeCommand(const PGE::String& in) {
             asIScriptFunction* func = find->second.func;
             params.erase(params.begin());
             // TODO: Do we need to check all AS funcs or none?
-            if (scriptContext->Prepare(func) < 0) { throw std::runtime_error("ptooey! 2"); }
+            PGE_ASSERT(scriptContext->Prepare(func) == 0, "ptooey! 2");
             if (func->GetParamCount() != params.size()) {
                 const char* defaultParam;
                 func->GetParam((asUINT)params.size(), nullptr, nullptr, nullptr, &defaultParam);
@@ -143,44 +140,41 @@ void ConsoleDefinitions::executeCommand(const PGE::String& in) {
             PGE::String errMsg;
             for (unsigned int i = 0; i < params.size(); i++) {
                 int paramTypeId;
-                if (func->GetParam(i, &paramTypeId) >= 0) {
-                    if (paramTypeId == asTYPEID_BOOL) {
-                        if (params[i].toLower().equals("true") || params[i].equals("1")) {
-                            scriptContext->SetArgByte(i, 1);
-                        } else if (params[i].toLower().equals("false") || params[i].equals("0")) {
-                            scriptContext->SetArgByte(i, 0);
-                        } else {
-                            errMsg = "NOT BOOL";
-                            break;
-                        }
-                    } else if (paramTypeId == asTYPEID_INT32) {
-                        bool success;
-                        int arg = params[i].toInt(success);
-                        if (!success) {
-                            errMsg = "NOT INT";
-                            break;
-                        }
-
-                        // If the user enters a float.
-                        if (!MathUtil::equalFloats((float)arg, params[i].toFloat())) {
-                            addConsoleMessage("Loss of data!", PGE::Color::Yellow);
-                        }
-
-                        scriptContext->SetArgDWord(i, arg);
-                    } else if (paramTypeId == asTYPEID_FLOAT) {
-                        bool success;
-                        float arg = params[i].toFloat(success);
-                        if (!success) {
-                            errMsg = "NOT FLOAT";
-                            break;
-                        }
-
-                        scriptContext->SetArgFloat(i, arg);
-                    } else if (paramTypeId == scriptContext->GetEngine()->GetStringFactoryReturnTypeId()) {
-                        scriptContext->SetArgObject(i, (void*)&(params[i]));
+                PGE_ASSERT(func->GetParam(i, &paramTypeId) == 0, "ptooey! 3");
+                if (paramTypeId == asTYPEID_BOOL) {
+                    if (params[i].toLower().equals("true") || params[i].equals("1")) {
+                        scriptContext->SetArgByte(i, 1);
+                    } else if (params[i].toLower().equals("false") || params[i].equals("0")) {
+                        scriptContext->SetArgByte(i, 0);
+                    } else {
+                        errMsg = "NOT BOOL";
+                        break;
                     }
-                } else {
-                    throw std::runtime_error("ptooey! 3");
+                } else if (paramTypeId == asTYPEID_INT32) {
+                    bool success;
+                    int arg = params[i].toInt(success);
+                    if (!success) {
+                        errMsg = "NOT INT";
+                        break;
+                    }
+
+                    // If the user enters a float.
+                    if (!MathUtil::equalFloats((float)arg, params[i].toFloat())) {
+                        addConsoleMessage("Loss of data!", PGE::Color::Yellow);
+                    }
+
+                    scriptContext->SetArgDWord(i, arg);
+                } else if (paramTypeId == asTYPEID_FLOAT) {
+                    bool success;
+                    float arg = params[i].toFloat(success);
+                    if (!success) {
+                        errMsg = "NOT FLOAT";
+                        break;
+                    }
+
+                    scriptContext->SetArgFloat(i, arg);
+                } else if (paramTypeId == scriptContext->GetEngine()->GetStringFactoryReturnTypeId()) {
+                    scriptContext->SetArgObject(i, (void*)&(params[i]));
                 }
             }
 
@@ -197,12 +191,12 @@ void ConsoleDefinitions::executeCommand(const PGE::String& in) {
 }
 
 void ConsoleDefinitions::addConsoleMessage(const PGE::String& msg, const PGE::Color& color) {
-    if (msgContext->Prepare(addConsoleMsgFunc) < 0) { throw std::runtime_error("prepare fail"); };
-    if (msgContext->SetObject(consoleInstance) < 0) { throw std::runtime_error("setobj fail"); };
-    if (msgContext->SetArgObject(0, (void*)&msg) < 0) { throw std::runtime_error("setarg0 fail"); };
-    if (msgContext->SetArgObject(1, (void*)&color) < 0) { throw std::runtime_error("setarg1 fail"); };
-    if (msgContext->Execute() < 0) { throw std::runtime_error("execute fail"); };
-    if (msgContext->Unprepare() < 0) { throw std::runtime_error("unprepare fail"); };
+    PGE_ASSERT(msgContext->Prepare(addConsoleMsgFunc) == 0, "prepare fail");
+    PGE_ASSERT(msgContext->SetObject(consoleInstance) == 0, "setobj fail");
+    PGE_ASSERT(msgContext->SetArgObject(0, (void*)&msg) == 0, "setarg0 fail");
+    PGE_ASSERT(msgContext->SetArgObject(1, (void*)&color) == 0, "setarg1 fail");
+    PGE_ASSERT(msgContext->Execute() == 0, "epic execute fail");
+    PGE_ASSERT(msgContext->Unprepare() == 0, "unprepare fail");
 }
 
 void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
@@ -224,7 +218,7 @@ void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
     } else {
         switch (typeId) {
             case asTYPEID_VOID: { // This should never happen.
-                throw std::runtime_error("VOID PARAMETER!");
+                PGE_ASSERT(false, "VOID PARAMETER");
             } break;
             case asTYPEID_BOOL: {
                 content = (*(bool*)ref) ? "True" : "False";
@@ -283,9 +277,7 @@ void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
     std::ostream& out = (type == LogType::Error ? std::cerr : std::cout);
     out << "Debug::" << typeString << ": " << content << std::endl;
 #endif
-    if (type == LogType::Error) {
-        throw std::runtime_error(("ERROR! " + content).cstr());
-    }
+    PGE_ASSERT(type != LogType::Error, "ERROR! " + content);
 }
 
 void ConsoleDefinitions::log(void* ref, int typeId) {

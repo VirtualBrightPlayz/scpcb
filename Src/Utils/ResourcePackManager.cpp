@@ -1,5 +1,7 @@
 #include "ResourcePackManager.h"
 
+#include <Exception/Exception.h>
+
 #include <tinyxml2.h>
 
 #include "../Save/ConfigValues.h"
@@ -29,9 +31,7 @@ void ResourcePackManager::loadResPacks() {
 			metaPath = modFolders[j] + "meta.xml";
 			if (metaPath.exists()) {
 				xmlErr = xmlDoc.LoadFile(metaPath.cstr());
-				if (xmlErr != tinyxml2::XML_SUCCESS) {
-					throw std::runtime_error("XML moment " + xmlErr);
-				}
+				PGE_ASSERT(xmlErr == tinyxml2::XML_SUCCESS, "XML moment " + xmlErr);
 				xmlRoot = xmlDoc.RootElement();
 				if (xmlRoot != nullptr && xmlRoot->FirstChildElement("Type")->GetText() == PGE::String("ResPack")) {
 					modName = xmlRoot->FirstChildElement("Name")->GetText();

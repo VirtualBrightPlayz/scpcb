@@ -18,9 +18,7 @@ ModelImageGenerator::~ModelImageGenerator() {
 }
 
 void ModelImageGenerator::initialize(int texSize) {
-    if (initialized) {
-        throw std::runtime_error("Model Image Generator has already been initialized!");
-    }
+    PGE_ASSERT(!initialized, "Model Image Generator has already been initialized");
 
     this->texSize = texSize;
 
@@ -34,9 +32,7 @@ void ModelImageGenerator::initialize(int texSize) {
 }
 
 void ModelImageGenerator::deinitialize() {
-    if (!initialized) {
-        throw std::runtime_error("Model Image Generator has not been initialized!");
-    }
+    PGE_ASSERT(initialized, "Model Image Generator has not been initialized");
 
     delete cam;
     graphics->resetRenderTarget();
@@ -50,9 +46,7 @@ bool ModelImageGenerator::getInitialized() const {
 }
 
 PGE::Texture* ModelImageGenerator::generate(const PGE::String& model, float scale, const PGE::Vector3f& rotation, PGE::Vector2f position) {
-    if (!initialized) {
-        throw std::runtime_error("Model image generator has not been initialized!");
-    }
+    PGE_ASSERT(initialized, "Model Image Generator has not been initialized");
 
     PGE::Texture* tex = PGE::Texture::createRenderTarget(graphics, texSize, texSize, PGE::Texture::FORMAT::RGBA32);
 
@@ -73,7 +67,7 @@ PGE::Texture* ModelImageGenerator::generate(const PGE::String& model, float scal
         gfxRes->dropModelInstance(mi);
 
         return tex;
-    } catch (std::runtime_error) {
+    } catch (...) {
         delete tex;
         return nullptr;
     }

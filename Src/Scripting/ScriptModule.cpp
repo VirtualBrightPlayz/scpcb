@@ -6,7 +6,7 @@
 #include "ScriptGlobal.h"
 #include "ScriptManager.h"
 
-#include <stdexcept>
+#include <Exception/Exception.h>
 #include <Math/Vector.h>
 #include <Math/Matrix.h>
 #include "AngelScriptAddons/scriptarray/scriptarray.h"
@@ -35,17 +35,17 @@ ScriptModule::~ScriptModule() {
 }
 
 void ScriptModule::addScript(const PGE::String& sectionName, Script* script) {
-    if (built) { throw std::runtime_error("Module already built!"); }
+    PGE_ASSERT(!built, "Module already built!");
 
     int errorCode = scriptModule->AddScriptSection(sectionName.cstr(), script->getScriptContents().cstr(), script->getScriptContents().length());
-    if (errorCode < 0) { throw std::runtime_error("kablooey!"); }
+    PGE_ASSERT(errorCode == 0, "kablooey! (" + PGE::String::fromInt(errorCode) + ")");
 
     scripts.push_back(script);
 }
 
 void ScriptModule::build() {
     int errorCode = scriptModule->Build();
-    if (errorCode < 0) { throw std::runtime_error("whabammy!"); }
+    PGE_ASSERT(errorCode == 0, "whabammy! (" + PGE::String::fromInt(errorCode) + ")");
 
     std::vector<asITypeInfo*> unprocessedTypes;
     int typeCount = scriptModule->GetObjectTypeCount();
@@ -79,9 +79,7 @@ void ScriptModule::build() {
             }
             unprocessedTypes.erase(unprocessedTypes.begin()+i);
         }
-        if (unprocessedCount == unprocessedTypes.size()) {
-            throw std::runtime_error("Failed to process all classes");
-        }
+        PGE_ASSERT(unprocessedTypes.size() < unprocessedCount, "Failed to process all classes!");
     }
 
     for (int i = 0; i < classes.size(); i++) {
@@ -191,13 +189,10 @@ Type* ScriptModule::typeFromTypeId(int typeId) const {
             } else if (typeId == colorTypeID) {
                 type = Type::Color;
             } else if (isTemplate) {
-                if (scriptManager->isArrayTypeId(originalTypeId)) {
-                    asITypeInfo* typeInfo = engine->GetTypeInfoById(originalTypeId);
-                    Type* baseType = typeFromTypeId(typeInfo->GetSubTypeId());
-                    type = baseType->getArrayType();
-                } else {
-                    throw std::runtime_error("Templates are currently not supported for types other than arrays");
-                }
+                PGE_ASSERT(scriptManager->isArrayTypeId(originalTypeId), "Templates are currently not supported for types other than arrays");
+                asITypeInfo* typeInfo = engine->GetTypeInfoById(originalTypeId);
+                Type* baseType = typeFromTypeId(typeInfo->GetSubTypeId());
+                type = baseType->getArrayType();
             } else {
                 if ((type = getClassByTypeId(typeId)) == nullptr) {
                     type = scriptManager->getSharedClassByTypeId(typeId);
@@ -376,10 +371,7 @@ void ScriptModule::loadXML(void* ref, Type* type, tinyxml2::XMLElement* element)
             clss = (ScriptClass*)type;
         }
 
-        if (obj == nullptr) { 
-            PGE::String error = PGE::String("Unexpected uninitialized variable: ") + element->Name();
-            throw std::runtime_error(error.cstr());
-        }
+        PGE_ASSERT(obj != nullptr, PGE::String("Unexpected uninitialized variable: ") + element->Name());
 
         ScriptObject classObject = ScriptObject(clss, obj);
         classObject.loadXML(element, this);

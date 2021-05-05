@@ -1,5 +1,7 @@
 #include "Script.h"
 
+#include <Exception/Exception.h>
+
 #include "ScriptManager.h"
 #include "ScriptClass.h"
 #include "ScriptFunction.h"
@@ -17,9 +19,7 @@ Script::Script(const PGE::FilePath& fn) {
     std::ifstream inFile;
     inFile.open(fileName.cstr(), std::ios_base::in);
 
-    if (!inFile.good()) {
-        throw std::runtime_error((PGE::String("Could not find script: \"") + fileName.str() + "\"").cstr());
-    }
+    PGE_ASSERT(inFile.good(), "Could not find script: \"" + fileName.str() + "\"");
 
     bool reachedEndOfFile = inFile.eof();
     while (!reachedEndOfFile) {

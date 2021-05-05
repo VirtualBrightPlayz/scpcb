@@ -1,7 +1,7 @@
 #include "LocalizationManager.h"
 
 #include <iostream>
-#include <exception>
+#include <Exception/Exception.h>
 #include <Misc/FilePath.h>
 
 #include "INI.h"
@@ -9,9 +9,7 @@
 LocalizationManager::Language::Language(const PGE::String& langCode) {
     code = langCode;
     PGE::FilePath path = PGE::FilePath::fromStr("Data/lang/" + langCode + "/text.ini");
-    if (!path.exists()) {
-        throw std::runtime_error(PGE::String("Language file \"" + path.str() + "\" not found!").cstr());
-    }
+    PGE_ASSERT(path.exists(), "Language file \"" + path.str() + "\" not found");
 
     INIFile* iniFile = new INIFile(path);
     std::vector<INIFile::Section*> sections = iniFile->getAllSections();
