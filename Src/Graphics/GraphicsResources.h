@@ -1,9 +1,11 @@
 #ifndef GRAPHICSRESOURCES_H_INCLUDED
 #define GRAPHICSRESOURCES_H_INCLUDED
 
-#include <map>
+#include <unordered_map>
 
 #include <assimp/Importer.hpp>
+
+#include <String/StringKeyFast.h>
 
 #include <Graphics/Graphics.h>
 #include <Shader/Shader.h>
@@ -24,8 +26,8 @@ class GraphicsResources {
             int refCount;
             bool needsViewProjection;
         };
-        std::map<PGE::Shader*, ShaderEntry*> shaderToShaders;
-        std::map<uint64_t, ShaderEntry*> pathToShaders;
+        std::unordered_map<PGE::Shader*, ShaderEntry*> shaderToShaders;
+        std::unordered_map<PGE::StringKeyFast, ShaderEntry*> pathToShaders;
 
         struct TextureEntry {
             // This needs to stay a string for the Resource Packs to work.
@@ -33,8 +35,8 @@ class GraphicsResources {
             PGE::Texture* texture;
             int refCount;
         };
-        std::map<PGE::Texture*, TextureEntry*> textureToTextures;
-        std::map<uint64_t, TextureEntry*> pathToTextures;
+        std::unordered_map<PGE::Texture*, TextureEntry*> textureToTextures;
+        std::unordered_map<PGE::StringKeyFast, TextureEntry*> pathToTextures;
 
         struct ModelEntry {
             // Having this as a string makes the loading of textures easier.
@@ -42,8 +44,8 @@ class GraphicsResources {
             Model* model;
             int refCount;
         };
-        std::map<Model*, ModelEntry*> modelToModels;
-        std::map<uint64_t, ModelEntry*> pathToModels;
+        std::unordered_map<Model*, ModelEntry*> modelToModels;
+        std::unordered_map<PGE::StringKeyFast, ModelEntry*> pathToModels;
 
         PGE::Matrix4x4f orthoMat;
 

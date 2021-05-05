@@ -140,15 +140,15 @@ void KeyBinds::setConsoleDefinitions(ConsoleDefinitions* inConDef) {
 }
 
 void KeyBinds::registerInputString(const PGE::String& string, PGE::KeyboardInput::KEYCODE key) {
-    inputStrings.emplace(string.getHashCode(), new PGE::KeyboardInput(key));
+    inputStrings.emplace(string, new PGE::KeyboardInput(key));
 }
 
 void KeyBinds::registerInputString(const PGE::String& string, PGE::MouseInput::BUTTON key) {
-    inputStrings.emplace(string.getHashCode(), new PGE::MouseInput(key));
+    inputStrings.emplace(string, new PGE::MouseInput(key));
 }
 
 void KeyBinds::registerInputString(const PGE::String& string, PGE::ControllerInput::BUTTON key) {
-    inputStrings.emplace(string.getHashCode(), new PGE::ControllerInput(io->getController(0), key));
+    inputStrings.emplace(string, new PGE::ControllerInput(io->getController(0), key));
 }
 
 bool KeyBinds::anyShiftDown() const {
@@ -207,7 +207,7 @@ void KeyBinds::update() {
     // TODO: Disable when key capture is enabled.
     for (ConsoleBindingsMap::const_iterator it = consoleBindings.begin(); it != consoleBindings.end(); it++) {
         if (it->second->isHit()) {
-            conDef->executeCommand(it->first.str);
+            conDef->executeCommand(it->first.getStr());
         }
     }
 }
@@ -280,7 +280,7 @@ void KeyBinds::unbindCommand(PGE::String command, PGE::UserInput* key) {
 }
 
 PGE::UserInput* KeyBinds::stringToInput(const PGE::String& key) const {
-    auto find = inputStrings.find(key.toLower().getHashCode());
+    auto find = inputStrings.find(key.toLower());
     if (find == inputStrings.end()) {
         return nullptr;
     }

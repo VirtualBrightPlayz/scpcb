@@ -14,7 +14,7 @@
 
 void ConsoleDefinitions::helpInternal(std::vector<PGE::String> params) {
     if (params.size() == 2) {
-        std::map<uint64_t, Command>::iterator find = commands.find(params[1].getHashCode());
+        auto find = commands.find(params[1]);
         if (find == commands.end()) {
             addConsoleMessage("That command doesn't exist", PGE::Color::Yellow);
         } else {
@@ -96,7 +96,7 @@ void ConsoleDefinitions::setUp(ScriptManager* mgr) {
 
 void ConsoleDefinitions::registerCommandInternal(const PGE::String& name, const PGE::String& helpText, void(ConsoleDefinitions::*nativFunc)(std::vector<PGE::String>)) {
     Command c = { nullptr, nativFunc, name, helpText };
-    commands.emplace(name.getHashCode(), c);
+    commands.emplace(name, c);
 }
 
 void ConsoleDefinitions::registerCommand(const PGE::String& name, const PGE::String& helpText, void* f, int typeId) {
@@ -107,7 +107,7 @@ void ConsoleDefinitions::registerCommand(const PGE::String& name, const PGE::Str
         PGE_ASSERT(paramTypeId == asTYPEID_BOOL || paramTypeId == asTYPEID_INT32 || paramTypeId == asTYPEID_FLOAT || paramTypeId == engine->GetStringFactoryReturnTypeId(), "STINKY INVALID TYPE");
     }
     Command newCommand = { func, nullptr, name, helpText };
-    commands.emplace(name.getHashCode(), newCommand);
+    commands.emplace(name, newCommand);
 #ifdef DEBUG
     std::cout << "Command: " << name << std::endl;
 #endif
@@ -119,7 +119,7 @@ void ConsoleDefinitions::registerCommandNoHelp(const PGE::String& name, void* f,
 
 void ConsoleDefinitions::executeCommand(const PGE::String& in) {
     std::vector<PGE::String> params = in.split(" ", true);
-    std::map<uint64_t, Command>::iterator find = commands.find(params[0].getHashCode());
+    auto find = commands.find(params[0]);
     if (find != commands.end()) {
         if (find->second.func == nullptr) {
             (this->*find->second.nativFunc)(params);

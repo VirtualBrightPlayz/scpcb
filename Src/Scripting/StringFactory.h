@@ -1,11 +1,12 @@
 #ifndef STRINGFACTORY_H_INCLUDED
 #define STRINGFACTORY_H_INCLUDED
 
-#include <map>
+#include <unordered_map>
 
 #include <angelscript.h>
 
 #include <String/String.h>
+#include <String/StringKeyFast.h>
 
 struct StringPoolEntry {
     PGE::String str;
@@ -21,7 +22,8 @@ struct StringPoolEntry {
 
 class StringFactory : public asIStringFactory {
     private:
-        std::map<uint64_t, StringPoolEntry> strPool;
+        // String key safe here?
+        std::unordered_map<PGE::StringKeyFast, StringPoolEntry> strPool;
 
     public:
         StringFactory(asIScriptEngine* engine);

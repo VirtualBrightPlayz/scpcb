@@ -1,7 +1,8 @@
 #ifndef BILLBOARD_H_INCLUDED
 #define BILLBOARD_H_INCLUDED
 
-#include <map>
+#include <unordered_map>
+#include <String/StringKeyFast.h>
 
 #include <Mesh/Mesh.h>
 
@@ -27,7 +28,7 @@ class BillboardManager {
 
         std::vector<PGE::Primitive> primitives;
 
-        std::map<uint64_t, BillboardMesh> meshes;
+        std::unordered_map<PGE::StringKeyFast, BillboardMesh> meshes;
         PGE::Shader* shader;
 
     public:

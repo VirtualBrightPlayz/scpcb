@@ -12,8 +12,8 @@ BillboardManager::BillboardManager(PGE::Graphics* gfx, GraphicsResources* gr, Ca
 }
 
 BillboardManager::~BillboardManager() {
-    std::map<uint64_t, BillboardMesh> meshesCopy = meshes;
-    for (std::map<uint64_t, BillboardMesh>::iterator it=meshesCopy.begin();it!=meshesCopy.end();it++) {
+    std::unordered_map<PGE::StringKeyFast, BillboardMesh> meshesCopy = meshes;
+    for (std::unordered_map<PGE::StringKeyFast, BillboardMesh>::iterator it=meshesCopy.begin();it!=meshesCopy.end();it++) {
         BillboardMesh& mesh = it->second;
         for (int i = (int)mesh.billboards.size()-1; i >= 0; i--) {
             delete mesh.billboards[i];
@@ -25,15 +25,15 @@ BillboardManager::~BillboardManager() {
 void BillboardManager::addBillboard(Billboard* billboard) {
     billboard->markAsDirty();
     PGE::String texName = billboard->getTexture();
-    std::map<uint64_t, BillboardMesh>::iterator it = meshes.find(texName.getHashCode());
+    auto it = meshes.find(texName);
     if (it == meshes.end()) {
         BillboardMesh newMesh;
         newMesh.texture = gfxRes->getTexture(texName);
         newMesh.material = new PGE::Material(shader, newMesh.texture, false);
         newMesh.mesh = PGE::Mesh::create(gfxRes->getGraphics(), PGE::Primitive::TYPE::TRIANGLE);
         newMesh.mesh->setMaterial(newMesh.material);
-        meshes.emplace(texName.getHashCode(), newMesh);
-        it = meshes.find(texName.getHashCode());
+        meshes.emplace(texName, newMesh);
+        it = meshes.find(texName);
     }
     it->second.geomChanged = true;
     it->second.billboards.push_back(billboard);
@@ -41,7 +41,7 @@ void BillboardManager::addBillboard(Billboard* billboard) {
 
 void BillboardManager::removeBillboard(Billboard* billboard) {
     PGE::String texName = billboard->getTexture();
-    std::map<uint64_t, BillboardMesh>::iterator it = meshes.find(texName.getHashCode());
+    auto it = meshes.find(texName);
     if (it != meshes.end()) {
         std::vector<Billboard*>& billboards = it->second.billboards;
         for (int i=0;i<billboards.size();i++) {
@@ -55,13 +55,13 @@ void BillboardManager::removeBillboard(Billboard* billboard) {
             delete it->second.mesh;
             delete it->second.material;
             gfxRes->dropTexture(it->second.texture);
-            meshes.erase(texName.getHashCode());
+            meshes.erase(texName);
         }
     }
 }
 
 void BillboardManager::render() {
-    for (std::map<uint64_t, BillboardMesh>::iterator it=meshes.begin();it!=meshes.end();it++) {
+    for (auto it=meshes.begin();it!=meshes.end();it++) {
         BillboardMesh& mesh = it->second;
         const PGE::Vector3f camPos = camera->position;
         // Insertion sort.

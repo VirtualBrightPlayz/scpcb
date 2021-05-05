@@ -10,14 +10,14 @@ const void* StringFactory::GetStringConstant(const char* data, asUINT length) {
     PGE::String tempStr = tempBuf;
     delete[] tempBuf;
 
-    std::map<uint64_t, StringPoolEntry>::iterator poolEntry = strPool.find(tempStr.getHashCode());
+    auto poolEntry = strPool.find(tempStr);
     if (poolEntry != strPool.end()) {
         poolEntry->second.refCount++;
     } else {
         StringPoolEntry newEntry = StringPoolEntry(tempStr);
         newEntry.refCount = 1;
-        strPool.emplace(tempStr.getHashCode(), newEntry);
-        poolEntry = strPool.find(tempStr.getHashCode());
+        strPool.emplace(tempStr, newEntry);
+        poolEntry = strPool.find(tempStr);
     }
 
     asReleaseExclusiveLock();
@@ -31,11 +31,11 @@ int StringFactory::ReleaseStringConstant(const void* str) {
     asAcquireExclusiveLock();
 
     PGE::String* deref = ((PGE::String*)str);
-    std::map<uint64_t, StringPoolEntry>::iterator poolEntry = strPool.find(deref->getHashCode());
+    auto poolEntry = strPool.find(*deref);
     if (poolEntry != strPool.end()) {
         poolEntry->second.refCount--;
         if (poolEntry->second.refCount <= 0) {
-            strPool.erase(deref->getHashCode());
+            strPool.erase(*deref);
         }
     }
 
@@ -97,10 +97,6 @@ static int stringLength(const PGE::String& str) {
     return str.length();
 }
 
-static uint64_t stringGetHashCode(const PGE::String& str) {
-    return str.getHashCode();
-}
-
 static PGE::String stringSubstrStartLen(int start, int count, const PGE::String& str) {
     return str.substr(start, count);
 }
@@ -147,7 +143,6 @@ StringFactory::StringFactory(asIScriptEngine* engine) {
     engine->RegisterObjectMethod("string", "string opAdd(const string& in) const",asFUNCTION(stringAdd), asCALL_CDECL_OBJLAST);
 
     engine->RegisterObjectMethod("string", "uint length() const", asFUNCTION(stringLength), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectMethod("string", "uint64 getHashCode() const", asFUNCTION(stringGetHashCode), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectMethod("string", "string substr(int start, int end=-1) const",asFUNCTION(stringSubstrStartLen), asCALL_CDECL_OBJLAST);
 
     engine->RegisterObjectMethod("string", "uint16 opIndex(uint) const",asFUNCTION(stringCharAt), asCALL_CDECL_OBJLAST);
