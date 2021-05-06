@@ -5,7 +5,7 @@
 
 #include <assimp/Importer.hpp>
 
-#include <String/StringKeyFast.h>
+#include <String/Key.h>
 
 #include <Graphics/Graphics.h>
 #include <Shader/Shader.h>
@@ -27,7 +27,7 @@ class GraphicsResources {
             bool needsViewProjection;
         };
         std::unordered_map<PGE::Shader*, ShaderEntry*> shaderToShaders;
-        std::unordered_map<PGE::StringKeyFast, ShaderEntry*> pathToShaders;
+        std::unordered_map<PGE::String::Key, ShaderEntry*> pathToShaders;
 
         struct TextureEntry {
             // This needs to stay a string for the Resource Packs to work.
@@ -36,7 +36,7 @@ class GraphicsResources {
             int refCount;
         };
         std::unordered_map<PGE::Texture*, TextureEntry*> textureToTextures;
-        std::unordered_map<PGE::StringKeyFast, TextureEntry*> pathToTextures;
+        std::unordered_map<PGE::String::Key, TextureEntry*> pathToTextures;
 
         struct ModelEntry {
             // Having this as a string makes the loading of textures easier.
@@ -45,7 +45,7 @@ class GraphicsResources {
             int refCount;
         };
         std::unordered_map<Model*, ModelEntry*> modelToModels;
-        std::unordered_map<PGE::StringKeyFast, ModelEntry*> pathToModels;
+        std::unordered_map<PGE::String::Key, ModelEntry*> pathToModels;
 
         PGE::Matrix4x4f orthoMat;
 

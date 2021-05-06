@@ -5,8 +5,7 @@
 
 #include <angelscript.h>
 
-#include <String/String.h>
-#include <String/StringKeyFast.h>
+#include <String/Key.h>
 
 struct StringPoolEntry {
     PGE::String str;
@@ -23,7 +22,7 @@ struct StringPoolEntry {
 class StringFactory : public asIStringFactory {
     private:
         // String key safe here?
-        std::unordered_map<PGE::StringKeyFast, StringPoolEntry> strPool;
+        std::unordered_map<PGE::String::Key, StringPoolEntry> strPool;
 
     public:
         StringFactory(asIScriptEngine* engine);

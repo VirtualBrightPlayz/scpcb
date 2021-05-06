@@ -12,8 +12,8 @@ BillboardManager::BillboardManager(PGE::Graphics* gfx, GraphicsResources* gr, Ca
 }
 
 BillboardManager::~BillboardManager() {
-    std::unordered_map<PGE::StringKeyFast, BillboardMesh> meshesCopy = meshes;
-    for (std::unordered_map<PGE::StringKeyFast, BillboardMesh>::iterator it=meshesCopy.begin();it!=meshesCopy.end();it++) {
+    std::unordered_map<PGE::String::Key, BillboardMesh> meshesCopy = meshes;
+    for (std::unordered_map<PGE::String::Key, BillboardMesh>::iterator it=meshesCopy.begin();it!=meshesCopy.end();it++) {
         BillboardMesh& mesh = it->second;
         for (int i = (int)mesh.billboards.size()-1; i >= 0; i--) {
             delete mesh.billboards[i];

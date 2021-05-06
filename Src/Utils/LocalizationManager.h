@@ -3,14 +3,14 @@
 
 #include <unordered_map>
 
-#include <String/StringKeyFast.h>
+#include <String/Key.h>
 
 class LocalizationManager {
     private:
         class Language {
             private:
                 PGE::String name;
-                std::unordered_map<PGE::StringKeyFast, PGE::String> map;
+                std::unordered_map<PGE::String::Key, PGE::String> map;
 
             public:
                 PGE::String code;

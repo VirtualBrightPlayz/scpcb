@@ -37,7 +37,7 @@ static PGE::String readByteString(std::ifstream& inFile) {
     for (int i = 0; i < (int)len; i++) {
         char chr = '\0';
         inFile.read(&chr, 1);
-        retVal = PGE::String(retVal,PGE::String(chr));
+        retVal += PGE::String(chr);
     }
 
     return retVal;

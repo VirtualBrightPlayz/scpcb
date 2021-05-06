@@ -81,7 +81,7 @@ static PGE::String& assignString(const PGE::String& str, PGE::String& dest) {
 }
 
 static PGE::String& addAssignString(const PGE::String& str, PGE::String& dest) {
-    dest = PGE::String(dest, str);
+    dest += str;
     return dest;
 }
 
@@ -90,7 +90,7 @@ static bool stringEquals(const PGE::String& lhs, const PGE::String& rhs) {
 }
 
 static PGE::String stringAdd(const PGE::String& rhs, const PGE::String& lhs) {
-    return PGE::String(lhs, rhs);
+    return lhs + rhs;
 }
 
 static int stringLength(const PGE::String& str) {

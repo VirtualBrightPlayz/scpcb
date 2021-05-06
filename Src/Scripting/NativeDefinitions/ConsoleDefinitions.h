@@ -5,8 +5,7 @@
 #include <vector>
 
 #include <Color/Color.h>
-#include <String/String.h>
-#include <String/StringKeyOrdered.h>
+#include <String/Key.h>
 
 #include "../NativeDefinition.h"
 
@@ -33,7 +32,7 @@ class ConsoleDefinitions : public NativeDefinition {
             PGE::String name;
             PGE::String helpText;
         };
-        std::map<PGE::StringKeyOrdered, Command> commands;
+        std::map<PGE::String::OrderedKey, Command> commands;
 
         asIScriptContext* scriptContext;
         asIScriptContext* msgContext;

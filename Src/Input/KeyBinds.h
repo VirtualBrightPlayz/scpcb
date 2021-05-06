@@ -5,8 +5,7 @@
 
 #include <IO/IO.h>
 #include <UserInput/UserInput.h>
-#include <String/StringKeyFastRedundant.h>
-#include <String/StringKeyFast.h>
+#include <String/Key.h>
 
 #include "Input.h"
 
@@ -26,13 +25,13 @@ class KeyBinds {
         typedef std::unordered_multimap<Input, PGE::UserInput*> UserInputMap;
         UserInputMap bindings;
 
-        typedef std::unordered_multimap<PGE::StringKeyFastRedundant, PGE::UserInput*> ConsoleBindingsMap;
+        typedef std::unordered_multimap<PGE::String::RedundantKey, PGE::UserInput*> ConsoleBindingsMap;
         ConsoleBindingsMap consoleBindings;
 
         void bindInput(Input input, PGE::UserInput* key);
         void unbindInput(Input input, PGE::UserInput::DEVICE device, int key);
 
-        std::unordered_map<PGE::StringKeyFast, PGE::UserInput*> inputStrings;
+        std::unordered_map<PGE::String::Key, PGE::UserInput*> inputStrings;
         void registerInputString(const PGE::String& string, PGE::KeyboardInput::KEYCODE key);
         void registerInputString(const PGE::String& string, PGE::MouseInput::BUTTON key);
         void registerInputString(const PGE::String& string, PGE::ControllerInput::BUTTON key);

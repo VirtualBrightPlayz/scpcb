@@ -7,13 +7,13 @@
 #include <stdexcept>
 
 PGE::String ScriptFunction::Signature::toString() const {
-    PGE::String retVal = returnType->getName() + " " + functionName;
-    retVal = PGE::String(retVal, "(");
+    PGE::String retVal = returnType->getName() + ' ' + functionName;
+    retVal += '(';
     for (int i = 0; i < arguments.size(); i++) {
-        if (i>0) { retVal = PGE::String(retVal, ", "); }
-        retVal = PGE::String(retVal, arguments[i].type->getName() + " " + arguments[i].name);
+        if (i>0) { retVal += ", "; }
+        retVal += arguments[i].type->getName() + ' ' + arguments[i].name;
     }
-    retVal = PGE::String(retVal, ")");
+    retVal += ')';
     return retVal;
 }
 

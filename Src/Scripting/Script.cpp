@@ -25,7 +25,7 @@ Script::Script(const PGE::FilePath& fn) {
     while (!reachedEndOfFile) {
         inFile.read(readBuf,1023);
         readBuf[inFile.gcount()]='\0';
-        scriptContents = PGE::String(scriptContents,readBuf);
+        scriptContents += readBuf;
 
         reachedEndOfFile = inFile.eof();
     }

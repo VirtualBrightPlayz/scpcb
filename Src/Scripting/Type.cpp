@@ -91,13 +91,13 @@ Type* ArrayType::getElementType() const {
 
 RefType::RefType(Type* type) {
     baseType = type;
-    typeName = baseType->getName()+"@";
+    typeName = baseType->getName() + '@';
     refType = nullptr;
     arrayType = nullptr;
 }
 
 PGE::String RefType::getName() const {
-    return PGE::String(baseType->getName(), "@");
+    return baseType->getName() + '@';
 }
 
 bool RefType::isClassType() const {
