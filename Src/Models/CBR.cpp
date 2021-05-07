@@ -53,7 +53,7 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
     // i.e. tooltextures/invisible_collision should be handled as a special case
     for (int i = 0; i < texSize; i++) {
         textureNames[i] = reader.readNullTerminatedString();
-        if (textureNames[i].findFirst("tooltextures") == -1) {
+        if (textureNames[i].findFirst("tooltextures") == textureNames[i].end()) {
             std::vector<PGE::Texture*> textures;
             for (int j = 0; j < 3; j++) {
                 textures.push_back(lightmaps[j]);

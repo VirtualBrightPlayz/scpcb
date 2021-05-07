@@ -14,7 +14,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
     PGE::Shader::Constant* colorConstant = shader->getFragmentShaderConstant("inColor");
     colorConstant->setValue(PGE::Color::White);
 
-    PGE::String path = filename.substr(0, filename.findLast("/") + 1);
+    PGE::String path = filename.substr(filename.begin(), filename.findLast("/") + 1);
 
     const aiScene* scene = importer->ReadFile(PGE::FilePath::fromStr(filename).cstr(),
         aiProcess_MakeLeftHanded |
@@ -47,7 +47,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
         aiString texturePath;
         PGE_ASSERT(scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath) == aiReturn_SUCCESS, "Texture for model " + filename + " failed to load.");
         PGE::String textureName = PGE::String(texturePath.C_Str()).replace("\\", "/");
-        int lastSlash = textureName.findLast("/");
+        int lastSlash = textureName.findLast("/").getPosition();
         textureName = textureName.substr(lastSlash + 1, textureName.length() - lastSlash - 5);
         materials[i] = new PGE::Material(shader, gr->getTexture(path + textureName));
     }

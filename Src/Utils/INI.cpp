@@ -20,14 +20,14 @@ INIFile::INIFile(const PGE::FilePath& filename) {
             getline(file, cppStr);
             currLine = PGE::String(cppStr);
 
-            if (currLine.charAt(0) == '[') {
+            if (*currLine.charAt(0) == '[') {
                 if (currSection != nullptr) {
                     sections.push_back(currSection);
                 }
                 currSection = new Section();
                 currLine = currLine.substr(1,currLine.length()-2).trim();
                 currSection->names = currLine.split('|', true);
-            } else if (currLine.charAt(0) != ';') {
+            } else if (*currLine.charAt(0) != ';') {
                 if (currSection != nullptr) {
                     std::vector<PGE::String> split = currLine.split('=', false);
                     if (split.size() >= 2) {

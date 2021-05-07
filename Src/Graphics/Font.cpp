@@ -155,8 +155,7 @@ void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Ve
         atlases[i].vertices.clear();
         atlases[i].primitives.clear();
     }
-    for (int i=0;i<text.length();i++) {
-        long chr = (long)text.charAt(i);
+    for (PGE::wchar chr : text) {
         std::map<long,GlyphData>::iterator it = glyphData.find(chr);
         if (it==glyphData.end()) {
             renderAtlas(chr);
@@ -211,8 +210,7 @@ void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Ve
 float Font::stringWidth(const PGE::String& text, float scale) {
     float width = 0.f;
 
-    for (int i = 0; i < text.length(); i++) {
-        long chr = (long)text.charAt(i);
+    for (PGE::wchar chr : text) {
         std::map<long, GlyphData>::iterator it = glyphData.find(chr);
         if (it == glyphData.end()) {
             renderAtlas(chr);

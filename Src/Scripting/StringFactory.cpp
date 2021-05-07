@@ -102,7 +102,7 @@ static PGE::String stringSubstrStartLen(int start, int count, const PGE::String&
 }
 
 static PGE::wchar stringCharAt(int index, const PGE::String& str) {
-    return str.charAt(index);
+    return *str.charAt(index);
 }
 
 static int stringToInt(const PGE::String& str) {
