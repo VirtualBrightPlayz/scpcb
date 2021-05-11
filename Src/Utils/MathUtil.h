@@ -3,9 +3,9 @@
 
 class MathUtil {
     public:
-        constexpr static float MARGIN_ERROR = 0.001f;
+        static constexpr float MARGIN_ERROR = 0.001f;
 
-        constexpr static float PI = 3.1415926535897932f;
+        static constexpr float PI = 3.1415926535897932f;
 
         static float degToRad(float degrees);
         static float radToDeg(float radians);

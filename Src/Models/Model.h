@@ -40,9 +40,9 @@ class ModelInstance {
         bool modelMatrixNeedsRecalculation;
         PGE::Matrix4x4f modelMatrix;
 
-        PGE::Vector3f position = PGE::Vector3f::zero;
-        PGE::Vector3f rotation = PGE::Vector3f::zero;
-        PGE::Vector3f scale = PGE::Vector3f::one;
+        PGE::Vector3f position = PGE::Vector3f::ZERO;
+        PGE::Vector3f rotation = PGE::Vector3f::ZERO;
+        PGE::Vector3f scale = PGE::Vector3f::ONE;
 
     public:
         ModelInstance(Model* model);
