@@ -38,7 +38,7 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
     lightmaps = new PGE::Texture*[4];
     for (int i = 0; i < 4; i++) {
         int size = reader.readInt();
-        uint8_t* bytes = reader.readBytes(size);
+        PGE::byte* bytes = reader.readBytes(size);
         lightmaps[i] = TextureHelper::load(gr->getGraphics(), bytes, size);
         delete[] bytes;
     }

@@ -55,7 +55,7 @@ void Font::renderAtlas(long chr) {
     if (startChr<0) { startChr = 0; }
     long endChr = startChr+2048;
 
-    uint8_t* buffer = nullptr;
+    PGE::byte* buffer = nullptr;
     int x = -1; int y = -1;
     int maxHeight = -1;
     for (long i=startChr;i<endChr;i++) {
@@ -74,7 +74,7 @@ void Font::renderAtlas(long chr) {
 
                 if (glyphWidth>0 && glyphHeight>0) {
                     if (buffer==nullptr) {
-                        buffer = new uint8_t[atlasDims*atlasDims*4];
+                        buffer = new PGE::byte[atlasDims*atlasDims*4];
                         for (int j=0;j<atlasDims*atlasDims;j++) {
                             buffer[(j*4)+0]=255;
                             buffer[(j*4)+1]=255;
