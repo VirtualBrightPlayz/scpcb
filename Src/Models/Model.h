@@ -44,8 +44,6 @@ class ModelInstance {
         PGE::Vector3f rotation = PGE::Vector3f::zero;
         PGE::Vector3f scale = PGE::Vector3f::one;
 
-        ModelInstance(); // We don't want this.
-
     public:
         ModelInstance(Model* model);
 
