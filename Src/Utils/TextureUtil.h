@@ -12,10 +12,9 @@ class ImageData : public PGE::Resource<PGE::byte*> {
 		~ImageData();
 };
 
-class TextureHelper {
-	public:
-		static PGE::Texture* load(PGE::Graphics* gfx, const PGE::FilePath& file);
-		static PGE::Texture* load(PGE::Graphics* gfx, PGE::byte* fileData, int size);
+namespace TextureHelper {
+	PGE::Texture* load(PGE::Graphics* gfx, const PGE::FilePath& file);
+	PGE::Texture* load(PGE::Graphics* gfx, PGE::byte* fileData, int size);
 };
 
 #endif // TEXTURE_UTIL_H_DEFINED
