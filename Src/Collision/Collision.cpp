@@ -29,7 +29,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 
 using namespace PGE;
 
-static constexpr float COLLISION_EPSILON = 0.001f;
+constexpr float COLLISION_EPSILON = 0.001f;
 
 Collision::Collision() { coveredAmount = 1.0f; hit = false; }
 

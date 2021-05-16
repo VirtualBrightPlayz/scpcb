@@ -9,7 +9,7 @@
 #include "../Graphics/GraphicsResources.h"
 #include "../Save/Config.h"
 
-static constexpr int atlasDims = 1024;
+constexpr int atlasDims = 1024;
 
 Font::Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::FilePath& fn, int h) {
     graphicsRes = gr;

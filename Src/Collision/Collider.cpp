@@ -4,7 +4,7 @@
 
 #include "../Collision/CollisionMeshCollection.h"
 
-static constexpr float GRAVITY = 0.6f;
+constexpr float GRAVITY = 0.6f;
 
 Collider::Collider(float radius, float height) {
     this->cmc = nullptr;

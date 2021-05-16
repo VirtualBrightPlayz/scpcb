@@ -6,10 +6,10 @@
 #include "../World/Pickable.h"
 #include "../Utils/MathUtil.h"
 
-static constexpr float WALK_SPEED_MAX = 18.0f;
-static constexpr float SPRINT_SPEED_MAX = 42.0f;
-static constexpr float WALK_SPEED_SMOOTHING_FACTOR = 0.9f;
-static constexpr float STAMINA_RECOVERY_RATE = 0.2f;
+constexpr float WALK_SPEED_MAX = 18.0f;
+constexpr float SPRINT_SPEED_MAX = 42.0f;
+constexpr float WALK_SPEED_SMOOTHING_FACTOR = 0.9f;
+constexpr float STAMINA_RECOVERY_RATE = 0.2f;
 
 PlayerController::PlayerController(float r, float camHeight) {
     collider = new Collider(r, camHeight);
