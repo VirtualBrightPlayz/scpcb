@@ -1,10 +1,10 @@
 #include "PlayerController.h"
 
+#include <Math/Math.h>
 #include <Math/Plane.h>
 
 #include "../Collision/Collider.h"
 #include "../World/Pickable.h"
-#include "../Utils/MathUtil.h"
 
 constexpr float WALK_SPEED_MAX = 18.0f;
 constexpr float SPRINT_SPEED_MAX = 42.0f;
@@ -69,8 +69,8 @@ void PlayerController::update(float yaw, float pitch, Input input, float timeSte
             targetDir = targetDir.normalize();
             walk(targetDir, timeStep);
             camAnimState += sqrt(currWalkSpeed / WALK_SPEED_MAX) * timeStep;
-            while (camAnimState >= 2.f * MathUtil::PI / 0.08f) {
-                camAnimState -= 2.f * MathUtil::PI / 0.08f;
+            while (camAnimState >= 2.f * PGE::Math::PI / 0.08f) {
+                camAnimState -= 2.f * PGE::Math::PI / 0.08f;
             }
         }
     }

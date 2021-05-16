@@ -1,5 +1,6 @@
 #include "MathDefinitions.h"
 
+#include <Math/Math.h>
 #include <Math/Vector.h>
 #include <Math/Matrix.h>
 #include <Math/Line.h>
@@ -8,7 +9,6 @@
 #include <Math/Rectangle.h>
 
 #include "../ScriptManager.h"
-#include "../../Utils/MathUtil.h"
 
 static void vector2fConstructor(void* memory) {
     new(memory) PGE::Vector2f();
@@ -74,6 +74,22 @@ static void rectangleConstructorParameterized(float il, float it, float ir, floa
 
 static void rectangleDestructor(void* memory) {
     ((PGE::Rectanglef*)memory)->~Rectanglef();
+}
+
+static int maxInt(int a, int b) {
+    return std::max(a, b);
+}
+
+static int minInt(int a, int b) {
+    return std::min(a, b);
+}
+
+static float maxFloat(float a, float b) {
+    return std::max(a, b);
+}
+
+static float minFloat(float a, float b) {
+    return std::min(a, b);
 }
 
 MathDefinitions::MathDefinitions(ScriptManager* mgr) {
@@ -245,20 +261,20 @@ MathDefinitions::MathDefinitions(ScriptManager* mgr) {
 
     // Generic
     engine->SetDefaultNamespace("Math");
-    engine->RegisterGlobalFunction("float degToRad(float degrees)", asFUNCTION(MathUtil::degToRad), asCALL_CDECL);
-    engine->RegisterGlobalFunction("float radToDeg(float radians)", asFUNCTION(MathUtil::radToDeg), asCALL_CDECL);
-    engine->RegisterGlobalFunction("bool equalFloats(float val, float other)", asFUNCTION(MathUtil::equalFloats), asCALL_CDECL);
-    engine->RegisterGlobalFunction("int maxInt(int val, int other)", asFUNCTION(MathUtil::maxInt), asCALL_CDECL);
-    engine->RegisterGlobalFunction("int minInt(int val, int other)", asFUNCTION(MathUtil::minInt), asCALL_CDECL);
-    engine->RegisterGlobalFunction("float maxFloat(float val, float other)", asFUNCTION(MathUtil::maxFloat), asCALL_CDECL);
-    engine->RegisterGlobalFunction("float minFloat(float val, float other)", asFUNCTION(MathUtil::minFloat), asCALL_CDECL);
-    engine->RegisterGlobalFunction("int clampInt(int val, int min, int max)", asFUNCTION(MathUtil::clampInt), asCALL_CDECL);
-    engine->RegisterGlobalFunction("float clampFloat(float val, float min, float max)", asFUNCTION(MathUtil::clampFloat), asCALL_CDECL);
-    engine->RegisterGlobalFunction("float absFloat(float val)", asFUNCTION(MathUtil::absFloat), asCALL_CDECL);
-    engine->RegisterGlobalFunction("int floor(float val)", asFUNCTION(MathUtil::floor), asCALL_CDECL);
-    engine->RegisterGlobalFunction("int ceil(float val)", asFUNCTION(MathUtil::ceil), asCALL_CDECL);
+    engine->RegisterGlobalFunction("float degToRad(float degrees)", asFUNCTION(PGE::Math::degToRad), asCALL_CDECL);
+    engine->RegisterGlobalFunction("float radToDeg(float radians)", asFUNCTION(PGE::Math::radToDeg), asCALL_CDECL);
+    engine->RegisterGlobalFunction("bool equalFloats(float val, float other)", asFUNCTION(PGE::Math::equalFloats), asCALL_CDECL);
+    engine->RegisterGlobalFunction("int maxInt(int val, int other)", asFUNCTION(maxInt), asCALL_CDECL);
+    engine->RegisterGlobalFunction("int minInt(int val, int other)", asFUNCTION(minInt), asCALL_CDECL);
+    engine->RegisterGlobalFunction("float maxFloat(float val, float other)", asFUNCTION(maxFloat), asCALL_CDECL);
+    engine->RegisterGlobalFunction("float minFloat(float val, float other)", asFUNCTION(minFloat), asCALL_CDECL);
+    engine->RegisterGlobalFunction("int clampInt(int val, int min, int max)", asFUNCTION(std::clamp<int>), asCALL_CDECL);
+    engine->RegisterGlobalFunction("float clampFloat(float val, float min, float max)", asFUNCTION(std::clamp<float>), asCALL_CDECL);
+    engine->RegisterGlobalFunction("float absFloat(float val)", asFUNCTIONPR(std::abs, (float), float), asCALL_CDECL);
+    engine->RegisterGlobalFunction("int floor(float val)", asFUNCTION(PGE::Math::floor), asCALL_CDECL);
+    engine->RegisterGlobalFunction("int ceil(float val)", asFUNCTION(PGE::Math::ceil), asCALL_CDECL);
     engine->RegisterGlobalFunction("float sqrt(float val)", asFUNCTION(std::sqrtf), asCALL_CDECL);
     engine->RegisterGlobalFunction("float sin(float radians)", asFUNCTION(std::sinf), asCALL_CDECL);
     engine->RegisterGlobalFunction("float cos(float radians)", asFUNCTION(std::cosf), asCALL_CDECL);
-    engine->RegisterGlobalProperty("const float PI", (void*)&MathUtil::PI);
+    engine->RegisterGlobalProperty("const float PI", (void*)&PGE::Math::PI);
 }

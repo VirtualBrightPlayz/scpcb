@@ -18,7 +18,6 @@
 #include "../Input/MouseData.h"
 #include "../Utils/LocalizationManager.h"
 #include "../Graphics/ModelImageGenerator.h"
-#include "../Utils/MathUtil.h"
 #include "../Scripting/ScriptObject.h"
 #include "../Graphics/UIMesh.h"
 #include "../Graphics/Billboard.h"
