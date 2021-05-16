@@ -25,14 +25,14 @@ PGE::Vector3f DataInterpolator::getInterpolatedPosition(float interpolation) con
 }
 
 PGE::Vector3f DataInterpolator::getInterpolatedRotation(float interpolation) const {
-    PGE::Vector3f diff = currTransform.rotation.subtract(prevTransform.rotation);
+    PGE::Vector3f diff = currTransform.rotation - prevTransform.rotation;
     while (diff.x < -PGE::Math::PI) { diff.x += PGE::Math::PI*2.f; }
     while (diff.x > PGE::Math::PI) { diff.x -= PGE::Math::PI*2.f; }
     while (diff.y < -PGE::Math::PI) { diff.y += PGE::Math::PI*2.f; }
     while (diff.y > PGE::Math::PI) { diff.y -= PGE::Math::PI*2.f; }
     while (diff.z < -PGE::Math::PI) { diff.z += PGE::Math::PI*2.f; }
     while (diff.z > PGE::Math::PI) { diff.z -= PGE::Math::PI*2.f; }
-    return prevTransform.rotation.add(diff.multiply(interpolation));
+    return (prevTransform.rotation + diff) * interpolation;
 }
 
 PGE::Vector3f DataInterpolator::getInterpolatedScale(float interpolation) const {

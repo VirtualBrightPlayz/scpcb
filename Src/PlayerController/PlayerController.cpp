@@ -46,20 +46,20 @@ void PlayerController::update(float yaw, float pitch, Input input, float timeSte
 
         PGE::Vector2f targetDir = PGE::Vector2f::ZERO;
         if ((input & Input::FORWARD) != Input::NONE) {
-            targetDir = targetDir.add(PGE::Vector2f(sinAngle, cosAngle));
+            targetDir = targetDir + PGE::Vector2f(sinAngle, cosAngle);
         }
         if ((input & Input::BACKWARD) != Input::NONE) {
-            targetDir = targetDir.add(PGE::Vector2f(-sinAngle, -cosAngle));
+            targetDir = targetDir + PGE::Vector2f(-sinAngle, -cosAngle);
         }
         if ((input & Input::LEFT) != Input::NONE) {
-            targetDir = targetDir.add(PGE::Vector2f(-cosAngle, sinAngle));
+            targetDir = targetDir + PGE::Vector2f(-cosAngle, sinAngle);
         }
         if ((input & Input::RIGHT) != Input::NONE) {
-            targetDir = targetDir.add(PGE::Vector2f(cosAngle, -sinAngle));
+            targetDir = targetDir + PGE::Vector2f(cosAngle, -sinAngle);
         }
         if (targetDir.lengthSquared() < 0.01f) {
             //TODO: remove
-            position = position.add(PGE::Vector3f(0.f, 60.f, 0.f) * timeStep);
+            position = position + PGE::Vector3f(0.f, 60.f, 0.f) * timeStep;
             noclip = true;
             // -------
 
@@ -98,5 +98,5 @@ void PlayerController::stand(float timeStep) {
 }
 
 void PlayerController::walk(PGE::Vector2f dir, float timeStep) {
-    position = collider->tryMove(position, position.add(PGE::Vector3f(dir.x * currWalkSpeed, 0.f, dir.y * currWalkSpeed) * timeStep));
+    position = collider->tryMove(position, position + PGE::Vector3f(dir.x * currWalkSpeed, 0.f, dir.y * currWalkSpeed) * timeStep);
 }
