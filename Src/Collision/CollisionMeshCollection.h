@@ -15,7 +15,7 @@ class CollisionMeshCollection {
     public:
         class Instance {
             public:
-                Instance(CollisionMeshCollection* coll,CollisionMesh* msh, PGE::Matrix4x4f mtrx, int id);
+                Instance(CollisionMeshCollection* coll,CollisionMesh* msh, const PGE::Matrix4x4f& mtrx, int id);
                 Collision checkCollision(const PGE::Line3f& line,float height,float radius) const;
                 CollisionMeshCollection* getCollection() const;
                 CollisionMesh* getMesh() const;

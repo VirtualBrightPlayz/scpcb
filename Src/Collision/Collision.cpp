@@ -27,8 +27,6 @@ Permission is granted to anyone to use this software for any purpose, including 
 
 #include <iostream>
 
-using namespace PGE;
-
 constexpr float COLLISION_EPSILON = 0.001f;
 
 Collision::Collision() { coveredAmount = 1.0f; hit = false; }
@@ -41,13 +39,13 @@ Collision::Collision(const Collision& other) {
     hit = other.hit;
 }
 
-Collision Collision::update(const Line3f& line,float t,const Vector3f& n) {
+Collision Collision::update(const PGE::Line3f& line,float t,const PGE::Vector3f& n) {
     Collision retVal;
     retVal.hit = false;
 
     if (t<0.f || t>1.f) { return retVal; }
 
-    Plane p = Plane(n,(line.pointB - line.pointA) * t + line.pointA);
+    PGE::Plane p = PGE::Plane(n,(line.pointB - line.pointA) * t + line.pointA);
     if (p.normal.dotProduct(line.pointB - line.pointA)>=0) { return retVal; }
     if (p.evalAtPoint(line.pointA)<-COLLISION_EPSILON) { return retVal; }
 
@@ -59,13 +57,13 @@ Collision Collision::update(const Line3f& line,float t,const Vector3f& n) {
     return retVal;
 }
 
-Collision Collision::sphereCollide(const Line3f& line,float radius,const Vector3f& otherPos,float other_radius) {
+Collision Collision::sphereCollide(const PGE::Line3f& line,float radius,const PGE::Vector3f& otherPos,float other_radius) {
     Collision retVal;
     retVal.hit = false;
 
     radius+=other_radius;
-    //Line3f l = Line3f(line.pointA.subtract(otherPos),line.pointB.subtract(otherPos));
-    Vector3f lineDir = line.pointB - line.pointA;
+    //PGE::Line3f l = PGE::Line3f(line.pointA.subtract(otherPos),line.pointB.subtract(otherPos));
+    PGE::Vector3f lineDir = line.pointB - line.pointA;
 
     float a=lineDir.dotProduct(lineDir);
     if (fabs(a)<COLLISION_EPSILON) { return retVal; }
@@ -88,22 +86,22 @@ Collision Collision::sphereCollide(const Line3f& line,float radius,const Vector3
 //v0,v1 = edge verts
 //pn = poly normal
 //en = edge normal
-Collision Collision::edgeTest(const Vector3f& v0,const Vector3f& v1,const Vector3f& pn,const Vector3f& en,const Line3f& line,float radius) {
+Collision Collision::edgeTest(const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& pn,const PGE::Vector3f& en,const PGE::Line3f& line,float radius) {
     Collision retVal;
     retVal.hit = false;
 
-    Vector3f tm0 = en.normalize();
-    Vector3f tm1 = (v1 - v0).normalize();
-    Vector3f tm2 = pn.normalize();
+    PGE::Vector3f tm0 = en.normalize();
+    PGE::Vector3f tm1 = (v1 - v0).normalize();
+    PGE::Vector3f tm2 = pn.normalize();
 
-    Vector3f tm0Transposed = Vector3f(tm0.x,tm1.x,tm2.x);
-    Vector3f tm1Transposed = Vector3f(tm0.y,tm1.y,tm2.y);
-    Vector3f tm2Transposed = Vector3f(tm0.z,tm1.z,tm2.z);
+    PGE::Vector3f tm0Transposed = PGE::Vector3f(tm0.x,tm1.x,tm2.x);
+    PGE::Vector3f tm1Transposed = PGE::Vector3f(tm0.y,tm1.y,tm2.y);
+    PGE::Vector3f tm2Transposed = PGE::Vector3f(tm0.z,tm1.z,tm2.z);
 
-    Vector3f sv = line.pointA - v0;
-    sv = Vector3f(sv.dotProduct(tm0),sv.dotProduct(tm1),sv.dotProduct(tm2));
-    Vector3f dv = line.pointB - v0;
-    dv = Vector3f(dv.dotProduct(tm0),dv.dotProduct(tm1),dv.dotProduct(tm2)) - sv;
+    PGE::Vector3f sv = line.pointA - v0;
+    sv = PGE::Vector3f(sv.dotProduct(tm0),sv.dotProduct(tm1),sv.dotProduct(tm2));
+    PGE::Vector3f dv = line.pointB - v0;
+    dv = PGE::Vector3f(dv.dotProduct(tm0),dv.dotProduct(tm1),dv.dotProduct(tm2)) - sv;
 
     //do cylinder test...
     float a,b,c,d,t1,t2,t;
@@ -117,8 +115,8 @@ Collision Collision::edgeTest(const Vector3f& v0,const Vector3f& v1,const Vector
     t2=(-b-sqrt(d))/(2*a);
     t=t1<t2 ? t1 : t2;
     if( t>1.f ) { return retVal; }    //intersects too far away
-    Vector3f i=sv + dv * t;
-    Vector3f p=Vector3f::ZERO;
+    PGE::Vector3f i=sv + dv * t;
+    PGE::Vector3f p=PGE::Vector3f::ZERO;
     if( i.y>v0.distance(v1) ) { return retVal; }    //intersection above cylinder
     if( i.y>=0 ){
         p.y=i.y;
@@ -137,8 +135,8 @@ Collision Collision::edgeTest(const Vector3f& v0,const Vector3f& v1,const Vector
         i=sv + dv * t;
     }
 
-    Vector3f n = i - p;
-    n = Vector3f(n.dotProduct(tm0Transposed),n.dotProduct(tm1Transposed),n.dotProduct(tm2Transposed));
+    PGE::Vector3f n = i - p;
+    n = PGE::Vector3f(n.dotProduct(tm0Transposed),n.dotProduct(tm1Transposed),n.dotProduct(tm2Transposed));
     return update(line,t,n);
 }
 
@@ -147,22 +145,22 @@ Collision Collision::triangleCollide(const PGE::Line3f& line,float radius,const 
     retVal.hit = false;
 
     //triangle plane
-    Plane p = Plane(v0,v1,v2);
+    PGE::Plane p = PGE::Plane(v0,v1,v2);
 
     //move plane out
     p.distanceFromOrigin+=radius;
     float t = 1.f;
 
     //edge planes
-    Plane p0( v0 + p.normal,v1,v0 );
-    Plane p1( v1 + p.normal,v2,v1 );
-    Plane p2( v2 + p.normal,v0,v2 );
+    PGE::Plane p0( v0 + p.normal,v1,v0 );
+    PGE::Plane p1( v1 + p.normal,v2,v1 );
+    PGE::Plane p2( v2 + p.normal,v0,v2 );
 
     if (p.normal.dotProduct(line.pointB - line.pointA)<0.f) {
         t = -p.evalAtPoint(line.pointA)/p.normal.dotProduct(line.pointB - line.pointA);
 
         //intersects triangle?
-        Vector3f i=(line.pointB - line.pointA) * t + line.pointA;
+        PGE::Vector3f i=(line.pointB - line.pointA) * t + line.pointA;
 
         float eval0 = p0.evalAtPoint(i);
         float eval1 = p1.evalAtPoint(i);
@@ -198,7 +196,7 @@ Collision Collision::triangleCollide(const PGE::Line3f& line,float radius,const 
     return retVal;
 }
 
-Collision Collision::triangleCollide(const Line3f& line,float height,float radius,const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& v2) {
+Collision Collision::triangleCollide(const PGE::Line3f& line,float height,float radius,const PGE::Vector3f& v0,const PGE::Vector3f& v1,const PGE::Vector3f& v2) {
     if (height<=radius) {
         return triangleCollide(line, radius, v0, v1, v2);
     }
@@ -206,12 +204,12 @@ Collision Collision::triangleCollide(const Line3f& line,float height,float radiu
     Collision retVal;
     retVal.hit = false;
     
-    Vector3f forward = line.pointB - line.pointA;
-    Vector3f upVector = Vector3f(0.f,1.f,0.f);
+    PGE::Vector3f forward = line.pointB - line.pointA;
+    PGE::Vector3f upVector = PGE::Vector3f(0.f,1.f,0.f);
 
     if (abs(forward.normalize().dotProduct(upVector))>0.9999f) {
         forward.x = 0.f; forward.z = 0.f;
-        Line3f newLine = Line3f(line.pointA,line.pointA + forward);
+        PGE::Line3f newLine = PGE::Line3f(line.pointA,line.pointA + forward);
 
         if (forward.y>0.f) {
             newLine.pointA.y -= height*0.5f - radius;
@@ -225,7 +223,7 @@ Collision Collision::triangleCollide(const Line3f& line,float height,float radiu
 
         if (retVal.hit)
         {
-            Vector3f diff = (newLine.pointB - newLine.pointA) * retVal.coveredAmount + newLine.pointA - line.pointA;
+            PGE::Vector3f diff = (newLine.pointB - newLine.pointA) * retVal.coveredAmount + newLine.pointA - line.pointA;
             if (forward.y>0.f) {
                 diff.y -= height*0.5f - radius;
             } else {
@@ -245,30 +243,30 @@ Collision Collision::triangleCollide(const Line3f& line,float height,float radiu
         return retVal;
     }
 
-    Vector3f forwardXZ = Vector3f(forward.x,0.f,forward.z);
-    Vector3f planePoint = forwardXZ.normalize() * radius;
+    PGE::Vector3f forwardXZ = PGE::Vector3f(forward.x,0.f,forward.z);
+    PGE::Vector3f planePoint = forwardXZ.normalize() * radius;
 
-    Vector3f planeNormal = upVector.crossProduct(forward).crossProduct(forward).normalize();
+    PGE::Vector3f planeNormal = upVector.crossProduct(forward).crossProduct(forward).normalize();
     if (planeNormal.y<0.f) { planeNormal = -planeNormal; }
 
-    Plane bottomPlane = Plane(planeNormal, line.pointA + Vector3f(0.f,-height*0.5f + radius,0.f) + planePoint);
-    Plane topPlane = Plane(planeNormal, line.pointA + Vector3f(0.f,height*0.5f - radius,0.f) + planePoint);
+    PGE::Plane bottomPlane = PGE::Plane(planeNormal, line.pointA + PGE::Vector3f(0.f,-height*0.5f + radius,0.f) + planePoint);
+    PGE::Plane topPlane = PGE::Plane(planeNormal, line.pointA + PGE::Vector3f(0.f,height*0.5f - radius,0.f) + planePoint);
 
     //cylinder collision
     //we only check for edges here because the sphere collision can handle the other case just fine
-    Plane p = Plane(v0,v1,v2);
+    PGE::Plane p = PGE::Plane(v0,v1,v2);
 
     Collision temp;
     temp.hit = false;
 
-    Vector3f edgePoints[6] = { v0,v1,v1,v2,v2,v0 };
+    PGE::Vector3f edgePoints[6] = { v0,v1,v1,v2,v2,v0 };
 
-    Line3f newLine = Line3f(Vector3f(line.pointA.x,0.f,line.pointA.z),Vector3f(line.pointB.x,0.f,line.pointB.z));
+    PGE::Line3f newLine = PGE::Line3f(PGE::Vector3f(line.pointA.x,0.f,line.pointA.z),PGE::Vector3f(line.pointB.x,0.f,line.pointB.z));
 
     for (int i=0;i<6;i+=2) {
-        Line3f edge = Line3f(edgePoints[i],edgePoints[i+1]);
+        PGE::Line3f edge = PGE::Line3f(edgePoints[i],edgePoints[i+1]);
         
-        Vector3f edgePoint0; Vector3f edgePoint1;
+        PGE::Vector3f edgePoint0; PGE::Vector3f edgePoint1;
         float coveredAmountTop = 0;
         float coveredAmountBottom = 0;
         
@@ -301,7 +299,7 @@ Collision Collision::triangleCollide(const Line3f& line,float height,float radiu
 
         edgePoint0.y = 0.f; edgePoint1.y = 0.f;
 
-        Plane edgePlane(edgePoint0 + upVector,edgePoint1,edgePoint0);
+        PGE::Plane edgePlane(edgePoint0 + upVector,edgePoint1,edgePoint0);
 
         temp = edgeTest(edgePoint0,edgePoint1,upVector,edgePlane.normal,newLine,radius);
         if (temp.hit) {
@@ -311,10 +309,10 @@ Collision Collision::triangleCollide(const Line3f& line,float height,float radiu
         }
     }
 
-    Line3f bottomSphereLine = line;
+    PGE::Line3f bottomSphereLine = line;
     bottomSphereLine.pointA.y -= height*0.5f-radius;
     bottomSphereLine.pointB.y -= height*0.5f-radius;
-    Line3f topSphereLine = line;
+    PGE::Line3f topSphereLine = line;
     topSphereLine.pointA.y += height*0.5f-radius;
     topSphereLine.pointB.y += height*0.5f-radius;
 
