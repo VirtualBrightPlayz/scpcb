@@ -23,12 +23,17 @@ Licensing terms can be found in [License.txt](Content/License.txt).
 
 * Anything that isn't OTBS (Allman, GNU, etc).
 * Omitting brackets when they can be used.
-* Any language other than C or C++.
+* Any language other than C++.
 * Anything other than lower camelCase for functions and variables.
-* Anything other than upper CamelCase for class/struct names or enum values.
-* `using` directive for any namespace other than CBN.
-* `using` directive in header files.
+* Anything other than upper CamelCase for class/struct/enum names.
+* Anything other than screaming SNAKE_CASE for constants and enum values.
+* `using` directive.
+* `friend` declaration.
+* `inline` specifier.
 * `std::string`.
+* `cassert`.
+* Lambdas.
+* Global variables.
 * Overriding virtual methods without the `override` or `final` keywords.
 * `auto` keyword (unless using range-based for).
 * `switch` `case`s that don't create a new scope.
@@ -39,9 +44,11 @@ Licensing terms can be found in [License.txt](Content/License.txt).
 * Text/source files without a newline at the end.
 * Declaring several variables in one statement.
 * Placing the pointer/reference symbol anywhere other than next to the type.
-* Initialization lists (except when used to initialize a variable that needs to be `const`).
+* Copy parameters for anything but primitive types.
+* Initialization lists.
 
-[openal]: https://www.openal.org/
+Exceptions to these rules are permissible *only* when no other solution is feasibly possible.
+
 [vs2019]: https://visualstudio.microsoft.com/vs/
 [scp-wiki]: http://www.scp-wiki.net/
 [cc3.0]: http://creativecommons.org/licenses/by-sa/3.0/
