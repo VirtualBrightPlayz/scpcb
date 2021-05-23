@@ -2870,8 +2870,13 @@ bool asCParser::IsVirtualPropertyDecl()
 	GetToken(&t);
 	RewindTo(&t);
 
-	// A class property decl can be preceded by 'private' or 'protected'
 	sToken t1;
+	GetToken(&t1);
+	if (t1.type != ttIdentifier || !IdentifierIs(t1, ABSTRACT_TOKEN)) {
+		RewindTo(&t1);
+	}
+
+	// A class property decl can be preceded by 'private' or 'protected'
 	for (int k = 0; k < 2; k++)
 	{
 		GetToken(&t1);
@@ -3234,6 +3239,14 @@ asCScriptNode *asCParser::ParseVirtualPropertyDecl(bool isMethod, bool isInterfa
 	GetToken(&t2);
 	RewindTo(&t1);
 
+	bool isAbstract = false;
+	if (isMethod && t1.type == ttIdentifier && IdentifierIs(t1, ABSTRACT_TOKEN)) {
+		isAbstract = true;
+		node->AddChildLast(ParseIdentifier());
+		GetToken(&t1);
+		RewindTo(&t1);
+	}
+
 	// A class method can start with 'private' or 'protected'
 	if( isMethod && t1.type == ttPrivate )
 		node->AddChildLast(ParseToken(ttPrivate));
@@ -3280,14 +3293,14 @@ asCScriptNode *asCParser::ParseVirtualPropertyDecl(bool isMethod, bool isInterfa
 				if( t1.type == ttConst )
 					accessorNode->AddChildLast(ParseToken(ttConst));
 
-				if( !isInterface )
+				if( !isInterface && !isAbstract )
 				{
 					ParseMethodAttributes(accessorNode);
 					if( isSyntaxError ) return node;
 				}
 			}
 
-			if( !isInterface )
+			if( !isInterface && !isAbstract )
 			{
 				GetToken(&t1);
 				if( t1.type == ttStartStatementBlock )
