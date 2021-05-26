@@ -41,7 +41,7 @@ void EventDefinition::setArgument(const PGE::String& argument, uint32_t u32) {
     for (int i = 0; i < arguments.size(); i++) {
         if (arguments[i].name.equals(argument)) {
             arguments[i].type = Type::UInt32;
-            arguments[i].value.i32 = u32;
+            arguments[i].value.u32 = u32;
         }
     }
 }

@@ -2,3 +2,8 @@
 	path = Engine
 	url = git@github.com:juanjp600/pge.git
 	branch = main
+	
+[submodule "Libraries/angelscript"]
+	path = Libraries/angelscript
+	url = git@github.com:Saalvage/angelscript.git
+	branch = cbn
