@@ -11,10 +11,10 @@
 CollisionMesh* CollisionDefinitions::meshFactory(CScriptArray* verts, CScriptArray* inds) {
     std::vector<PGE::Vector3f> vecVerts;
     std::vector<int> vecInds;
-    for (unsigned int i=0; i < verts->GetSize(); i++) {
+    for (unsigned i=0; i < verts->GetSize(); i++) {
         vecVerts.push_back(*((PGE::Vector3f*)verts->At(i)));
     }
-    for (unsigned int i=0; i < inds->GetSize(); i++) {
+    for (unsigned i=0; i < inds->GetSize(); i++) {
         vecInds.push_back(*((int*)inds->At(i)));
     }
     CollisionMesh* newMesh = new CollisionMesh(vecVerts, vecInds);

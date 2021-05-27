@@ -15,10 +15,10 @@ class Model {
         GraphicsResources* gfxRes;
 
         PGE::Mesh** meshes;
-        unsigned int meshCount;
+        unsigned meshCount;
 
         PGE::Material** materials;
-        unsigned int materialCount;
+        unsigned materialCount;
 
         PGE::Shader* shader;
 

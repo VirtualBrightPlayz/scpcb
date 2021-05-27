@@ -43,7 +43,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
 
     materialCount = scene->mNumMaterials;
     materials = new PGE::Material*[materialCount];
-    for (unsigned int i = 0; i < materialCount; i++) {
+    for (unsigned i = 0; i < materialCount; i++) {
         aiString texturePath;
         PGE_ASSERT(scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath) == aiReturn_SUCCESS, "Texture for model " + filename + " failed to load.");
         PGE::String textureName = PGE::String(texturePath.C_Str()).replace("\\", "/");
@@ -54,11 +54,11 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
 
     meshCount = scene->mNumMeshes;
     meshes = new PGE::Mesh*[meshCount];
-    for (unsigned int i = 0; i < meshCount; i++) {
+    for (unsigned i = 0; i < meshCount; i++) {
         aiMesh* mesh = scene->mMeshes[i];
 
         std::vector<PGE::Vertex> vertices;
-        for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
+        for (unsigned j = 0; j < mesh->mNumVertices; j++) {
             PGE::Vertex vertex = PGE::Vertex();
             vertex.setVector4f("position", PGE::Vector4f((float)mesh->mVertices[j].x, (float)mesh->mVertices[j].y, (float)mesh->mVertices[j].z, 1.f));
             vertex.setVector3f("normal", PGE::Vector3f::ONE);
@@ -67,7 +67,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
         }
 
         std::vector<PGE::Primitive> primitives;
-        for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
+        for (unsigned i = 0; i < mesh->mNumFaces; i++) {
             primitives.push_back(PGE::Primitive(mesh->mFaces[i].mIndices[2], mesh->mFaces[i].mIndices[1], mesh->mFaces[i].mIndices[0]));
         }
 
@@ -80,12 +80,12 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
 }
 
 Model::~Model() {
-    for (unsigned int i = 0; i < meshCount; i++) {
+    for (unsigned i = 0; i < meshCount; i++) {
         delete meshes[i];
     }
     delete[] meshes;
 
-    for (unsigned int i = 0; i < materialCount; i++) {
+    for (unsigned i = 0; i < materialCount; i++) {
         for (int j = 0; j < materials[i]->getTextureCount(); j++) {
             gfxRes->dropTexture(materials[i]->getTexture(j));
         }
@@ -98,7 +98,7 @@ Model::~Model() {
 
 void Model::render(const PGE::Matrix4x4f& modelMatrix) const {
     this->modelMatrix->setValue(modelMatrix);
-    for (unsigned int i = 0; i < meshCount; i++) {
+    for (unsigned i = 0; i < meshCount; i++) {
         meshes[i]->render();
     }
 }

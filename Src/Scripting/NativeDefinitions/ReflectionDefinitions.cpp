@@ -36,7 +36,7 @@ class Reflection {
                 for (int i = (int)derivedClasses.size()-1; i >= 0; i--) {
                     int interfaceCount = 0;
                     asITypeInfo* ti = derivedClasses[i]->getAngelScriptTypeInfo();
-                    for (unsigned int j=0; j < ti->GetInterfaceCount(); j++) {
+                    for (unsigned j=0; j < ti->GetInterfaceCount(); j++) {
                         asITypeInfo* itf = ti->GetInterface(j);
                         for (int k=0; k < requiredInterfaces.size(); k++) {
                             if (requiredInterfaces[k].equalsIgnoreCase(itf->GetName())) {
@@ -119,7 +119,7 @@ class Reflection {
             arguments[index].value.i32 = val;
         }
 
-        void setConstructorArgument(int index, unsigned int val) {
+        void setConstructorArgument(int index, unsigned val) {
             allocArguments(index);
             arguments[index].type = Type::Int32;
             arguments[index].value.u32 = val;
@@ -224,7 +224,7 @@ ReflectionDefinitions::ReflectionDefinitions(ScriptManager* mgr) {
     engine->RegisterObjectMethod("Reflection<T>", "void clearRequiredInterfaces()", asMETHOD(Reflection, clearRequiredInterfaces), asCALL_THISCALL);
     engine->RegisterObjectMethod("Reflection<T>", "array<string>@ getDerivedNames()", asMETHOD(Reflection, getDerivedNames), asCALL_THISCALL);
     engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, int val)", asMETHODPR(Reflection, setConstructorArgument, (int, int), void), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, uint val)", asMETHODPR(Reflection, setConstructorArgument, (int, unsigned int), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, uint val)", asMETHODPR(Reflection, setConstructorArgument, (int, unsigned), void), asCALL_THISCALL);
     engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, float val)", asMETHODPR(Reflection, setConstructorArgument, (int, float), void), asCALL_THISCALL);
     engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, double val)", asMETHODPR(Reflection, setConstructorArgument, (int, double), void), asCALL_THISCALL);
     engine->RegisterObjectMethod("Reflection<T>", "void setConstructorArgument(int index, const string&in val)", asMETHODPR(Reflection, setConstructorArgument, (int, const PGE::String&), void), asCALL_THISCALL);

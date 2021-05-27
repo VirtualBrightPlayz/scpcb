@@ -101,7 +101,7 @@ void ConsoleDefinitions::registerCommandInternal(const PGE::String& name, const 
 
 void ConsoleDefinitions::registerCommand(const PGE::String& name, const PGE::String& helpText, void* f, int typeId) {
     asIScriptFunction* func = (asIScriptFunction*)(((typeId & asTYPEID_OBJHANDLE) != 0) ? *((void**)f) : f);
-    for (unsigned int i = 0; i < func->GetParamCount(); i++) {
+    for (unsigned i = 0; i < func->GetParamCount(); i++) {
         int paramTypeId;
         PGE_ASSERT(func->GetParam(i, &paramTypeId) == 0, "ptooey?");
         PGE_ASSERT(paramTypeId == asTYPEID_BOOL || paramTypeId == asTYPEID_INT32 || paramTypeId == asTYPEID_FLOAT || paramTypeId == engine->GetStringFactoryReturnTypeId(), "STINKY INVALID TYPE");
@@ -138,7 +138,7 @@ void ConsoleDefinitions::executeCommand(const PGE::String& in) {
                 }
             }
             PGE::String errMsg;
-            for (unsigned int i = 0; i < params.size(); i++) {
+            for (unsigned i = 0; i < params.size(); i++) {
                 int paramTypeId;
                 PGE_ASSERT(func->GetParam(i, &paramTypeId) == 0, "ptooey! 3");
                 if (paramTypeId == asTYPEID_BOOL) {
