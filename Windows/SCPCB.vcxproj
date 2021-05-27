@@ -45,14 +45,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>../Engine/Include;../Libraries/freetype-2.10.1/include;../Libraries/angelscript/sdk/angelscript/include;../Libraries/angelscript-2.34.0/add_on;../Libraries/tinyxml2-7.1.0;../Libraries/assimp-4.1.0/include;$(IncludePath)</IncludePath>
+    <IncludePath>../Engine/Include;../Libraries/freetype-2.10.1/include;../Libraries/angelscript/sdk/angelscript/include;../Libraries/angelscript/sdk/add_on;../Libraries/tinyxml2-7.1.0;../Libraries/assimp-4.1.0/include;$(IncludePath)</IncludePath>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>.\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\obj\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>../Engine/Include;../Libraries/freetype-2.10.1/include;../Libraries/angelscript/sdk/angelscript/include;../Libraries/angelscript-2.34.0/add_on;../Libraries/tinyxml2-7.1.0;../Libraries/assimp-4.1.0/include;../Libraries/stb_image;$(IncludePath)</IncludePath>
+    <IncludePath>../Engine/Include;../Libraries/freetype-2.10.1/include;../Libraries/angelscript/sdk/angelscript/include;../Libraries/angelscript/sdk/add_on;../Libraries/tinyxml2-7.1.0;../Libraries/assimp-4.1.0/include;../Libraries/stb_image;$(IncludePath)</IncludePath>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
@@ -138,6 +138,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Libraries\angelscript\sdk\add_on\scriptarray\scriptarray.h" />
     <ClInclude Include="..\Src\Collision\Collider.h" />
     <ClInclude Include="..\Src\Collision\Collision.h" />
     <ClInclude Include="..\Src\Collision\CollisionMesh.h" />
@@ -158,7 +159,6 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClInclude Include="..\Src\PlayerController\PlayerController.h" />
     <ClInclude Include="..\Src\Save\Config.h" />
     <ClInclude Include="..\Src\Save\ConfigValues.h" />
-    <ClInclude Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.h" />
     <ClInclude Include="..\Src\Scripting\CachedArgument.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\BillboardDefinitions.h" />
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\CollisionDefinitions.h" />
@@ -210,6 +210,7 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <Image Include="..\Resources\logo.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Libraries\angelscript\sdk\add_on\scriptarray\scriptarray.cpp" />
     <ClCompile Include="..\Src\Collision\Collider.cpp" />
     <ClCompile Include="..\Src\Collision\Collision.cpp" />
     <ClCompile Include="..\Src\Collision\CollisionMesh.cpp" />
@@ -231,7 +232,6 @@ xcopy /d /s /y "$(ProjectDir)..\Libraries\freetype-2.10.1\objs\$(Platform)\$(Con
     <ClCompile Include="..\Src\PlayerController\PlayerController.cpp" />
     <ClCompile Include="..\Src\Save\Config.cpp" />
     <ClCompile Include="..\Src\Save\ConfigValues.cpp" />
-    <ClCompile Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.cpp" />
     <ClCompile Include="..\Src\Scripting\CachedArgument.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinition.cpp" />
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\BillboardDefinitions.cpp" />

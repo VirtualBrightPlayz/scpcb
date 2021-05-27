@@ -83,9 +83,6 @@
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.cpp">
-      <Filter>Scripting\AngelScriptAddons\scriptarray</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\Graphics\DebugGraphics.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
@@ -197,6 +194,9 @@
     <ClCompile Include="..\Src\Collision\Collider.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="..\Libraries\angelscript\sdk\add_on\scriptarray\scriptarray.cpp">
+      <Filter>Scripting\AngelScriptAddons\scriptarray</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -277,9 +277,6 @@
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\RM2Definitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\AngelScriptAddons\scriptarray\scriptarray.h">
-      <Filter>Scripting\AngelScriptAddons\scriptarray</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Graphics\DebugGraphics.h">
       <Filter>Graphics</Filter>
@@ -388,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="..\Src\Collision\Collider.h">
       <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\angelscript\sdk\add_on\scriptarray\scriptarray.h">
+      <Filter>Scripting\AngelScriptAddons\scriptarray</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

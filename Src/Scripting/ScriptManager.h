@@ -51,9 +51,6 @@ class ScriptManager {
         void registerSharedClass(ScriptClass* clss);
         const std::vector<ScriptModule*>& getScriptModules() const;
         void registerScriptModule(ScriptModule* mdl);
-
-
-        bool isArrayTypeId(int typeId) const;
 };
 
 #endif // SCRIPTMANAGER_H_INCLUDED

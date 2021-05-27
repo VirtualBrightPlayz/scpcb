@@ -7,7 +7,7 @@
 #include "../ScriptClass.h"
 #include "../ScriptModule.h"
 #include "../CachedArgument.h"
-#include "../AngelScriptAddons/scriptarray/scriptarray.h"
+#include <scriptarray/scriptarray.h>
 
 class Reflection {
     private:

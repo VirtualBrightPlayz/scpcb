@@ -6,7 +6,7 @@
 
 #include "../../Collision/CollisionMesh.h"
 #include "../../Collision/CollisionMeshCollection.h"
-#include "../AngelScriptAddons/scriptarray/scriptarray.h"
+#include <scriptarray/scriptarray.h>
 
 CollisionMesh* CollisionDefinitions::meshFactory(CScriptArray* verts, CScriptArray* inds) {
     std::vector<PGE::Vector3f> vecVerts;

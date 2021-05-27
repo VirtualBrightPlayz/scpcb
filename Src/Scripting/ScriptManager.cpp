@@ -7,7 +7,7 @@
 #include <map>
 #include <stdlib.h>
 #include <inttypes.h>
-#include "AngelScriptAddons/scriptarray/scriptarray.h"
+#include <scriptarray/scriptarray.h>
 
 struct ContextPool {
     std::vector<asIScriptContext*> contexts;
@@ -127,8 +127,4 @@ const std::vector<ScriptModule*>& ScriptManager::getScriptModules() const {
 
 void ScriptManager::registerScriptModule(ScriptModule* mdl) {
     scriptModules.push_back(mdl);
-}
-
-bool ScriptManager::isArrayTypeId(int typeId) const {
-    return IsScriptArrayType(engine->GetTypeInfoById(typeId));
 }

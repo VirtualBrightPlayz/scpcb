@@ -6,10 +6,12 @@
 #include "ScriptGlobal.h"
 #include "ScriptManager.h"
 
+#include <scriptarray/scriptarray.h>
+
 #include <Exception/Exception.h>
 #include <Math/Vector.h>
 #include <Math/Matrix.h>
-#include "AngelScriptAddons/scriptarray/scriptarray.h"
+
 #include <iostream>
 
 ScriptModule::ScriptModule(ScriptManager* mgr, const PGE::String& nm) {
@@ -151,18 +153,12 @@ Type* ScriptModule::typeFromTypeId(int typeId) const {
 
     asIScriptEngine* engine = module->GetEngine();
 
-    int stringFactoryTypeId = engine->GetStringFactoryReturnTypeId();
-    int arrayTypeId = engine->GetDefaultArrayTypeId();
-    int vector3fTypeID = engine->GetTypeIdByDecl("Vector3f");
-    int matrix4x4fTypeID = engine->GetTypeIdByDecl("Matrix4x4f");
-    int colorTypeID = engine->GetTypeIdByDecl("Color");
-
     int originalTypeId = typeId;
     bool isRef = (typeId & asTYPEID_OBJHANDLE) != 0;
     bool isTemplate = (typeId & asTYPEID_TEMPLATE) != 0;
     typeId = typeId & (~asTYPEID_OBJHANDLE) & (~asTYPEID_TEMPLATE);
 
-    Type* type = nullptr;
+    Type* type;
     switch (typeId) {
         case asTYPEID_INT32: {
             type = Type::Int32;
@@ -180,16 +176,16 @@ Type* ScriptModule::typeFromTypeId(int typeId) const {
             type = Type::Void;
         } break;
         default: {
-            if (typeId == stringFactoryTypeId) {
+            if (typeId == engine->GetStringFactoryReturnTypeId()) {
                 type = Type::String;
-            } else if (typeId == vector3fTypeID) {
+            } else if (typeId == engine->GetTypeIdByDecl("Vector3f")) {
                 type = Type::Vector3f;
-            } else if (typeId == matrix4x4fTypeID) {
+            } else if (typeId == engine->GetTypeIdByDecl("Matrix4x4f")) {
                 type = Type::Matrix4x4f;
-            } else if (typeId == colorTypeID) {
+            } else if (typeId == engine->GetTypeIdByDecl("Color")) {
                 type = Type::Color;
             } else if (isTemplate) {
-                PGE_ASSERT(scriptManager->isArrayTypeId(originalTypeId), "Templates are currently not supported for types other than arrays");
+                // TODO: Reimplement array type assertion here?
                 asITypeInfo* typeInfo = engine->GetTypeInfoById(originalTypeId);
                 Type* baseType = typeFromTypeId(typeInfo->GetSubTypeId());
                 type = baseType->getArrayType();
