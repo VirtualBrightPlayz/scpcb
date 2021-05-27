@@ -11,6 +11,7 @@
 class ScriptFunction;
 class ScriptClass;
 
+// TODO: Probably turn this into a struct.
 class Script {
     private:
         PGE::String scriptContents;
@@ -18,7 +19,6 @@ class Script {
 
     public:
         Script(const PGE::FilePath& fn);
-        ~Script();
 
         PGE::FilePath getFileName() const;
         PGE::String getScriptContents() const;

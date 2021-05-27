@@ -11,27 +11,7 @@
 
 Script::Script(const PGE::FilePath& fn) {
     fileName = fn;
-
-    scriptContents = "";
-
-    char* readBuf = new char[1024];
-
-    std::ifstream inFile(fileName.cstr());
-
-    PGE_ASSERT(inFile.is_open(), "Could not find script: \"" + fileName.str() + "\"");
-
-    bool reachedEndOfFile = inFile.eof();
-    while (!reachedEndOfFile) {
-        inFile.read(readBuf,1023);
-        readBuf[inFile.gcount()]='\0';
-        scriptContents += readBuf;
-
-        reachedEndOfFile = inFile.eof();
-    }
-
-    inFile.close();
-
-    delete[] readBuf;
+    scriptContents = fileName.read();
 }
 
 PGE::FilePath Script::getFileName() const {
@@ -41,8 +21,3 @@ PGE::FilePath Script::getFileName() const {
 PGE::String Script::getScriptContents() const {
     return scriptContents;
 }
-
-Script::~Script() {
-    //do nothing
-}
-
