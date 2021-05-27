@@ -16,8 +16,7 @@ Script::Script(const PGE::FilePath& fn) {
 
     char* readBuf = new char[1024];
 
-    std::ifstream inFile;
-    inFile.open(fileName.cstr());
+    std::ifstream inFile(fileName.cstr());
 
     PGE_ASSERT(inFile.is_open(), "Could not find script: \"" + fileName.str() + "\"");
 
