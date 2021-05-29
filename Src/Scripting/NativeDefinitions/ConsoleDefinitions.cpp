@@ -3,8 +3,8 @@
     #include <iostream>
 #endif
 
-#include <Exception/Exception.h>
-#include <Math/Math.h>
+#include <PGE/Exception/Exception.h>
+#include <PGE/Math/Math.h>
 
 #include "../../Input/KeyBinds.h"
 #include "../ScriptManager.h"
@@ -36,7 +36,7 @@ void ConsoleDefinitions::helpInternal(std::vector<PGE::String> params) {
 
 void ConsoleDefinitions::bindInternal(std::vector<PGE::String> params) {
     params.erase(params.begin());
-    PGE::UserInput* key = keyBinds->stringToInput(params.back());
+    PGE::Input* key = keyBinds->stringToInput(params.back());
     if (key == nullptr) {
         addConsoleMessage("That key doesn't exist.", PGE::Color::RED);
     } else {
@@ -47,7 +47,7 @@ void ConsoleDefinitions::bindInternal(std::vector<PGE::String> params) {
 
 void ConsoleDefinitions::unbindInternal(std::vector<PGE::String> params) {
     params.erase(params.begin());
-    PGE::UserInput* key = keyBinds->stringToInput(params.back());
+    PGE::Input* key = keyBinds->stringToInput(params.back());
     if (key == nullptr) {
         addConsoleMessage("That key doesn't exist.", PGE::Color::RED);
     } else {

@@ -8,9 +8,9 @@
 
 #include <scriptarray/scriptarray.h>
 
-#include <Exception/Exception.h>
-#include <Math/Vector.h>
-#include <Math/Matrix.h>
+#include <PGE/Exception/Exception.h>
+#include <PGE/Math/Vector.h>
+#include <PGE/Math/Matrix.h>
 
 #include <iostream>
 

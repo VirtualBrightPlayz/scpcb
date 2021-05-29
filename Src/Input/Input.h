@@ -1,7 +1,7 @@
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
 
-#include <String/String.h>
+#include <PGE/String/String.h>
 
 enum class Input {
     NONE = 0x0,

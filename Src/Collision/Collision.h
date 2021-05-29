@@ -23,9 +23,9 @@ Permission is granted to anyone to use this software for any purpose, including 
 #ifndef COLLISION_H_INCLUDED
 #define COLLISION_H_INCLUDED
 
-#include <Math/AABBox.h>
-#include <Math/Line.h>
-#include <Math/Vector.h>
+#include <PGE/Math/AABBox.h>
+#include <PGE/Math/Line.h>
+#include <PGE/Math/Vector.h>
 
 struct Collision {
     bool hit;

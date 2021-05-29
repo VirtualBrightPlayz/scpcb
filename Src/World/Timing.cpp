@@ -1,6 +1,6 @@
 #include "Timing.h"
 
-#include <Math/Math.h>
+#include <PGE/Math/Math.h>
 
 
 // The maximum amount of time the accumulator can store.

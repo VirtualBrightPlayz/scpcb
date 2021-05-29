@@ -5,7 +5,7 @@
 
 #include <angelscript.h>
 
-#include <String/String.h>
+#include <PGE/String/String.h>
 
 class Script;
 class ScriptClass;

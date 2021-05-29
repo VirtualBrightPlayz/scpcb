@@ -3,12 +3,12 @@
 
 #include <vector>
 
-#include <Mesh/Mesh.h>
-#include <String/String.h>
-#include <Misc/FilePath.h>
-#include <Shader/Shader.h>
-#include <Math/Rectangle.h>
-#include <Material/Material.h>
+#include <PGE/Graphics/Mesh.h>
+#include <PGE/String/String.h>
+#include <PGE/File/FilePath.h>
+#include <PGE/Graphics/Shader.h>
+#include <PGE/Math/Rectangle.h>
+#include <PGE/Graphics/Material.h>
 
 class GraphicsResources;
 

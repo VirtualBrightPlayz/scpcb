@@ -4,9 +4,9 @@
 #include <map>
 #include <list>
 
-#include <Misc/FilePath.h>
-#include <Math/Matrix.h>
-#include <UserInput/UserInput.h>
+#include <PGE/File/FilePath.h>
+#include <PGE/Math/Matrix.h>
+#include <PGE/Input/Input.h>
 
 #include "ConfigValues.h"
 #include "../Input/Input.h"

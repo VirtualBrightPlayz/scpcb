@@ -2,7 +2,7 @@
 #define XMLPROPERTY_H_INCLUDED
 
 #include <tinyxml2.h>
-#include <String/String.h>
+#include <PGE/String/String.h>
 
 class XMLProperty {
 private:

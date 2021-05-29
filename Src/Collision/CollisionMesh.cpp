@@ -1,6 +1,6 @@
 #include "CollisionMesh.h"
-#include <Math/AABBox.h>
-#include <Math/Plane.h>
+#include <PGE/Math/AABBox.h>
+#include <PGE/Math/Plane.h>
 
 CollisionMesh::CollisionMesh(std::vector<PGE::Vector3f> verts,std::vector<int> inds) {
     vertices = verts; indices = inds;

@@ -3,9 +3,9 @@
 
 #include <unordered_map>
 
-#include <IO/IO.h>
-#include <UserInput/UserInput.h>
-#include <String/Key.h>
+#include <PGE/Input/InputManager.h>
+#include <PGE/Input/Input.h>
+#include <PGE/String/Key.h>
 
 #include "Input.h"
 
@@ -19,25 +19,25 @@ class KeyBinds {
         // Inputs that are in the hit state for this tick.
         Input hitInputs;
 
-        PGE::IO* io;
+        PGE::InputManager* inputManager;
         ConsoleDefinitions* conDef;
 
-        typedef std::unordered_multimap<Input, PGE::UserInput*> UserInputMap;
+        typedef std::unordered_multimap<Input, PGE::Input*> UserInputMap;
         UserInputMap bindings;
 
-        typedef std::unordered_multimap<PGE::String::RedundantKey, PGE::UserInput*> ConsoleBindingsMap;
+        typedef std::unordered_multimap<PGE::String::RedundantKey, PGE::Input*> ConsoleBindingsMap;
         ConsoleBindingsMap consoleBindings;
 
-        void bindInput(Input input, PGE::UserInput* key);
-        void unbindInput(Input input, PGE::UserInput::Device device, int key);
+        void bindInput(Input input, PGE::Input* key);
+        void unbindInput(Input input, PGE::Input::Device device, int key);
 
-        std::unordered_map<PGE::String::Key, PGE::UserInput*> inputStrings;
+        std::unordered_map<PGE::String::Key, PGE::Input*> inputStrings;
         void registerInputString(const PGE::String& string, PGE::KeyboardInput::Keycode key);
         void registerInputString(const PGE::String& string, PGE::MouseInput::Button key);
         void registerInputString(const PGE::String& string, PGE::ControllerInput::Button key);
 
     public:
-        KeyBinds(PGE::IO* inIo);
+        KeyBinds(PGE::InputManager* inIo);
         ~KeyBinds();
 
         void setConsoleDefinitions(ConsoleDefinitions* inConDef);
@@ -87,15 +87,15 @@ class KeyBinds {
         void unbindInput(Input input, PGE::KeyboardInput::Keycode key);
         void unbindInput(Input input, PGE::ControllerInput::Button key);
 
-        void bindCommand(PGE::String command, PGE::UserInput* key);
-        void unbindCommand(PGE::String command, PGE::UserInput* key);
+        void bindCommand(PGE::String command, PGE::Input* key);
+        void unbindCommand(PGE::String command, PGE::Input* key);
 
         // Iterate through the keybinds and find out which ones fired this tick.
         void update();
         Input getDownInputs() const;
         Input getHitInputs() const;
 
-        PGE::UserInput* stringToInput(const PGE::String& key) const;
+        PGE::Input* stringToInput(const PGE::String& key) const;
 };
 
 #endif // KEYBINDS_H_INCLUDED

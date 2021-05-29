@@ -4,7 +4,7 @@
 #include "../NativeDefinition.h"
 #include "../RefCounter.h"
 
-#include <Math/Random.h>
+#include <PGE/Math/Random.h>
 
 class ScriptManager;
 

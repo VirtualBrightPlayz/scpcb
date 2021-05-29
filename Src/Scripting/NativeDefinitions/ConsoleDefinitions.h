@@ -4,8 +4,8 @@
 #include <map>
 #include <vector>
 
-#include <Color/Color.h>
-#include <String/Key.h>
+#include <PGE/Color/Color.h>
+#include <PGE/String/Key.h>
 
 #include "../NativeDefinition.h"
 

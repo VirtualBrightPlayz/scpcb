@@ -3,10 +3,10 @@
 
 #include <assimp/Importer.hpp>
 
-#include <Misc/FilePath.h>
-#include <Math/Matrix.h>
-#include <Mesh/Mesh.h>
-#include <Shader/Shader.h>
+#include <PGE/File/FilePath.h>
+#include <PGE/Math/Matrix.h>
+#include <PGE/Graphics/Mesh.h>
+#include <PGE/Graphics/Shader.h>
 
 class GraphicsResources;
 

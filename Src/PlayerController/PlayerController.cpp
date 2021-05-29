@@ -1,7 +1,7 @@
 #include "PlayerController.h"
 
-#include <Math/Math.h>
-#include <Math/Plane.h>
+#include <PGE/Math/Math.h>
+#include <PGE/Math/Plane.h>
 
 #include "../Collision/Collider.h"
 #include "../World/Pickable.h"

@@ -1,9 +1,9 @@
 #ifndef TEXTURE_UTIL_H_DEFINED
 #define TEXTURE_UTIL_H_DEFINED
 
-#include <ResourceManagement/Resource.h>
-#include <Misc/FilePath.h>
-#include <Texture/Texture.h>
+#include <PGE/ResourceManagement/Resource.h>
+#include <PGE/File/FilePath.h>
+#include <PGE/Graphics/Texture.h>
 
 class ImageData : public PGE::Resource<PGE::byte*> {
 	public:

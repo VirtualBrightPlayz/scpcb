@@ -1,8 +1,8 @@
 #include "LocalizationManager.h"
 
 #include <iostream>
-#include <Exception/Exception.h>
-#include <Misc/FilePath.h>
+#include <PGE/Exception/Exception.h>
+#include <PGE/File/FilePath.h>
 
 #include "INI.h"
 

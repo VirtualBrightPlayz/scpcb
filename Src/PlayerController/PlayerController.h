@@ -1,7 +1,7 @@
 #ifndef PLAYERCONTROLLER_H_INCLUDED
 #define PLAYERCONTROLLER_H_INCLUDED
 
-#include <Math/Vector.h>
+#include <PGE/Math/Vector.h>
 
 #include "../Input/Input.h"
 

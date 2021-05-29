@@ -1,7 +1,7 @@
 #ifndef INPUTDEFINITIONS_H_INCLUDED
 #define INPUTDEFINITIONS_H_INCLUDED
 
-#include <IO/IO.h>
+#include <PGE/Input/InputManager.h>
 
 #include "../NativeDefinition.h"
 
@@ -20,7 +20,7 @@ class InputDefinitions : public NativeDefinition {
         bool isDown() const;
 
     public:
-        InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* md, PGE::IO* io);
+        InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* md, PGE::InputManager* inputManager);
 };
 
 #endif // INPUTDEFINITIONS_H_INCLUDED

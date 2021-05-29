@@ -1,6 +1,6 @@
 #include "Pickable.h"
 
-#include <Math/Math.h>
+#include <PGE/Math/Math.h>
 
 #include "../Collision/CollisionMeshCollection.h"
 #include "../Input/KeyBinds.h"

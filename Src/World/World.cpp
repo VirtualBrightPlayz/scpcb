@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <cmath>
-#include <Color/Color.h>
+#include <PGE/Color/Color.h>
 #include <filesystem>
 
 #include "Timing.h"
@@ -25,7 +25,7 @@
 #include "../Input/KeyBinds.h"
 #include "../Save/Config.h"
 
-#include <Math/Random.h>
+#include <PGE/Math/Random.h>
 #include <chrono>
 
 static CBR* lol;
@@ -37,7 +37,7 @@ World::World() {
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
     graphics->setViewport(PGE::Rectanglei(0, 0, config->getWidth(), config->getHeight()));
-    io = PGE::IO::create(graphics);
+    inputManager = PGE::InputManager::create(graphics);
 
     timing = new Timing(60);
 
@@ -46,13 +46,13 @@ World::World() {
     FT_Init_FreeType(&ftLibrary);
     largeFont = new Font(ftLibrary, gfxRes, config, PGE::FilePath::fromStr("SCPCB/GFX/Font/Inconsolata-Regular.ttf"), 20);
     uiMesh = new UIMesh(gfxRes);
-    keyBinds = new KeyBinds(io);
-    mouseData = new MouseData(io, config);
+    keyBinds = new KeyBinds(inputManager);
+    mouseData = new MouseData(inputManager, config);
 
     locMng = new LocalizationManager(config->languageCode->value);
     
-    io->setMouseVisibility(false);
-    io->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
+    inputManager->setMouseVisibility(false);
+    inputManager->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
 
     pickMng = new PickableManager(camera, uiMesh, keyBinds);
 
@@ -64,7 +64,7 @@ World::World() {
     miGen = new ModelImageGenerator(graphics, gfxRes);
     miGen->initialize(256);
 
-    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, io, locMng, pickMng, uiMesh, config, (float)timing->getTimeStep(), billMng, miGen);
+    scripting = new ScriptWorld(this, gfxRes, camera, keyBinds, mouseData, inputManager, locMng, pickMng, uiMesh, config, (float)timing->getTimeStep(), billMng, miGen);
 
     miGen->deinitialize();
 
@@ -89,7 +89,7 @@ World::~World() {
     delete locMng;
     delete miGen;
 
-    delete io;
+    delete inputManager;
     delete graphics;
     delete gfxRes;
 }
@@ -130,7 +130,7 @@ bool World::run() {
 
 void World::runTick(float timeStep) {
     SysEvents::update();
-    io->update();
+    inputManager->update();
     keyBinds->update();
     mouseData->update();
 
@@ -150,10 +150,10 @@ void World::runTick(float timeStep) {
             // Null all interpolator differences.
             runTick(0.f);
             updatePlaying(0.f);
-            io->setMouseVisibility(true);
+            inputManager->setMouseVisibility(true);
         } else {
-            io->setMouseVisibility(false);
-            io->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
+            inputManager->setMouseVisibility(false);
+            inputManager->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
         }
     }
 }
@@ -177,11 +177,11 @@ void World::draw(float interpolation, RenderType r) {
 void World::updatePlaying(float timeStep) {
     PGE::Vector2f center = PGE::Vector2f((float)config->getWidth(), (float)config->getHeight()) * 0.5f;
     
-    PGE::Vector2f addAngle = (io->getMousePosition() - center) * (config->sensitivity->value / 30000.f);
+    PGE::Vector2f addAngle = (inputManager->getMousePosition() - center) * (config->sensitivity->value / 30000.f);
     camera->addAngle(addAngle.x, addAngle.y);
 
     // Reset mouse to center.
-    io->setMousePosition(center);
+    inputManager->setMousePosition(center);
 
     // View/Projection matrix.
     camera->update();

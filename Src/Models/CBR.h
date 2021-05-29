@@ -1,10 +1,10 @@
 #ifndef CBR_H_INCLUDED
 #define CBR_H_INCLUDED
 
-#include <Mesh/Mesh.h>
-#include <String/String.h>
-#include <Math/Matrix.h>
-#include <Shader/Shader.h>
+#include <PGE/Graphics/Shader.h>
+#include <PGE/Graphics/Mesh.h>
+#include <PGE/String/String.h>
+#include <PGE/Math/Matrix.h>
 
 class GraphicsResources;
 

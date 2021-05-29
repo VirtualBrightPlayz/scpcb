@@ -1,6 +1,6 @@
 #include "DataInterpolator.h"
 
-#include <Math/Math.h>
+#include <PGE/Math/Math.h>
 
 DataInterpolator::TransformData::TransformData(const PGE::Vector3f& pos, const PGE::Vector3f& rot, const PGE::Vector3f& scal) {
     position = pos;

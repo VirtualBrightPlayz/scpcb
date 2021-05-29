@@ -4,9 +4,9 @@
 #include <vector>
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#include <Graphics/Graphics.h>
-#include <IO/IO.h>
-#include <String/String.h>
+#include <PGE/Graphics/Graphics.h>
+#include <PGE/Input/InputManager.h>
+#include <PGE/String/String.h>
 
 class Camera;
 class Config;
@@ -34,7 +34,7 @@ class World {
         };
 
         PGE::Graphics* graphics;
-        PGE::IO* io;
+        PGE::InputManager* inputManager;
 
         Camera* camera;
 

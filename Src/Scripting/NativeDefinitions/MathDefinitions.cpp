@@ -1,12 +1,12 @@
 #include "MathDefinitions.h"
 
-#include <Math/Math.h>
-#include <Math/Vector.h>
-#include <Math/Matrix.h>
-#include <Math/Line.h>
-#include <Math/Plane.h>
-#include <Math/AABBox.h>
-#include <Math/Rectangle.h>
+#include <PGE/Math/Math.h>
+#include <PGE/Math/Vector.h>
+#include <PGE/Math/Matrix.h>
+#include <PGE/Math/Line.h>
+#include <PGE/Math/Plane.h>
+#include <PGE/Math/AABBox.h>
+#include <PGE/Math/Rectangle.h>
 
 #include "../ScriptManager.h"
 

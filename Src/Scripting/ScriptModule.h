@@ -6,8 +6,8 @@
 #include <angelscript.h>
 #include <tinyxml2.h>
 
-#include <Misc/FilePath.h>
-#include <String/String.h>
+#include <PGE/File/FilePath.h>
+#include <PGE/String/String.h>
 
 class Type;
 class ScriptManager;

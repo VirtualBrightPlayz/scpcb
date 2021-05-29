@@ -1,6 +1,6 @@
 #include "ScriptWorld.h"
 
-#include <Exception/Exception.h>
+#include <PGE/Exception/Exception.h>
 
 #include "../Save/Config.h"
 #include "../Input/KeyBinds.h"
@@ -33,7 +33,7 @@
 #include "../Scripting/NativeDefinitions/EventDefinition.h"
 #include "../Scripting/NativeDefinitions/ReflectionDefinitions.h"
 
-ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, LocalizationManager* lm, PickableManager* pm, UIMesh* um, Config* config, float timestep, BillboardManager* bm, ModelImageGenerator* mig) {
+ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::InputManager* inputManager, LocalizationManager* lm, PickableManager* pm, UIMesh* um, Config* config, float timestep, BillboardManager* bm, ModelImageGenerator* mig) {
     manager = new ScriptManager();
 
     refCounterManager = new RefCounterManager();
@@ -44,7 +44,7 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     nativeDefs.push_back(new ColorDefinitions(manager));
     nativeDefs.push_back(new MathDefinitions(manager));
     nativeDefs.push_back(new RandomDefinitions(manager, refCounterManager));
-    nativeDefs.push_back(new InputDefinitions(manager, keyBinds, mouseData, io));
+    nativeDefs.push_back(new InputDefinitions(manager, keyBinds, mouseData, inputManager));
     nativeDefs.push_back(new TextureDefinitions(manager, gfxRes));
     nativeDefs.push_back(new ModelImageGeneratorDefinitions(manager, mig));
     nativeDefs.push_back(new UIDefinitions(manager, um, config, world));

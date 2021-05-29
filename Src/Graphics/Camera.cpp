@@ -1,6 +1,6 @@
-#include <Math/Rectangle.h>
+#include <PGE/Math/Rectangle.h>
 
-#include <Math/Math.h>
+#include <PGE/Math/Math.h>
 
 #include "Camera.h"
 #include "GraphicsResources.h"

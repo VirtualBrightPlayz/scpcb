@@ -3,9 +3,9 @@
 
 #include <unordered_map>
 
-#include <String/String.h>
+#include <PGE/String/String.h>
 
-#include <Mesh/Mesh.h>
+#include <PGE/Graphics/Mesh.h>
 
 class GraphicsResources;
 class Camera;

@@ -3,7 +3,7 @@
 
 #include <unordered_map>
 
-#include <String/Key.h>
+#include <PGE/String/Key.h>
 
 class LocalizationManager {
     private:

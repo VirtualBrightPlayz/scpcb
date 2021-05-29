@@ -3,7 +3,7 @@
 #include "ScriptModule.h"
 #include "StringFactory.h"
 #include <angelscript.h>
-#include <String/String.h>
+#include <PGE/String/String.h>
 #include <map>
 #include <stdlib.h>
 #include <inttypes.h>

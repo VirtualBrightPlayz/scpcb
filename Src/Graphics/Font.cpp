@@ -1,6 +1,6 @@
 #include "Font.h"
 
-#include <Math/Matrix.h>
+#include <PGE/Math/Matrix.h>
 
 #include <inttypes.h>
 #include <stdlib.h>

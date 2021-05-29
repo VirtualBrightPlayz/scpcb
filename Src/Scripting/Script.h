@@ -5,8 +5,8 @@
 
 #include <angelscript.h>
 
-#include <Misc/FilePath.h>
-#include <String/String.h>
+#include <PGE/File/FilePath.h>
+#include <PGE/String/String.h>
 
 class ScriptFunction;
 class ScriptClass;

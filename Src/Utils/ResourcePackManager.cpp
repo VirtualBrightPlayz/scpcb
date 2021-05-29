@@ -1,6 +1,6 @@
 #include "ResourcePackManager.h"
 
-#include <Exception/Exception.h>
+#include <PGE/Exception/Exception.h>
 
 #include <tinyxml2.h>
 

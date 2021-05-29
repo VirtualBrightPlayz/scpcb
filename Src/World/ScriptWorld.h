@@ -1,7 +1,7 @@
 #ifndef SCRIPTWORLD_H_INCLUDED
 #define SCRIPTWORLD_H_INCLUDED
 
-#include <IO/IO.h>
+#include <PGE/Input/InputManager.h>
 
 class ScriptManager;
 
@@ -37,7 +37,7 @@ class ScriptWorld {
         std::vector<ScriptModule*> modules;
 
     public:
-        ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::IO* io, LocalizationManager* lm, PickableManager* pm, UIMesh* um,  Config* config, float timestep, BillboardManager* bm, ModelImageGenerator* mig);
+        ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera, KeyBinds* keyBinds, MouseData* mouseData, PGE::InputManager* inputManager, LocalizationManager* lm, PickableManager* pm, UIMesh* um,  Config* config, float timestep, BillboardManager* bm, ModelImageGenerator* mig);
         ~ScriptWorld();
 
         void update(float timeStep);

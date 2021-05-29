@@ -1,8 +1,8 @@
 #ifndef BILLBOARDDEFINITIONS_H_INCLUDED
 #define BILLBOARDDEFINITIONS_H_INCLUDED
 
-#include <Math/Vector.h>
-#include <Color/Color.h>
+#include <PGE/Math/Vector.h>
+#include <PGE/Color/Color.h>
 
 #include "../NativeDefinition.h"
 

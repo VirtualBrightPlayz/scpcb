@@ -1,9 +1,9 @@
 #ifndef CAMERA_H_INCLUDED
 #define CAMERA_H_INCLUDED
 
-#include <Math/Matrix.h>
-#include <Graphics/Graphics.h>
-#include <Shader/Shader.h>
+#include <PGE/Math/Matrix.h>
+#include <PGE/Graphics/Graphics.h>
+#include <PGE/Graphics/Shader.h>
 
 #include "../World/DataInterpolator.h"
 

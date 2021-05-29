@@ -1,20 +1,20 @@
 #ifndef MOUSEDATA_H_INCLUDED
 #define MOUSEDATA_H_INCLUDED
 
-#include <IO/IO.h>
+#include <PGE/Input/InputManager.h>
 
 class Config;
 
 class MouseData {
     private:
-        PGE::IO* io;
+        PGE::InputManager* inputManager;
         Config* config;
 
         PGE::Vector2f mousePosition;
         PGE::Vector2f mouseWheelDelta;
 
     public:
-        MouseData(PGE::IO* io, Config* config);
+        MouseData(PGE::InputManager* inputManager, Config* config);
 
         const PGE::Vector2f& getPosition() const;
         const PGE::Vector2f& getWheelDelta() const;

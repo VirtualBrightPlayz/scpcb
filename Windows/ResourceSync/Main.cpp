@@ -2,9 +2,9 @@
 #include <unordered_set>
 #include <iostream>
 
-#include <Misc/FilePath.h>
-#include <String/Key.h>
-#include <Exception/Exception.h>
+#include <PGE/File/FilePath.h>
+#include <PGE/String/Key.h>
+#include <PGE/Exception/Exception.h>
 
 using namespace PGE;
 

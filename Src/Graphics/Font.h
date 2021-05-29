@@ -7,14 +7,14 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include <Texture/Texture.h>
-#include <Shader/Shader.h>
-#include <Material/Material.h>
-#include <Mesh/Mesh.h>
-#include <Misc/FilePath.h>
-#include <String/String.h>
-#include <Math/Vector.h>
-#include <Math/Rectangle.h>
+#include <PGE/Graphics/Texture.h>
+#include <PGE/Graphics/Shader.h>
+#include <PGE/Graphics/Material.h>
+#include <PGE/Graphics/Mesh.h>
+#include <PGE/File/FilePath.h>
+#include <PGE/String/String.h>
+#include <PGE/Math/Vector.h>
+#include <PGE/Math/Rectangle.h>
 
 class GraphicsResources;
 class Config;

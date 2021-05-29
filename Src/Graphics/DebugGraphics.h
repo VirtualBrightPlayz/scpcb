@@ -1,13 +1,13 @@
 #ifndef DEBUGGRAPHICS_H_INCLUDED
 #define DEBUGGRAPHICS_H_INCLUDED
 
-#include <Graphics/Graphics.h>
-#include <Material/Material.h>
-#include <Shader/Shader.h>
-#include <Mesh/Mesh.h>
-#include <Color/Color.h>
-#include <Math/Line.h>
-#include <Math/Matrix.h>
+#include <PGE/Graphics/Graphics.h>
+#include <PGE/Graphics/Material.h>
+#include <PGE/Graphics/Shader.h>
+#include <PGE/Graphics/Mesh.h>
+#include <PGE/Color/Color.h>
+#include <PGE/Math/Line.h>
+#include <PGE/Math/Matrix.h>
 
 class DebugGraphics {
     private:

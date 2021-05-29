@@ -2,8 +2,8 @@
 #define COLLISIONMESH_H_INCLUDED
 
 #include <vector>
-#include <Math/Vector.h>
-#include <Math/Matrix.h>
+#include <PGE/Math/Vector.h>
+#include <PGE/Math/Matrix.h>
 
 #include "Collision.h"
 

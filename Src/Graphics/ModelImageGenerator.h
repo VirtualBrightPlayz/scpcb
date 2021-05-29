@@ -1,7 +1,7 @@
 #ifndef MODELIMAGEGENERATOR_H_INCLUDED
 #define MODELIMAGEGENERATOR_H_INCLUDED
 
-#include <Graphics/Graphics.h>
+#include <PGE/Graphics/Graphics.h>
 
 class GraphicsResources;
 class Camera;

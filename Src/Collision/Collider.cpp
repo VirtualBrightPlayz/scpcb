@@ -1,6 +1,6 @@
 #include "Collider.h"
 
-#include <Math/Plane.h>
+#include <PGE/Math/Plane.h>
 
 #include "../Collision/CollisionMeshCollection.h"
 

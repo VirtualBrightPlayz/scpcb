@@ -1,6 +1,6 @@
-#include <Math/Vector.h>
-#include <Math/Matrix.h>
-#include <Color/Color.h>
+#include <PGE/Math/Vector.h>
+#include <PGE/Math/Matrix.h>
+#include <PGE/Color/Color.h>
 
 #include "Type.h"
 

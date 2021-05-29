@@ -5,7 +5,7 @@
 #include "../../Input/KeyBinds.h"
 #include "../../Input/MouseData.h"
 
-InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* md, PGE::IO* io) {
+InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* md, PGE::InputManager* inputManager) {
     engine = mgr->getAngelScriptEngine();
 
     keyBinds = kb;
@@ -48,12 +48,12 @@ InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* 
     engine->RegisterGlobalFunction("bool undoIsHit()", asMETHOD(KeyBinds, undoIsHit), asCALL_THISCALL_ASGLOBAL, kb);
     engine->RegisterGlobalFunction("bool redoIsHit()", asMETHOD(KeyBinds, redoIsHit), asCALL_THISCALL_ASGLOBAL, kb);
 
-    engine->RegisterGlobalFunction("void startTextInputCapture()", asMETHOD(PGE::IO, startTextInputCapture), asCALL_THISCALL_ASGLOBAL, io);
-    engine->RegisterGlobalFunction("void stopTextInputCapture()", asMETHOD(PGE::IO, stopTextInputCapture), asCALL_THISCALL_ASGLOBAL, io);
-    engine->RegisterGlobalFunction("const string& getTextInput()", asMETHOD(PGE::IO, getTextInput), asCALL_THISCALL_ASGLOBAL, io);
+    engine->RegisterGlobalFunction("void startTextInputCapture()", asMETHOD(PGE::InputManager, startTextInputCapture), asCALL_THISCALL_ASGLOBAL, inputManager);
+    engine->RegisterGlobalFunction("void stopTextInputCapture()", asMETHOD(PGE::InputManager, stopTextInputCapture), asCALL_THISCALL_ASGLOBAL, inputManager);
+    engine->RegisterGlobalFunction("const string& getTextInput()", asMETHOD(PGE::InputManager, getTextInput), asCALL_THISCALL_ASGLOBAL, inputManager);
 
-    engine->RegisterGlobalFunction("void setClipboardText(string str)", asMETHOD(PGE::IO, setClipboardText), asCALL_THISCALL_ASGLOBAL, io);
-    engine->RegisterGlobalFunction("string getClipboardText()", asMETHOD(PGE::IO, getClipboardText), asCALL_THISCALL_ASGLOBAL, io);
+    engine->RegisterGlobalFunction("void setClipboardText(string str)", asMETHOD(PGE::InputManager, setClipboardText), asCALL_THISCALL_ASGLOBAL, inputManager);
+    engine->RegisterGlobalFunction("string getClipboardText()", asMETHOD(PGE::InputManager, getClipboardText), asCALL_THISCALL_ASGLOBAL, inputManager);
 
     engine->RegisterGlobalFunction("const Vector2f& getMousePosition()", asMETHOD(MouseData , getPosition), asCALL_THISCALL_ASGLOBAL, md);
     engine->RegisterGlobalFunction("const Vector2f& getMouseWheelDelta()", asMETHOD(MouseData, getWheelDelta), asCALL_THISCALL_ASGLOBAL, md);

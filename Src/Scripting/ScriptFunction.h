@@ -6,7 +6,7 @@
 
 #include <angelscript.h>
 
-#include <String/String.h>
+#include <PGE/String/String.h>
 
 class ScriptModule;
 class ScriptManager;

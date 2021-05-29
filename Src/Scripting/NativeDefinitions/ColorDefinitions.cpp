@@ -1,6 +1,6 @@
 #include "ColorDefinitions.h"
 
-#include <Color/Color.h>
+#include <PGE/Color/Color.h>
 
 #include "../ScriptManager.h"
 

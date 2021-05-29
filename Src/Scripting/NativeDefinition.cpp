@@ -1,8 +1,8 @@
 #include "NativeDefinition.h"
 
-#include <Exception/Exception.h>
+#include <PGE/Exception/Exception.h>
+#include <PGE/String/String.h>
 
-#include <String/String.h>
 #include "../Graphics/Billboard.h"
 
 static void throwOnError(int err) {

@@ -4,12 +4,12 @@
 #include <vector>
 #include <map>
 
-#include <Math/Matrix.h>
-#include <Mesh/Mesh.h>
-#include <Shader/Shader.h>
-#include <Texture/Texture.h>
-#include <Misc/FilePath.h>
-#include <Color/Color.h>
+#include <PGE/Math/Matrix.h>
+#include <PGE/Graphics/Mesh.h>
+#include <PGE/Graphics/Shader.h>
+#include <PGE/Graphics/Texture.h>
+#include <PGE/File/FilePath.h>
+#include <PGE/Color/Color.h>
 
 class CollisionMesh;
 class GraphicsResources;

@@ -3,9 +3,9 @@
 
 #include <map>
 
-#include <Math/Line.h>
-#include <Math/Matrix.h>
-#include <Math/AABBox.h>
+#include <PGE/Math/Line.h>
+#include <PGE/Math/Matrix.h>
+#include <PGE/Math/AABBox.h>
 
 #include "Collision.h"
 

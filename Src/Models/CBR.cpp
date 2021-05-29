@@ -3,7 +3,7 @@
 #include <set>
 #include <fstream>
 
-#include <Misc/BinaryReader.h>
+#include <PGE/File/BinaryReader.h>
 
 #include "../Graphics/GraphicsResources.h"
 #include "../Utils/TextureUtil.h"

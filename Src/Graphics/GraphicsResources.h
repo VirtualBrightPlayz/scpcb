@@ -5,11 +5,11 @@
 
 #include <assimp/Importer.hpp>
 
-#include <String/Key.h>
+#include <PGE/String/Key.h>
 
-#include <Graphics/Graphics.h>
-#include <Shader/Shader.h>
-#include <Texture/Texture.h>
+#include <PGE/Graphics/Graphics.h>
+#include <PGE/Graphics/Shader.h>
+#include <PGE/Graphics/Texture.h>
 
 class Model;
 class ModelInstance;

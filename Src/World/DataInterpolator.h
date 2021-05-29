@@ -1,7 +1,7 @@
 #ifndef DATAINTERPOLATIOR_H_INCLUDED
 #define DATAINTERPOLATIOR_H_INCLUDED
 
-#include <Math/Vector.h>
+#include <PGE/Math/Vector.h>
 
 class DataInterpolator {
     private:

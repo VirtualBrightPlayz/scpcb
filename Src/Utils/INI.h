@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-#include <Misc/FilePath.h>
+#include <PGE/File/FilePath.h>
 
 class INIFile {
     public:

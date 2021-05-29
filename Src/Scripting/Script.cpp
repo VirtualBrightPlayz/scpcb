@@ -1,6 +1,6 @@
 #include "Script.h"
 
-#include <Exception/Exception.h>
+#include <PGE/Exception/Exception.h>
 
 #include "ScriptManager.h"
 #include "ScriptClass.h"

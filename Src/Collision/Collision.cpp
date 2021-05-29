@@ -21,7 +21,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 **/
 
 #include "Collision.h"
-#include <Math/Plane.h>
+#include <PGE/Math/Plane.h>
 
 #include <math.h>
 

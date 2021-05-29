@@ -1,11 +1,11 @@
-#include <Init/Init.h>
+#include <PGE/Init/Init.h>
 #include <iostream>
 #include <tinyxml2.h>
 
 #include "World/World.h"
 #include "Serialize/IntProperty.h"
 
-int PGEMain::Main() {
+int PGE::Init::main(const std::vector<PGE::String>& args) {
     // TODO: Remove.
 //    IntProperty ip = IntProperty("test");
 //    tinyxml2::XMLDocument doc;
