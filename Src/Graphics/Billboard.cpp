@@ -92,7 +92,7 @@ void BillboardManager::render() {
             geomChanged |= mesh.billboards[i]->updateVertices(mesh.vertices, i*4);
         }
         if (geomChanged) {
-            mesh.mesh->setGeometry((int)mesh.billboards.size() * 4, mesh.vertices, (int)mesh.billboards.size() * 2, primitives);
+            mesh.mesh->setGeometry(mesh.vertices, primitives);
             geomChanged = false;
         }
         mesh.mesh->render();

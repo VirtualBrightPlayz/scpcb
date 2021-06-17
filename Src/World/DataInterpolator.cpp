@@ -1,6 +1,7 @@
 #include "DataInterpolator.h"
 
 #include <PGE/Math/Math.h>
+#include <PGE/Math/Interpolator.h>
 
 DataInterpolator::TransformData::TransformData(const PGE::Vector3f& pos, const PGE::Vector3f& rot, const PGE::Vector3f& scal) {
     position = pos;
@@ -21,7 +22,7 @@ void DataInterpolator::update(const PGE::Vector3f& position, const PGE::Vector3f
 }
 
 PGE::Vector3f DataInterpolator::getInterpolatedPosition(float interpolation) const {
-    return PGE::Vector3f::lerp(prevTransform.position, currTransform.position, interpolation);
+    return PGE::Interpolator::lerp(prevTransform.position, currTransform.position, interpolation);
 }
 
 PGE::Vector3f DataInterpolator::getInterpolatedRotation(float interpolation) const {
@@ -36,5 +37,5 @@ PGE::Vector3f DataInterpolator::getInterpolatedRotation(float interpolation) con
 }
 
 PGE::Vector3f DataInterpolator::getInterpolatedScale(float interpolation) const {
-    return PGE::Vector3f::lerp(prevTransform.scale, currTransform.scale, interpolation);
+    return PGE::Interpolator::lerp(prevTransform.scale, currTransform.scale, interpolation);
 }

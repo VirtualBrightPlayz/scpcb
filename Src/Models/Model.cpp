@@ -72,7 +72,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
         }
 
         meshes[i] = PGE::Mesh::create(gr->getGraphics(), PGE::Primitive::Type::TRIANGLE);
-        meshes[i]->setGeometry((int)vertices.size(), vertices, (int)primitives.size(), primitives);
+        meshes[i]->setGeometry(vertices, primitives);
         meshes[i]->setMaterial(materials[mesh->mMaterialIndex]);
     }
 

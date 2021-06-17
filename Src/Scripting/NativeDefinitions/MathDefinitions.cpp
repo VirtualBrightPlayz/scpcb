@@ -136,7 +136,6 @@ MathDefinitions::MathDefinitions(ScriptManager* mgr) {
     engine->RegisterObjectMethod("Vector2f", "string toString() const", asMETHOD(PGE::Vector2f, toString), asCALL_THISCALL);
 
     engine->SetDefaultNamespace("Vector2f");
-    engine->RegisterGlobalFunction("Vector2f lerp(const Vector2f&in oldValue, const Vector2f&in newValue, float interpolation)", asFUNCTION(PGE::Vector2f::lerp), asCALL_CDECL);
     engine->RegisterGlobalProperty("const Vector2f one", (void*)&PGE::Vector2f::ONE);
     engine->RegisterGlobalProperty("const Vector2f zero", (void*)&PGE::Vector2f::ZERO);
     engine->SetDefaultNamespace("");
@@ -185,7 +184,6 @@ MathDefinitions::MathDefinitions(ScriptManager* mgr) {
     engine->RegisterObjectMethod("Vector3f", "string toString() const", asMETHOD(PGE::Vector3f, toString), asCALL_THISCALL);
 
     engine->SetDefaultNamespace("Vector3f");
-    engine->RegisterGlobalFunction("Vector3f lerp(const Vector3f&in oldValue, const Vector3f&in newValue, float interpolation)", asFUNCTION(PGE::Vector3f::lerp), asCALL_CDECL);
     engine->RegisterGlobalProperty("const Vector3f one", (void*) &PGE::Vector3f::ONE);
     engine->RegisterGlobalProperty("const Vector3f zero", (void*)&PGE::Vector3f::ZERO);
     engine->SetDefaultNamespace("");
@@ -207,7 +205,7 @@ MathDefinitions::MathDefinitions(ScriptManager* mgr) {
     engine->RegisterObjectMethod("Matrix4x4f", "Matrix4x4f opMul(float f) const", asMETHODPR(PGE::Matrix4x4f, operator*, (const PGE::Matrix4x4f&) const, PGE::Matrix4x4f), asCALL_THISCALL);
 
     engine->RegisterObjectMethod("Matrix4x4f", "Matrix4x4f transpose() const", asMETHOD(PGE::Matrix4x4f, transpose), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Matrix4x4f", "Matrix4x4f product(const Matrix4x4f&in other) const", asMETHOD(PGE::Matrix4x4f, operator*), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Matrix4x4f", "Matrix4x4f product(const Matrix4x4f&in other) const", asMETHODPR(PGE::Matrix4x4f, operator*, (const PGE::Matrix4x4f& other) const, PGE::Matrix4x4f), asCALL_THISCALL);
     engine->RegisterObjectMethod("Matrix4x4f", "Vector3f transform(const Vector3f&in vec) const", asMETHODPR(PGE::Matrix4x4f, transform, (const PGE::Vector3f&) const, PGE::Vector3f), asCALL_THISCALL);
 
     engine->RegisterObjectMethod("Matrix4x4f", "string toString() const", asMETHOD(PGE::Matrix4x4f, toString), asCALL_THISCALL);

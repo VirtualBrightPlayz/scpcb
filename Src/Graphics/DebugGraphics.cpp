@@ -79,6 +79,6 @@ void DebugGraphics::draw3DLine(const PGE::Line3f& line, const PGE::Color& color,
     triangles.push_back(PGE::Primitive(4,6,5));
     triangles.push_back(PGE::Primitive(6,5,7));
 
-    mesh->setGeometry(8, vertices, 8, triangles);
+    mesh->setGeometry(vertices, triangles);
     mesh->render();
 }

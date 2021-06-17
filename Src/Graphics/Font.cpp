@@ -201,7 +201,7 @@ void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Ve
         }
     }
     for (int i=0;i<atlases.size();i++) {
-        atlases[i].mesh->setGeometry((int)atlases[i].vertices.size(), atlases[i].vertices, (int)atlases[i].primitives.size(), atlases[i].primitives);
+        atlases[i].mesh->setGeometry(atlases[i].vertices, atlases[i].primitives);
 
         if (atlases[i].vertices.size()>0) {
             atlases[i].mesh->render();

@@ -250,7 +250,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                 PGE::Mesh* mesh = PGE::Mesh::create(gfxRes->getGraphics(), PGE::Primitive::Type::TRIANGLE);
 
                 mesh->setMaterial(materialIter->second);
-                mesh->setGeometry((int)vertices.size(), vertices, (int)primitives.size(), primitives);
+                mesh->setGeometry(vertices, primitives);
 
                 if (materials[textureIndex.u]->isOpaque())
                 {
@@ -345,4 +345,3 @@ CollisionMesh* RM2::getCollisionMesh(int index) const {
 int RM2::collisionMeshCount() const {
     return (int)collisionMeshes.size();
 }
-

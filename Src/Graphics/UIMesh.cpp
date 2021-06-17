@@ -42,7 +42,7 @@ void UIMesh::startRender() {
 
 void UIMesh::endRender() {
     if (vertices.size() > 0 && primitives.size() > 0) {
-        mesh->setGeometry((int)vertices.size(), vertices, (int)primitives.size(), primitives);
+        mesh->setGeometry(vertices, primitives);
         mesh->render();
     }
 
