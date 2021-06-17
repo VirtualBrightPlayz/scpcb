@@ -7,3 +7,7 @@
 	path = Libraries/angelscript
 	url = git@github.com:Saalvage/angelscript.git
 	branch = cbn
+[submodule "Libraries/freetype"]
+	path = Libraries/freetype
+	url = git@github.com:Saalvage/freetype.git
+	branch = pr
