@@ -53,9 +53,9 @@ ScriptObject* ScriptGlobal::getObject() {
 }
 
 void ScriptGlobal::saveXML(tinyxml2::XMLElement* parent) const {
-    tinyxml2::XMLElement* element = parent->GetDocument()->NewElement(name);
+    tinyxml2::XMLElement* element = parent->GetDocument()->NewElement(name.cstr());
     if (!varNamespace.isEmpty()) {
-        element->SetAttribute("namespace", varNamespace);
+        element->SetAttribute("namespace", varNamespace.cstr());
     }
     
     module->saveXML(module->getAngelScriptModule()->GetAddressOfGlobalVar(index), type, element);

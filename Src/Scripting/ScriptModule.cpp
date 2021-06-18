@@ -209,7 +209,7 @@ Type* ScriptModule::typeFromTypeId(int typeId) const {
 }
 
 void ScriptModule::save(tinyxml2::XMLDocument& doc) const {
-    tinyxml2::XMLElement* moduleElement = doc.NewElement(name);
+    tinyxml2::XMLElement* moduleElement = doc.NewElement(name.cstr());
     for (int i = 0; i < (int)globals.size(); i++) {
         if (globals[i]->isSerializable()) {
             globals[i]->saveXML(moduleElement);
@@ -319,7 +319,7 @@ void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* el
             strValue = PGE::String::fromInt(iValue);
         }
 
-        element->SetAttribute("value", strValue);
+        element->SetAttribute("value", strValue.cstr());
     }
 }
 
