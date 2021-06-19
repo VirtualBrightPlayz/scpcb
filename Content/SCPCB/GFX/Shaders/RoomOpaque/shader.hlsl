@@ -8,7 +8,7 @@ cbuffer cbMatrices {
     matrix projectionMatrix;
     matrix viewMatrix;
     matrix modelMatrix;
-};
+}
 
 struct VS_INPUT {
     float4 position : POSITION0;

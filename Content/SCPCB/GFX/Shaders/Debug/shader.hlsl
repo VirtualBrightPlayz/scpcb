@@ -1,11 +1,11 @@
 cbuffer cbVertex {
     matrix viewMatrix;
     matrix projectionMatrix;
-};
+}
 
 cbuffer cbFragment {
     float4 inColor;
-};
+}
 
 struct VS_INPUT {
     float4 position : POSITION0;

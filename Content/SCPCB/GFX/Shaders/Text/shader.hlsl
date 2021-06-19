@@ -4,11 +4,11 @@ SamplerState smp;
 cbuffer cbMatrices {
     matrix modelMatrix;
     matrix projectionMatrix;
-};
+}
 
 cbuffer cbFragment {
     float4 imageColor;
-};
+}
 
 struct VS_INPUT {
     float3 position  : POSITION0;
