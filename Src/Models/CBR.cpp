@@ -8,10 +8,10 @@
 #include "../Graphics/GraphicsResources.h"
 #include "../Utils/TextureUtil.h"
 
-const PGE::FilePath shaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/");
-const PGE::FilePath shaderNormalPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaqueNormalMap/");
+const PGE::String TEXTURE_PATH = "SCPCB/GFX/Map/Textures/";
 
-const PGE::String texturePath = "SCPCB/GFX/Map/Textures/";
+PGE::FilePath CBR::shaderPath;
+PGE::FilePath CBR::shaderNormalPath;
 
 enum Lightmapped {
     No = 0,
@@ -20,6 +20,11 @@ enum Lightmapped {
 };
 
 CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
+    if (!shaderPath.isValid()) {
+        shaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/");
+        shaderNormalPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaqueNormalMap/");
+    }
+
     this->gr = gr;
 
     shader = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/"), true);
@@ -58,11 +63,11 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
             for (int j = 0; j < 3; j++) {
                 textures.push_back(lightmaps[j]);
             }
-            PGE::Texture* tex = gr->getTexture(texturePath + textureNames[i]);
+            PGE::Texture* tex = gr->getTexture(TEXTURE_PATH + textureNames[i]);
             textures.push_back(tex);
             allTextures.push_back(tex);
             bool normalMapped = false;
-            PGE::Texture* texNormal = gr->getTexture(texturePath + textureNames[i] + "_n");
+            PGE::Texture* texNormal = gr->getTexture(TEXTURE_PATH + textureNames[i] + "_n");
             if (texNormal != nullptr) {
                 normalMapped = true;
                 textures.push_back(texNormal);

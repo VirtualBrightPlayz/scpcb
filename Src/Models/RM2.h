@@ -43,6 +43,10 @@ enum class RM2Error {
 
 class RM2 {
     private:
+        static PGE::FilePath opaqueShaderPath;
+        static PGE::FilePath opaqueNormalMapShaderPath;
+        static PGE::FilePath alphaShaderPath;
+
         std::map<unsigned short, PGE::Material*> materials;
 
         struct TextureEntry {

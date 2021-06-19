@@ -8,13 +8,13 @@
 #include "../Graphics/GraphicsResources.h"
 #include "../Graphics/Camera.h"
 
-const PGE::FilePath opaqueShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/");
-const PGE::FilePath OPAQUE_NORMAL_MAP_SHADER_PATH = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaqueNormalMap/");
-const PGE::FilePath ALPHA_SHADER_PATH = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomAlpha/");
-
 const PGE::String TEXTURE_PATH = "SCPCB/GFX/Map/Textures/";
 
 const PGE::String EXTENSION = ".rm2";
+
+PGE::FilePath RM2::opaqueShaderPath;
+PGE::FilePath RM2::opaqueNormalMapShaderPath;
+PGE::FilePath RM2::alphaShaderPath;
 
 enum class FileSections {
     Textures = 1,
@@ -46,6 +46,12 @@ static PGE::String readByteString(std::ifstream& inFile) {
 }
 
 RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
+    if (!opaqueShaderPath.isValid()) {
+        opaqueShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/");
+        opaqueNormalMapShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaqueNormalMap/");
+        alphaShaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomAlpha/");
+    }
+
     graphicsResources = gfxRes;
 
     std::ifstream inFile(PGE::FilePath::fromStr(filename).cstr(), std::ios::binary);
@@ -97,7 +103,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     opaqueShader = gfxRes->getShader(opaqueShaderPath, true);
     opaqueModelMatrixConstant = opaqueShader->getVertexShaderConstant("modelMatrix");
 
-    opaqueNormalMapShader = gfxRes->getShader(OPAQUE_NORMAL_MAP_SHADER_PATH, true);
+    opaqueNormalMapShader = gfxRes->getShader(opaqueNormalMapShaderPath, true);
     opaqueNormalMapModelMatrixConstant = opaqueNormalMapShader->getVertexShaderConstant("modelMatrix");
 
     //alphaShader = gfxRes->getShader(ALPHA_SHADER_PATH, true);
