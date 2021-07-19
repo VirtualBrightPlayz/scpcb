@@ -10,7 +10,7 @@
 CollisionMeshCollection* PickableManager::cmc;
 
 Pickable::Pickable() {
-    position = PGE::Vector3f::ZERO;
+    position = PGE::Vectors::ZERO3F;
     picked = false;
 }
 

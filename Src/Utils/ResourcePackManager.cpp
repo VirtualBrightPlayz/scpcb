@@ -26,7 +26,7 @@ void ResourcePackManager::loadResPacks() {
 	PGE::String modName;
 
 	for (int i = 0; i < resPackLocs->value.size(); i++) {
-		std::vector<PGE::FilePath> modFolders; PGE::FilePath::fromStr(resPackLocs->value[i]).enumerateFolders(modFolders);
+		std::vector<PGE::FilePath> modFolders = PGE::FilePath::fromStr(resPackLocs->value[i]).enumerateFolders();
 		for (int j = 0; j < modFolders.size(); j++) {
 			metaPath = modFolders[j] + "meta.xml";
 			if (metaPath.exists()) {

@@ -20,23 +20,26 @@ INIFile::INIFile(const PGE::FilePath& filename) {
             getline(file, cppStr);
             currLine = PGE::String(cppStr);
 
-            if (*currLine.charAt(0) == '[') {
-                if (currSection != nullptr) {
-                    sections.push_back(currSection);
-                }
-                currSection = new Section();
-                currLine = currLine.substr(1,currLine.length()-2).trim();
-                currSection->names = currLine.split('|', true);
-            } else if (*currLine.charAt(0) != ';') {
-                if (currSection != nullptr) {
-                    std::vector<PGE::String> split = currLine.split('=', false);
-                    if (split.size() >= 2) {
-                        currSection->keys.push_back(split[0].trim());
+            PGE::String::Iterator ch = currLine.charAt(0);
+            if (ch != currLine.end()) {
+                if (*ch == L'[') {
+                    if (currSection != nullptr) {
+                        sections.push_back(currSection);
+                    }
+                    currSection = new Section();
+                    currLine = currLine.substr(1, currLine.length() - 2).trim();
+                    currSection->names = currLine.split('|', true);
+                } else if (*ch != L';') {
+                    if (currSection != nullptr) {
+                        std::vector<PGE::String> split = currLine.split('=', false);
+                        if (split.size() >= 2) {
+                            currSection->keys.push_back(split[0].trim());
 
-                        // If the value itself had a '=' in it then recover those.
-                        split.erase(split.begin());
-                        PGE::String value = PGE::String::join(split, '=');
-                        currSection->values.push_back(value.trim());
+                            // If the value itself had a '=' in it then recover those.
+                            split.erase(split.begin());
+                            PGE::String value = PGE::String::join(split, '=');
+                            currSection->values.push_back(value.trim());
+                        }
                     }
                 }
             }

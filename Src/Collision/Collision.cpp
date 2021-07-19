@@ -47,7 +47,7 @@ Collision Collision::update(const PGE::Line3f& line,float t,const PGE::Vector3f&
 
     PGE::Plane p = PGE::Plane(n,(line.pointB - line.pointA) * t + line.pointA);
     if (p.normal.dotProduct(line.pointB - line.pointA)>=0) { return retVal; }
-    if (p.evalAtPoint(line.pointA)<-COLLISION_EPSILON) { return retVal; }
+    if (p.onPlane(line.pointA) == 0) { return retVal; }
 
     retVal.line = line;
     retVal.coveredAmount = t;
@@ -116,7 +116,7 @@ Collision Collision::edgeTest(const PGE::Vector3f& v0,const PGE::Vector3f& v1,co
     t=t1<t2 ? t1 : t2;
     if( t>1.f ) { return retVal; }    //intersects too far away
     PGE::Vector3f i=sv + dv * t;
-    PGE::Vector3f p=PGE::Vector3f::ZERO;
+    PGE::Vector3f p=PGE::Vectors::ZERO3F;
     if( i.y>v0.distance(v1) ) { return retVal; }    //intersection above cylinder
     if( i.y>=0 ){
         p.y=i.y;
@@ -270,8 +270,8 @@ Collision Collision::triangleCollide(const PGE::Line3f& line,float height,float 
         float coveredAmountTop = 0;
         float coveredAmountBottom = 0;
         
-        bool intersectsTop = topPlane.getIntersectionPoint(edge, edgePoint0, coveredAmountTop, true, true);
-        bool intersectsBottom = bottomPlane.getIntersectionPoint(edge, edgePoint1, coveredAmountBottom, true, true);
+        bool intersectsTop = topPlane.intersects(edge, edgePoint0, coveredAmountTop, true, true);
+        bool intersectsBottom = bottomPlane.intersects(edge, edgePoint1, coveredAmountBottom, true, true);
         if (intersectsTop && intersectsBottom) {
             if (coveredAmountTop < 0.f) {
                 edgePoint0 = edge.pointA;

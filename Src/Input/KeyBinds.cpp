@@ -206,7 +206,7 @@ void KeyBinds::update() {
     // TODO: Disable when key capture is enabled.
     for (ConsoleBindingsMap::const_iterator it = consoleBindings.begin(); it != consoleBindings.end(); it++) {
         if (it->second->isHit()) {
-            conDef->executeCommand(it->first.getStr());
+            conDef->executeCommand(it->first.str);
         }
     }
 }

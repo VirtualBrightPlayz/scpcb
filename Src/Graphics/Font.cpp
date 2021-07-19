@@ -146,7 +146,7 @@ void Font::draw(const PGE::String& text, const PGE::Vector2f& pos, float scale, 
 void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Vector2f& scale, const PGE::Vector3f& rotation, const PGE::Color& color) {
     PGE::Matrix4x4f modelMatrix = PGE::Matrix4x4f::constructWorldMat(pos, PGE::Vector3f(scale.x, scale.y, 1.f), rotation);
 
-    PGE::Vector3f currPos = PGE::Vector3f::ZERO;
+    PGE::Vector3f currPos = PGE::Vectors::ZERO3F;
 
     modelMatrixConstant->setValue(modelMatrix);
     colorConstant->setValue(color);
@@ -157,7 +157,7 @@ void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Ve
         atlases[i].vertices.clear();
         atlases[i].primitives.clear();
     }
-    for (PGE::wchar chr : text) {
+    for (PGE::char16 chr : text) {
         std::map<long,GlyphData>::iterator it = glyphData.find(chr);
         if (it==glyphData.end()) {
             renderAtlas(chr);
@@ -212,7 +212,7 @@ void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Ve
 float Font::stringWidth(const PGE::String& text, float scale) {
     float width = 0.f;
 
-    for (PGE::wchar chr : text) {
+    for (PGE::char16 chr : text) {
         std::map<long, GlyphData>::iterator it = glyphData.find(chr);
         if (it == glyphData.end()) {
             renderAtlas(chr);

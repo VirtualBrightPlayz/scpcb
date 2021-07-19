@@ -10,8 +10,8 @@ DataInterpolator::TransformData::TransformData(const PGE::Vector3f& pos, const P
 }
 
 DataInterpolator::DataInterpolator()
-: currTransform(TransformData(PGE::Vector3f::ZERO,PGE::Vector3f::ZERO,PGE::Vector3f::ZERO)),
-  prevTransform(TransformData(PGE::Vector3f::ZERO,PGE::Vector3f::ZERO,PGE::Vector3f::ZERO)) { }
+: currTransform(TransformData(PGE::Vectors::ZERO3F,PGE::Vectors::ZERO3F,PGE::Vectors::ZERO3F)),
+  prevTransform(TransformData(PGE::Vectors::ZERO3F,PGE::Vectors::ZERO3F,PGE::Vectors::ZERO3F)) { }
 
 DataInterpolator::DataInterpolator(const PGE::Vector3f& position, const PGE::Vector3f& rotation, const PGE::Vector3f& scale) 
 : currTransform(TransformData(position, rotation, scale)), prevTransform(TransformData(position, rotation, scale)) { }

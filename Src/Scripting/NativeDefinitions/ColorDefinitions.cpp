@@ -48,15 +48,15 @@ ColorDefinitions::ColorDefinitions(ScriptManager* mgr) {
     engine->RegisterObjectMethod("Color", "Color& opAssign(const Color &in other)", asMETHODPR(PGE::Color, operator=, (const PGE::Color&), PGE::Color&), asCALL_THISCALL);
 
     engine->SetDefaultNamespace("Color");
-    engine->RegisterGlobalProperty("const Color Red", (void*)&PGE::Color::RED);
-    engine->RegisterGlobalProperty("const Color Green", (void*)&PGE::Color::GREEN);
-    engine->RegisterGlobalProperty("const Color Blue", (void*)&PGE::Color::BLUE);
-    engine->RegisterGlobalProperty("const Color Orange", (void*)&PGE::Color::ORANGE);
-    engine->RegisterGlobalProperty("const Color Yellow", (void*)&PGE::Color::YELLOW);
-    engine->RegisterGlobalProperty("const Color Cyan", (void*)&PGE::Color::CYAN);
-    engine->RegisterGlobalProperty("const Color Magenta", (void*)&PGE::Color::MAGENTA);
-    engine->RegisterGlobalProperty("const Color White", (void*)&PGE::Color::WHITE);
-    engine->RegisterGlobalProperty("const Color Gray", (void*)&PGE::Color::GRAY);
-    engine->RegisterGlobalProperty("const Color Black", (void*)&PGE::Color::BLACK);
+    engine->RegisterGlobalProperty("const Color Red", (void*)&PGE::Colors::RED);
+    engine->RegisterGlobalProperty("const Color Green", (void*)&PGE::Colors::GREEN);
+    engine->RegisterGlobalProperty("const Color Blue", (void*)&PGE::Colors::BLUE);
+    engine->RegisterGlobalProperty("const Color Orange", (void*)&PGE::Colors::ORANGE);
+    engine->RegisterGlobalProperty("const Color Yellow", (void*)&PGE::Colors::YELLOW);
+    engine->RegisterGlobalProperty("const Color Cyan", (void*)&PGE::Colors::CYAN);
+    engine->RegisterGlobalProperty("const Color Magenta", (void*)&PGE::Colors::MAGENTA);
+    engine->RegisterGlobalProperty("const Color White", (void*)&PGE::Colors::WHITE);
+    engine->RegisterGlobalProperty("const Color Gray", (void*)&PGE::Colors::GRAY);
+    engine->RegisterGlobalProperty("const Color Black", (void*)&PGE::Colors::BLACK);
 
 }

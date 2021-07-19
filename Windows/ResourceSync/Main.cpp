@@ -19,7 +19,7 @@ bool check(const fs::directory_entry& file) {
     if (extensions.empty()) {
         return true;
     }
-    if (extensions.find(file.path().extension()) != extensions.end()) {
+    if (extensions.find(String(file.path().extension().c_str())) != extensions.end()) {
         return true;
     }
     return false;
@@ -54,12 +54,12 @@ int main(int argc, const char** argv) {
     std::unordered_set<String::Key> sources;
     for (const fs::directory_entry& file : fs::recursive_directory_iterator(src.cstr())) {
         if (check(file)) {
-            sources.insert(file.path().string().substr(src.length()));
+            sources.insert(String(file.path().string()).substr(src.str().length()));
         }
     }
 
     for (const fs::directory_entry& file : fs::recursive_directory_iterator(bin.cstr())) {
-        if (check(file) && sources.find(file.path().string().substr(bin.length())) == sources.end()) {
+        if (check(file) && sources.find(String(file.path().string()).substr(bin.str().length())) == sources.end()) {
             std::cout << "Deleting leftover: " << file.path() << std::endl;
             fs::remove(file);
         }

@@ -36,20 +36,19 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
     PGE::BinaryReader reader = PGE::BinaryReader(PGE::FilePath::fromStr(filename));
 
     PGE_ASSERT(reader.readFixedLengthString(3) == "CBR", "CBR file is corrupted/invalid!");
-    uint32_t revision = reader.readUInt();
+    uint32_t revision = reader.readUInt32();
 
     // Lightmaps
     PGE_ASSERT(reader.readByte() > No, "CBN file without lightmaps");
     lightmaps = new PGE::Texture*[4];
     for (int i = 0; i < 4; i++) {
-        int size = reader.readInt();
-        PGE::byte* bytes = reader.readBytes(size);
-        lightmaps[i] = TextureHelper::load(gr->getGraphics(), bytes, size);
-        delete[] bytes;
+        int size = reader.readInt32();
+        std::vector<PGE::byte> bytes = reader.readBytes(size);
+        lightmaps[i] = TextureHelper::load(gr->getGraphics(), bytes);
     }
 
     // Texture dictionary
-    int32_t texSize = reader.readInt();
+    int32_t texSize = reader.readInt32();
     PGE::String* textureNames = new PGE::String[texSize];
     allTextures = std::vector<PGE::Texture*>();
     materials = std::vector<PGE::Material*>(texSize);
@@ -83,14 +82,14 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
     // 2D arrays
     std::vector<PGE::Vertex>* vertices = new std::vector<PGE::Vertex>[texSize];
     std::vector<PGE::Primitive>* primitives = new std::vector<PGE::Primitive>[texSize];
-    int solidCount = reader.readInt();
+    int solidCount = reader.readInt32();
     for (int i = 0; i < solidCount; i++) {
-        int faceCount = reader.readInt();
+        int faceCount = reader.readInt32();
         for (int j = 0; j < faceCount; j++) {
-            int textureID = reader.readInt();
+            int textureID = reader.readInt32();
             // 2 * Coordinate (= 3 * float) + 5 * decimal
             reader.skip(2 * 3 * 4 + 5 * 16);
-            int vertexCount = reader.readInt();
+            int vertexCount = reader.readInt32();
             int vertexOffset = (int)vertices[textureID].size();
             for (int k = 1; k < vertexCount - 1; k++) {
                 primitives[textureID].push_back(PGE::Primitive(
@@ -102,10 +101,10 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
             for (int k = 0; k < vertexCount; k++) {
                 PGE::Vertex tempVertex;
                 tempVertex.setVector4f("position", PGE::Vector4f(reader.readVector3f(), 1.f));
-                tempVertex.setVector3f("normal", PGE::Vector3f::ONE);
+                tempVertex.setVector3f("normal", PGE::Vectors::ONE3F);
                 tempVertex.setVector2f("lmUv", reader.readVector2f());
                 tempVertex.setVector2f("diffUv", reader.readVector2f());
-                tempVertex.setColor("color", PGE::Color::WHITE);
+                tempVertex.setColor("color", PGE::Colors::WHITE);
                 vertices[textureID].push_back(tempVertex);
             }
         }

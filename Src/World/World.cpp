@@ -129,7 +129,7 @@ bool World::run() {
 }
 
 void World::runTick(float timeStep) {
-    SysEvents::update();
+    PGE::SysEvents::update();
     inputManager->update();
     keyBinds->update();
     mouseData->update();

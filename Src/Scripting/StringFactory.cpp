@@ -105,7 +105,7 @@ static PGE::String stringSubstrStartLen(int start, int count, const PGE::String&
     return str.substr(start, count);
 }
 
-static PGE::wchar stringCharAt(int index, const PGE::String& str) {
+static PGE::char16 stringCharAt(int index, const PGE::String& str) {
     return *str.charAt(index);
 }
 

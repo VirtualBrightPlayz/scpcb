@@ -77,9 +77,9 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
 
     for (int i = 0; i < enabledMods.size(); i++) {
         PGE::FilePath directory = PGE::FilePath::fromStr(enabledMods[i] + "/");
-        PGE::FilePath depsFile = PGE::FilePath(directory, "dependencies.cfg");
+        PGE::FilePath depsFile = directory + "dependencies.cfg";
         if (depsFile.exists()) {
-            std::vector<PGE::String> depNames; depsFile.readLines(depNames);
+            std::vector<PGE::String> depNames = depsFile.readLines();
             int depsNotEnabled = (int)depNames.size();
             for (int j = 0; j < i; j++) {
                 for (int k = 0; k < depNames.size(); k++) {
@@ -92,7 +92,7 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
             PGE_ASSERT(depsNotEnabled == 0, enabledMods[i] + " has dependencies that are not enabled before it");
         }
         ScriptModule* scriptModule = new ScriptModule(manager, enabledMods[i]);
-        std::vector<PGE::FilePath> files; directory.enumerateFiles(files);
+        std::vector<PGE::FilePath> files = directory.enumerateFiles();
         for (int j = 0; j < files.size(); j++) {
             if (files[j].getExtension().equals("as")) {
                 Script* script = new Script(files[j]);

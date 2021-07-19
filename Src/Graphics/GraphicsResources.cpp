@@ -142,7 +142,7 @@ void GraphicsResources::updateOrthoMat(float aspectRatio) {
     float h = 100.f;
     float nearZ = 0.01f;
     float farZ = 1.f;
-    orthoMat = PGE::Matrix4x4f::constructOrthographicMat(w, h, nearZ, farZ);
+    orthoMat = PGE::Matrix4x4f::constructOrthographicMat(w, h, nearZ, -farZ);
 }
 
 PGE::Matrix4x4f GraphicsResources::getOrthoMat() const {

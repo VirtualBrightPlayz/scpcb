@@ -10,15 +10,16 @@ Collision CollisionMesh::checkCollision(PGE::Matrix4x4f matrix, PGE::Line3f line
     Collision retVal;
     retVal.hit = false;
     outTriangleIndex = -1;
-    PGE::AABBox lineBox(line.pointA,line.pointB);
+    PGE::AABBox lineBox(line.pointA);
+    lineBox.addPoint(line.pointB);
     lineBox.addPoint(lineBox.getMin() + PGE::Vector3f(-radius,-height*0.5f,-radius));
     lineBox.addPoint(lineBox.getMax() + PGE::Vector3f(radius,height*0.5f,radius));
-    PGE::AABBox triBox(PGE::Vector3f::ZERO);
+    PGE::AABBox triBox(PGE::Vectors::ZERO3F);
     for (size_t i=0;i<indices.size()/3;i++) {
         PGE::Vector3f vert0 = matrix.transform(vertices[indices[(i*3)+0]]);
         PGE::Vector3f vert1 = matrix.transform(vertices[indices[(i*3)+1]]);
         PGE::Vector3f vert2 = matrix.transform(vertices[indices[(i*3)+2]]);
-        triBox.reset(vert0);
+        triBox = PGE::AABBox(vert0);
         triBox.addPoint(vert1);
         triBox.addPoint(vert2);
         triBox.addPoint(triBox.getMin() + PGE::Vector3f(-0.1f,-0.1f,-0.1f));

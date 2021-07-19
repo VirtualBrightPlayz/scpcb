@@ -15,7 +15,8 @@ CollisionMeshCollection::Instance::Instance(CollisionMeshCollection* coll,Collis
 void CollisionMeshCollection::Instance::recalculateBBox() {
     const std::vector<PGE::Vector3f>& verts = mesh->getVertices();
 
-    bbox = PGE::AABBox(matrix.transform(verts[0]), matrix.transform(verts[1]));
+    bbox = PGE::AABBox(matrix.transform(verts[0]));
+    bbox.addPoint(matrix.transform(verts[1]));
 
     for (int i=2;i<verts.size();i++) {
         bbox.addPoint(matrix.transform(verts[i]));
@@ -66,7 +67,8 @@ void CollisionMeshCollection::removeInstance(int instance) {
 Collision CollisionMeshCollection::checkCollision(const PGE::Line3f& line, float height, float radius) const {
     Collision retVal; retVal.hit = false;
 
-    PGE::AABBox lineBox(line.pointA,line.pointB);
+    PGE::AABBox lineBox(line.pointA);
+    lineBox.addPoint(line.pointB);
     lineBox.addPoint(lineBox.getMin() + PGE::Vector3f(-radius-0.5f,-height*0.5f-0.5f,-radius-0.5f));
     lineBox.addPoint(lineBox.getMax() + PGE::Vector3f(radius+0.5f,height*0.5f+0.5f,radius+0.5f));
 
