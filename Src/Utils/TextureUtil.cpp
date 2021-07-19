@@ -3,7 +3,7 @@
 #include <stb_image.h>
 
 ImageData::ImageData(const PGE::FilePath& file, int& width, int& height) {
-	resource = (PGE::byte*)stbi_load(file.cstr(), &width, &height, nullptr, 4);
+	resource = (PGE::byte*)stbi_load(file.str().cstr(), &width, &height, nullptr, 4);
 	PGE_ASSERT(resource != nullptr, PGE::String("Texture loading failed (img: ") + file.str() + "; reason: " + stbi_failure_reason() + ")");
 }
 

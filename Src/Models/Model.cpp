@@ -16,7 +16,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
     
     PGE::String path = filename.substr(filename.begin(), filename.findLast("/") - 1);
 
-    const aiScene* scene = importer->ReadFile(PGE::FilePath::fromStr(filename).cstr(),
+    const aiScene* scene = importer->ReadFile(PGE::FilePath::fromStr(filename).str().cstr(),
         aiProcess_MakeLeftHanded |
         aiProcess_FlipUVs |
         aiProcess_FlipWindingOrder |

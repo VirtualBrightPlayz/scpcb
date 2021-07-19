@@ -54,7 +54,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
 
     graphicsResources = gfxRes;
 
-    std::ifstream inFile(PGE::FilePath::fromStr(filename).cstr(), std::ios::binary);
+    std::ifstream inFile(PGE::FilePath::fromStr(filename).str().cstr(), std::ios::binary);
 
     union IntBytes {
         int i;

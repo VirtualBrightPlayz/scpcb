@@ -11,7 +11,7 @@ INIFile::INIFile(const PGE::FilePath& filename) {
 
     Section* currSection = nullptr;
 
-    std::ifstream file(name.cstr());
+    std::ifstream file(name.str().cstr());
 
     if (file.is_open()) {
         PGE::String currLine;
@@ -116,7 +116,7 @@ void INIFile::save() {
         return;
     }
 
-    std::ofstream f(name.cstr());
+    std::ofstream f(name.str().cstr());
 
     for (int i = 0; i < (int)sections.size(); i++) {
         PGE::String secName = sections[i]->names[0];

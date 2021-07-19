@@ -47,7 +47,7 @@ Collision Collision::update(const PGE::Line3f& line,float t,const PGE::Vector3f&
 
     PGE::Plane p = PGE::Plane(n,(line.pointB - line.pointA) * t + line.pointA);
     if (p.normal.dotProduct(line.pointB - line.pointA)>=0) { return retVal; }
-    if (p.onPlane(line.pointA) == 0) { return retVal; }
+    if (p.onPlane(line.pointA) == PGE::Plane::PointRelation::ON) { return retVal; }
 
     retVal.line = line;
     retVal.coveredAmount = t;

@@ -52,13 +52,13 @@ int main(int argc, const char** argv) {
     }
 
     std::unordered_set<String::Key> sources;
-    for (const fs::directory_entry& file : fs::recursive_directory_iterator(src.cstr())) {
+    for (const fs::directory_entry& file : fs::recursive_directory_iterator(src.str().cstr())) {
         if (check(file)) {
             sources.insert(String(file.path().string()).substr(src.str().length()));
         }
     }
 
-    for (const fs::directory_entry& file : fs::recursive_directory_iterator(bin.cstr())) {
+    for (const fs::directory_entry& file : fs::recursive_directory_iterator(bin.str().cstr())) {
         if (check(file) && sources.find(String(file.path().string()).substr(bin.str().length())) == sources.end()) {
             std::cout << "Deleting leftover: " << file.path() << std::endl;
             fs::remove(file);

@@ -18,7 +18,7 @@ Font::Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::
     height = h;
 
     FT_New_Face(ftLibrary,
-                filename.cstr(),
+                filename.str().cstr(),
                 0,
                 &freeTypeFace);
 
