@@ -147,7 +147,7 @@ Model* ModelInstance::getModel() const {
 
 void ModelInstance::render() {
     if (modelMatrixNeedsRecalculation) {
-        modelMatrix = PGE::Matrix4x4f::constructWorldMat(position, scale, rotation);
+        modelMatrix = PGE::Matrix4x4f::constructWorldMat(position, rotation, scale);
         modelMatrixNeedsRecalculation = false;
     }
     model->render(modelMatrix);

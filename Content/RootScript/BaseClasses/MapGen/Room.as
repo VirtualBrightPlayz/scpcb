@@ -43,7 +43,7 @@ shared class Room {
     }
 
     protected void recalculateWorldMatrix() {
-        _worldMatrix = Matrix4x4f::constructWorldMat(position, Vector3f(0.1, 0.1, 0.1), Vector3f(0.0, Math::degToRad(rotation), 0.0));
+        _worldMatrix = Matrix4x4f::constructWorldMat(position, Vector3f(0.0, Math::degToRad(rotation), 0.0), Vector3f(0.1, 0.1, 0.1));
     }
 
     void update(float deltaTime) {}
