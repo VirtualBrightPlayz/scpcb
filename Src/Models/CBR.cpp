@@ -49,7 +49,7 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
 
     // Texture dictionary
     int32_t texSize = reader.readInt32();
-    PGE::String* textureNames = new PGE::String[texSize];
+    std::vector<PGE::String> textureNames(texSize);
     allTextures = std::vector<PGE::Texture*>();
     materials = std::vector<PGE::Material*>(texSize);
     std::set<int> toolTextures;
@@ -80,8 +80,8 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
 
     // Solids
     // 2D arrays
-    std::vector<PGE::Vertex>* vertices = new std::vector<PGE::Vertex>[texSize];
-    std::vector<PGE::Primitive>* primitives = new std::vector<PGE::Primitive>[texSize];
+    std::vector<std::vector<PGE::Vertex>> vertices = std::vector<std::vector<PGE::Vertex>>(texSize);
+    std::vector<std::vector<PGE::Primitive>> primitives = std::vector<std::vector<PGE::Primitive>>(texSize);
     int solidCount = reader.readInt32();
     for (int i = 0; i < solidCount; i++) {
         int faceCount = reader.readInt32();
@@ -118,10 +118,6 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
             meshes.push_back(newMesh);
         }
     }
-
-    delete[] vertices;
-    delete[] primitives;
-    delete[] textureNames;
 }
 
 CBR::~CBR() {

@@ -60,15 +60,15 @@ int StringFactory::GetRawStringData(const void* str, char* data, asUINT* length)
 }
 
 static void constructString(PGE::String* thisPointer) {
-    new(thisPointer) PGE::String();
+    ::new(thisPointer) PGE::String();
 }
 
 static void copyConstructString(const PGE::String& other, PGE::String* thisPointer) {
-    new(thisPointer) PGE::String(other);
+    ::new(thisPointer) PGE::String(other);
 }
 
 static void constructStringFromChar(char chr, PGE::String* thisPointer) {
-    new(thisPointer) PGE::String(chr);
+    ::new(thisPointer) PGE::String(chr);
 }
 
 static void destructString(PGE::String* thisPointer) {

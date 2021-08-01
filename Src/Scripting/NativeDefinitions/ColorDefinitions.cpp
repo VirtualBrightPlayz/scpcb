@@ -5,15 +5,15 @@
 #include "../ScriptManager.h"
 
 static void colorConstructor(void* memory) {
-    new(memory) PGE::Color();
+    ::new(memory) PGE::Color();
 }
 
 static void colorConstructorParametrized(float r, float g, float b, float a, void* memory) {
-    new(memory) PGE::Color(r, g, b, a);
+    ::new(memory) PGE::Color(r, g, b, a);
 }
 
 static void colorConstructorParametrizedInt(PGE::byte r, PGE::byte g, PGE::byte b, PGE::byte a, void* memory) {
-    new(memory) PGE::Color(r, g, b, a);
+    ::new(memory) PGE::Color(r, g, b, a);
 }
 
 static void colorDestructor(void* memory) {

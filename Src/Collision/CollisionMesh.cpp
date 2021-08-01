@@ -2,11 +2,11 @@
 #include <PGE/Math/AABBox.h>
 #include <PGE/Math/Plane.h>
 
-CollisionMesh::CollisionMesh(std::vector<PGE::Vector3f> verts,std::vector<int> inds) {
+CollisionMesh::CollisionMesh(const std::vector<PGE::Vector3f>& verts, const std::vector<int>& inds) {
     vertices = verts; indices = inds;
 }
 
-Collision CollisionMesh::checkCollision(PGE::Matrix4x4f matrix, PGE::Line3f line,float height,float radius,int& outTriangleIndex) const {
+Collision CollisionMesh::checkCollision(const PGE::Matrix4x4f& matrix, const PGE::Line3f& line,float height,float radius,int& outTriangleIndex) const {
     Collision retVal;
     retVal.hit = false;
     outTriangleIndex = -1;
@@ -37,7 +37,7 @@ Collision CollisionMesh::checkCollision(PGE::Matrix4x4f matrix, PGE::Line3f line
     return retVal;
 }
 
-Collision CollisionMesh::checkCollision(PGE::Matrix4x4f matrix, PGE::Line3f line, float height, float radius) const {
+Collision CollisionMesh::checkCollision(const PGE::Matrix4x4f& matrix, const PGE::Line3f& line, float height, float radius) const {
     int outTriangleIndex;
     return checkCollision(matrix, line, height, radius, outTriangleIndex);
 }

@@ -11,15 +11,15 @@
 #include "../ScriptManager.h"
 
 static void vector2fConstructor(void* memory) {
-    new(memory) PGE::Vector2f();
+    ::new(memory) PGE::Vector2f();
 }
 
 static void vector2fConstructorSingle(float s, void* memory) {
-    new(memory) PGE::Vector2f(s);
+    ::new(memory) PGE::Vector2f(s);
 }
 
 static void vector2fConstructorParametrized(float x, float y, void* memory) {
-    new(memory) PGE::Vector2f(x, y);
+    ::new(memory) PGE::Vector2f(x, y);
 }
 
 static void vector2fDestructor(void* memory) {
@@ -31,15 +31,15 @@ static PGE::String vector2fToString(const PGE::Vector2f& vec) {
 }
 
 static void vector3fConstructor(void* memory) {
-    new(memory) PGE::Vector3f();
+    ::new(memory) PGE::Vector3f();
 }
 
 static void vector3fConstructorSingle(float s, void* memory) {
-    new(memory) PGE::Vector3f(s);
+    ::new(memory) PGE::Vector3f(s);
 }
 
 static void vector3fConstructorParametrized(float x, float y, float z, void* memory) {
-    new(memory) PGE::Vector3f(x, y, z);
+    ::new(memory) PGE::Vector3f(x, y, z);
 }
 
 static void vector3fDestructor(void* memory) {
@@ -51,14 +51,14 @@ static PGE::String vector3fToString(const PGE::Vector3f& vec) {
 }
 
 static void matrixConstructor(void* memory) {
-    new(memory) PGE::Matrix4x4f();
+    ::new(memory) PGE::Matrix4x4f();
 }
 
 static void matrixConstructorParametrized(float aa, float ab, float ac, float ad,
                                    float ba, float bb, float bc, float bd,
                                    float ca, float cb, float cc, float cd,
                                    float da, float db, float dc, float dd, void* memory) {
-    new(memory) PGE::Matrix4x4f(aa, ab, ac, ad,
+    ::new(memory) PGE::Matrix4x4f(aa, ab, ac, ad,
                                 ba, bb, bc, bd,
                                 ca, cb, cc, cd,
                                 da, db, dc, dd);
@@ -69,15 +69,15 @@ static void matrixDestructor(void* memory) {
 }
 
 static void rectangleConstructor(void* memory) {
-    new(memory) PGE::Rectanglef();
+    ::new(memory) PGE::Rectanglef();
 }
 
 static void rectangleConstructorVectors(const PGE::Vector2f& itl, const PGE::Vector2f& ibr, void* memory) {
-    new(memory) PGE::Rectanglef(itl, ibr);
+    ::new(memory) PGE::Rectanglef(itl, ibr);
 }
 
 static void rectangleConstructorParameterized(float il, float it, float ir, float ib, void* memory) {
-    new(memory) PGE::Rectanglef(il, it, ir, ib);
+    ::new(memory) PGE::Rectanglef(il, it, ir, ib);
 }
 
 static void rectangleDestructor(void* memory) {

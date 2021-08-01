@@ -3,14 +3,14 @@
 #include "../ScriptManager.h"
 
 PGE::Random* RandomDefinitions::randomFactory() {
-	PGE::Random* random = new PGE::Random();
+	PGE::Random* random = ::new PGE::Random();
 	refCount.emplace(random, 1);
 	refCounterManager->linkPtrToCounter(random, this);
 	return random;
 }
 
 PGE::Random* RandomDefinitions::randomFactorySeeded(uint64_t seed) {
-	PGE::Random* random = new PGE::Random(seed);
+	PGE::Random* random = ::new PGE::Random(seed);
 	refCount.emplace(random, 1);
 	refCounterManager->linkPtrToCounter(random, this);
 	return random;
@@ -30,12 +30,12 @@ void RandomDefinitions::release(void* ptr) {
 	if (refCount[random] <= 0) {
 		refCount.erase(random);
 		refCounterManager->unlinkPtr(random);
-		delete random;
+		::delete random;
 	}
 }
 
 RandomDefinitions::RandomDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr) {
-	genericRandom = new PGE::Random();
+	genericRandom = ::new PGE::Random();
 
 	engine = mgr->getAngelScriptEngine();
 
@@ -63,5 +63,5 @@ RandomDefinitions::RandomDefinitions(ScriptManager* mgr, RefCounterManager* rcMg
 }
 
 RandomDefinitions::~RandomDefinitions() {
-	delete genericRandom;
+	::delete genericRandom;
 }
