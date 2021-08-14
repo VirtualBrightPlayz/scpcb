@@ -1,0 +1,14 @@
+https://web.archive.org/web/20050211032354/http://www.mayang.com/textures/Manmade/html/Plastics%20and%20Manmade/index.html
+
+This is where it came from, it's not listed under CC but it seems like we can use it for free.
+That being said, it would be nice to replace this with something we can license under CC-BY-SA 3.0.
+The website is dead now and there's no way we could buy it since it seems like this site shipped
+optical media with purchases.
+
+There's also no hope of reaching out to the guy who ran the website; his personal website is also
+dead and there's no way googling "Will Smith" will get us the right guy.
+
+However, we know what the content of the texture actually is: it's a Sound Blaster Vibra 128, model
+CT4810. If we really wanted to replace this with a CC version, we could easily get our hands on
+another of these cards and take a new picture. We could also just grab any random old PCB and use
+that, since this texture is supposed to be generic.
