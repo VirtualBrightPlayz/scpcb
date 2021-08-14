@@ -17,7 +17,7 @@ class CBR {
 
         PGE::Texture** lightmaps;
         std::vector<PGE::Texture*> allTextures;
-        std::vector<PGE::Material*> materials;
+        std::vector<PGE::Mesh::Material> materials;
         std::vector<PGE::Mesh*> meshes;
 
         PGE::Shader* shader;

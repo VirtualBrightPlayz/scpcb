@@ -17,7 +17,7 @@ class Model {
         PGE::Mesh** meshes;
         unsigned meshCount;
 
-        PGE::Material** materials;
+        PGE::Mesh::Material* materials;
         unsigned materialCount;
 
         PGE::Shader* shader;

@@ -8,7 +8,6 @@
 #include <PGE/File/FilePath.h>
 #include <PGE/Graphics/Shader.h>
 #include <PGE/Math/Rectangle.h>
-#include <PGE/Graphics/Material.h>
 
 class GraphicsResources;
 
@@ -24,7 +23,7 @@ class UIMesh {
         PGE::Shader::Constant* shaderTexturelessColorConstant;
 
         PGE::Mesh* mesh;
-        PGE::Material* material;
+        PGE::Mesh::Material material;
         PGE::Color color;
 
         // Whether or not the texture applied to this mesh is meant to tile.
@@ -32,8 +31,15 @@ class UIMesh {
         // Whether the mesh has a texture or just a color fill.
         bool textureless;
 
-        std::vector<PGE::Vertex> vertices;
-        std::vector<PGE::Primitive> primitives;
+        struct Vertex {
+            PGE::Vector2f position;
+            PGE::Vector2f uv;
+        };
+
+        PGE::StructuredData generateVertexData() const;
+
+        std::vector<Vertex> vertices;
+        std::vector<PGE::Mesh::Triangle> primitives;
 
         struct Texture
         {

@@ -19,11 +19,11 @@ ImageData::~ImageData() {
 PGE::Texture* TextureHelper::load(PGE::Graphics* gfx, const PGE::FilePath& file) {
 	int width; int height;
 	ImageData data = ImageData(file, width, height);
-	return PGE::Texture::load(gfx, width, height, data, PGE::Texture::Format::RGBA32);
+	return PGE::Texture::load(*gfx, width, height, data, PGE::Texture::Format::RGBA32);
 }
 
 PGE::Texture* TextureHelper::load(PGE::Graphics* gfx, const std::vector<PGE::byte>& fileData) {
 	int width; int height;
 	ImageData data = ImageData(fileData, width, height);
-	return PGE::Texture::load(gfx, width, height, data, PGE::Texture::Format::RGBA32);
+	return PGE::Texture::load(*gfx, width, height, data, PGE::Texture::Format::RGBA32);
 }

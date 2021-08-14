@@ -28,10 +28,10 @@ Font::Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::
 
     shader = gr->getShader(shaderPath, false);
 
-    modelMatrixConstant = shader->getVertexShaderConstant("modelMatrix");
-    colorConstant = shader->getFragmentShaderConstant("imageColor");
+    modelMatrixConstant = &shader->getVertexShaderConstant("modelMatrix");
+    colorConstant = &shader->getFragmentShaderConstant("imageColor");
 
-    shader->getVertexShaderConstant("projectionMatrix")->setValue(gr->getOrthoMat());
+    shader->getVertexShaderConstant("projectionMatrix").setValue(gr->getOrthoMat());
 
     renderAtlas(0);
 }
@@ -39,7 +39,6 @@ Font::Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::
 Font::~Font() {
     for (int i=0;i<atlases.size();i++) {
         delete atlases[i].mesh;
-        delete atlases[i].material;
         delete atlases[i].texture;
     }
 
@@ -126,9 +125,9 @@ void Font::renderAtlas(long chr) {
 
     if (buffer!=nullptr) {
         Atlas newAtlas;
-        newAtlas.texture = PGE::Texture::load(graphicsRes->getGraphics(),atlasDims,atlasDims,buffer,PGE::Texture::Format::RGBA32);
-        newAtlas.material = new PGE::Material(shader,newAtlas.texture);
-        newAtlas.mesh = PGE::Mesh::create(graphicsRes->getGraphics(),PGE::Primitive::Type::TRIANGLE);
+        newAtlas.texture = PGE::Texture::load(*graphicsRes->getGraphics(),atlasDims,atlasDims,buffer,PGE::Texture::Format::RGBA32);
+        newAtlas.material = PGE::Mesh::Material(*shader, *newAtlas.texture, PGE::Mesh::Material::Opaque::NO);
+        newAtlas.mesh = PGE::Mesh::create(*graphicsRes->getGraphics());
         newAtlas.mesh->setMaterial(newAtlas.material);
         atlases.push_back(newAtlas);
         delete[] buffer;
@@ -164,7 +163,7 @@ void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Ve
             it = glyphData.find(chr);
         }
 
-        PGE::Vertex vertex;
+        Atlas::Vertex vertex;
 
         if (it!=glyphData.end()) {
             if (it->second.atlasIndex>=0) {
@@ -178,30 +177,30 @@ void Font::draw(const PGE::String& text, const PGE::Vector3f& pos, const PGE::Ve
 
                 int vertCount = (int)atlases[it->second.atlasIndex].vertices.size();
 
-                vertex.setVector3f("position", glyphPos);
-                vertex.setVector2f("uv", glyphUv);
+                vertex.position = glyphPos;
+                vertex.uv = glyphUv;
                 atlases[it->second.atlasIndex].vertices.push_back(vertex);
 
-                vertex.setVector3f("position", PGE::Vector3f(glyphPos2.x, glyphPos.y, glyphPos.z));
-                vertex.setVector2f("uv", PGE::Vector2f(glyphUv2.x, glyphUv.y));
+                vertex.position = PGE::Vector3f(glyphPos2.x, glyphPos.y, glyphPos.z);
+                vertex.uv = PGE::Vector2f(glyphUv2.x, glyphUv.y);
                 atlases[it->second.atlasIndex].vertices.push_back(vertex);
 
-                vertex.setVector3f("position", PGE::Vector3f(glyphPos.x, glyphPos2.y, glyphPos.z));
-                vertex.setVector2f("uv", PGE::Vector2f(glyphUv.x, glyphUv2.y));
+                vertex.position = PGE::Vector3f(glyphPos.x, glyphPos2.y, glyphPos.z);
+                vertex.uv = PGE::Vector2f(glyphUv.x, glyphUv2.y);
                 atlases[it->second.atlasIndex].vertices.push_back(vertex);
 
-                vertex.setVector3f("position", glyphPos2);
-                vertex.setVector2f("uv", glyphUv2);
+                vertex.position = glyphPos2;
+                vertex.uv = glyphUv2;
                 atlases[it->second.atlasIndex].vertices.push_back(vertex);
 
-                atlases[it->second.atlasIndex].primitives.push_back(PGE::Primitive(vertCount + 0, vertCount + 2, vertCount + 1));
-                atlases[it->second.atlasIndex].primitives.push_back(PGE::Primitive(vertCount + 1, vertCount + 2, vertCount + 3));
+                atlases[it->second.atlasIndex].primitives.push_back(PGE::Mesh::Triangle(vertCount + 0, vertCount + 2, vertCount + 1));
+                atlases[it->second.atlasIndex].primitives.push_back(PGE::Mesh::Triangle(vertCount + 1, vertCount + 2, vertCount + 3));
             }
             currPos.x += it->second.horizontalAdvance;
         }
     }
     for (int i=0;i<atlases.size();i++) {
-        atlases[i].mesh->setGeometry(atlases[i].vertices, atlases[i].primitives);
+        atlases[i].mesh->setGeometry(atlases[i].generateVertexData(), atlases[i].primitives);
 
         if (atlases[i].vertices.size()>0) {
             atlases[i].mesh->render();
@@ -227,4 +226,13 @@ float Font::stringWidth(const PGE::String& text, float scale) {
 
 float Font::getHeight(float scale) const {
     return (float)height * scale * 10.f / 15.f;
+}
+
+PGE::StructuredData Font::Atlas::generateVertexData() const {
+    PGE::StructuredData retVal = PGE::StructuredData(material.getShader().getVertexLayout(), vertices.size());
+    for (int i = 0; i < vertices.size(); i++) {
+        retVal.setValue(i, "position", vertices[i].position);
+        retVal.setValue(i, "uv", vertices[i].uv);
+    }
+    return retVal;
 }

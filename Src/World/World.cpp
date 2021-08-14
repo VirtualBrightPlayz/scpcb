@@ -37,7 +37,7 @@ World::World() {
 
     graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
     graphics->setViewport(PGE::Rectanglei(0, 0, config->getWidth(), config->getHeight()));
-    inputManager = PGE::InputManager::create(graphics);
+    inputManager = PGE::InputManager::create(*graphics);
 
     timing = new Timing(60);
 

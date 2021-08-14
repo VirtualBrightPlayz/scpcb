@@ -26,10 +26,10 @@ struct PS_OUTPUT {
 PS_INPUT VS(VS_INPUT input) {
     PS_INPUT output = (PS_INPUT)0;
 
-    output.position = mul(input.position,viewMatrix);
+    output.position = mul(viewMatrix, input.position);
     output.position.x += input.offset.x;
     output.position.y += input.offset.y;
-    output.position = mul(output.position,projectionMatrix);
+    output.position = mul(projectionMatrix, output.position);
 
     output.texCoords = input.texCoords;
 

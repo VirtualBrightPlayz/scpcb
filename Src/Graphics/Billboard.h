@@ -6,6 +6,7 @@
 #include <PGE/String/String.h>
 
 #include <PGE/Graphics/Mesh.h>
+#include <PGE/StructuredData/StructuredData.h>
 
 class GraphicsResources;
 class Camera;
@@ -17,17 +18,21 @@ class BillboardManager {
         Camera* camera;
         
         struct BillboardMesh {
+            BillboardMesh() = default;
+            BillboardMesh(const BillboardMesh& other);
+            void operator=(const BillboardMesh& other);
+
             PGE::Mesh* mesh;
-            PGE::Material* material;
+            PGE::Mesh::Material material;
             PGE::Texture* texture;
 
-            std::vector<PGE::Vertex> vertices;
+            PGE::StructuredData vertices;
             std::vector<Billboard*> billboards;
 
             bool geomChanged;
         };
 
-        std::vector<PGE::Primitive> primitives;
+        std::vector<PGE::Mesh::Triangle> primitives;
 
         std::unordered_map<PGE::String::Key, BillboardMesh> meshes;
         PGE::Shader* shader;
@@ -77,7 +82,7 @@ class Billboard {
 
         void markAsDirty();
 
-        bool updateVertices(std::vector<PGE::Vertex>& vertices, int startIndex);
+        bool updateVertices(PGE::StructuredData& vertices, int startIndex);
 };
 
 #endif // BILLBOARD_H_INCLUDED

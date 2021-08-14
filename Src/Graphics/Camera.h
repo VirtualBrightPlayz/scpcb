@@ -40,7 +40,7 @@ class Camera {
         PGE::Matrix4x4f projectionMatrix;
 
     public:
-        Camera(GraphicsResources* gr, int w, int h, float fov, float nearZ = 0.01f, float farZ = 30.f, bool orthographic = false);
+        Camera(GraphicsResources* gr, int w, int h, float fov, float nearZ = 0.01f, float farZ = 300.f, bool orthographic = false);
         Camera(GraphicsResources* gr, int w, int h);
 
         PGE::Vector3f position;

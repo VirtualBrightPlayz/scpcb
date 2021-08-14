@@ -30,9 +30,9 @@ struct PS_OUTPUT {
 
 PS_INPUT VS(VS_INPUT input) {
     PS_INPUT output = (PS_INPUT)0;
-    output.position = mul(input.position,modelMatrix);
-    output.position = mul(output.position,viewMatrix);
-    output.position = mul(output.position,projectionMatrix);
+    output.position = mul(modelMatrix, input.position);
+    output.position = mul(viewMatrix, output.position);
+    output.position = mul(projectionMatrix, output.position);
     float4 normal = float4(input.normal.xyz,0.0);
     output.normal = normalize(mul(normal,modelMatrix).xyz);
     output.uv = input.uv;

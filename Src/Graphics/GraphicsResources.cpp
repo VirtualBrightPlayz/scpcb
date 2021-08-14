@@ -44,7 +44,7 @@ PGE::Shader* GraphicsResources::getShader(const PGE::FilePath& filename, bool ne
 
     ShaderEntry* newShader = new ShaderEntry();
     newShader->refCount = 1;
-    newShader->shader = PGE::Shader::load(graphics, filename);
+    newShader->shader = PGE::Shader::load(*graphics, filename);
     newShader->filename = filename;
     newShader->needsViewProjection = needsViewProjection;
     pathToShaders.emplace(filename.str(), newShader);
@@ -153,8 +153,8 @@ PGE::Matrix4x4f GraphicsResources::getOrthoMat() const {
 void GraphicsResources::setCameraUniforms(const Camera* cam) const {
     for (const auto& entry : shaderToShaders) {
         if (entry.second->needsViewProjection) {
-            entry.first->getVertexShaderConstant("viewMatrix")->setValue(cam->getViewMatrix());
-            entry.first->getVertexShaderConstant("projectionMatrix")->setValue(cam->getProjectionMatrix());
+            entry.first->getVertexShaderConstant("viewMatrix").setValue(cam->getViewMatrix());
+            entry.first->getVertexShaderConstant("projectionMatrix").setValue(cam->getProjectionMatrix());
         }
     }
 

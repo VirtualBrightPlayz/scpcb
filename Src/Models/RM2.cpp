@@ -101,10 +101,10 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     inFile.read(&textureCount.c, 1);
 
     opaqueShader = gfxRes->getShader(opaqueShaderPath, true);
-    opaqueModelMatrixConstant = opaqueShader->getVertexShaderConstant("modelMatrix");
+    opaqueModelMatrixConstant = &opaqueShader->getVertexShaderConstant("modelMatrix");
 
     opaqueNormalMapShader = gfxRes->getShader(opaqueNormalMapShaderPath, true);
-    opaqueNormalMapModelMatrixConstant = opaqueNormalMapShader->getVertexShaderConstant("modelMatrix");
+    opaqueNormalMapModelMatrixConstant = &opaqueNormalMapShader->getVertexShaderConstant("modelMatrix");
 
     //alphaShader = gfxRes->getShader(ALPHA_SHADER_PATH, true);
 
@@ -172,19 +172,19 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                 materialKey.c[0] = textureIndex.c;
                 materialKey.c[1] = lmIndex.c;
 
-                std::map<unsigned short, PGE::Material*>::iterator materialIter = materials.find(materialKey.i);
+                std::map<unsigned short, PGE::Mesh::Material>::iterator materialIter = materials.find(materialKey.i);
                 if (materialIter == materials.end()) {
-                    std::vector<PGE::Texture*> materialTextures;
+                    PGE::ReferenceVector<PGE::Texture> materialTextures;
                     PGE::Shader* shader = textures[textureIndex.u].shader;
-                    materialTextures.push_back(lightmapTextures[0][lmIndex.u]);
-                    materialTextures.push_back(lightmapTextures[1][lmIndex.u]);
-                    materialTextures.push_back(lightmapTextures[2][lmIndex.u]);
-                    materialTextures.push_back(textures[textureIndex.u].texture);
+                    materialTextures.push_back(*lightmapTextures[0][lmIndex.u]);
+                    materialTextures.push_back(*lightmapTextures[1][lmIndex.u]);
+                    materialTextures.push_back(*lightmapTextures[2][lmIndex.u]);
+                    materialTextures.push_back(*textures[textureIndex.u].texture);
                     if (textures[textureIndex.u].normalMap != nullptr) {
-                        materialTextures.push_back(textures[textureIndex.u].normalMap);
+                        materialTextures.push_back(*textures[textureIndex.u].normalMap);
                     }
 
-                    PGE::Material* material = new PGE::Material(shader, materialTextures, shader != alphaShader);
+                    PGE::Mesh::Material material = PGE::Mesh::Material(*shader, materialTextures, shader != alphaShader ? PGE::Mesh::Material::Opaque::YES : PGE::Mesh::Material::Opaque::NO);
 
                     materials.emplace(materialKey.i, material);
                     materialIter = materials.find(materialKey.i);
@@ -196,8 +196,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                 std::vector<PGE::Vector3f> vertexPositions;
                 std::vector<int> indices;
 
-                std::vector<PGE::Vertex> vertices;
-                PGE::Vertex tempVertex;
+                PGE::StructuredData vertices = PGE::StructuredData(materialIter->second.getShader().getVertexLayout(), vertexCount.i);
 
                 for (int i = 0; i < vertexCount.i; i++) {
                     FloatBytes inX;
@@ -207,7 +206,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                     inFile.read(inX.c, 4);
                     inFile.read(inY.c, 4);
                     inFile.read(inZ.c, 4);
-
+                    
                     PGE::Vector4f position = PGE::Vector4f(inX.f, inY.f, inZ.f, 1.f);
 
                     FloatBytes inDiffU;
@@ -223,12 +222,11 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                     PGE::Vector2f diffUv = PGE::Vector2f(inDiffU.f, inDiffV.f);
                     PGE::Vector2f lmUv = PGE::Vector2f(inLmU.f, inLmV.f);
 
-                    tempVertex.setVector4f("position", position);
-                    tempVertex.setVector3f("normal", PGE::Vectors::ONE3F);
-                    tempVertex.setVector2f("diffUv", diffUv);
-                    tempVertex.setVector2f("lmUv", lmUv);
-                    tempVertex.setColor("color", PGE::Colors::WHITE);
-                    vertices.push_back(tempVertex);
+                    vertices.setValue(i, "position", position);
+                    vertices.setValue(i, "normal", PGE::Vectors::ONE3F);
+                    vertices.setValue(i, "diffUv", diffUv);
+                    vertices.setValue(i, "lmUv", lmUv);
+                    //vertices.setValue(i, "color", PGE::Colors::WHITE);
 
                     vertexPositions.push_back(PGE::Vector3f(position.x, position.y, position.z));
                 }
@@ -236,7 +234,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                 UShortBytes triangleCount;
                 inFile.read(triangleCount.c, 2);
 
-                std::vector<PGE::Primitive> primitives;
+                std::vector<PGE::Mesh::Triangle> primitives;
                 for (int i = 0; i < triangleCount.i; i++) {
                     UShortBytes index0;
                     UShortBytes index1;
@@ -246,19 +244,19 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                     inFile.read(index2.c, 2);
                     inFile.read(index1.c, 2);
 
-                    primitives.push_back(PGE::Primitive(index0.i, index1.i, index2.i));
+                    primitives.push_back(PGE::Mesh::Triangle(index0.i, index1.i, index2.i));
 
                     indices.push_back(index0.i);
                     indices.push_back(index1.i);
                     indices.push_back(index2.i);
                 }
 
-                PGE::Mesh* mesh = PGE::Mesh::create(gfxRes->getGraphics(), PGE::Primitive::Type::TRIANGLE);
+                PGE::Mesh* mesh = PGE::Mesh::create(*gfxRes->getGraphics());
 
                 mesh->setMaterial(materialIter->second);
-                mesh->setGeometry(vertices, primitives);
+                mesh->setGeometry(std::move(vertices), primitives);
 
-                if (materials[textureIndex.u]->isOpaque())
+                if (materials[textureIndex.u].isOpaque())
                 {
                     opaqueMeshes.push_back(mesh);
                 }

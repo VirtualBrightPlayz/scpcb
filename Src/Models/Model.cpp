@@ -10,8 +10,8 @@
 Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::String& filename) {
     gfxRes = gr;
     shader = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/Model/"), true);
-    modelMatrix = shader->getVertexShaderConstant("modelMatrix");
-    PGE::Shader::Constant* colorConstant = shader->getFragmentShaderConstant("inColor");
+    modelMatrix = &shader->getVertexShaderConstant("modelMatrix");
+    PGE::Shader::Constant* colorConstant = &shader->getFragmentShaderConstant("inColor");
     colorConstant->setValue(PGE::Colors::WHITE);
     
     PGE::String path = filename.substr(filename.begin(), filename.findLast("/") - 1);
@@ -42,14 +42,14 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
     PGE_ASSERT(err.isEmpty(), "Failed to load model (err: " + err + ")");
 
     materialCount = scene->mNumMaterials;
-    materials = new PGE::Material*[materialCount];
+    materials = new PGE::Mesh::Material[materialCount];
     for (unsigned i = 0; i < materialCount; i++) {
         aiString texturePath;
         PGE_ASSERT(scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath) == aiReturn_SUCCESS, "Texture for model " + filename + " failed to load.");
         PGE::String textureName = PGE::String(texturePath.C_Str()).replace("\\", "/");
         int lastSlash = textureName.findLast("/").getPosition();
         textureName = textureName.substr(lastSlash + 1, textureName.length() - lastSlash - 5);
-        materials[i] = new PGE::Material(shader, gr->getTexture(path + textureName));
+        materials[i] = PGE::Mesh::Material(*shader, *gr->getTexture(path + textureName), PGE::Mesh::Material::Opaque::YES);
     }
 
     meshCount = scene->mNumMeshes;
@@ -57,23 +57,23 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
     for (unsigned i = 0; i < meshCount; i++) {
         aiMesh* mesh = scene->mMeshes[i];
 
-        std::vector<PGE::Vertex> vertices;
+        PGE::Mesh::Material& material = materials[mesh->mMaterialIndex];
+
+        PGE::StructuredData vertices = PGE::StructuredData(material.getShader().getVertexLayout(), mesh->mNumVertices);
         for (unsigned j = 0; j < mesh->mNumVertices; j++) {
-            PGE::Vertex vertex = PGE::Vertex();
-            vertex.setVector4f("position", PGE::Vector4f((float)mesh->mVertices[j].x, (float)mesh->mVertices[j].y, (float)mesh->mVertices[j].z, 1.f));
-            vertex.setVector3f("normal", PGE::Vectors::ONE3F);
-            vertex.setVector2f("uv", PGE::Vector2f((float)mesh->mTextureCoords[0][j].x, (float)mesh->mTextureCoords[0][j].y));
-            vertices.push_back(vertex);
+            vertices.setValue(j, "position", PGE::Vector4f((float)mesh->mVertices[j].x, (float)mesh->mVertices[j].y, (float)mesh->mVertices[j].z, 1.f));
+            vertices.setValue(j, "normal", PGE::Vectors::ONE3F);
+            vertices.setValue(j, "uv", PGE::Vector2f((float)mesh->mTextureCoords[0][j].x, (float)mesh->mTextureCoords[0][j].y));
         }
 
-        std::vector<PGE::Primitive> primitives;
+        std::vector<PGE::Mesh::Triangle> primitives;
         for (unsigned i = 0; i < mesh->mNumFaces; i++) {
-            primitives.push_back(PGE::Primitive(mesh->mFaces[i].mIndices[2], mesh->mFaces[i].mIndices[1], mesh->mFaces[i].mIndices[0]));
+            primitives.push_back(PGE::Mesh::Triangle(mesh->mFaces[i].mIndices[2], mesh->mFaces[i].mIndices[1], mesh->mFaces[i].mIndices[0]));
         }
 
-        meshes[i] = PGE::Mesh::create(gr->getGraphics(), PGE::Primitive::Type::TRIANGLE);
-        meshes[i]->setGeometry(vertices, primitives);
-        meshes[i]->setMaterial(materials[mesh->mMaterialIndex]);
+        meshes[i] = PGE::Mesh::create(*gr->getGraphics());
+        meshes[i]->setGeometry(vertices.copy(), primitives);
+        meshes[i]->setMaterial(material);
     }
 
     importer->FreeScene();
@@ -86,10 +86,9 @@ Model::~Model() {
     delete[] meshes;
 
     for (unsigned i = 0; i < materialCount; i++) {
-        for (int j = 0; j < materials[i]->getTextureCount(); j++) {
-            gfxRes->dropTexture(materials[i]->getTexture(j));
+        for (int j = 0; j < materials[i].getTextureCount(); j++) {
+            gfxRes->dropTexture(&materials[i].getTexture(j));
         }
-        delete materials[i];
     }
     delete[] materials;
 

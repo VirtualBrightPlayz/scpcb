@@ -5,6 +5,21 @@
 #include "GraphicsResources.h"
 #include "Camera.h"
 
+BillboardManager::BillboardMesh::BillboardMesh(const BillboardMesh& other) {
+    *this = other;
+}
+
+void BillboardManager::BillboardMesh::operator=(const BillboardMesh& other) {
+    mesh = other.mesh;
+    material = other.material;
+    texture = other.texture;
+
+    vertices = other.vertices.copy();
+    billboards = other.billboards;
+
+    geomChanged = other.geomChanged;
+}
+
 BillboardManager::BillboardManager(PGE::Graphics* gfx, GraphicsResources* gr, Camera* cam) {
     gfxRes = gr;
     camera = cam;
@@ -29,8 +44,8 @@ void BillboardManager::addBillboard(Billboard* billboard) {
     if (it == meshes.end()) {
         BillboardMesh newMesh;
         newMesh.texture = gfxRes->getTexture(texName);
-        newMesh.material = new PGE::Material(shader, newMesh.texture, false);
-        newMesh.mesh = PGE::Mesh::create(gfxRes->getGraphics(), PGE::Primitive::Type::TRIANGLE);
+        newMesh.material = PGE::Mesh::Material(*shader, *newMesh.texture, PGE::Mesh::Material::Opaque::NO);
+        newMesh.mesh = PGE::Mesh::create(*gfxRes->getGraphics());
         newMesh.mesh->setMaterial(newMesh.material);
         meshes.emplace(texName, newMesh);
         it = meshes.find(texName);
@@ -53,7 +68,6 @@ void BillboardManager::removeBillboard(Billboard* billboard) {
         }
         if (billboards.size() <= 0) {
             delete it->second.mesh;
-            delete it->second.material;
             gfxRes->dropTexture(it->second.texture);
             meshes.erase(texName);
         }
@@ -79,20 +93,20 @@ void BillboardManager::render() {
             }
             mesh.billboards[j+1] = b;
         }
-        if (mesh.vertices.size() < mesh.billboards.size()*4) {
+        if (mesh.vertices.getElementCount() < mesh.billboards.size()*4) {
             geomChanged = true;
-            mesh.vertices.resize(mesh.billboards.size()*4);
+            mesh.vertices = PGE::StructuredData(mesh.material.getShader().getVertexLayout(), mesh.billboards.size() * 4);
             int prevSize = (int)primitives.size();
-            for (int i=prevSize;i<(mesh.vertices.size() / 2);i+=2) {
-                primitives.push_back(PGE::Primitive((i*2)+2, (i*2)+1, (i*2)+0));
-                primitives.push_back(PGE::Primitive((i*2)+1, (i*2)+2, (i*2)+3));
+            for (int i=prevSize;i<(mesh.vertices.getElementCount() / 2);i+=2) {
+                primitives.push_back(PGE::Mesh::Triangle((i*2)+2, (i*2)+1, (i*2)+0));
+                primitives.push_back(PGE::Mesh::Triangle((i*2)+1, (i*2)+2, (i*2)+3));
             }
         }
         for (int i=0;i<mesh.billboards.size();i++) {
             geomChanged |= mesh.billboards[i]->updateVertices(mesh.vertices, i*4);
         }
         if (geomChanged) {
-            mesh.mesh->setGeometry(mesh.vertices, primitives);
+            mesh.mesh->setGeometry(mesh.vertices.copy(), primitives);
             geomChanged = false;
         }
         mesh.mesh->render();
@@ -198,7 +212,7 @@ void Billboard::markAsDirty() {
     vertexStartIndex = -1;
 }
 
-bool Billboard::updateVertices(std::vector<PGE::Vertex>& vertices, int startIndex) {
+bool Billboard::updateVertices(PGE::StructuredData& vertices, int startIndex) {
     if (startIndex == vertexStartIndex) { return false; }
 
     vertexStartIndex = startIndex;
@@ -211,14 +225,14 @@ bool Billboard::updateVertices(std::vector<PGE::Vertex>& vertices, int startInde
         PGE::Vector2f offset2 = PGE::Vector2f((scale.x * 0.5f * cosRotation) + (-scale.y * 0.5f * sinRotation), (-scale.x * 0.5f * sinRotation) + (-scale.y * 0.5f* cosRotation));
         PGE::Vector2f offset3 = PGE::Vector2f((-scale.x * 0.5f * cosRotation) + (-scale.y * 0.5f * sinRotation), (scale.x * 0.5f * sinRotation) + (-scale.y * 0.5f* cosRotation));
 
-        vertices[startIndex + 0].setVector4f("position", PGE::Vector4f(position,1.f));
-        vertices[startIndex + 0].setVector2f("offset", offset0);
-        vertices[startIndex + 1].setVector4f("position", PGE::Vector4f(position,1.f));
-        vertices[startIndex + 1].setVector2f("offset", offset1);
-        vertices[startIndex + 2].setVector4f("position", PGE::Vector4f(position,1.f));
-        vertices[startIndex + 2].setVector2f("offset", offset2);
-        vertices[startIndex + 3].setVector4f("position", PGE::Vector4f(position,1.f));
-        vertices[startIndex + 3].setVector2f("offset", offset3);
+        vertices.setValue(startIndex + 0, "position", PGE::Vector4f(position,1.f));
+        vertices.setValue(startIndex + 0, "offset", offset0);
+        vertices.setValue(startIndex + 1, "position", PGE::Vector4f(position,1.f));
+        vertices.setValue(startIndex + 1, "offset", offset1);
+        vertices.setValue(startIndex + 2, "position", PGE::Vector4f(position,1.f));
+        vertices.setValue(startIndex + 2, "offset", offset2);
+        vertices.setValue(startIndex + 3, "position", PGE::Vector4f(position,1.f));
+        vertices.setValue(startIndex + 3, "offset", offset3);
     } else {
         PGE::Matrix4x4f rotationMatrix = PGE::Matrix4x4f::rotate(rotation);
         PGE::Vector3f offset0 = rotationMatrix.transform(PGE::Vector3f(scale.x * 0.5f, scale.y * 0.5f, 0.f));
@@ -226,24 +240,24 @@ bool Billboard::updateVertices(std::vector<PGE::Vertex>& vertices, int startInde
         PGE::Vector3f offset2 = rotationMatrix.transform(PGE::Vector3f(scale.x * 0.5f, -scale.y * 0.5f, 0.f));
         PGE::Vector3f offset3 = rotationMatrix.transform(PGE::Vector3f(-scale.x * 0.5f, -scale.y * 0.5f, 0.f));
 
-        vertices[startIndex + 0].setVector4f("position", PGE::Vector4f(position + offset0,1.f));
-        vertices[startIndex + 0].setVector2f("offset", PGE::Vectors::ZERO2F);
-        vertices[startIndex + 1].setVector4f("position", PGE::Vector4f(position + offset1,1.f));
-        vertices[startIndex + 1].setVector2f("offset", PGE::Vectors::ZERO2F);
-        vertices[startIndex + 2].setVector4f("position", PGE::Vector4f(position + offset2,1.f));
-        vertices[startIndex + 2].setVector2f("offset", PGE::Vectors::ZERO2F);
-        vertices[startIndex + 3].setVector4f("position", PGE::Vector4f(position + offset3,1.f));
-        vertices[startIndex + 3].setVector2f("offset", PGE::Vectors::ZERO2F);
+        vertices.setValue(startIndex + 0, "position", PGE::Vector4f(position + offset0,1.f));
+        vertices.setValue(startIndex + 0, "offset", PGE::Vectors::ZERO2F);
+        vertices.setValue(startIndex + 1, "position", PGE::Vector4f(position + offset1,1.f));
+        vertices.setValue(startIndex + 1, "offset", PGE::Vectors::ZERO2F);
+        vertices.setValue(startIndex + 2, "position", PGE::Vector4f(position + offset2,1.f));
+        vertices.setValue(startIndex + 2, "offset", PGE::Vectors::ZERO2F);
+        vertices.setValue(startIndex + 3, "position", PGE::Vector4f(position + offset3,1.f));
+        vertices.setValue(startIndex + 3, "offset", PGE::Vectors::ZERO2F);
     }
 
-    vertices[startIndex + 0].setVector2f("texCoords", PGE::Vector2f(0.f,0.f));
-    vertices[startIndex + 1].setVector2f("texCoords", PGE::Vector2f(1.f,0.f));
-    vertices[startIndex + 2].setVector2f("texCoords", PGE::Vector2f(0.f,1.f));
-    vertices[startIndex + 3].setVector2f("texCoords", PGE::Vector2f(1.f,1.f));
-    vertices[startIndex + 0].setColor("color", color);
-    vertices[startIndex + 1].setColor("color", color);
-    vertices[startIndex + 2].setColor("color", color);
-    vertices[startIndex + 3].setColor("color", color);
+    vertices.setValue(startIndex + 0, "texCoords", PGE::Vector2f(0.f,0.f));
+    vertices.setValue(startIndex + 1, "texCoords", PGE::Vector2f(1.f,0.f));
+    vertices.setValue(startIndex + 2, "texCoords", PGE::Vector2f(0.f,1.f));
+    vertices.setValue(startIndex + 3, "texCoords", PGE::Vector2f(1.f,1.f));
+    vertices.setValue(startIndex + 0, "color", color);
+    vertices.setValue(startIndex + 1, "color", color);
+    vertices.setValue(startIndex + 2, "color", color);
+    vertices.setValue(startIndex + 3, "color", color);
 
     return true;
 }

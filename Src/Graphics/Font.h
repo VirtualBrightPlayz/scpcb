@@ -9,7 +9,6 @@
 
 #include <PGE/Graphics/Texture.h>
 #include <PGE/Graphics/Shader.h>
-#include <PGE/Graphics/Material.h>
 #include <PGE/Graphics/Mesh.h>
 #include <PGE/File/FilePath.h>
 #include <PGE/String/String.h>
@@ -31,17 +30,6 @@ class Font {
         float stringWidth(const PGE::String& text, float scale);
         float getHeight(float scale) const;
 
-        struct Atlas {
-            PGE::Texture* texture;
-            PGE::Material* material;
-            PGE::Mesh* mesh;
-
-            std::vector<PGE::Vertex> vertices;
-            std::vector<PGE::Primitive> primitives;
-        };
-
-        std::vector<Atlas> atlases;
-
     private:
         Font();
 
@@ -51,6 +39,24 @@ class Font {
             float horizontalAdvance;
             PGE::Rectanglef srcRect;
         };
+
+        struct Atlas {
+            PGE::Texture* texture;
+            PGE::Mesh::Material material;
+            PGE::Mesh* mesh;
+
+            struct Vertex {
+                PGE::Vector3f position;
+                PGE::Vector2f uv;
+            };
+
+            std::vector<Vertex> vertices;
+            std::vector<PGE::Mesh::Triangle> primitives;
+
+            PGE::StructuredData generateVertexData() const;
+        };
+
+        std::vector<Atlas> atlases;
 
         PGE::FilePath shaderPath = PGE::FilePath::fromStr("SCPCB/GFX/Shaders/Text/");
         PGE::Shader* shader;

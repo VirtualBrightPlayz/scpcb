@@ -2,7 +2,6 @@
 #define DEBUGGRAPHICS_H_INCLUDED
 
 #include <PGE/Graphics/Graphics.h>
-#include <PGE/Graphics/Material.h>
 #include <PGE/Graphics/Shader.h>
 #include <PGE/Graphics/Mesh.h>
 #include <PGE/Color/Color.h>
@@ -12,7 +11,7 @@
 class DebugGraphics {
     private:
         PGE::Mesh* mesh;
-        PGE::Material* material;
+        PGE::Mesh::Material material;
         PGE::Shader* shader;
 
         PGE::Shader::Constant* colorConstant;

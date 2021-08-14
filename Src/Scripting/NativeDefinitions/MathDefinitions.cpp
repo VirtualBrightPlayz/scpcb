@@ -115,12 +115,12 @@ MathDefinitions::MathDefinitions(ScriptManager* mgr) {
     engine->RegisterObjectMethod("Vector2f", "bool opEquals(const Vector2f&in other) const", asMETHODPR(PGE::Vector2f, operator==, (const PGE::Vector2f&) const, bool), asCALL_THISCALL);
 
     engine->RegisterObjectMethod("Vector2f", "void opAssign(const Vector2f&in other)", asMETHODPR(PGE::Vector2f, operator=, (const PGE::Vector2f&), PGE::Vector2f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Vector2f", "void opAddAssign(const Vector2f&in other)", asMETHODPR(PGE::Vector2f, operator+=, (const PGE::Vector2f&), PGE::Vector2f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Vector2f", "void opAddAssign(float f)", asMETHODPR(PGE::Vector2f, operator+=, (float), PGE::Vector2f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Vector2f", "void opSubAssign(const Vector2f&in other)", asMETHODPR(PGE::Vector2f, operator-=, (const PGE::Vector2f&), PGE::Vector2f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Vector2f", "void opSubAssign(float f)", asMETHODPR(PGE::Vector2f, operator-=, (float), PGE::Vector2f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Vector2f", "void opMulAssign(float f)", asMETHODPR(PGE::Vector2f, operator*=, (float), PGE::Vector2f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Vector2f", "void opDivAssign(float f)", asMETHODPR(PGE::Vector2f, operator/=, (float), PGE::Vector2f&), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector2f", "void opAddAssign(const Vector2f&in other)", asMETHODPR(PGE::Vector2f, operator+=, (const PGE::Vector2f&), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector2f", "void opAddAssign(float f)", asMETHODPR(PGE::Vector2f, operator+=, (float), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector2f", "void opSubAssign(const Vector2f&in other)", asMETHODPR(PGE::Vector2f, operator-=, (const PGE::Vector2f&), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector2f", "void opSubAssign(float f)", asMETHODPR(PGE::Vector2f, operator-=, (float), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector2f", "void opMulAssign(float f)", asMETHODPR(PGE::Vector2f, operator*=, (float), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector2f", "void opDivAssign(float f)", asMETHODPR(PGE::Vector2f, operator/=, (float), void), asCALL_THISCALL);
     engine->RegisterObjectMethod("Vector2f", "Vector2f opNeg() const", asMETHODPR(PGE::Vector2f, operator-, () const, const PGE::Vector2f), asCALL_THISCALL);
     
     engine->RegisterObjectMethod("Vector2f", "Vector2f opAdd(const Vector2f&in other) const", asMETHODPR(PGE::Vector2f, operator+, (const PGE::Vector2f&) const, const PGE::Vector2f), asCALL_THISCALL);
@@ -160,13 +160,13 @@ MathDefinitions::MathDefinitions(ScriptManager* mgr) {
 
     engine->RegisterObjectMethod("Vector3f", "bool opEquals(const Vector3f&in other) const", asMETHODPR(PGE::Vector3f, operator==, (const PGE::Vector3f&) const, bool), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod("Vector3f", "Vector3f& opAssign(const Vector3f &in other)", asMETHODPR(PGE::Vector3f, operator=, (const PGE::Vector3f&), PGE::Vector3f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Vector3f", "void opAddAssign(const Vector3f&in other)", asMETHODPR(PGE::Vector3f, operator+=, (const PGE::Vector3f&), PGE::Vector3f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Vector3f", "void opAddAssign(float f)", asMETHODPR(PGE::Vector3f, operator+=, (float), PGE::Vector3f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Vector3f", "void opSubAssign(const Vector3f&in other)", asMETHODPR(PGE::Vector3f, operator-=, (const PGE::Vector3f&), PGE::Vector3f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Vector3f", "void opSubAssign(float f)", asMETHODPR(PGE::Vector3f, operator-=, (float), PGE::Vector3f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Vector3f", "void opMulAssign(float f)", asMETHODPR(PGE::Vector3f, operator*=, (float), PGE::Vector3f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Vector3f", "void opDivAssign(float f)", asMETHODPR(PGE::Vector3f, operator/=, (float), PGE::Vector3f&), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector3f", "void opAssign(const Vector3f &in other)", asMETHODPR(PGE::Vector3f, operator=, (const PGE::Vector3f&), PGE::Vector3f&), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector3f", "void opAddAssign(const Vector3f&in other)", asMETHODPR(PGE::Vector3f, operator+=, (const PGE::Vector3f&), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector3f", "void opAddAssign(float f)", asMETHODPR(PGE::Vector3f, operator+=, (float), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector3f", "void opSubAssign(const Vector3f&in other)", asMETHODPR(PGE::Vector3f, operator-=, (const PGE::Vector3f&), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector3f", "void opSubAssign(float f)", asMETHODPR(PGE::Vector3f, operator-=, (float), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector3f", "void opMulAssign(float f)", asMETHODPR(PGE::Vector3f, operator*=, (float), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Vector3f", "void opDivAssign(float f)", asMETHODPR(PGE::Vector3f, operator/=, (float), void), asCALL_THISCALL);
     engine->RegisterObjectMethod("Vector3f", "Vector3f opNeg()", asMETHODPR(PGE::Vector3f, operator-, () const, const PGE::Vector3f), asCALL_THISCALL);
 
     engine->RegisterObjectMethod("Vector3f", "Vector3f opAdd(const Vector3f&in other) const", asMETHODPR(PGE::Vector3f, operator+, (const PGE::Vector3f&) const, const PGE::Vector3f), asCALL_THISCALL);
@@ -208,8 +208,8 @@ MathDefinitions::MathDefinitions(ScriptManager* mgr) {
 
     engine->RegisterObjectMethod("Matrix4x4f", "bool opEquals(const Matrix4x4f&in other) const", asMETHODPR(PGE::Matrix4x4f, operator==, (const PGE::Matrix4x4f&) const, bool), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod("Matrix4x4f", "Matrix4x4f& opAssign(const Matrix4x4f&in other)", asMETHODPR(PGE::Matrix4x4f, operator=, (const PGE::Matrix4x4f&), PGE::Matrix4x4f&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Matrix4x4f", "void opMulAssign(const Matrix4x4f&in other)", asMETHODPR(PGE::Matrix4x4f, operator*=, (const PGE::Matrix4x4f&), PGE::Matrix4x4f&), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Matrix4x4f", "void opAssign(const Matrix4x4f&in other)", asMETHODPR(PGE::Matrix4x4f, operator=, (const PGE::Matrix4x4f&), PGE::Matrix4x4f&), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Matrix4x4f", "void opMulAssign(const Matrix4x4f&in other)", asMETHODPR(PGE::Matrix4x4f, operator*=, (const PGE::Matrix4x4f&), void), asCALL_THISCALL);
     engine->RegisterObjectMethod("Matrix4x4f", "Matrix4x4f opMul(float f) const", asMETHODPR(PGE::Matrix4x4f, operator*, (const PGE::Matrix4x4f&) const, const PGE::Matrix4x4f), asCALL_THISCALL);
 
     engine->RegisterObjectMethod("Matrix4x4f", "Matrix4x4f transpose() const", asMETHOD(PGE::Matrix4x4f, transpose), asCALL_THISCALL);
@@ -238,10 +238,10 @@ MathDefinitions::MathDefinitions(ScriptManager* mgr) {
 
     engine->RegisterObjectMethod("Rectanglef", "bool opEquals(const Rectanglef&in other) const", asMETHODPR(PGE::Rectanglef, operator==, (const PGE::Rectanglef&) const, bool), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod("Rectanglef", "Rectanglef& opAssign(const Rectanglef &in other)", asMETHODPR(PGE::Rectanglef, operator=, (const PGE::Rectanglef&), PGE::Rectanglef&), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Rectanglef", "void opAssign(const Rectanglef &in other)", asMETHODPR(PGE::Rectanglef, operator=, (const PGE::Rectanglef&), PGE::Rectanglef&), asCALL_THISCALL);
 
-    engine->RegisterObjectMethod("Rectanglef", "void addPoint(float x, float y)", asMETHODPR(PGE::Rectanglef, addPoint, (float, float), PGE::Rectanglef&), asCALL_THISCALL);
-    engine->RegisterObjectMethod("Rectanglef", "void addPoint(const Vector2f&in point)", asMETHODPR(PGE::Rectanglef, addPoint, (const PGE::Vector2f&), PGE::Rectanglef&), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Rectanglef", "void addPoint(float x, float y)", asMETHODPR(PGE::Rectanglef, addPoint, (float, float), void), asCALL_THISCALL);
+    engine->RegisterObjectMethod("Rectanglef", "void addPoint(const Vector2f&in point)", asMETHODPR(PGE::Rectanglef, addPoint, (const PGE::Vector2f&), void), asCALL_THISCALL);
     
     engine->RegisterObjectMethod("Rectanglef", "float width() const", asMETHOD(PGE::Rectanglef, width), asCALL_THISCALL);
     engine->RegisterObjectMethod("Rectanglef", "float height() const", asMETHOD(PGE::Rectanglef, height), asCALL_THISCALL);

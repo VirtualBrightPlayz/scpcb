@@ -10,11 +10,10 @@ UIMesh::UIMesh(GraphicsResources* gr) {
     shaderTextured = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/UI/"), false);
     shaderTextureless = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/UITextureless/"), false);
 
-    mesh = PGE::Mesh::create(gfxRes->getGraphics(), PGE::Primitive::Type::TRIANGLE);
-    material = nullptr;
+    mesh = PGE::Mesh::create(*gfxRes->getGraphics());
 
-    shaderTexturedColorConstant = shaderTextured->getFragmentShaderConstant("imageColor");
-    shaderTexturelessColorConstant = shaderTextureless->getFragmentShaderConstant("imageColor");
+    shaderTexturedColorConstant = &shaderTextured->getFragmentShaderConstant("imageColor");
+    shaderTexturelessColorConstant = &shaderTextureless->getFragmentShaderConstant("imageColor");
     
     color = PGE::Colors::WHITE;
     shaderTexturedColorConstant->setValue(color);
@@ -25,8 +24,17 @@ UIMesh::UIMesh(GraphicsResources* gr) {
 
     borderThickness = 0.5f;
 
-    shaderTextured->getVertexShaderConstant("projectionMatrix")->setValue(gr->getOrthoMat());
-    shaderTextureless->getVertexShaderConstant("projectionMatrix")->setValue(gr->getOrthoMat());
+    shaderTextured->getVertexShaderConstant("projectionMatrix").setValue(gr->getOrthoMat());
+    shaderTextureless->getVertexShaderConstant("projectionMatrix").setValue(gr->getOrthoMat());
+}
+
+PGE::StructuredData UIMesh::generateVertexData() const {
+    PGE::StructuredData retVal = PGE::StructuredData(material.getShader().getVertexLayout(), vertices.size());
+    for (int i = 0; i < vertices.size(); i++) {
+        retVal.setValue(i, "position", vertices[i].position);
+        if (!textureless) { retVal.setValue(i, "uv", vertices[i].uv); }
+    }
+    return retVal;
 }
 
 UIMesh::~UIMesh() {
@@ -42,7 +50,7 @@ void UIMesh::startRender() {
 
 void UIMesh::endRender() {
     if (vertices.size() > 0 && primitives.size() > 0) {
-        mesh->setGeometry(vertices, primitives);
+        mesh->setGeometry(generateVertexData(), primitives);
         mesh->render();
     }
 
@@ -51,16 +59,15 @@ void UIMesh::endRender() {
 }
 
 void UIMesh::setTextured(PGE::Texture* texture, bool tile) {
-    if (textureless || tiled != tile || material == nullptr || texture != material->getTexture(0)) {
+    if (textureless || tiled != tile || material.getTextureCount() <= 0 || texture != &material.getTexture(0)) {
         endRender();
 
         tiled = tile;
         textureless = false;
 
-        PGE::Material* prevMaterial = material;
-        material = new PGE::Material(shaderTextured, texture);
+        material = PGE::Mesh::Material(*shaderTextured, *texture, PGE::Mesh::Material::Opaque::NO);
+        mesh->clearGeometry();
         mesh->setMaterial(material);
-        delete prevMaterial;
 
         startRender();
     }
@@ -85,10 +92,8 @@ void UIMesh::setTextureless() {
 
         textureless = true;
 
-        PGE::Material* prevMaterial = material;
-        material = new PGE::Material(shaderTextureless);
+        material = PGE::Mesh::Material(*shaderTextureless, PGE::Mesh::Material::Opaque::NO);
         mesh->setMaterial(material);
-        delete prevMaterial;
 
         startRender();
     }
@@ -117,30 +122,30 @@ void UIMesh::addRect(const PGE::Rectanglef& rect) {
         }
     }
 
-    PGE::Vertex vertex;
+    Vertex vertex;
 
     int index0 = (int)vertices.size();
-    vertex.setVector2f("position", rect.topLeftCorner());
-    if (!textureless) { vertex.setVector2f("uv", uvRect.topLeftCorner()); }
+    vertex.position = rect.topLeftCorner();
+    if (!textureless) { vertex.uv = uvRect.topLeftCorner(); }
     vertices.push_back(vertex);
 
     int index1 = (int)vertices.size();
-    vertex.setVector2f("position", rect.topRightCorner());
-    if (!textureless) { vertex.setVector2f("uv", uvRect.topRightCorner()); }
+    vertex.position = rect.topRightCorner();
+    if (!textureless) { vertex.uv = uvRect.topRightCorner(); }
     vertices.push_back(vertex);
 
     int index2 = (int)vertices.size();
-    vertex.setVector2f("position", rect.bottomLeftCorner());
-    if (!textureless) { vertex.setVector2f("uv", uvRect.bottomLeftCorner()); }
+    vertex.position = rect.bottomLeftCorner();
+    if (!textureless) { vertex.uv = uvRect.bottomLeftCorner(); }
     vertices.push_back(vertex);
 
     int index3 = (int)vertices.size();
-    vertex.setVector2f("position", rect.bottomRightCorner());
-    if (!textureless) { vertex.setVector2f("uv", uvRect.bottomRightCorner()); }
+    vertex.position = rect.bottomRightCorner();
+    if (!textureless) { vertex.uv = uvRect.bottomRightCorner(); }
     vertices.push_back(vertex);
 
-    primitives.push_back(PGE::Primitive(index2, index1, index0));
-    primitives.push_back(PGE::Primitive(index3, index1, index2));
+    primitives.push_back(PGE::Mesh::Triangle(index2, index1, index0));
+    primitives.push_back(PGE::Mesh::Triangle(index3, index1, index2));
 }
 
 void UIMesh::loadTexture(const PGE::String& textureName) {
