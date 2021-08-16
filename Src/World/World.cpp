@@ -35,7 +35,7 @@ World::World() {
 
     camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
 
-    graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false);
+    graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false, PGE::Graphics::Renderer::OpenGL);
     graphics->setViewport(PGE::Rectanglei(0, 0, config->getWidth(), config->getHeight()));
     inputManager = PGE::InputManager::create(*graphics);
 
@@ -90,8 +90,8 @@ World::~World() {
     delete miGen;
 
     delete inputManager;
-    delete graphics;
     delete gfxRes;
+    delete graphics;
 }
 
 void World::applyConfig(const Config* config) {

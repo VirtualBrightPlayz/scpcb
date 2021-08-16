@@ -11,7 +11,7 @@
 
 Script::Script(const PGE::FilePath& fn) {
     fileName = fn;
-    scriptContents = fileName.read();
+    scriptContents = fileName.readText();
 }
 
 PGE::FilePath Script::getFileName() const {

@@ -40,6 +40,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openvr_api64", "..\Libraries\openvr\win\openvr_api64.vcxproj", "{B8C69879-50F9-357A-A579-E362D28A7464}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResourceSync", "ResourceSync\ResourceSync.vcxproj", "{8D32B3DD-DA7F-4BC7-9B11-D6684A0A993B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{86FA7807-97DD-432B-BAFD-4B8304762DEA} = {86FA7807-97DD-432B-BAFD-4B8304762DEA}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "angelscript", "..\Libraries\angelscript\sdk\angelscript\projects\msvc2019\angelscript.vcxproj", "{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}"
 EndProject
