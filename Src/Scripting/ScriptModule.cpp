@@ -40,14 +40,14 @@ void ScriptModule::addScript(const PGE::String& sectionName, Script* script) {
     PGE_ASSERT(!built, "Module already built!");
 
     int errorCode = scriptModule->AddScriptSection(sectionName.cstr(), script->getScriptContents().cstr(), script->getScriptContents().length());
-    PGE_ASSERT(errorCode == 0, "kablooey! (" + PGE::String::fromInt(errorCode) + ")");
+    PGE_ASSERT(errorCode == 0, "kablooey! (" + PGE::String::from(errorCode) + ")");
 
     scripts.push_back(script);
 }
 
 void ScriptModule::build() {
     int errorCode = scriptModule->Build();
-    PGE_ASSERT(errorCode == 0, "whabammy! (" + PGE::String::fromInt(errorCode) + ")");
+    PGE_ASSERT(errorCode == 0, "whabammy! (" + PGE::String::from(errorCode) + ")");
 
     std::vector<asITypeInfo*> unprocessedTypes;
     int typeCount = scriptModule->GetObjectTypeCount();
@@ -278,45 +278,45 @@ void ScriptModule::saveXML(const void* ref, Type* type, tinyxml2::XMLElement* el
         }
         else if (type == Type::Float) {
             float* fValue = (float*)ref;
-            strValue = PGE::String::fromFloat(*fValue);
+            strValue = PGE::String::from(*fValue);
         }
         else if (type == Type::Double) {
             double* dValue = (double*)ref;
-            strValue = PGE::String::format<double>(*dValue, "%lf");
+            strValue = PGE::String::from(*dValue);
         }
         else if (type == Type::Vector3f) {
             PGE::Vector3f* vectValue = (PGE::Vector3f*)ref;
 
             strValue =
-                PGE::String::fromFloat(vectValue->x) + ","
-                + PGE::String::fromFloat(vectValue->y) + ","
-                + PGE::String::fromFloat(vectValue->z);
+                PGE::String::from(vectValue->x) + ","
+                + PGE::String::from(vectValue->y) + ","
+                + PGE::String::from(vectValue->z);
         }
         else if (type == Type::Matrix4x4f) {
             PGE::Matrix4x4f* matValue = (PGE::Matrix4x4f*)ref;
 
             strValue =
-                PGE::String::fromFloat(matValue->elements[0][0]) + ","
-                + PGE::String::fromFloat(matValue->elements[0][1]) + ","
-                + PGE::String::fromFloat(matValue->elements[0][2]) + ","
-                + PGE::String::fromFloat(matValue->elements[0][3]) + ","
-                + PGE::String::fromFloat(matValue->elements[1][0]) + ","
-                + PGE::String::fromFloat(matValue->elements[1][1]) + ","
-                + PGE::String::fromFloat(matValue->elements[1][2]) + ","
-                + PGE::String::fromFloat(matValue->elements[1][3]) + ","
-                + PGE::String::fromFloat(matValue->elements[2][0]) + ","
-                + PGE::String::fromFloat(matValue->elements[2][1]) + ","
-                + PGE::String::fromFloat(matValue->elements[2][2]) + ","
-                + PGE::String::fromFloat(matValue->elements[2][3]) + ","
-                + PGE::String::fromFloat(matValue->elements[3][0]) + ","
-                + PGE::String::fromFloat(matValue->elements[3][1]) + ","
-                + PGE::String::fromFloat(matValue->elements[3][2]) + ","
-                + PGE::String::fromFloat(matValue->elements[3][3]);
+                PGE::String::from(matValue->elements[0][0]) + ","
+                + PGE::String::from(matValue->elements[0][1]) + ","
+                + PGE::String::from(matValue->elements[0][2]) + ","
+                + PGE::String::from(matValue->elements[0][3]) + ","
+                + PGE::String::from(matValue->elements[1][0]) + ","
+                + PGE::String::from(matValue->elements[1][1]) + ","
+                + PGE::String::from(matValue->elements[1][2]) + ","
+                + PGE::String::from(matValue->elements[1][3]) + ","
+                + PGE::String::from(matValue->elements[2][0]) + ","
+                + PGE::String::from(matValue->elements[2][1]) + ","
+                + PGE::String::from(matValue->elements[2][2]) + ","
+                + PGE::String::from(matValue->elements[2][3]) + ","
+                + PGE::String::from(matValue->elements[3][0]) + ","
+                + PGE::String::from(matValue->elements[3][1]) + ","
+                + PGE::String::from(matValue->elements[3][2]) + ","
+                + PGE::String::from(matValue->elements[3][3]);
         } else {
             int iValue = 0;
             memcpy(&iValue, ref, type->getSize());
 
-            strValue = PGE::String::fromInt(iValue);
+            strValue = PGE::String::from(iValue);
         }
 
         element->SetAttribute("value", strValue.cstr());

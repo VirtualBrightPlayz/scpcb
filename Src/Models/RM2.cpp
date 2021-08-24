@@ -111,14 +111,14 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     std::vector<PGE::Texture*> lightmapTextures[3];
     if (lmCount.u == 1) {
         for (int i = 0; i < 3; i++) {
-            PGE::String lightmapSuffix = "_lm" + PGE::String::fromInt(i);
+            PGE::String lightmapSuffix = "_lm" + PGE::String::from(i);
             PGE::String lightmapName = filename.substr(0, filename.length() - EXTENSION.length()) + lightmapSuffix;
             lightmapTextures[i].push_back(gfxRes->getTexture(lightmapName));
         }
     } else {
         for (int n = 0; n < lmCount.u; n++) {
             for (int i = 0; i < 3; i++) {
-                PGE::String lightmapSuffix = "_lm" + PGE::String::fromInt(i) + "_" + PGE::String::fromInt(n);
+                PGE::String lightmapSuffix = "_lm" + PGE::String::from(i) + "_" + PGE::String::from(n);
                 PGE::String lightmapName = filename.substr(0, filename.length() - EXTENSION.length()) + lightmapSuffix;
                 lightmapTextures[i].push_back(gfxRes->getTexture(lightmapName));
             }

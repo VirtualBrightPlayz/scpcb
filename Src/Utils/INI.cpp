@@ -148,11 +148,11 @@ bool INIFile::getBool(const PGE::String& section, const PGE::String& key, bool d
 }
 
 int INIFile::getInt(const PGE::String& section, const PGE::String& key, int defaultValue) {
-    return getValue(section, key, PGE::String::fromInt(defaultValue)).toInt();
+    return getValue(section, key, PGE::String::from(defaultValue)).to<int>();
 }
 
 float INIFile::getFloat(const PGE::String& section, const PGE::String& key, float defaultValue) {
-    return getValue(section, key, PGE::String::fromFloat(defaultValue)).toFloat();
+    return getValue(section, key, PGE::String::from(defaultValue)).to<float>();
 }
 
 void INIFile::setString(const PGE::String& section, const PGE::String& key, const PGE::String& value) {
@@ -164,9 +164,9 @@ void INIFile::setBool(const PGE::String& section, const PGE::String& key, bool v
 }
 
 void INIFile::setInt(const PGE::String& section, const PGE::String& key, int value) {
-    setValue(section, key, PGE::String::fromInt(value));
+    setValue(section, key, PGE::String::from(value));
 }
 
 void INIFile::setFloat(const PGE::String& section, const PGE::String& key, float value) {
-    setValue(section, key, PGE::String::fromFloat(value));
+    setValue(section, key, PGE::String::from(value));
 }

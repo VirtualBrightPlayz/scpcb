@@ -27,7 +27,7 @@ static void vector2fDestructor(void* memory) {
 }
 
 static PGE::String vector2fToString(const PGE::Vector2f& vec) {
-    return "Vector2f(" + PGE::String::fromFloat(vec.x) + ", " + PGE::String::fromFloat(vec.y) + ")";
+    return "Vector2f(" + PGE::String::from(vec.x) + ", " + PGE::String::from(vec.y) + ")";
 }
 
 static void vector3fConstructor(void* memory) {
@@ -47,7 +47,7 @@ static void vector3fDestructor(void* memory) {
 }
 
 static PGE::String vector3fToString(const PGE::Vector3f& vec) {
-    return "Vector3f(" + PGE::String::fromFloat(vec.x) + ", " + PGE::String::fromFloat(vec.y) + ", " + PGE::String::fromFloat(vec.z) + ")";
+    return "Vector3f(" + PGE::String::from(vec.x) + ", " + PGE::String::from(vec.y) + ", " + PGE::String::from(vec.z) + ")";
 }
 
 static void matrixConstructor(void* memory) {

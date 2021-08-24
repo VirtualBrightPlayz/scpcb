@@ -6,7 +6,7 @@
 #include "../Graphics/Billboard.h"
 
 static void throwOnError(int err) {
-	PGE_ASSERT(err == 0, "Function could not be registered: " + PGE::String::fromInt(err));
+	PGE_ASSERT(err == 0, "Function could not be registered: " + PGE::String::from(err));
 }
 
 template<class A, class B>

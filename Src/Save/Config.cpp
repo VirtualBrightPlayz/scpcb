@@ -108,7 +108,7 @@ void Config::loadKeyboardInput(Input input) {
 
     std::vector<PGE::String> bindVect = bindings.split(',', true);
     for (int i = 0; i < (int)bindVect.size(); i++) {
-        kbBinds.emplace(input, (PGE::KeyboardInput::Keycode)bindVect[i].toInt());
+        kbBinds.emplace(input, (PGE::KeyboardInput::Keycode)bindVect[i].to<int>());
     }
 }
 
@@ -125,7 +125,7 @@ void Config::saveFile() const {
             strToJoin.clear();
             currInput = it.first;
         }
-        strToJoin.push_back(PGE::String::fromInt((int)it.second));
+        strToJoin.push_back(PGE::String::from((int)it.second));
     }
     optionsFile->setString(SEC_CON, getBindingName(currInput) + "_keyboard", PGE::String::join(strToJoin, ","));
 
@@ -133,7 +133,7 @@ void Config::saveFile() const {
 }
 
 void Config::setResolution(int width, int height) {
-    PGE_ASSERT(width > 0 && height > 0, "Invalid display resolution. (width: " + PGE::String::fromInt(width) + ", height: " + PGE::String::fromInt(height) + ")");
+    PGE_ASSERT(width > 0 && height > 0, "Invalid display resolution. (width: " + PGE::String::from(width) + ", height: " + PGE::String::from(height) + ")");
 
     this->width->value = width;
     this->height->value = height;

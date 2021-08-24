@@ -22,5 +22,5 @@ void IntProperty::readXML(const tinyxml2::XMLElement* element) {
 }
 
 void IntProperty::writeXML(tinyxml2::XMLElement* element) const {
-    element->SetAttribute("value", PGE::String::fromInt(value).cstr());
+    element->SetAttribute("value", PGE::String::from(value).cstr());
 }

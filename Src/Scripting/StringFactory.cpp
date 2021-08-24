@@ -110,27 +110,27 @@ static PGE::char16 stringCharAt(int index, const PGE::String& str) {
 }
 
 static int stringToInt(const PGE::String& str) {
-    return str.toInt();
+    return str.to<int>();
 }
 
 static int stringToIntWithCheck(const PGE::String& str, bool& success) {
-    return str.toInt(success);
+    return str.to<int>(success);
 }
 
 static float stringToFloat(const PGE::String& str) {
-    return str.toFloat();
+    return str.to<float>();
 }
 
 static float stringToFloatWithCheck(const PGE::String& str, bool& success) {
-    return str.toFloat(success);
+    return str.to<float>(success);
 }
 
 static PGE::String intToString(int i) {
-    return PGE::String::fromInt(i);
+    return PGE::String::from(i);
 }
 
 static PGE::String floatToString(float f) {
-    return PGE::String::fromFloat(f);
+    return PGE::String::from(f);
 }
 
 StringFactory::StringFactory(asIScriptEngine* engine) {

@@ -152,21 +152,21 @@ void ConsoleDefinitions::executeCommand(const PGE::String& in) {
                     }
                 } else if (paramTypeId == asTYPEID_INT32) {
                     bool success;
-                    int arg = params[i].toInt(success);
+                    PGE::i32 arg = params[i].to<PGE::i32>(success);
                     if (!success) {
                         errMsg = "NOT INT";
                         break;
                     }
 
                     // If the user enters a float.
-                    if (!PGE::Math::equalFloats((float)arg, params[i].toFloat())) {
+                    if (!PGE::Math::equalFloats((float)arg, params[i].to<float>())) {
                         addConsoleMessage("Loss of data!", PGE::Colors::YELLOW);
                     }
 
                     scriptContext->SetArgDWord(i, arg);
                 } else if (paramTypeId == asTYPEID_FLOAT) {
                     bool success;
-                    float arg = params[i].toFloat(success);
+                    float arg = params[i].to<float>(success);
                     if (!success) {
                         errMsg = "NOT FLOAT";
                         break;
@@ -224,35 +224,34 @@ void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
                 content = (*(bool*)ref) ? "True" : "False";
             } break;
             case asTYPEID_INT8: {
-                content = PGE::String::fromInt((int) *(int8_t*)ref);
+                content = PGE::String::from(*(PGE::byte*)ref);
             } break;
             case asTYPEID_INT16: {
-                content = PGE::String::fromInt((int) *(int16_t*)ref);
+                content = PGE::String::from(*(int16_t*)ref);
             } break;
             case asTYPEID_INT32: {
-                // TODO: We assume that an int holds 32 bits here.
-                content = PGE::String::format(*(int32_t*)ref, "%li");
+                content = PGE::String::from(*(int32_t*)ref);
             } break;
             case asTYPEID_INT64: {
-                content = PGE::String::format(*(int64_t*)ref, "%lli");
+                content = PGE::String::from(*(int64_t*)ref);
             } break;
             case asTYPEID_UINT8: {
-                content = PGE::String::format(*(uint8_t*)ref, "%u");
+                content = PGE::String::from(*(uint8_t*)ref);
             } break;
             case asTYPEID_UINT16: {
-                content = PGE::String::format(*(uint16_t*)ref, "%u");
+                content = PGE::String::from(*(uint16_t*)ref);
             } break;
             case asTYPEID_UINT32: {
-                content = PGE::String::format(*(uint32_t*)ref, "%lu");
+                content = PGE::String::from(*(uint32_t*)ref);
             } break;
             case asTYPEID_UINT64: {
-                content = PGE::String::format(*(uint64_t*)ref, "%llu");
+                content = PGE::String::from(*(uint64_t*)ref);
             } break;
             case asTYPEID_FLOAT: {
-                content = PGE::String::fromFloat(*(float*)ref);
+                content = PGE::String::from(*(float*)ref);
             } break;
             case asTYPEID_DOUBLE: {
-                content = PGE::String::format(*(double*)ref, "%lf");
+                content = PGE::String::from(*(double*)ref);
             } break;
             default: { // Object.
                 asITypeInfo* typeInfo = engine->GetTypeInfoById(typeId);
@@ -269,7 +268,7 @@ void ConsoleDefinitions::internalLog(void* ref, int typeId, LogType type) {
                         break;
                     }
                 }
-                content = PGE::String(typeInfo->GetName()) + "@" + PGE::String::format((long long) ref, "%#010llx");
+                content = PGE::String(typeInfo->GetName()) + "@" + PGE::String::hexFromInt((uintmax_t)ref);
             } break;
         }
     }
