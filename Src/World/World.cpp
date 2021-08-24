@@ -35,7 +35,7 @@ World::World() {
 
     camera = new Camera(gfxRes, config->getWidth(), config->getHeight());
 
-    graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight(), false, PGE::Graphics::Renderer::OpenGL);
+    graphics = PGE::Graphics::create("SCP - Containment Breach", config->getWidth(), config->getHeight());
     graphics->setViewport(PGE::Rectanglei(0, 0, config->getWidth(), config->getHeight()));
     inputManager = PGE::InputManager::create(*graphics);
 
