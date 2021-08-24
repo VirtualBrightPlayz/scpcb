@@ -34,7 +34,7 @@ PS_INPUT VS(VS_INPUT input) {
     output.position = mul(viewMatrix, output.position);
     output.position = mul(projectionMatrix, output.position);
     float4 normal = float4(input.normal.xyz,0.0);
-    output.normal = normalize(mul(normal,modelMatrix).xyz);
+    output.normal = normalize(mul(modelMatrix, normal).xyz);
     output.uv = input.uv;
     return output;
 }
