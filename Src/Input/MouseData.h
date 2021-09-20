@@ -10,6 +10,7 @@ class MouseData {
         PGE::InputManager* inputManager;
         Config* config;
 
+        PGE::Vector2f mouseDelta; // Per frame.
         PGE::Vector2f mousePosition;
         PGE::Vector2f mouseWheelDelta;
 
@@ -17,6 +18,7 @@ class MouseData {
         MouseData(PGE::InputManager* inputManager, Config* config);
 
         const PGE::Vector2f& getPosition() const;
+        const PGE::Vector2f& getDelta() const;
         const PGE::Vector2f& getWheelDelta() const;
 
         void update();

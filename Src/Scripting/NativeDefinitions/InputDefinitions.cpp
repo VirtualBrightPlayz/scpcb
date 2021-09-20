@@ -56,6 +56,7 @@ InputDefinitions::InputDefinitions(ScriptManager* mgr, KeyBinds* kb, MouseData* 
     engine->RegisterGlobalFunction("string getClipboardText()", asMETHOD(PGE::InputManager, getClipboardText), asCALL_THISCALL_ASGLOBAL, inputManager);
 
     engine->RegisterGlobalFunction("const Vector2f& getMousePosition()", asMETHOD(MouseData , getPosition), asCALL_THISCALL_ASGLOBAL, md);
+    engine->RegisterGlobalFunction("const Vector2f& getMouseDelta()", asMETHOD(MouseData, getDelta), asCALL_THISCALL_ASGLOBAL, md);
     engine->RegisterGlobalFunction("const Vector2f& getMouseWheelDelta()", asMETHOD(MouseData, getWheelDelta), asCALL_THISCALL_ASGLOBAL, md);
 
     registerKey("Escape", kb->escape);

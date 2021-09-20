@@ -51,7 +51,7 @@ World::World() {
 
     locMng = new LocalizationManager(config->languageCode->value);
     
-    inputManager->setMouseVisibility(false);
+    inputManager->setMouseRelativeInput(true);
     inputManager->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
 
     pickMng = new PickableManager(camera, uiMesh, keyBinds);
@@ -150,10 +150,10 @@ void World::runTick(float timeStep) {
             // Null all interpolator differences.
             runTick(0.f);
             updatePlaying(0.f);
-            inputManager->setMouseVisibility(true);
-        } else {
-            inputManager->setMouseVisibility(false);
+            inputManager->setMouseRelativeInput(false);
             inputManager->setMousePosition(PGE::Vector2f((float)config->getWidth() / 2, (float)config->getHeight() / 2));
+        } else {
+            inputManager->setMouseRelativeInput(true);
         }
     }
 }
@@ -177,7 +177,7 @@ void World::draw(float interpolation, RenderType r) {
 void World::updatePlaying(float timeStep) {
     PGE::Vector2f center = PGE::Vector2f((float)config->getWidth(), (float)config->getHeight()) * 0.5f;
     
-    PGE::Vector2f addAngle = (inputManager->getMousePosition() - center) * (config->sensitivity->value / 30000.f);
+    PGE::Vector2f addAngle = mouseData->getDelta() * (config->sensitivity->value / 30000.f);
     camera->addAngle(addAngle.x, addAngle.y);
 
     // Reset mouse to center.
