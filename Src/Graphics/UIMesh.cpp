@@ -29,7 +29,7 @@ UIMesh::UIMesh(GraphicsResources* gr) {
 }
 
 PGE::StructuredData UIMesh::generateVertexData() const {
-    PGE::StructuredData retVal = PGE::StructuredData(material.getShader().getVertexLayout(), vertices.size());
+    PGE::StructuredData retVal = PGE::StructuredData(material->getShader().getVertexLayout(), vertices.size());
     for (int i = 0; i < vertices.size(); i++) {
         retVal.setValue(i, "position", vertices[i].position);
         if (!textureless) { retVal.setValue(i, "uv", vertices[i].uv); }
@@ -59,13 +59,13 @@ void UIMesh::endRender() {
 }
 
 void UIMesh::setTextured(PGE::Texture* texture, bool tile) {
-    if (textureless || tiled != tile || material.getTextureCount() <= 0 || texture != &material.getTexture(0)) {
+    if (textureless || tiled != tile || material->getTextureCount() <= 0 || texture != &material->getTexture(0)) {
         endRender();
 
         tiled = tile;
         textureless = false;
 
-        material = PGE::Mesh::Material(*shaderTextured, *texture, PGE::Mesh::Material::Opaque::NO);
+        material = PGE::Material::create(*gfxRes->getGraphics(), *shaderTextured, *texture, PGE::Material::Opaque::NO);
         mesh->clearGeometry();
         mesh->setMaterial(material);
 
@@ -92,7 +92,7 @@ void UIMesh::setTextureless() {
 
         textureless = true;
 
-        material = PGE::Mesh::Material(*shaderTextureless, PGE::Mesh::Material::Opaque::NO);
+        material = PGE::Material::create(*gfxRes->getGraphics(), *shaderTextureless, PGE::Material::Opaque::NO);
         mesh->setMaterial(material);
 
         startRender();

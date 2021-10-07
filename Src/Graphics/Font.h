@@ -10,6 +10,7 @@
 #include <PGE/Graphics/Texture.h>
 #include <PGE/Graphics/Shader.h>
 #include <PGE/Graphics/Mesh.h>
+#include <PGE/Graphics/Material.h>
 #include <PGE/File/FilePath.h>
 #include <PGE/String/String.h>
 #include <PGE/Math/Vector.h>
@@ -42,7 +43,7 @@ class Font {
 
         struct Atlas {
             PGE::Texture* texture;
-            PGE::Mesh::Material material;
+            PGE::Material* material;
             PGE::Mesh* mesh;
 
             struct Vertex {

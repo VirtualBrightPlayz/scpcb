@@ -270,8 +270,8 @@ MathDefinitions::MathDefinitions(ScriptManager* mgr) {
     engine->RegisterGlobalFunction("float absFloat(float val)", asFUNCTIONPR(std::abs, (float), float), asCALL_CDECL);
     engine->RegisterGlobalFunction("int floor(float val)", asFUNCTION(PGE::Math::floor), asCALL_CDECL);
     engine->RegisterGlobalFunction("int ceil(float val)", asFUNCTION(PGE::Math::ceil), asCALL_CDECL);
-    engine->RegisterGlobalFunction("float sqrt(float val)", asFUNCTION(std::sqrtf), asCALL_CDECL);
-    engine->RegisterGlobalFunction("float sin(float radians)", asFUNCTION(std::sinf), asCALL_CDECL);
-    engine->RegisterGlobalFunction("float cos(float radians)", asFUNCTION(std::cosf), asCALL_CDECL);
+    engine->RegisterGlobalFunction("float sqrt(float val)", asFUNCTION(sqrtf), asCALL_CDECL);
+    engine->RegisterGlobalFunction("float sin(float radians)", asFUNCTION(sinf), asCALL_CDECL);
+    engine->RegisterGlobalFunction("float cos(float radians)", asFUNCTION(cosf), asCALL_CDECL);
     engine->RegisterGlobalProperty("const float PI", (void*)&PGE::Math::PI);
 }

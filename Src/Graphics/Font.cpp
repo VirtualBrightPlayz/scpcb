@@ -126,7 +126,7 @@ void Font::renderAtlas(long chr) {
     if (buffer!=nullptr) {
         Atlas newAtlas;
         newAtlas.texture = PGE::Texture::load(*graphicsRes->getGraphics(),atlasDims,atlasDims,buffer,PGE::Texture::Format::RGBA32);
-        newAtlas.material = PGE::Mesh::Material(*shader, *newAtlas.texture, PGE::Mesh::Material::Opaque::NO);
+        newAtlas.material = PGE::Material::create(*graphicsRes->getGraphics(), *shader, *newAtlas.texture, PGE::Material::Opaque::NO);
         newAtlas.mesh = PGE::Mesh::create(*graphicsRes->getGraphics());
         newAtlas.mesh->setMaterial(newAtlas.material);
         atlases.push_back(newAtlas);
@@ -229,7 +229,7 @@ float Font::getHeight(float scale) const {
 }
 
 PGE::StructuredData Font::Atlas::generateVertexData() const {
-    PGE::StructuredData retVal = PGE::StructuredData(material.getShader().getVertexLayout(), vertices.size());
+    PGE::StructuredData retVal = PGE::StructuredData(material->getShader().getVertexLayout(), vertices.size());
     for (int i = 0; i < vertices.size(); i++) {
         retVal.setValue(i, "position", vertices[i].position);
         retVal.setValue(i, "uv", vertices[i].uv);

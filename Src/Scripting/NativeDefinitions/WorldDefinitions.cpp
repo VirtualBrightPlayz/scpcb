@@ -7,9 +7,9 @@
 WorldDefinitions::WorldDefinitions(ScriptManager* mgr, World* w) :
 #ifdef _WIN32
     platform(0)
-#elif defined __APPLE__
+#elif defined(__APPLE__)
     platform(1)
-#elif defined LINUX
+#elif defined(LINUX)
     platform(2)
 #endif
     {

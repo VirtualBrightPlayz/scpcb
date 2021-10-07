@@ -55,7 +55,7 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
     int32_t texSize = reader.read<PGE::u32>();
     std::vector<PGE::String> textureNames(texSize);
     allTextures = std::vector<PGE::Texture*>();
-    materials = std::vector<PGE::Mesh::Material>(texSize);
+    materials = std::vector<PGE::Material*>(texSize);
     std::set<int> toolTextures;
     // TODO: only skip tooltextures that are not recognized for an ingame purpose
     // i.e. tooltextures/invisible_collision should be handled as a special case
@@ -76,7 +76,7 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
                 textures.push_back(*texNormal);
                 allTextures.push_back(texNormal);
             }
-            materials[i] = PGE::Mesh::Material(normalMapped ? *shaderNormal : *shader, textures, PGE::Mesh::Material::Opaque::YES);
+            materials[i] = new PGE::Material(*gr->getGraphics(), normalMapped ? *shaderNormal : *shader, textures, PGE::Material::Opaque::YES);
         } else {
             toolTextures.insert(i);
         }
@@ -127,7 +127,7 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
             PGE::Mesh* newMesh = PGE::Mesh::create(*gr->getGraphics());
             newMesh->setMaterial(materials[i]);
 
-            PGE::StructuredData vertexData = PGE::StructuredData(materials[i].getShader().getVertexLayout(), vertices[i].size());
+            PGE::StructuredData vertexData = PGE::StructuredData(materials[i]->getShader().getVertexLayout(), vertices[i].size());
             for (int j = 0; j < vertices[i].size(); j++) {
                 vertexData.setValue(j, "position", vertices[i][j].position);
                 vertexData.setValue(j, "normal", vertices[i][j].normal);

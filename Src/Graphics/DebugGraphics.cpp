@@ -5,7 +5,7 @@
 DebugGraphics::DebugGraphics(PGE::Graphics* gfx) {
     mesh = PGE::Mesh::create(*gfx);
     shader = PGE::Shader::load(*gfx, PGE::FilePath::fromStr("SCPCB/GFX/Shaders/Debug/"));
-    material = PGE::Mesh::Material(*shader, PGE::Mesh::Material::Opaque::YES);
+    material = PGE::Material::create(*gfx, *shader, PGE::Material::Opaque::YES);
     mesh->setMaterial(material);
 
     colorConstant = &shader->getFragmentShaderConstant("inColor");

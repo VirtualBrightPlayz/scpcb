@@ -7,6 +7,7 @@
 #include <PGE/Math/Matrix.h>
 #include <PGE/Graphics/Mesh.h>
 #include <PGE/Graphics/Shader.h>
+#include <PGE/Graphics/Material.h>
 
 class GraphicsResources;
 
@@ -17,7 +18,7 @@ class Model {
         PGE::Mesh** meshes;
         unsigned meshCount;
 
-        PGE::Mesh::Material* materials;
+        PGE::Material** materials;
         unsigned materialCount;
 
         PGE::Shader* shader;

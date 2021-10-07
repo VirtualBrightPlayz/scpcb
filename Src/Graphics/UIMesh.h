@@ -8,6 +8,8 @@
 #include <PGE/File/FilePath.h>
 #include <PGE/Graphics/Shader.h>
 #include <PGE/Math/Rectangle.h>
+#include <PGE/Graphics/Material.h>
+#include <PGE/Graphics/Texture.h>
 
 class GraphicsResources;
 
@@ -23,7 +25,7 @@ class UIMesh {
         PGE::Shader::Constant* shaderTexturelessColorConstant;
 
         PGE::Mesh* mesh;
-        PGE::Mesh::Material material;
+        PGE::Material* material;
         PGE::Color color;
 
         // Whether or not the texture applied to this mesh is meant to tile.

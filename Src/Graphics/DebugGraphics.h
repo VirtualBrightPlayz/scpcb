@@ -11,7 +11,7 @@
 class DebugGraphics {
     private:
         PGE::Mesh* mesh;
-        PGE::Mesh::Material material;
+        PGE::Material* material;
         PGE::Shader* shader;
 
         PGE::Shader::Constant* colorConstant;

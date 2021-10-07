@@ -44,7 +44,7 @@ void BillboardManager::addBillboard(Billboard* billboard) {
     if (it == meshes.end()) {
         BillboardMesh newMesh;
         newMesh.texture = gfxRes->getTexture(texName);
-        newMesh.material = PGE::Mesh::Material(*shader, *newMesh.texture, PGE::Mesh::Material::Opaque::NO);
+        newMesh.material = PGE::Material::create(*gfxRes->getGraphics(), *shader, *newMesh.texture, PGE::Material::Opaque::NO);
         newMesh.mesh = PGE::Mesh::create(*gfxRes->getGraphics());
         newMesh.mesh->setMaterial(newMesh.material);
         meshes.emplace(texName, newMesh);
@@ -95,7 +95,7 @@ void BillboardManager::render() {
         }
         if (mesh.vertices.getElementCount() < mesh.billboards.size()*4) {
             geomChanged = true;
-            mesh.vertices = PGE::StructuredData(mesh.material.getShader().getVertexLayout(), mesh.billboards.size() * 4);
+            mesh.vertices = PGE::StructuredData(mesh.material->getShader().getVertexLayout(), mesh.billboards.size() * 4);
             int prevSize = (int)primitives.size();
             for (int i=prevSize;i<(mesh.vertices.getElementCount() / 2);i+=2) {
                 primitives.push_back(PGE::Mesh::Triangle((i*2)+2, (i*2)+1, (i*2)+0));

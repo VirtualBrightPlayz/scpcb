@@ -3,6 +3,7 @@
 
 #include <PGE/Graphics/Shader.h>
 #include <PGE/Graphics/Mesh.h>
+#include <PGE/Graphics/Texture.h>
 #include <PGE/String/String.h>
 #include <PGE/Math/Matrix.h>
 
@@ -17,7 +18,7 @@ class CBR {
 
         PGE::Texture** lightmaps;
         std::vector<PGE::Texture*> allTextures;
-        std::vector<PGE::Mesh::Material> materials;
+        std::vector<PGE::Material*> materials;
         std::vector<PGE::Mesh*> meshes;
 
         PGE::Shader* shader;
