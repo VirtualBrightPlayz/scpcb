@@ -9,14 +9,16 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED True)
 
 set(ASSIMP_BUILD_TESTS OFF)
+set(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 add_compile_definitions(AS_NO_COMPILER)
 # add_compile_definitions(_DX11)
-add_compile_definitions(DEBUG)
+add_compile_definitions(PGE_DEBUG)
 # add_compile_definitions(LINUX)
+add_compile_definitions(STB_IMAGE_IMPLEMENTATION STBI_WINDOWS_UTF8 STBI_FAILURE_USERMSG)
 
 add_subdirectory(Engine)
 add_subdirectory(Libraries/tinyxml2)
@@ -31,7 +33,6 @@ file(GLOB_RECURSE SOURCE_FILES
     )
 add_executable(scpcb "${CMAKE_CURRENT_SOURCE_DIR}/Src/Main.cpp" "${SOURCE_FILES}")
 
-add_compile_definitions(STB_IMAGE_IMPLEMENTATION STBI_WINDOWS_UTF8 STBI_FAILURE_USERMSG)
 # add_compile_definitions(OPEN_VR)
 
 target_link_libraries(scpcb PUBLIC Engine)
