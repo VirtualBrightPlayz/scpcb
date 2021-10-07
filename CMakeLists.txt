@@ -63,4 +63,9 @@ add_custom_command(TARGET scpcb PRE_BUILD
     ${CMAKE_SOURCE_DIR}/Content/ $<TARGET_FILE_DIR:scpcb>
     )
 
+add_custom_command(TARGET scpcb PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    ${CMAKE_SOURCE_DIR}/Windows/options.ini $<TARGET_FILE_DIR:scpcb>/options.ini
+    )
+
 # include(BuildShaders/CMakeLists.txt)
