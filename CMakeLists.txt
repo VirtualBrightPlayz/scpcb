@@ -16,7 +16,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 add_compile_definitions(AS_NO_COMPILER)
 # add_compile_definitions(_DX11)
 add_compile_definitions(DEBUG)
-add_compile_definitions(LINUX)
+# add_compile_definitions(LINUX)
 
 add_subdirectory(Engine)
 add_subdirectory(Libraries/tinyxml2)
