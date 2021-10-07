@@ -1,3 +1,4 @@
+#ifdef OPEN_VR
 #include "VRManager.h"
 
 #include <iostream>
@@ -161,3 +162,4 @@ PGE::Vector3f VRManager::getHandPosition(bool left) const {
 float VRManager::getFade() const {
     return fade;
 }
+#endif // OPEN_VR

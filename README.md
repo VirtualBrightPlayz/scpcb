@@ -1,3 +1,7 @@
+# This is a fork
+
+This fork of https://github.com/juanjp600/scpcb is currently just a testing ground for me to mess with C/C++.
+
 # CBN
 
 The original game's source code can be found here: https://github.com/Regalis11/scpcb

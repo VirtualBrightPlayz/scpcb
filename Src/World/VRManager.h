@@ -1,3 +1,4 @@
+#ifdef OPEN_VR
 #ifndef VRMANAGER_H_INCLUDED
 #define VRMANAGER_H_INCLUDED
 
@@ -54,3 +55,4 @@ class VRManager {
 };
 
 #endif // VRMANAGER_H_INCLUDED
+#endif // OPEN_VR

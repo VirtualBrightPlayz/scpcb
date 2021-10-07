@@ -13,7 +13,10 @@ set(ASSIMP_BUILD_TESTS OFF)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-add_compile_definitions(_DX11)
+add_compile_definitions(AS_NO_COMPILER)
+# add_compile_definitions(_DX11)
+add_compile_definitions(DEBUG)
+add_compile_definitions(LINUX)
 
 add_subdirectory(Engine)
 add_subdirectory(Libraries/tinyxml2)
@@ -29,7 +32,6 @@ file(GLOB_RECURSE SOURCE_FILES
 add_executable(scpcb "${CMAKE_CURRENT_SOURCE_DIR}/Src/Main.cpp" "${SOURCE_FILES}")
 
 add_compile_definitions(STB_IMAGE_IMPLEMENTATION STBI_WINDOWS_UTF8 STBI_FAILURE_USERMSG)
-# add_compile_definitions(DEBUG)
 # add_compile_definitions(OPEN_VR)
 
 target_link_libraries(scpcb PUBLIC Engine)
@@ -46,6 +48,7 @@ target_include_directories(scpcb
                         "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/tinyxml2"
                         "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/assimp-4.1.0/include"
                         "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/freetype/include"
+                        "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/stb_image"
                         "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/angelscript/sdk/angelscript/include"
                         "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/angelscript/sdk/add_on"
                         )
@@ -60,4 +63,4 @@ add_custom_command(TARGET scpcb PRE_BUILD
     ${CMAKE_SOURCE_DIR}/Content/ $<TARGET_FILE_DIR:scpcb>
     )
 
-include(BuildShaders/CMakeLists.txt)
+# include(BuildShaders/CMakeLists.txt)
