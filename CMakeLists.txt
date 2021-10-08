@@ -14,7 +14,7 @@ set(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-add_compile_definitions(AS_NO_COMPILER)
+# add_compile_definitions(AS_NO_COMPILER)
 # add_compile_definitions(_DX11)
 add_compile_definitions(PGE_DEBUG)
 if (UNIX AND NOT APPLE)
@@ -61,12 +61,12 @@ if(MSVC)
 endif()
 
 
-add_custom_command(TARGET scpcb PRE_BUILD
+add_custom_command(TARGET scpcb POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/Content/ $<TARGET_FILE_DIR:scpcb>
     )
 
-add_custom_command(TARGET scpcb PRE_BUILD
+add_custom_command(TARGET scpcb POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
     ${CMAKE_SOURCE_DIR}/Windows/options.ini $<TARGET_FILE_DIR:scpcb>/options.ini
     )
