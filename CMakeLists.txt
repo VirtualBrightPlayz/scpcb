@@ -65,12 +65,9 @@ if(MSVC)
 endif()
 
 
-add_custom_command(TARGET scpcb POST_BUILD
+add_custom_target(CopyContent ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/Content/ $<TARGET_FILE_DIR:scpcb>
-    )
-
-add_custom_command(TARGET scpcb POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
     ${CMAKE_SOURCE_DIR}/Windows/options.ini $<TARGET_FILE_DIR:scpcb>/options.ini
     )

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <inttypes.h>
 #include <scriptarray/scriptarray.h>
+#include <iostream>
 
 struct ContextPool {
     std::vector<asIScriptContext*> contexts;
@@ -90,6 +91,15 @@ void ScriptManager::messageCallback(const asSMessageInfo* msg, void* param) {
     newLogEntry.col = msg->col;
 
     log.push_back(newLogEntry);
+    // %s (%d, %d) : %s : %s\n
+	const char *type = "ERR";
+	if (msg->type == asMSGTYPE_WARNING)  {
+		type = "WARN";
+    }
+	else if (msg->type == asMSGTYPE_INFORMATION) {
+		type = "INFO";
+    }
+    std::cout << msg->section << " (" << msg->row << ", " << msg->col << ") : " << type << " : " << msg->message << std::endl;
 }
 
 asIScriptEngine* ScriptManager::getAngelScriptEngine() const {

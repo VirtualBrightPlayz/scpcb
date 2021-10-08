@@ -96,9 +96,7 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
         for (int j = 0; j < files.size(); j++) {
             if (files[j].getExtension().equals("as")) {
                 Script* script = new Script(files[j]);
-                scriptModule->addScript(files[j].str()
-                    .replace("/", "")
-                    .replace(".", ""), script);
+                scriptModule->addScript(files[j].str(), script);
             }
         }
         scriptModule->build();
