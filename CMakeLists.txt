@@ -21,6 +21,7 @@ if(WIN32 AND D3D)
 endif()
 add_compile_definitions(PGE_DEBUG)
 if(UNIX AND NOT APPLE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-strict-aliasing") # angelscript
     add_compile_definitions(LINUX)
 endif()
 add_compile_definitions(STB_IMAGE_IMPLEMENTATION STBI_WINDOWS_UTF8 STBI_FAILURE_USERMSG)
