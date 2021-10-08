@@ -26,7 +26,7 @@ ColorDefinitions::ColorDefinitions(ScriptManager* mgr) {
     engine->RegisterObjectType("Color", sizeof(PGE::Color), asOBJ_VALUE | asOBJ_APP_CLASS_ALLFLOATS | asGetTypeTraits<PGE::Color>());
     engine->RegisterObjectBehaviour("Color", asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(colorConstructor), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("Color", asBEHAVE_CONSTRUCT, "void f(float r, float g, float b, float a=1.0)", asFUNCTION(colorConstructorParametrized), asCALL_CDECL_OBJLAST);
-    engine->RegisterObjectBehaviour("Color", asBEHAVE_CONSTRUCT, "void f(uint8 r, uint8 g, uint8 b, uint8 a=1.0)", asFUNCTION(colorConstructorParametrizedInt), asCALL_CDECL_OBJLAST);
+    engine->RegisterObjectBehaviour("Color", asBEHAVE_CONSTRUCT, "void f(uint8 r, uint8 g, uint8 b, uint8 a=255)", asFUNCTION(colorConstructorParametrizedInt), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectBehaviour("Color", asBEHAVE_DESTRUCT, "void f()", asFUNCTION(colorDestructor), asCALL_CDECL_OBJLAST);
 
     engine->RegisterObjectMethod("Color", "bool opEquals(const Color&in other) const", asMETHODPR(PGE::Color, operator==, (const PGE::Color&) const, bool), asCALL_THISCALL);
