@@ -6,6 +6,7 @@
 #include <PGE/String/String.h>
 
 #include "../RefCounter.h"
+#include "../ScriptUtils.h"
 
 class ScriptManager;
 class CollisionMesh;

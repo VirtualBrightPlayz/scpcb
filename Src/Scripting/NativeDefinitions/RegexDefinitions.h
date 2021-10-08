@@ -7,6 +7,7 @@
 
 #include "../RefCounter.h"
 #include "../NativeDefinition.h"
+#include "../ScriptUtils.h"
 
 class ScriptManager;
 

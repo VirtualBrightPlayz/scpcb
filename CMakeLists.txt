@@ -25,6 +25,7 @@ if(UNIX AND NOT APPLE)
     add_compile_definitions(LINUX)
 endif()
 add_compile_definitions(STB_IMAGE_IMPLEMENTATION STBI_WINDOWS_UTF8 STBI_FAILURE_USERMSG)
+add_compile_definitions(ANGELSCRIPT_EXPORT)
 
 add_subdirectory(Engine)
 add_subdirectory(Libraries/tinyxml2)

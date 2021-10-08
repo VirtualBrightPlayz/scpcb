@@ -4,6 +4,7 @@
 #include <map>
 
 #include "../RefCounter.h"
+#include "../ScriptUtils.h"
 
 class ScriptManager;
 enum class Input;

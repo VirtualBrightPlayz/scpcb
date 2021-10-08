@@ -3,6 +3,7 @@
 
 #include "../NativeDefinition.h"
 #include "../RefCounter.h"
+#include "../ScriptUtils.h"
 
 #include <PGE/Math/Random.h>
 

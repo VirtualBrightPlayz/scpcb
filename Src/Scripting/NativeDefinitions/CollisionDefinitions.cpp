@@ -72,16 +72,16 @@ CollisionDefinitions::CollisionDefinitions(ScriptManager* mgr, RefCounterManager
     engine->RegisterObjectType("Mesh", sizeof(CollisionMesh), asOBJ_REF);
     engine->RegisterObjectBehaviour("Mesh", asBEHAVE_FACTORY, "Mesh@ f(const array<Vector3f>&in verts, const array<int>&in inds)",
         asMETHOD(CollisionDefinitions, meshFactory), asCALL_THISCALL_ASGLOBAL, this);
-    engine->RegisterObjectBehaviour("Mesh", asBEHAVE_ADDREF, "void f()", asMETHOD(CollisionDefinitions,addRef), asCALL_THISCALL_OBJLAST, this);
-    engine->RegisterObjectBehaviour("Mesh", asBEHAVE_RELEASE, "void f()", asMETHOD(CollisionDefinitions,release), asCALL_THISCALL_OBJLAST, this);
+    engine->RegisterObjectBehaviour("Mesh", asBEHAVE_ADDREF, "void f()", asVIRTUAL_METHOD(CollisionDefinitions,addRef), asCALL_THISCALL_OBJLAST, this);
+    engine->RegisterObjectBehaviour("Mesh", asBEHAVE_RELEASE, "void f()", asVIRTUAL_METHOD(CollisionDefinitions,release), asCALL_THISCALL_OBJLAST, this);
 
     engine->RegisterEnum("Instance");
 
     engine->RegisterObjectType("Collection", sizeof(CollisionMeshCollection), asOBJ_REF);
     engine->RegisterObjectBehaviour("Collection", asBEHAVE_FACTORY, "Collection@ f()",
         asMETHOD(CollisionDefinitions, collectionFactory), asCALL_THISCALL_ASGLOBAL, this);
-    engine->RegisterObjectBehaviour("Collection", asBEHAVE_ADDREF, "void f()", asMETHOD(CollisionDefinitions,addRef), asCALL_THISCALL_OBJLAST, this);
-    engine->RegisterObjectBehaviour("Collection", asBEHAVE_RELEASE, "void f()", asMETHOD(CollisionDefinitions,release), asCALL_THISCALL_OBJLAST, this);
+    engine->RegisterObjectBehaviour("Collection", asBEHAVE_ADDREF, "void f()", asVIRTUAL_METHOD(CollisionDefinitions,addRef), asCALL_THISCALL_OBJLAST, this);
+    engine->RegisterObjectBehaviour("Collection", asBEHAVE_RELEASE, "void f()", asVIRTUAL_METHOD(CollisionDefinitions,release), asCALL_THISCALL_OBJLAST, this);
     engine->RegisterObjectMethod("Collection", "Instance addInstance(Mesh@ mesh, const Matrix4x4f&in matrix)", asMETHOD(CollisionMeshCollection, addInstance), asCALL_THISCALL);
     engine->RegisterObjectMethod("Collection", "void updateInstance(Instance instance, const Matrix4x4f&in matrix)", asMETHOD(CollisionMeshCollection, updateInstance), asCALL_THISCALL);
     engine->RegisterObjectMethod("Collection", "void removeInstance(Instance instance)", asMETHOD(CollisionMeshCollection, removeInstance), asCALL_THISCALL);

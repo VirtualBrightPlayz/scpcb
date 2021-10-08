@@ -2,6 +2,7 @@
 #define PICKABLEDEFINITIONS_H_INCLUDED
 
 #include "../RefCounter.h"
+#include "../ScriptUtils.h"
 
 class ScriptManager;
 class Pickable;

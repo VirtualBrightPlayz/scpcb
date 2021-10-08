@@ -53,8 +53,8 @@ RandomDefinitions::RandomDefinitions(ScriptManager* mgr, RefCounterManager* rcMg
 	engine->RegisterObjectType("Random", sizeof(PGE::Random), asOBJ_REF);
 	engine->RegisterObjectBehaviour("Random", asBEHAVE_FACTORY, "Random@ f()", asMETHOD(RandomDefinitions, randomFactory), asCALL_THISCALL_ASGLOBAL, this);
 	engine->RegisterObjectBehaviour("Random", asBEHAVE_FACTORY, "Random@ f(uint64 seed)", asMETHOD(RandomDefinitions, randomFactorySeeded), asCALL_THISCALL_ASGLOBAL, this);
-	engine->RegisterObjectBehaviour("Random", asBEHAVE_ADDREF, "void f()", asMETHOD(RandomDefinitions, addRef), asCALL_THISCALL_OBJLAST, this);
-	engine->RegisterObjectBehaviour("Random", asBEHAVE_RELEASE, "void f()", asMETHOD(RandomDefinitions, release), asCALL_THISCALL_OBJLAST, this);
+	engine->RegisterObjectBehaviour("Random", asBEHAVE_ADDREF, "void f()", asVIRTUAL_METHOD(RandomDefinitions, addRef), asCALL_THISCALL_OBJLAST, this);
+	engine->RegisterObjectBehaviour("Random", asBEHAVE_RELEASE, "void f()", asVIRTUAL_METHOD(RandomDefinitions, release), asCALL_THISCALL_OBJLAST, this);
 	engine->RegisterObjectMethod("Random", "int next()", asMETHOD(PGE::Random, next), asCALL_THISCALL);
 	engine->RegisterObjectMethod("Random", "bool nextBool()", asMETHOD(PGE::Random, nextBool), asCALL_THISCALL);
 	engine->RegisterObjectMethod("Random", "float nextFloat()", asMETHOD(PGE::Random, nextFloat), asCALL_THISCALL);

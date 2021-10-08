@@ -37,8 +37,8 @@ PickableDefinitions::PickableDefinitions(ScriptManager* mgr, RefCounterManager* 
     engine->RegisterObjectType("Pickable", sizeof(Pickable), asOBJ_REF);
 
     engine->RegisterObjectBehaviour("Pickable", asBEHAVE_FACTORY, "Pickable@ f()", asMETHOD(PickableDefinitions, pickableFactory), asCALL_THISCALL_ASGLOBAL, this);
-    engine->RegisterObjectBehaviour("Pickable", asBEHAVE_ADDREF, "void f()", asMETHOD(PickableDefinitions, addRef), asCALL_THISCALL_OBJLAST, this);
-    engine->RegisterObjectBehaviour("Pickable", asBEHAVE_RELEASE, "void f()", asMETHOD(PickableDefinitions, release), asCALL_THISCALL_OBJLAST, this);
+    engine->RegisterObjectBehaviour("Pickable", asBEHAVE_ADDREF, "void f()", asVIRTUAL_METHOD(PickableDefinitions, addRef), asCALL_THISCALL_OBJLAST, this);
+    engine->RegisterObjectBehaviour("Pickable", asBEHAVE_RELEASE, "void f()", asVIRTUAL_METHOD(PickableDefinitions, release), asCALL_THISCALL_OBJLAST, this);
 
     engine->RegisterObjectProperty("Pickable", "Vector3f position", asOFFSET(Pickable, position));
     engine->RegisterObjectMethod("Pickable", "bool getPicked()", asMETHOD(Pickable, getPicked), asCALL_THISCALL);

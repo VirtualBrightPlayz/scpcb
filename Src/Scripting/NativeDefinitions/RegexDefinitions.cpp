@@ -21,8 +21,8 @@ RegexDefinitions::RegexDefinitions(ScriptManager* mgr, RefCounterManager* rcMgr)
     engine->RegisterObjectType("Regex", sizeof(std::regex), asOBJ_REF);
     
     engine->RegisterObjectBehaviour("Regex", asBEHAVE_FACTORY, "Regex@ f(const string&in str)", asMETHOD(RegexDefinitions, regexFactory), asCALL_THISCALL_ASGLOBAL, this);
-    engine->RegisterObjectBehaviour("Regex", asBEHAVE_ADDREF, "void f()", asMETHOD(RegexDefinitions, addRef), asCALL_THISCALL_OBJLAST, this);
-    engine->RegisterObjectBehaviour("Regex", asBEHAVE_RELEASE, "void f()", asMETHOD(RegexDefinitions, release), asCALL_THISCALL_OBJLAST, this);
+    engine->RegisterObjectBehaviour("Regex", asBEHAVE_ADDREF, "void f()", asVIRTUAL_METHOD(RegexDefinitions, addRef), asCALL_THISCALL_OBJLAST, this);
+    engine->RegisterObjectBehaviour("Regex", asBEHAVE_RELEASE, "void f()", asVIRTUAL_METHOD(RegexDefinitions, release), asCALL_THISCALL_OBJLAST, this);
 
     engine->RegisterObjectMethod("Regex", "bool matchAny(const string&in testStr) const", asFUNCTION(matchRegexAny), asCALL_CDECL_OBJFIRST);
     engine->RegisterObjectMethod("Regex", "int matchPosition(const string&in testStr) const", asFUNCTION(matchRegexPosition), asCALL_CDECL_OBJFIRST);
