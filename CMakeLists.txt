@@ -15,9 +15,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 option(D3D "DirectX11 (Windows Only)" ON)
+option(VKR "Vulkan (Windows & Linux only)" ON)
 
 if(WIN32 AND D3D)
     add_compile_definitions(_D3D)
+endif()
+if(VKR AND NOT APPLE)
+    add_compile_definitions(_VKR)
 endif()
 add_compile_definitions(PGE_DEBUG)
 if(UNIX AND NOT APPLE)
