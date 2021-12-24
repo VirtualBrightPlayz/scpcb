@@ -42,7 +42,7 @@ class Font {
 
         struct Atlas {
             PGE::Texture* texture;
-            PGE::Mesh::Material material;
+            PGE::Material* material;
             PGE::Mesh* mesh;
 
             struct Vertex {

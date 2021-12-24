@@ -47,7 +47,7 @@ class RM2 {
         static PGE::FilePath opaqueNormalMapShaderPath;
         static PGE::FilePath alphaShaderPath;
 
-        std::map<unsigned short, PGE::Mesh::Material> materials;
+        std::map<unsigned short, PGE::Material*> materials;
 
         struct TextureEntry {
             PGE::Texture* texture;

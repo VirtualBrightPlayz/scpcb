@@ -2,15 +2,17 @@
 
 #include <math.h>
 
+#include <PGE/Graphics/Material.h>
+
 DebugGraphics::DebugGraphics(PGE::Graphics* gfx) {
     mesh = PGE::Mesh::create(*gfx);
     shader = PGE::Shader::load(*gfx, PGE::FilePath::fromStr("SCPCB/GFX/Shaders/Debug/"));
-    material = PGE::Mesh::Material(*shader, PGE::Mesh::Material::Opaque::YES);
+    material = PGE::Material::create(*gfx, *shader, PGE::Opaque::YES);
     mesh->setMaterial(material);
 
-    colorConstant = &shader->getFragmentShaderConstant("inColor");
-    viewMatrixConstant = &shader->getVertexShaderConstant("viewMatrix");
-    projectionMatrixConstant = &shader->getVertexShaderConstant("projectionMatrix");
+    colorConstant = shader->getFragmentShaderConstant("inColor");
+    viewMatrixConstant = shader->getVertexShaderConstant("viewMatrix");
+    projectionMatrixConstant = shader->getVertexShaderConstant("projectionMatrix");
 }
 
 DebugGraphics::~DebugGraphics() {

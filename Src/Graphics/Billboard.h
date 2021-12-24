@@ -6,6 +6,8 @@
 #include <PGE/String/String.h>
 
 #include <PGE/Graphics/Mesh.h>
+#include <PGE/Graphics/Texture.h>
+#include <PGE/Graphics/Shader.h>
 #include <PGE/StructuredData/StructuredData.h>
 
 class GraphicsResources;
@@ -23,7 +25,7 @@ class BillboardManager {
             void operator=(const BillboardMesh& other);
 
             PGE::Mesh* mesh;
-            PGE::Mesh::Material material;
+            PGE::Material* material;
             PGE::Texture* texture;
 
             PGE::StructuredData vertices;

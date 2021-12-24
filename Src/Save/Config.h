@@ -20,7 +20,7 @@ enum WindowType {
 
 class Config {
     public:
-        typedef std::multimap<Input, PGE::KeyboardInput::Keycode> KeyBindsMap;
+        typedef std::multimap<Input, PGE::Keycode> KeyBindsMap;
         
     private:
         // TODO: Revisit this.
@@ -40,7 +40,7 @@ class Config {
         
         KeyBindsMap kbBinds;
         void loadKeyboardInput(Input input);
-        std::multimap<Input, PGE::MouseInput::Button> msBinds;
+        std::multimap<Input, PGE::MouseButton> msBinds;
 
         void loadFile();
         void saveFile() const;

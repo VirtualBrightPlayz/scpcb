@@ -1,9 +1,9 @@
 namespace GUITextInput {
     shared GUITextInput@ subscriber;
     shared const float caretBreathingSpace = 0.25;
-    shared Regex@ word = Regex("\\w");
-    shared Regex@ leftBoundWord = Regex("(\\b)\\w+$|\\w(\\b)\\W+$");
-    shared Regex@ rightBoundWord = Regex("^\\w+(\\b)|^\\W+(\\b)\\w");
+    shared string word = "\\w";
+    shared string leftBoundWord = "(\\b)\\w+$|\\w(\\b)\\W+$";
+    shared string rightBoundWord = "^\\w+(\\b)|^\\W+(\\b)\\w";
 }
 
 shared class GUITextInput : GUIComponent {
@@ -94,7 +94,7 @@ shared class GUITextInput : GUIComponent {
 
     private int getFirstLeftWordBoundary(int startingPosition) const {
         if (startingPosition > 0) {
-            return GUITextInput::leftBoundWord.matchPosition(text.text.substr(0, startingPosition));
+            return GUITextInput::leftBoundWord.regexMatchPosition(text.text.substr(0, startingPosition));
         }
 
         return startingPosition;
@@ -102,7 +102,7 @@ shared class GUITextInput : GUIComponent {
 
     private int getFirstRightWordBoundary(int startingPosition) const {
         if (startingPosition < text.text.length()) {
-            return GUITextInput::rightBoundWord.matchPosition(text.text.substr(startingPosition, text.text.length() - startingPosition)) + startingPosition;
+            return GUITextInput::rightBoundWord.regexMatchPosition(text.text.substr(startingPosition, text.text.length() - startingPosition)) + startingPosition;
         }
 
         return startingPosition;
@@ -343,24 +343,24 @@ shared class GUITextInput : GUIComponent {
                     // Let's check for that first character being a boundary first.
                     bool boundaryContact = false;
                     if (right) {
-                        boundaryContact = !GUITextInput::word.matchAny(text.text[selectionEndPosition]);
+                        boundaryContact = !GUITextInput::word.regexMatchAny(text.text[selectionEndPosition]);
                         selectionEndPosition++;
                     } else {
-                        boundaryContact = !GUITextInput::word.matchAny(text.text[selectionStartPosition - 1]);
+                        boundaryContact = !GUITextInput::word.regexMatchAny(text.text[selectionStartPosition - 1]);
                         selectionStartPosition--;
                     }
 
                     if (!boundaryContact) {
                         // Scan both left and right sides of the caret for word characters.
                         while (selectionEndPosition < text.text.length()) {
-                            if (GUITextInput::word.matchAny(text.text[selectionEndPosition])) {
+                            if (GUITextInput::word.regexMatchAny(text.text[selectionEndPosition])) {
                                 selectionEndPosition++;
                             } else {
                                 break;
                             }
                         }
                         while (selectionStartPosition > 0) {
-                            if (GUITextInput::word.matchAny(text.text[selectionStartPosition - 1])) {
+                            if (GUITextInput::word.regexMatchAny(text.text[selectionStartPosition - 1])) {
                                 selectionStartPosition--;
                             } else {
                                 break;

@@ -1,6 +1,7 @@
 #include "Font.h"
 
 #include <PGE/Math/Matrix.h>
+#include <PGE/Graphics/Material.h>
 
 #include <inttypes.h>
 #include <stdlib.h>
@@ -28,16 +29,17 @@ Font::Font(FT_Library ftLibrary, GraphicsResources* gr, Config* con, const PGE::
 
     shader = gr->getShader(shaderPath, false);
 
-    modelMatrixConstant = &shader->getVertexShaderConstant("modelMatrix");
-    colorConstant = &shader->getFragmentShaderConstant("imageColor");
+    modelMatrixConstant = shader->getVertexShaderConstant("modelMatrix");
+    colorConstant = shader->getFragmentShaderConstant("imageColor");
 
-    shader->getVertexShaderConstant("projectionMatrix").setValue(gr->getOrthoMat());
+    shader->getVertexShaderConstant("projectionMatrix")->setValue(gr->getOrthoMat());
 
     renderAtlas(0);
 }
 
 Font::~Font() {
     for (int i=0;i<atlases.size();i++) {
+        delete atlases[i].material;
         delete atlases[i].mesh;
         delete atlases[i].texture;
     }
@@ -126,7 +128,7 @@ void Font::renderAtlas(long chr) {
     if (buffer!=nullptr) {
         Atlas newAtlas;
         newAtlas.texture = PGE::Texture::load(*graphicsRes->getGraphics(),atlasDims,atlasDims,buffer,PGE::Texture::Format::RGBA32);
-        newAtlas.material = PGE::Mesh::Material(*shader, *newAtlas.texture, PGE::Mesh::Material::Opaque::NO);
+        newAtlas.material = PGE::Material::create(*graphicsRes->getGraphics(), *shader, *newAtlas.texture, PGE::Opaque::NO);
         newAtlas.mesh = PGE::Mesh::create(*graphicsRes->getGraphics());
         newAtlas.mesh->setMaterial(newAtlas.material);
         atlases.push_back(newAtlas);
@@ -229,7 +231,7 @@ float Font::getHeight(float scale) const {
 }
 
 PGE::StructuredData Font::Atlas::generateVertexData() const {
-    PGE::StructuredData retVal = PGE::StructuredData(material.getShader().getVertexLayout(), vertices.size());
+    PGE::StructuredData retVal = PGE::StructuredData(material->getShader().getVertexLayout(), vertices.size());
     for (int i = 0; i < vertices.size(); i++) {
         retVal.setValue(i, "position", vertices[i].position);
         retVal.setValue(i, "uv", vertices[i].uv);

@@ -13,7 +13,6 @@
 #include "../Scripting/ScriptClass.h"
 
 #include "../Scripting/NativeDefinitions/WorldDefinitions.h"
-#include "../Scripting/NativeDefinitions/RegexDefinitions.h"
 #include "../Scripting/NativeDefinitions/MementoDefinitions.h"
 #include "../Scripting/NativeDefinitions/ConsoleDefinitions.h"
 #include "../Scripting/NativeDefinitions/InputDefinitions.h"
@@ -39,7 +38,6 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
     refCounterManager = new RefCounterManager();
 
     nativeDefs.push_back(new WorldDefinitions(manager, world));
-    nativeDefs.push_back(new RegexDefinitions(manager, refCounterManager));
     nativeDefs.push_back(new MementoDefinitions(manager));
     nativeDefs.push_back(new ColorDefinitions(manager));
     nativeDefs.push_back(new MathDefinitions(manager));
@@ -89,7 +87,7 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
                     }
                 }
             }
-            PGE_ASSERT(depsNotEnabled == 0, enabledMods[i] + " has dependencies that are not enabled before it");
+            PGE::asrt(depsNotEnabled == 0, enabledMods[i] + " has dependencies that are not enabled before it");
         }
         ScriptModule* scriptModule = new ScriptModule(manager, enabledMods[i]);
         std::vector<PGE::FilePath> files = directory.enumerateFiles();

@@ -29,12 +29,12 @@ class KeyBinds {
         ConsoleBindingsMap consoleBindings;
 
         void bindInput(Input input, PGE::Input* key);
-        void unbindInput(Input input, PGE::Input::Device device, int key);
+        void unbindInput(Input input, PGE::Device device, int key);
 
         std::unordered_map<PGE::String::Key, PGE::Input*> inputStrings;
-        void registerInputString(const PGE::String& string, PGE::KeyboardInput::Keycode key);
-        void registerInputString(const PGE::String& string, PGE::MouseInput::Button key);
-        void registerInputString(const PGE::String& string, PGE::ControllerInput::Button key);
+        void registerInputString(const PGE::String& string, PGE::Keycode key);
+        void registerInputString(const PGE::String& string, PGE::MouseButton key);
+        void registerInputString(const PGE::String& string, PGE::ControllerButton key);
 
     public:
         KeyBinds(PGE::InputManager* inIo);
@@ -80,12 +80,12 @@ class KeyBinds {
         bool redoIsHit() const;
         bool selectAllIsHit() const;
 
-        void bindInput(Input input, PGE::MouseInput::Button key);
-        void bindInput(Input input, PGE::KeyboardInput::Keycode key);
-        void bindInput(Input input, PGE::ControllerInput::Button key);
-        void unbindInput(Input input, PGE::MouseInput::Button key);
-        void unbindInput(Input input, PGE::KeyboardInput::Keycode key);
-        void unbindInput(Input input, PGE::ControllerInput::Button key);
+        void bindInput(Input input, PGE::MouseButton key);
+        void bindInput(Input input, PGE::Keycode key);
+        void bindInput(Input input, PGE::ControllerButton key);
+        void unbindInput(Input input, PGE::MouseButton key);
+        void unbindInput(Input input, PGE::Keycode key);
+        void unbindInput(Input input, PGE::ControllerButton key);
 
         void bindCommand(PGE::String command, PGE::Input* key);
         void unbindCommand(PGE::String command, PGE::Input* key);

@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include <PGE/File/BinaryReader.h>
+#include <PGE/Graphics/Material.h>
 
 #include "../Graphics/GraphicsResources.h"
 #include "../Utils/TextureUtil.h"
@@ -28,22 +29,22 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
     this->gr = gr;
 
     shader = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaque/"), true);
-    shaderModelMatrixConstant = &shader->getVertexShaderConstant("modelMatrix");
+    shaderModelMatrixConstant = shader->getVertexShaderConstant("modelMatrix");
 
     shaderNormal = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/RoomOpaqueNormalMap/"), true);
-    shaderNormalModelMatrixConstant = &shaderNormal->getVertexShaderConstant("modelMatrix");
+    shaderNormalModelMatrixConstant = shaderNormal->getVertexShaderConstant("modelMatrix");
 
     PGE::BinaryReader reader = PGE::BinaryReader(PGE::FilePath::fromStr(filename));
 
     std::vector<PGE::byte> header = reader.readBytes(3);
-    PGE_ASSERT(
+    PGE::asrt(
         header[0] == 'C' &&
         header[1] == 'B' &&
         header[2] == 'R', "CBR file is corrupted/invalid!");
     uint32_t revision = reader.read<PGE::u32>();
 
     // Lightmaps
-    PGE_ASSERT((Lightmapped)reader.read<PGE::byte>() != Lightmapped::No, "CBR file without lightmaps");
+    PGE::asrt((Lightmapped)reader.read<PGE::byte>() != Lightmapped::No, "CBR file without lightmaps");
     lightmaps = new PGE::Texture*[4];
     for (int i = 0; i < 4; i++) {
         int size = reader.read<PGE::i32>();
@@ -55,7 +56,7 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
     int32_t texSize = reader.read<PGE::u32>();
     std::vector<PGE::String> textureNames(texSize);
     allTextures = std::vector<PGE::Texture*>();
-    materials = std::vector<PGE::Mesh::Material>(texSize);
+    materials = std::vector<PGE::Material*>(texSize);
     std::set<int> toolTextures;
     // TODO: only skip tooltextures that are not recognized for an ingame purpose
     // i.e. tooltextures/invisible_collision should be handled as a special case
@@ -76,7 +77,7 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
                 textures.push_back(*texNormal);
                 allTextures.push_back(texNormal);
             }
-            materials[i] = PGE::Mesh::Material(normalMapped ? *shaderNormal : *shader, textures, PGE::Mesh::Material::Opaque::YES);
+            materials[i] = PGE::Material::create(*gr->getGraphics(), normalMapped ? *shaderNormal : *shader, textures, PGE::Opaque::YES);
         } else {
             toolTextures.insert(i);
         }
@@ -127,7 +128,7 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
             PGE::Mesh* newMesh = PGE::Mesh::create(*gr->getGraphics());
             newMesh->setMaterial(materials[i]);
 
-            PGE::StructuredData vertexData = PGE::StructuredData(materials[i].getShader().getVertexLayout(), vertices[i].size());
+            PGE::StructuredData vertexData = PGE::StructuredData(materials[i]->getShader().getVertexLayout(), vertices[i].size());
             for (int j = 0; j < vertices[i].size(); j++) {
                 vertexData.setValue(j, "position", vertices[i][j].position);
                 vertexData.setValue(j, "normal", vertices[i][j].normal);
@@ -143,6 +144,9 @@ CBR::CBR(GraphicsResources* gr, const PGE::String& filename) {
 }
 
 CBR::~CBR() {
+    for (PGE::Material* mat : materials) {
+        delete mat;
+    }
     gr->dropShader(shader);
     gr->dropShader(shaderNormal);
     for (int i = 0; i < 4; i++) {

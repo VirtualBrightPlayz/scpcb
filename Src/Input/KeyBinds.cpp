@@ -8,34 +8,34 @@ KeyBinds::KeyBinds(PGE::InputManager* inIo) {
 
     inputManager = inIo;
 
-    mouse1 = new PGE::MouseInput(PGE::MouseInput::Button::LEFT);
-    mouse2 = new PGE::MouseInput(PGE::MouseInput::Button::RIGHT);
+    mouse1 = new PGE::MouseInput(PGE::MouseButton::LEFT);
+    mouse2 = new PGE::MouseInput(PGE::MouseButton::RIGHT);
 
-    escape = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::ESCAPE);
-    leftArrow = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::LEFT);
-    rightArrow = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::RIGHT);
-    upArrow = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::UP);
-    downArrow = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::DOWN);
-    leftShift = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::LSHIFT);
-    rightShift = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::RSHIFT);
-    backspace = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::BACKSPACE);
-    del = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::DELETE);
-    enter = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::RETURN);
+    escape = new PGE::KeyboardInput(PGE::Keycode::ESCAPE);
+    leftArrow = new PGE::KeyboardInput(PGE::Keycode::LEFT);
+    rightArrow = new PGE::KeyboardInput(PGE::Keycode::RIGHT);
+    upArrow = new PGE::KeyboardInput(PGE::Keycode::UP);
+    downArrow = new PGE::KeyboardInput(PGE::Keycode::DOWN);
+    leftShift = new PGE::KeyboardInput(PGE::Keycode::LSHIFT);
+    rightShift = new PGE::KeyboardInput(PGE::Keycode::RSHIFT);
+    backspace = new PGE::KeyboardInput(PGE::Keycode::BACKSPACE);
+    del = new PGE::KeyboardInput(PGE::Keycode::DELETE);
+    enter = new PGE::KeyboardInput(PGE::Keycode::RETURN);
 
 #ifdef __APPLE__
-    leftShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::LGUI);
-    rightShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::RGUI);
+    leftShortcutKey = new PGE::KeyboardInput(PGE::Keycode::LGUI);
+    rightShortcutKey = new PGE::KeyboardInput(PGE::Keycode::RGUI);
 #else
-    leftShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::LCTRL);
-    rightShortcutKey = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::RCTRL);
+    leftShortcutKey = new PGE::KeyboardInput(PGE::Keycode::LCTRL);
+    rightShortcutKey = new PGE::KeyboardInput(PGE::Keycode::RCTRL);
 #endif
-    keyA = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::A);
-    keyC = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::C);
-    keyX = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::X);
-    keyV = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::V);
-    keyZ = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::Z);
+    keyA = new PGE::KeyboardInput(PGE::Keycode::A);
+    keyC = new PGE::KeyboardInput(PGE::Keycode::C);
+    keyX = new PGE::KeyboardInput(PGE::Keycode::X);
+    keyV = new PGE::KeyboardInput(PGE::Keycode::V);
+    keyZ = new PGE::KeyboardInput(PGE::Keycode::Z);
 #ifndef __APPLE__
-    keyY = new PGE::KeyboardInput(PGE::KeyboardInput::Keycode::Y);
+    keyY = new PGE::KeyboardInput(PGE::Keycode::Y);
 #endif
 
     inputManager->trackInput(mouse1);
@@ -62,32 +62,32 @@ KeyBinds::KeyBinds(PGE::InputManager* inIo) {
 #endif
 
     // TODO: Add more | change style?
-    registerInputString("key_q", PGE::KeyboardInput::Keycode::Q);
-    registerInputString("key_w", PGE::KeyboardInput::Keycode::W);
-    registerInputString("key_e", PGE::KeyboardInput::Keycode::E);
-    registerInputString("key_r", PGE::KeyboardInput::Keycode::R);
-    registerInputString("key_t", PGE::KeyboardInput::Keycode::T);
-    registerInputString("key_z", PGE::KeyboardInput::Keycode::Z);
-    registerInputString("key_u", PGE::KeyboardInput::Keycode::U);
-    registerInputString("key_i", PGE::KeyboardInput::Keycode::I);
-    registerInputString("key_o", PGE::KeyboardInput::Keycode::O);
-    registerInputString("key_p", PGE::KeyboardInput::Keycode::P);
-    registerInputString("key_a", PGE::KeyboardInput::Keycode::A);
-    registerInputString("key_s", PGE::KeyboardInput::Keycode::S);
-    registerInputString("key_d", PGE::KeyboardInput::Keycode::D);
-    registerInputString("key_f", PGE::KeyboardInput::Keycode::F);
-    registerInputString("key_g", PGE::KeyboardInput::Keycode::G);
-    registerInputString("key_h", PGE::KeyboardInput::Keycode::H);
-    registerInputString("key_j", PGE::KeyboardInput::Keycode::J);
-    registerInputString("key_k", PGE::KeyboardInput::Keycode::K);
-    registerInputString("key_l", PGE::KeyboardInput::Keycode::L);
-    registerInputString("key_y", PGE::KeyboardInput::Keycode::Y);
-    registerInputString("key_x", PGE::KeyboardInput::Keycode::X);
-    registerInputString("key_c", PGE::KeyboardInput::Keycode::C);
-    registerInputString("key_v", PGE::KeyboardInput::Keycode::V);
-    registerInputString("key_b", PGE::KeyboardInput::Keycode::B);
-    registerInputString("key_n", PGE::KeyboardInput::Keycode::N);
-    registerInputString("key_m", PGE::KeyboardInput::Keycode::M);
+    registerInputString("key_q", PGE::Keycode::Q);
+    registerInputString("key_w", PGE::Keycode::W);
+    registerInputString("key_e", PGE::Keycode::E);
+    registerInputString("key_r", PGE::Keycode::R);
+    registerInputString("key_t", PGE::Keycode::T);
+    registerInputString("key_z", PGE::Keycode::Z);
+    registerInputString("key_u", PGE::Keycode::U);
+    registerInputString("key_i", PGE::Keycode::I);
+    registerInputString("key_o", PGE::Keycode::O);
+    registerInputString("key_p", PGE::Keycode::P);
+    registerInputString("key_a", PGE::Keycode::A);
+    registerInputString("key_s", PGE::Keycode::S);
+    registerInputString("key_d", PGE::Keycode::D);
+    registerInputString("key_f", PGE::Keycode::F);
+    registerInputString("key_g", PGE::Keycode::G);
+    registerInputString("key_h", PGE::Keycode::H);
+    registerInputString("key_j", PGE::Keycode::J);
+    registerInputString("key_k", PGE::Keycode::K);
+    registerInputString("key_l", PGE::Keycode::L);
+    registerInputString("key_y", PGE::Keycode::Y);
+    registerInputString("key_x", PGE::Keycode::X);
+    registerInputString("key_c", PGE::Keycode::C);
+    registerInputString("key_v", PGE::Keycode::V);
+    registerInputString("key_b", PGE::Keycode::B);
+    registerInputString("key_n", PGE::Keycode::N);
+    registerInputString("key_m", PGE::Keycode::M);
 }
 
 KeyBinds::~KeyBinds() {
@@ -139,15 +139,15 @@ void KeyBinds::setConsoleDefinitions(ConsoleDefinitions* inConDef) {
     conDef = inConDef;
 }
 
-void KeyBinds::registerInputString(const PGE::String& string, PGE::KeyboardInput::Keycode key) {
+void KeyBinds::registerInputString(const PGE::String& string, PGE::Keycode key) {
     inputStrings.emplace(string, new PGE::KeyboardInput(key));
 }
 
-void KeyBinds::registerInputString(const PGE::String& string, PGE::MouseInput::Button key) {
+void KeyBinds::registerInputString(const PGE::String& string, PGE::MouseButton key) {
     inputStrings.emplace(string, new PGE::MouseInput(key));
 }
 
-void KeyBinds::registerInputString(const PGE::String& string, PGE::ControllerInput::Button key) {
+void KeyBinds::registerInputString(const PGE::String& string, PGE::ControllerButton key) {
     inputStrings.emplace(string, new PGE::ControllerInput(inputManager->getController(0), key));
 }
 
@@ -224,19 +224,19 @@ void KeyBinds::bindInput(Input input, PGE::Input* key) {
     bindings.emplace(input, key);
 }
 
-void KeyBinds::bindInput(Input input, PGE::MouseInput::Button key) {
+void KeyBinds::bindInput(Input input, PGE::MouseButton key) {
     bindInput(input, new PGE::MouseInput(key));
 }
 
-void KeyBinds::bindInput(Input input, PGE::KeyboardInput::Keycode key) {
+void KeyBinds::bindInput(Input input, PGE::Keycode key) {
     bindInput(input, new PGE::KeyboardInput(key));
 }
 
-void KeyBinds::bindInput(Input input, PGE::ControllerInput::Button key) {
+void KeyBinds::bindInput(Input input, PGE::ControllerButton key) {
     bindInput(input, new PGE::ControllerInput(inputManager->getController(0), key));
 }
 
-void KeyBinds::unbindInput(Input input, PGE::Input::Device Device, int key) {
+void KeyBinds::unbindInput(Input input, PGE::Device Device, int key) {
     // Iterate over all values of the given key
     std::pair<UserInputMap::iterator, UserInputMap::iterator> bindingsRange = bindings.equal_range(input);
     for (UserInputMap::iterator it = bindingsRange.first; it != bindingsRange.second; it++) {
@@ -249,16 +249,16 @@ void KeyBinds::unbindInput(Input input, PGE::Input::Device Device, int key) {
     }
 }
 
-void KeyBinds::unbindInput(Input input, PGE::MouseInput::Button key) {
-    unbindInput(input, PGE::Input::Device::MOUSE, (int)key);
+void KeyBinds::unbindInput(Input input, PGE::MouseButton key) {
+    unbindInput(input, PGE::Device::MOUSE, (int)key);
 }
 
-void KeyBinds::unbindInput(Input input, PGE::KeyboardInput::Keycode key) {
-    unbindInput(input, PGE::Input::Device::KEYBOARD, (int)key);
+void KeyBinds::unbindInput(Input input, PGE::Keycode key) {
+    unbindInput(input, PGE::Device::KEYBOARD, (int)key);
 }
 
-void KeyBinds::unbindInput(Input input, PGE::ControllerInput::Button key) {
-    unbindInput(input, PGE::Input::Device::CONTROLLER, (int)key);
+void KeyBinds::unbindInput(Input input, PGE::ControllerButton key) {
+    unbindInput(input, PGE::Device::CONTROLLER, (int)key);
 }
 
 void KeyBinds::bindCommand(PGE::String command, PGE::Input* key) {

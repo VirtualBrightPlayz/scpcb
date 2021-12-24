@@ -44,16 +44,16 @@ Config::Config(const PGE::String& file) :
     setResolution(width->value, height->value);
 
     // Generating default keyboard bindings.
-    kbBinds.emplace(Input::FORWARD, PGE::KeyboardInput::Keycode::W);
-    kbBinds.emplace(Input::BACKWARD, PGE::KeyboardInput::Keycode::S);
-    kbBinds.emplace(Input::LEFT, PGE::KeyboardInput::Keycode::A);
-    kbBinds.emplace(Input::RIGHT, PGE::KeyboardInput::Keycode::D);
-    kbBinds.emplace(Input::SPRINT, PGE::KeyboardInput::Keycode::LSHIFT);
-    kbBinds.emplace(Input::CROUCH, PGE::KeyboardInput::Keycode::LCTRL);
-    kbBinds.emplace(Input::BLINK, PGE::KeyboardInput::Keycode::SPACE);
-    kbBinds.emplace(Input::INTERACT, PGE::KeyboardInput::Keycode::E);
-    kbBinds.emplace(Input::INVENTORY, PGE::KeyboardInput::Keycode::TAB);
-    kbBinds.emplace(Input::TOGGLE_CONSOLE, PGE::KeyboardInput::Keycode::F3);
+    kbBinds.emplace(Input::FORWARD, PGE::Keycode::W);
+    kbBinds.emplace(Input::BACKWARD, PGE::Keycode::S);
+    kbBinds.emplace(Input::LEFT, PGE::Keycode::A);
+    kbBinds.emplace(Input::RIGHT, PGE::Keycode::D);
+    kbBinds.emplace(Input::SPRINT, PGE::Keycode::LSHIFT);
+    kbBinds.emplace(Input::CROUCH, PGE::Keycode::LCTRL);
+    kbBinds.emplace(Input::BLINK, PGE::Keycode::SPACE);
+    kbBinds.emplace(Input::INTERACT, PGE::Keycode::E);
+    kbBinds.emplace(Input::INVENTORY, PGE::Keycode::TAB);
+    kbBinds.emplace(Input::TOGGLE_CONSOLE, PGE::Keycode::F3);
 
     if (filename.exists()) {
         loadFile();
@@ -108,7 +108,7 @@ void Config::loadKeyboardInput(Input input) {
 
     std::vector<PGE::String> bindVect = bindings.split(',', true);
     for (int i = 0; i < (int)bindVect.size(); i++) {
-        kbBinds.emplace(input, (PGE::KeyboardInput::Keycode)bindVect[i].to<int>());
+        kbBinds.emplace(input, (PGE::Keycode)bindVect[i].to<int>());
     }
 }
 
@@ -133,7 +133,7 @@ void Config::saveFile() const {
 }
 
 void Config::setResolution(int width, int height) {
-    PGE_ASSERT(width > 0 && height > 0, "Invalid display resolution. (width: " + PGE::String::from(width) + ", height: " + PGE::String::from(height) + ")");
+    PGE::asrt(width > 0 && height > 0, "Invalid display resolution. (width: " + PGE::String::from(width) + ", height: " + PGE::String::from(height) + ")");
 
     this->width->value = width;
     this->height->value = height;

@@ -152,9 +152,6 @@
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\LocalizationDefinitions.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
-    <ClCompile Include="..\Src\Scripting\NativeDefinitions\RegexDefinitions.cpp">
-      <Filter>Scripting\NativeDefinitions</Filter>
-    </ClCompile>
     <ClCompile Include="..\Src\Scripting\NativeDefinitions\TextureDefinitions.cpp">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClCompile>
@@ -339,9 +336,6 @@
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\LocalizationDefinitions.h">
-      <Filter>Scripting\NativeDefinitions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Src\Scripting\NativeDefinitions\RegexDefinitions.h">
       <Filter>Scripting\NativeDefinitions</Filter>
     </ClInclude>
     <ClInclude Include="..\Src\Scripting\NativeDefinitions\TextureDefinitions.h">

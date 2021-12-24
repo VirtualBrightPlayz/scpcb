@@ -3,6 +3,7 @@
 #include <filesystem>
 
 #include <PGE/Math/Matrix.h>
+#include <PGE/Graphics/Material.h>
 
 #include "../Collision/CollisionMesh.h"
 #include "../Graphics/GraphicsResources.h"
@@ -101,10 +102,10 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
     inFile.read(&textureCount.c, 1);
 
     opaqueShader = gfxRes->getShader(opaqueShaderPath, true);
-    opaqueModelMatrixConstant = &opaqueShader->getVertexShaderConstant("modelMatrix");
+    opaqueModelMatrixConstant = opaqueShader->getVertexShaderConstant("modelMatrix");
 
     opaqueNormalMapShader = gfxRes->getShader(opaqueNormalMapShaderPath, true);
-    opaqueNormalMapModelMatrixConstant = &opaqueNormalMapShader->getVertexShaderConstant("modelMatrix");
+    opaqueNormalMapModelMatrixConstant = opaqueNormalMapShader->getVertexShaderConstant("modelMatrix");
 
     //alphaShader = gfxRes->getShader(ALPHA_SHADER_PATH, true);
 
@@ -172,7 +173,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                 materialKey.c[0] = textureIndex.c;
                 materialKey.c[1] = lmIndex.c;
 
-                std::map<unsigned short, PGE::Mesh::Material>::iterator materialIter = materials.find(materialKey.i);
+                std::map<unsigned short, PGE::Material*>::iterator materialIter = materials.find(materialKey.i);
                 if (materialIter == materials.end()) {
                     PGE::ReferenceVector<PGE::Texture> materialTextures;
                     PGE::Shader* shader = textures[textureIndex.u].shader;
@@ -184,7 +185,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                         materialTextures.push_back(*textures[textureIndex.u].normalMap);
                     }
 
-                    PGE::Mesh::Material material = PGE::Mesh::Material(*shader, materialTextures, shader != alphaShader ? PGE::Mesh::Material::Opaque::YES : PGE::Mesh::Material::Opaque::NO);
+                    PGE::Material* material = PGE::Material::create(*gfxRes->getGraphics(), *shader, materialTextures, shader != alphaShader ? PGE::Opaque::YES : PGE::Opaque::NO);
 
                     materials.emplace(materialKey.i, material);
                     materialIter = materials.find(materialKey.i);
@@ -196,7 +197,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                 std::vector<PGE::Vector3f> vertexPositions;
                 std::vector<int> indices;
 
-                PGE::StructuredData vertices = PGE::StructuredData(materialIter->second.getShader().getVertexLayout(), vertexCount.i);
+                PGE::StructuredData vertices = PGE::StructuredData(materialIter->second->getShader().getVertexLayout(), vertexCount.i);
 
                 for (int i = 0; i < vertexCount.i; i++) {
                     FloatBytes inX;
@@ -256,7 +257,7 @@ RM2::RM2(GraphicsResources* gfxRes, const PGE::String& filename) {
                 mesh->setMaterial(materialIter->second);
                 mesh->setGeometry(std::move(vertices), primitives);
 
-                if (materials[textureIndex.u].isOpaque())
+                if (materials[textureIndex.u]->isOpaque())
                 {
                     opaqueMeshes.push_back(mesh);
                 }

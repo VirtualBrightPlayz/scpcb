@@ -5,13 +5,15 @@
 #include <assimp/mesh.h>
 #include <assimp/vector3.h>
 
+#include <PGE/Graphics/Material.h>
+
 #include "../Graphics/GraphicsResources.h"
 
 Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::String& filename) {
     gfxRes = gr;
     shader = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/Model/"), true);
-    modelMatrix = &shader->getVertexShaderConstant("modelMatrix");
-    PGE::Shader::Constant* colorConstant = &shader->getFragmentShaderConstant("inColor");
+    modelMatrix = shader->getVertexShaderConstant("modelMatrix");
+    PGE::Shader::Constant* colorConstant = shader->getFragmentShaderConstant("inColor");
     colorConstant->setValue(PGE::Colors::WHITE);
     
     PGE::String path = filename.substr(filename.begin(), filename.findLast("/") - 1);
@@ -39,17 +41,17 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
     );
 
     PGE::String err = importer->GetErrorString();
-    PGE_ASSERT(err.isEmpty(), "Failed to load model (err: " + err + ")");
+    PGE::asrt(err.isEmpty(), "Failed to load model (err: " + err + ")");
 
     materialCount = scene->mNumMaterials;
-    materials = new PGE::Mesh::Material[materialCount];
+    materials = new PGE::Material*[materialCount];
     for (unsigned i = 0; i < materialCount; i++) {
         aiString texturePath;
-        PGE_ASSERT(scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath) == aiReturn_SUCCESS, "Texture for model " + filename + " failed to load.");
+        PGE::asrt(scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath) == aiReturn_SUCCESS, "Texture for model " + filename + " failed to load.");
         PGE::String textureName = PGE::String(texturePath.C_Str()).replace("\\", "/");
         int lastSlash = textureName.findLast("/").getPosition();
         textureName = textureName.substr(lastSlash + 1, textureName.length() - lastSlash - 5);
-        materials[i] = PGE::Mesh::Material(*shader, *gr->getTexture(path + textureName), PGE::Mesh::Material::Opaque::YES);
+        materials[i] = PGE::Material::create(*gfxRes->getGraphics(), *shader, *gr->getTexture(path + textureName), PGE::Opaque::YES);
     }
 
     meshCount = scene->mNumMeshes;
@@ -57,7 +59,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
     for (unsigned i = 0; i < meshCount; i++) {
         aiMesh* mesh = scene->mMeshes[i];
 
-        PGE::Mesh::Material& material = materials[mesh->mMaterialIndex];
+        PGE::Material& material = *materials[mesh->mMaterialIndex];
 
         PGE::StructuredData vertices = PGE::StructuredData(material.getShader().getVertexLayout(), mesh->mNumVertices);
         for (unsigned j = 0; j < mesh->mNumVertices; j++) {
@@ -73,7 +75,7 @@ Model::Model(Assimp::Importer* importer, GraphicsResources* gr, const PGE::Strin
 
         meshes[i] = PGE::Mesh::create(*gr->getGraphics());
         meshes[i]->setGeometry(vertices.copy(), primitives);
-        meshes[i]->setMaterial(material);
+        meshes[i]->setMaterial(&material);
     }
 
     importer->FreeScene();
@@ -86,9 +88,10 @@ Model::~Model() {
     delete[] meshes;
 
     for (unsigned i = 0; i < materialCount; i++) {
-        for (int j = 0; j < materials[i].getTextureCount(); j++) {
-            gfxRes->dropTexture(&materials[i].getTexture(j));
+        for (int j = 0; j < materials[i]->getTextureCount(); j++) {
+            gfxRes->dropTexture((PGE::Texture*)&materials[i]->getTexture(j));
         }
+        delete materials[i];
     }
     delete[] materials;
 

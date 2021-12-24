@@ -1,6 +1,7 @@
 #ifndef CBR_H_INCLUDED
 #define CBR_H_INCLUDED
 
+#include <PGE/Graphics/Texture.h>
 #include <PGE/Graphics/Shader.h>
 #include <PGE/Graphics/Mesh.h>
 #include <PGE/String/String.h>
@@ -17,7 +18,7 @@ class CBR {
 
         PGE::Texture** lightmaps;
         std::vector<PGE::Texture*> allTextures;
-        std::vector<PGE::Mesh::Material> materials;
+        std::vector<PGE::Material*> materials;
         std::vector<PGE::Mesh*> meshes;
 
         PGE::Shader* shader;

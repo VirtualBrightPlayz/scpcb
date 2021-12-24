@@ -133,6 +133,19 @@ static PGE::String floatToString(float f) {
     return PGE::String::from(f);
 }
 
+static bool regexMatchAny(const PGE::String& in, const PGE::String& pattern) {
+    return !in.regexMatch(pattern).isEmpty();
+}
+
+static int regexMatchPosition(const PGE::String& in, const PGE::String& pattern) {
+    PGE::String match = in.regexMatch(pattern);
+    if (match.isEmpty()) {
+        return -1;
+    } else {
+        return in.findFirst(in.regexMatch(pattern)).getPosition();
+    }
+}
+
 StringFactory::StringFactory(asIScriptEngine* engine) {
     engine->RegisterObjectType("string", sizeof(PGE::String), asOBJ_VALUE | asOBJ_APP_CLASS_CDAK);
 
@@ -156,6 +169,10 @@ StringFactory::StringFactory(asIScriptEngine* engine) {
     engine->RegisterObjectMethod("string", "int toInt() const", asFUNCTION(stringToInt), asCALL_CDECL_OBJLAST);
     engine->RegisterObjectMethod("string", "float toFloat(bool&out success) const", asFUNCTION(stringToFloatWithCheck), asCALL_CDECL_OBJFIRST);
     engine->RegisterObjectMethod("string", "float toFloat() const", asFUNCTION(stringToFloat), asCALL_CDECL_OBJFIRST);
+
+    engine->RegisterObjectMethod("string", "string regexMatch(const string& in) const", asMETHOD(PGE::String, regexMatch), asCALL_THISCALL);
+    engine->RegisterObjectMethod("string", "bool regexMatchAny(const string& in) const", asFUNCTION(regexMatchAny), asCALL_CDECL_OBJFIRST);
+    engine->RegisterObjectMethod("string", "int regexMatchPosition(const string& in) const", asFUNCTION(regexMatchPosition), asCALL_CDECL_OBJFIRST);
 
     engine->RegisterStringFactory("string", this);
 

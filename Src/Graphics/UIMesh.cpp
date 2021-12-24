@@ -1,5 +1,7 @@
 #include "UIMesh.h"
 
+#include <PGE/Graphics/Material.h>
+
 #include "../Graphics/GraphicsResources.h"
 #include "../Utils/ResourcePackManager.h"
 #include "../Utils/TextureUtil.h"
@@ -10,10 +12,11 @@ UIMesh::UIMesh(GraphicsResources* gr) {
     shaderTextured = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/UI/"), false);
     shaderTextureless = gr->getShader(PGE::FilePath::fromStr("SCPCB/GFX/Shaders/UITextureless/"), false);
 
+    material = nullptr;
     mesh = PGE::Mesh::create(*gfxRes->getGraphics());
 
-    shaderTexturedColorConstant = &shaderTextured->getFragmentShaderConstant("imageColor");
-    shaderTexturelessColorConstant = &shaderTextureless->getFragmentShaderConstant("imageColor");
+    shaderTexturedColorConstant = shaderTextured->getFragmentShaderConstant("imageColor");
+    shaderTexturelessColorConstant = shaderTextureless->getFragmentShaderConstant("imageColor");
     
     color = PGE::Colors::WHITE;
     shaderTexturedColorConstant->setValue(color);
@@ -24,12 +27,12 @@ UIMesh::UIMesh(GraphicsResources* gr) {
 
     borderThickness = 0.5f;
 
-    shaderTextured->getVertexShaderConstant("projectionMatrix").setValue(gr->getOrthoMat());
-    shaderTextureless->getVertexShaderConstant("projectionMatrix").setValue(gr->getOrthoMat());
+    shaderTextured->getVertexShaderConstant("projectionMatrix")->setValue(gr->getOrthoMat());
+    shaderTextureless->getVertexShaderConstant("projectionMatrix")->setValue(gr->getOrthoMat());
 }
 
 PGE::StructuredData UIMesh::generateVertexData() const {
-    PGE::StructuredData retVal = PGE::StructuredData(material.getShader().getVertexLayout(), vertices.size());
+    PGE::StructuredData retVal = PGE::StructuredData(material->getShader().getVertexLayout(), vertices.size());
     for (int i = 0; i < vertices.size(); i++) {
         retVal.setValue(i, "position", vertices[i].position);
         if (!textureless) { retVal.setValue(i, "uv", vertices[i].uv); }
@@ -38,6 +41,7 @@ PGE::StructuredData UIMesh::generateVertexData() const {
 }
 
 UIMesh::~UIMesh() {
+    delete material;
     delete mesh;
     gfxRes->dropShader(shaderTextured);
     gfxRes->dropShader(shaderTextureless);
@@ -59,13 +63,14 @@ void UIMesh::endRender() {
 }
 
 void UIMesh::setTextured(PGE::Texture* texture, bool tile) {
-    if (textureless || tiled != tile || material.getTextureCount() <= 0 || texture != &material.getTexture(0)) {
+    if (textureless || tiled != tile || material->getTextureCount() <= 0 || texture != &material->getTexture(0)) {
         endRender();
 
         tiled = tile;
         textureless = false;
 
-        material = PGE::Mesh::Material(*shaderTextured, *texture, PGE::Mesh::Material::Opaque::NO);
+        delete material;
+        material = PGE::Material::create(*gfxRes->getGraphics(), *shaderTextured, *texture, PGE::Opaque::NO);
         mesh->clearGeometry();
         mesh->setMaterial(material);
 
@@ -92,7 +97,8 @@ void UIMesh::setTextureless() {
 
         textureless = true;
 
-        material = PGE::Mesh::Material(*shaderTextureless, PGE::Mesh::Material::Opaque::NO);
+        delete material;
+        material = PGE::Material::create(*gfxRes->getGraphics(), *shaderTextureless, PGE::Opaque::NO);
         mesh->setMaterial(material);
 
         startRender();

@@ -153,8 +153,8 @@ PGE::Matrix4x4f GraphicsResources::getOrthoMat() const {
 void GraphicsResources::setCameraUniforms(const Camera* cam) const {
     for (const auto& entry : shaderToShaders) {
         if (entry.second->needsViewProjection) {
-            entry.first->getVertexShaderConstant("viewMatrix").setValue(cam->getViewMatrix());
-            entry.first->getVertexShaderConstant("projectionMatrix").setValue(cam->getProjectionMatrix());
+            entry.first->getVertexShaderConstant("viewMatrix")->setValue(cam->getViewMatrix());
+            entry.first->getVertexShaderConstant("projectionMatrix")->setValue(cam->getProjectionMatrix());
         }
     }
 
