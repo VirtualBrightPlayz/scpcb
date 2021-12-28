@@ -1,45 +1,35 @@
 #ifndef SCRIPTMANAGER_H_INCLUDED
 #define SCRIPTMANAGER_H_INCLUDED
 
-#include <vector>
-
 #include <angelscript.h>
 
 #include <PGE/String/String.h>
+#include <PGE/ResourceManagement/Resource.h>
 
-class Script;
+#include "StringFactory.h"
+
 class ScriptClass;
-class ScriptFunction;
 class ScriptModule;
-class NativeFunction;
 
 class ScriptManager {
-    public:
-        struct LogEntry {
-            enum class Type {
-                AngelScriptError,
-                AngelScriptWarning,
-                AngelScriptInfo
-            };
-
-            Type type;
-            PGE::String message;
-
-            PGE::String section;
-            int row;
-            int col;
-        };
     private:
-        asIScriptEngine* engine;
-        asIStringFactory* stringFactory;
+        // We're relying on member destruction order here
+        // 1. Engine 2. StringFactory 3. log
+        std::vector<asSMessageInfo> log;
+    
+        std::unique_ptr<StringFactory> stringFactory;
+
+        class RaiiEngine : public PGE::Resource<asIScriptEngine*> {
+            public:
+                RaiiEngine() { resource = asCreateScriptEngine(); }
+                ~RaiiEngine() { resource->ShutDownAndRelease(); }
+        } engine;
 
         std::vector<ScriptClass*> sharedClasses;
         std::vector<ScriptModule*> scriptModules;
 
-        std::vector<LogEntry> log;
     public:
         ScriptManager();
-        ~ScriptManager();
 
         void messageCallback(const asSMessageInfo* msg, void* param);
         void contextExceptionCallback(asIScriptContext* ctx);
