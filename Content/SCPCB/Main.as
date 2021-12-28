@@ -48,19 +48,41 @@ external class HUDMenu;
 //external HUDMenu@ HUDMenu::instance; // TODO why doesn't this work?
 external void Console::addMessage(const string&in msg, const Color&in color = Color::White);
 
-abstract class TestAbstractBase {
-    abstract int member { get; }
+abstract class Testt {
+    abstract int member { get const; }
 }
 
-class TestAbstractImplementation : TestAbstractBase {
-    int member { get { return 2; } }
+class TestImpl : Testt {
+    int member const override => 2;
 }
+
+class TestImpl2 : Testt {
+    int member { get const override => 2; };
+}
+
+int test() => 5;
+
+funcdef bool CMP(int first, int second);
+funcdef void ASD();
+
+void myOtherFunc(CMP @f) {
+
+}
+
+void myFunc(ASD @f) {
+
+}
+
+void doSomething() {}
 
 void main() {
+    myFunc(() => { doSomething(); });
+    myOtherFunc((a, b) => a == b);
+
     Debug::log("Starting up!");
 
-    TestAbstractBase@ test_abstract_TODO_REMOVE;
-    @test_abstract_TODO_REMOVE = TestAbstractImplementation();
+    Testt@ test_abstract_TODO_REMOVE;
+    @test_abstract_TODO_REMOVE = TestImpl();
     Debug::log("TestAbstract result: "+toString(test_abstract_TODO_REMOVE.member));
 
     @menuManager = MenuManager();
@@ -99,7 +121,7 @@ void main() {
     Console::register(
         "teleport",
         "Teleports the player to the coordinates sent as input.",
-        function(float x,float y,float z) {
+        (float x,float y,float z) => {
             Debug::log("Called teleport!");
             testController.position = Vector3f(x,y,z);
         }
@@ -107,21 +129,21 @@ void main() {
 	Console::register(
         "hElP",
         ":(",
-        function(string s) {
+        (string s) => {
             Debug::log(s);
         }
     );
     Console::register(
         "jorge",
         "There is no help available for you.",
-        function(int i, int i2, int i3) {
+        (int i, int i2, int i3) => {
             Console::addMessage("" + 74 + 111 + 114 + 103 + 101 + 32 + 104 + 97 + 115 + 32 + 98 + 101 + 101 + 110 + 32 + 101 + 120 + 112 + 101 + 99 + 116 + 105 + 110 + 103 + 32 + 121 + 111 + 117 + 46, Color::Orange);
         }
     );
     Console::register(
         "clear",
         "Clears the console.",
-        function() {
+        () => {
             ConsoleMenu::instance.clear();
         }
     );
