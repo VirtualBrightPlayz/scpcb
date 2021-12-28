@@ -7,6 +7,7 @@
 #include <map>
 #include <stdlib.h>
 #include <inttypes.h>
+#include <iostream>
 #include <scriptarray/scriptarray.h>
 
 struct ContextPool {
@@ -73,17 +74,23 @@ void ScriptManager::contextExceptionCallback(asIScriptContext* context) {
 
 void ScriptManager::messageCallback(const asSMessageInfo* msg, void* param) {
     LogEntry newLogEntry;
+    PGE::String typeStr;
     switch (msg->type) {
         case asEMsgType::asMSGTYPE_ERROR: {
+            typeStr = "ERROR";
             newLogEntry.type = LogEntry::Type::AngelScriptError;
         } break;
         case asEMsgType::asMSGTYPE_WARNING: {
+            typeStr = "WARN";
             newLogEntry.type = LogEntry::Type::AngelScriptWarning;
         } break;
         case asEMsgType::asMSGTYPE_INFORMATION: {
+            typeStr = "INFO";
             newLogEntry.type = LogEntry::Type::AngelScriptInfo;
         } break;
     }
+    std::cout << msg->section << "(" << msg->row << ", " << msg->col << "): " << typeStr << ": " << msg->message << std::endl;
+
     newLogEntry.message = msg->message;
     newLogEntry.section = msg->section;
     newLogEntry.row = msg->row;
