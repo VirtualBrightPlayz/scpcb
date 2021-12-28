@@ -87,6 +87,9 @@ Contributors
     Class401
         Sound effects, music.
 
+    Cridone
+        Textures, dared question Regalis' font choices.
+
     Dr. Gears
         Writing.
 
@@ -168,9 +171,6 @@ Contributors
     Prosth
         Modelling.
 
-    Pylcrafte
-        Textures, dared question Regalis' font choices.
-
     Reilly Grindle ("Mirocaine")
         Modelling.
 
@@ -182,6 +182,9 @@ Contributors
 
     SaitoFox
         Modelling.
+        
+    Salvage
+        Programming.
         
     Senhor
         Textures, modelling.
