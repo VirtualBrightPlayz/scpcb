@@ -1,17 +1,9 @@
-# this is a jank way to get all the .cpp files, unused
-file(GLOB_RECURSE SOURCE_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/angelscript/sdk/add_on/scriptarray/*.cpp
-    )
-
-set(DXC_CMD "PATH_NOT_FOUND" CACHE FILEPATH "Path to the Direct3D shader compiler")
-set(SPVC_CMD "PATH_NOT_FOUND" CACHE FILEPATH "Path to the SPIR-V Cross shader compiler")
 
 # Get-ChildItem -Recurse | Resolve-Path -Relative > out.txt
 add_executable(scpcb
-    #${SOURCE_FILES}
     ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/angelscript/sdk/add_on/scriptarray/scriptarray.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/tinyxml2/tinyxml2.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Engine/Src/Init/Init.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Collision/Collider.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Collision/Collider.h
@@ -153,7 +145,6 @@ target_link_libraries(scpcb PUBLIC
     assimp
     freetype
     angelscript
-    # tinyxml2
     )
 
 target_include_directories(scpcb PUBLIC
@@ -175,29 +166,32 @@ function(compileShader arg_shaderFile)
     get_filename_component(outPath ${arg_shaderFile} DIRECTORY)
     get_filename_component(outName ${arg_shaderFile} NAME_WLE)
     set(outDir "${outPath}/${outName}")
-    # message("$<TARGET_FILE_DIR:scpcb>")
-    # file(RELATIVE_PATH outDir $<TARGET_FILE_DIR:scpcb> ${arg_shaderFile})
-    set(DXC "${DXC_CMD}")
-    set(SPVC "${SPVC_CMD}")
     add_custom_command(TARGET scpcb POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${outDir}
-        COMMAND ${DXC} -T lib_6_6 ${arg_shaderFile} -Fre ${outDir}/reflection.dxri
-        COMMAND ${DXC} -T ps_6_6 -E PS ${arg_shaderFile} -Fo ${outDir}/fragment.dxbc
-        COMMAND ${DXC} -T vs_6_6 -E VS ${arg_shaderFile} -Fo ${outDir}/vertex.dxbc
-        COMMAND ${DXC} -spirv -T ps_6_6 -E PS ${arg_shaderFile} -Fo ${outDir}/fragment.spv
-        COMMAND ${DXC} -spirv -T vs_6_6 -E VS ${arg_shaderFile} -Fo ${outDir}/vertex.spv
-        COMMAND ${SPVC} --version 330 --no-es ${outDir}/fragment.spv --output ${outDir}/fragment.glsl
-        COMMAND ${SPVC} --version 330 --no-es ${outDir}/vertex.spv --output ${outDir}/vertex.glsl
+        COMMAND $<TARGET_FILE:BuildShaders> ${outPath}
+        # COMMAND ${CMAKE_COMMAND} -E make_directory ${outDir}
+        # COMMAND ${DXC} -T lib_6_6 ${arg_shaderFile} -Fre ${outDir}/reflection.dxri
+        # COMMAND ${DXC} -T ps_6_6 -E PS ${arg_shaderFile} -Fo ${outDir}/fragment.dxbc
+        # COMMAND ${DXC} -T vs_6_6 -E VS ${arg_shaderFile} -Fo ${outDir}/vertex.dxbc
+        # COMMAND ${DXC} -spirv -T ps_6_6 -E PS ${arg_shaderFile} -Fo ${outDir}/fragment.spv -fspv-reflect
+        # COMMAND ${DXC} -spirv -T vs_6_6 -E VS ${arg_shaderFile} -Fo ${outDir}/vertex.spv -fspv-reflect
+        # COMMAND ${SPVC} --version 330 --no-es ${outDir}/fragment.spv --output ${outDir}/fragment.glsl
+        # COMMAND ${SPVC} --version 330 --no-es ${outDir}/vertex.spv --output ${outDir}/vertex.glsl
         COMMAND_EXPAND_LISTS
         )
 endfunction(compileShader)
 
 file(GLOB_RECURSE SHADER_FILES
-    # ${CMAKE_CURRENT_SOURCE_DIR}/../Content/*.hlsl
-    # $<TARGET_FILE_DIR:scpcb>/*.hlsl
     ${CMAKE_BINARY_DIR}/*.hlsl
     )
 
+add_dependencies(scpcb BuildShaders)
+
+
+add_custom_command(TARGET scpcb POST_BUILD
+    COMMAND $<TARGET_FILE:BuildShaders> $<TARGET_FILE_DIR:scpcb>
+    COMMAND_EXPAND_LISTS
+    )
+
 foreach(file ${SHADER_FILES})
-    compileShader("${file}")
+    # compileShader("${file}")
 endforeach()
