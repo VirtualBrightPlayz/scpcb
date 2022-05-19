@@ -1,5 +1,4 @@
-
-# Get-ChildItem -Recurse | Resolve-Path -Relative > out.txt
+# PS> Get-ChildItem -Recurse | Resolve-Path -Relative > out.txt
 add_executable(scpcb
     ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/angelscript/sdk/add_on/scriptarray/scriptarray.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/tinyxml2/tinyxml2.cpp
@@ -135,9 +134,10 @@ add_executable(scpcb
     ${CMAKE_CURRENT_SOURCE_DIR}/World/World.h
     )
 
-add_compile_definitions(STB_IMAGE_IMPLEMENTATION STBI_WINDOWS_UTF8 STBI_FAILURE_USERMSG)
+add_compile_definitions(STB_IMAGE_IMPLEMENTATION STBI_WINDOWS_UTF8 STBI_FAILURE_USERMSG) # stb_image
 add_compile_definitions(SDL_MAIN_HANDLED)
-add_compile_definitions(DEBUG)
+
+target_compile_definitions(scpcb PUBLIC "$<$<CONFIG:DEBUG>:DEBUG>")
 
 target_link_libraries(scpcb PUBLIC
     ${SDL2_LIBRARIES}
@@ -151,9 +151,9 @@ target_include_directories(scpcb PUBLIC
     ${SDL2_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/angelscript/sdk/angelscript/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/angelscript/sdk/add_on
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/tinyxml2
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/freetype/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/stb_image
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/openvr/headers
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/tinyxml2
     )
 
 add_custom_command(TARGET scpcb POST_BUILD
@@ -162,36 +162,8 @@ add_custom_command(TARGET scpcb POST_BUILD
     COMMAND_EXPAND_LISTS
     )
 
-function(compileShader arg_shaderFile)
-    get_filename_component(outPath ${arg_shaderFile} DIRECTORY)
-    get_filename_component(outName ${arg_shaderFile} NAME_WLE)
-    set(outDir "${outPath}/${outName}")
-    add_custom_command(TARGET scpcb POST_BUILD
-        COMMAND $<TARGET_FILE:BuildShaders> ${outPath}
-        # COMMAND ${CMAKE_COMMAND} -E make_directory ${outDir}
-        # COMMAND ${DXC} -T lib_6_6 ${arg_shaderFile} -Fre ${outDir}/reflection.dxri
-        # COMMAND ${DXC} -T ps_6_6 -E PS ${arg_shaderFile} -Fo ${outDir}/fragment.dxbc
-        # COMMAND ${DXC} -T vs_6_6 -E VS ${arg_shaderFile} -Fo ${outDir}/vertex.dxbc
-        # COMMAND ${DXC} -spirv -T ps_6_6 -E PS ${arg_shaderFile} -Fo ${outDir}/fragment.spv -fspv-reflect
-        # COMMAND ${DXC} -spirv -T vs_6_6 -E VS ${arg_shaderFile} -Fo ${outDir}/vertex.spv -fspv-reflect
-        # COMMAND ${SPVC} --version 330 --no-es ${outDir}/fragment.spv --output ${outDir}/fragment.glsl
-        # COMMAND ${SPVC} --version 330 --no-es ${outDir}/vertex.spv --output ${outDir}/vertex.glsl
-        COMMAND_EXPAND_LISTS
-        )
-endfunction(compileShader)
-
-file(GLOB_RECURSE SHADER_FILES
-    ${CMAKE_BINARY_DIR}/*.hlsl
-    )
-
 add_dependencies(scpcb BuildShaders)
-
-
 add_custom_command(TARGET scpcb POST_BUILD
     COMMAND $<TARGET_FILE:BuildShaders> $<TARGET_FILE_DIR:scpcb>
     COMMAND_EXPAND_LISTS
     )
-
-foreach(file ${SHADER_FILES})
-    # compileShader("${file}")
-endforeach()
