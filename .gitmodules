@@ -18,6 +18,3 @@
 [submodule "Libraries/assimp"]
 	path = Libraries/assimp
 	url = git@github.com:assimp/assimp.git
-[submodule "Libraries/openvr"]
-	path = Libraries/openvr
-	url = git@github.com:ValveSoftware/openvr.git
