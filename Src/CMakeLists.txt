@@ -1,3 +1,8 @@
+# set(CMAKE_CXX_STANDARD 20)
+# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# set(CMAKE_C_STANDARD 11)
+# set(CMAKE_C_STANDARD_REQUIRED ON)
+
 # PS> Get-ChildItem -Recurse | Resolve-Path -Relative > out.txt
 add_executable(scpcb
     ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/angelscript/sdk/add_on/scriptarray/scriptarray.cpp
@@ -140,7 +145,6 @@ add_compile_definitions(SDL_MAIN_HANDLED)
 target_compile_definitions(scpcb PUBLIC "$<$<CONFIG:DEBUG>:DEBUG>")
 
 target_link_libraries(scpcb PUBLIC
-    ${SDL2_LIBRARIES}
     Engine
     assimp
     freetype
@@ -148,7 +152,6 @@ target_link_libraries(scpcb PUBLIC
     )
 
 target_include_directories(scpcb PUBLIC
-    ${SDL2_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/angelscript/sdk/angelscript/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/angelscript/sdk/add_on
     ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/freetype/include
@@ -156,14 +159,16 @@ target_include_directories(scpcb PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/../Libraries/tinyxml2
     )
 
+if(WIN32)
 add_custom_command(TARGET scpcb POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:scpcb> $<TARGET_FILE_DIR:scpcb>
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../Content $<TARGET_FILE_DIR:scpcb>
     COMMAND_EXPAND_LISTS
     )
+endif()
 
 add_dependencies(scpcb BuildShaders)
 add_custom_command(TARGET scpcb POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../Content $<TARGET_FILE_DIR:scpcb>
     COMMAND $<TARGET_FILE:BuildShaders> $<TARGET_FILE_DIR:scpcb>
     COMMAND_EXPAND_LISTS
     )

@@ -87,7 +87,7 @@ ScriptWorld::ScriptWorld(World* world, GraphicsResources* gfxRes, Camera* camera
                     }
                 }
             }
-            PGE::asrt(depsNotEnabled == 0, enabledMods[i] + " has dependencies that are not enabled before it");
+            PGE_ASSERT(depsNotEnabled == 0, enabledMods[i] + " has dependencies that are not enabled before it");
         }
         ScriptModule* scriptModule = new ScriptModule(manager, enabledMods[i]);
         std::vector<PGE::FilePath> files = directory.enumerateFiles();

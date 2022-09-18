@@ -47,9 +47,16 @@ class ConsoleDefinitions : public NativeDefinition {
 
         void internalLog(void* ref, int typeId, LogType type);
 
-        template <ConsoleDefinitions::LogType type>
+        // template <ConsoleDefinitions::LogType type>
+        // gcc and clang bugs out with templates
         void log(void* ref, int typeId) {
-            internalLog(ref, typeId, type);
+            internalLog(ref, typeId, LogType::Log);
+        }
+        void warning(void* ref, int typeId) {
+            internalLog(ref, typeId, LogType::Warning);
+        }
+        void error(void* ref, int typeId) {
+            internalLog(ref, typeId, LogType::Error);
         }
 
     public:

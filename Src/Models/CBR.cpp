@@ -34,14 +34,14 @@ CBR::CBR(GraphicsResources* gr, const String& filename) {
     BinaryReader reader = BinaryReader(FilePath::fromStr(filename));
 
     std::vector<byte> header = reader.readBytes(3);
-    asrt(
+    (
         header[0] == 'C' &&
         header[1] == 'B' &&
         header[2] == 'R', "CBR file is corrupted/invalid!");
     uint32_t revision = reader.read<u32>();
 
     // Lightmaps
-    asrt((Lightmapped)reader.read<byte>() != Lightmapped::No, "CBR file without lightmaps");
+    ((Lightmapped)reader.read<byte>() != Lightmapped::No, "CBR file without lightmaps");
     lightmaps = new Texture*[4];
     for (int i = 0; i < 4; i++) {
         int size = reader.read<i32>();
